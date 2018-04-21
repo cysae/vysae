@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Form, Input, Button } from 'antd';
-import Amplify, { Auth } from 'aws-amplify';
-import { withAuthenticator } from 'aws-amplify-react';
-import aws_exports from './aws-exports.js';
-import Dashboard from './dashboard.js';
-Amplify.configure(aws_exports);
-const FormItem = Form.Item;
+import React, { Component } from 'react'
+import './App.css'
+import { Form, Input } from 'antd'
+import Amplify from 'aws-amplify'
+import { withAuthenticator } from 'aws-amplify-react'
+import aws_exports from './aws-exports.js'
+import Dashboard from './dashboard.js'
+Amplify.configure(aws_exports)
+const FormItem = Form.Item
 
 class App extends Component {
   render() {
@@ -44,4 +43,4 @@ class App extends Component {
   }
 }
 
-export default withAuthenticator(App);
+export default withAuthenticator(App)
