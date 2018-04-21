@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Table, Button } from 'antd';
+import React, { Component } from 'react'
+import { Table } from 'antd'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -47,11 +47,8 @@ class Dashboard extends Component {
     }];
 
     return (
-      <Fragment>
-        <Button>Añadir Sociedad</Button>
-        <Table columns={columns} dataSource={companies} />
-      </Fragment>
-    );
+      <Table columns={columns} dataSource={companies} />
+    )
   }
 }
 
