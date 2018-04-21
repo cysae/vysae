@@ -7,8 +7,8 @@ function companyToAdd(state = [], action) {
     }
 }
 
-const vysaeApp = combineReducers({
+const reducers = combineReducers({
     companyToAdd
 })
 
-export default vysaeApp
+export default reducers;
