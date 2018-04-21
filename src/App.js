@@ -1,21 +1,47 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Form, Input, Button } from 'antd';
+import Amplify, { Auth } from 'aws-amplify';
+import { withAuthenticator } from 'aws-amplify-react';
+import aws_exports from './aws-exports.js';
+import Dashboard from './dashboard.js';
+Amplify.configure(aws_exports);
+const FormItem = Form.Item;
 
 class App extends Component {
   render() {
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      }
+    }
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Dashboard />
+        <Form>
+          <FormItem
+            {...formItemLayout}
+            label="Denominación social"
+          >
+            <Input />
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="Denominación social"
+          >
+            <Input />
+          </FormItem>
+        </Form>
       </div>
     );
   }
 }
 
-export default App;
+export default withAuthenticator(App);
