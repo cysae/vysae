@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, InputNumber, Button, Slider } from 'antd'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
 
@@ -88,13 +88,19 @@ class RawSharesForm extends Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem label="Capital social">
             {getFieldDecorator('socialCapital', {
-               rules: [{ required: true }],
-            })(<Input type="number" />)}
+              rules: [
+                {type: "number", message: 'Tiene que ser un numero.'},
+                {required: true, message: 'Es obligatorio.' }
+              ],
+            })(<InputNumber />)}
           </FormItem>
           <FormItem label="Número de participaciones">
             {getFieldDecorator('numberOfShares', {
-               rules: [{ required: true, message: 'Es obligatorio.' }],
-            })(<Input type="number" />)}
+               rules: [{ type: "number", required: true, message: 'Es obligatorio y tiene que ser un numero.' }],
+            })(<InputNumber />)}
+          </FormItem>
+          <FormItem>
+            <Slider range defaultValue={[0, 20]} max={100000} />
           </FormItem>
           <FormItem>
             <Button type="primary" htmlType="submit">
