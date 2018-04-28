@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react'
 import { Steps, Button, message } from 'antd'
+import BasicInfo from './basicInfo'
 const Step = Steps.Step;
 
 const steps = [{
   title: 'Información',
-  content: 'First-content',
+  content: <BasicInfo />,
 }, {
   title: 'Participaciones sociales',
   content: 'Second-content',
@@ -19,7 +20,7 @@ const steps = [{
   content: 'Last-content',
 }];
 
-class RegisterCompany extends React.Component {
+class AddCompany extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,4 +50,4 @@ class RegisterCompany extends React.Component {
   }
 }
 
-export default RegisterCompany;
+export default AddCompany;

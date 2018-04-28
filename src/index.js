@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import Dashboard from './dashboard'
-import RegisterCompany from './components/registerCompany'
+import AddCompany from './components/addCompany'
 import registerServiceWorker from './registerServiceWorker'
 // Antd
 import { Layout, Menu, Breadcrumb } from 'antd'
@@ -47,7 +47,7 @@ ReactDOM.render(
           >
             <Menu.Item key="1"><Link to="/">Dashboard</Link></Menu.Item>
             <Menu.Item key="2">nav 2</Menu.Item>
-            <Menu.Item key="3"><Link to="/registrar/informacion">Añadir Sociedad</Link></Menu.Item>
+            <Menu.Item key="3"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
           </Menu>
         </Header>
         <Content style={{ padding: '0 50px' }}>
@@ -58,11 +58,11 @@ ReactDOM.render(
           </Breadcrumb>
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
             <Route exact path="/" component={Dashboard}/>
-            <Route path="/registrar/informacion" component={RegisterCompany}/>
+            <Route path="/añadirSociedad" component={AddCompany}/>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©2016 Created by Ant UED
+          Vysae ©2018
         </Footer>
       </Layout>
     </ConnectedRouter>
