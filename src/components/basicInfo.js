@@ -1,11 +1,53 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input } from 'antd'
+import { Form, Input, Button } from 'antd'
 import { connect } from 'react-redux'
 
 const FormItem = Form.Item
 
+class BasicForm extends Component {
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('submit');
+      }
+    });
+  }
+  render() {
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <Fragment>
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem label="Denominación social">
+            {getFieldDecorator('name', {
+               rules: [{ required: true, message: 'Es obligatorio.' }],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="Domicilio Social">
+            {getFieldDecorator('registeredOffice', {
+               rules: [{ required: true, message: 'Es obligatorio.' }],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="Capital social">
+            {getFieldDecorator('socialCapital', {
+               rules: [{ required: true, message: 'Es obligatorio.' }],
+            })(<Input />)}
+          </FormItem>
+          <FormItem>
+            <Button type="primary" htmlType="submit">
+              Continuar
+            </Button>
+          </FormItem>
+        </Form>
+        <pre>
+          {JSON.stringify(this.props.formState, null, 2)}
+        </pre>
+      </Fragment>
+    );
+  }
+}
 
-const BasicForm = connect((state) => {
+const ReduxBasicForm = connect((state) => {
   return {
     formState: {
       name: state.companyForm.name,
@@ -30,32 +72,7 @@ const BasicForm = connect((state) => {
   onValuesChange(_, values) {
     console.log(values);
   },
-})((props) => {
-  const { getFieldDecorator } = props.form;
-  return (
-    <Fragment>
-    <Form>
-      <FormItem label="Denominación social">
-        {getFieldDecorator('name', {
-           rules: [{ required: true, message: 'Es obligatorio.' }],
-        })(<Input />)}
-      </FormItem>
-      <FormItem label="Domicilio Social">
-        {getFieldDecorator('registeredOffice', {
-           rules: [{ required: true, message: 'Es obligatorio.' }],
-        })(<Input />)}
-      </FormItem>
-      <FormItem label="Capital social">
-        {getFieldDecorator('socialCapital', {
-           rules: [{ required: true, message: 'Es obligatorio.' }],
-        })(<Input />)}
-      </FormItem>
-    </Form>
-    <pre>
-      {JSON.stringify(props.formState, null, 2)}
-    </pre>
-    </Fragment>
-  );
-}))
+})(BasicForm))
 
-export default BasicForm
+
+export default ReduxBasicForm
