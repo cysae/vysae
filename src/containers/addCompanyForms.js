@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Icon } from 'antd'
+import { Form, Input, InputNumber, Button, Icon, Row, Col } from 'antd'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
 
@@ -17,14 +17,11 @@ function HOCForm(formComponent) {
       props.dispatch(saveCompanyForm(changedFields))
     },
     mapPropsToFields(props) {
-      return {
-        name: Form.createFormField(props.formState.name),
-        registeredOffice: Form.createFormField(props.formState.registeredOffice),
-        nif: Form.createFormField(props.formState.nif),
-        socialCapital: Form.createFormField(props.formState.socialCapital),
-        numberOfShares: Form.createFormField(props.formState.numberOfShares),
-        shareIntervals: Form.createFormField(props.formState.shareIntervals),
+      const fields = {};
+      for (const key in props.formState) {
+        fields[key] = Form.createFormField(props.formState[key])
       }
+      return fields;
     },
     onValuesChange(_, values) {
       console.log(values);
@@ -86,38 +83,39 @@ class RawSharesForm extends Component {
 
   removeShareIntervalField = (k) => {
     const { form } = this.props;
-    const shareIntervals = form.getFieldValue('shareIntervals');
-    if (shareIntervals.length === 1) {
+    const keys = form.getFieldValue('keys');
+    if (keys.length === 1) {
       return;
     }
 
     form.setFieldsValue({
-      shareIntervals: shareIntervals.filter(shareInterval => shareInterval !== k),
+      keys: keys.filter(key => key !== k),
     });
   }
   addShareIntervalField = () => {
     const { form } = this.props;
-    const shareIntervals = form.getFieldValue('shareIntervals');
-    const nextShareIntervals = shareIntervals.concat(uuid);
+    const keys = form.getFieldValue('keys');
+    const nextKeys = keys.concat(uuid);
     uuid++;
     form.setFieldsValue({
-      shareIntervals: nextShareIntervals,
+      keys: nextKeys,
     })
   }
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
 
-    getFieldDecorator('shareIntervals', { initialValue: [] })
-    const shareIntervals = getFieldValue('shareIntervals')
-    const formItems = shareIntervals.map((k, index) => {
+    getFieldDecorator('keys', { initialValue: [] })
+    const keys = getFieldValue('keys')
+    const formItems = keys.map((k, index) => {
       return (
+        <Form layout="inline">
         <FormItem
         label={index === 0 ? 'Intervalos de Participaciones' : ''}
         required={false}
         key={k}
         >
-        {getFieldDecorator(`names[${k}]`, {
+        {getFieldDecorator(`shareIntervalStart_${k}`, {
           validateTrigger: ['onChange', 'onBlur'],
           rules: [{
             required: true,
@@ -127,15 +125,32 @@ class RawSharesForm extends Component {
         })(
           <Input style={{ width: '60%', marginRight: 8 }} />
         )}
-        {shareIntervals.length > 1 ? (
+        </FormItem>
+        <FormItem
+        label={index === 0 ? 'Intervalos de Participaciones' : ''}
+        required={false}
+        key={k}
+        >
+        {getFieldDecorator(`shareIntervalEnd_${k}`, {
+          validateTrigger: ['onChange', 'onBlur'],
+          rules: [{
+            required: true,
+            whitespace: true,
+            message: "Please input passenger's name or delete this field.",
+          }],
+        })(
+          <Input style={{ width: '60%', marginRight: 8 }} />
+        )}
+        {keys.length > 1 ? (
           <Icon
           className="dynamic-delete-button"
           type="minus-circle-o"
-          disabled={shareIntervals.length === 1}
+          disabled={keys.length === 1}
           onClick={() => this.removeShareIntervalField(k)}
           />
         ) : null}
         </FormItem>
+        </Form>
       )
     })
 
