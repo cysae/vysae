@@ -1,31 +1,20 @@
 import React, { Fragment } from 'react'
 import { Steps, Button, message } from 'antd'
-import BasicInfo from './basicInfo'
-const Step = Steps.Step;
-
-const steps = [{
-  title: 'Información',
-  content: <BasicInfo />,
-}, {
-  title: 'Participaciones sociales',
-  content: 'Second-content',
-}, {
-  title: 'Adopción de acuerdos',
-  content: 'Last-content',
-}, {
-  title: 'Órganos de gobierno',
-  content: 'Last-content',
-}, {
-  title: 'Libro de socios',
-  content: 'Last-content',
-}];
+import {
+  BasicForm,
+  SharesForm
+} from '../containers/addCompanyForms.js'
+const Step = Steps.Step
 
 class AddCompany extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 0,
+      current: 1,
     };
+
+    this.next = this.next.bind(this)
+    this.prev = this.prev.bind(this)
   }
   next() {
     const current = this.state.current + 1;
@@ -38,6 +27,23 @@ class AddCompany extends React.Component {
 
   render() {
     const { current } = this.state;
+
+    const steps = [{
+      title: 'Información',
+      content: <BasicForm next={this.next} />,
+    }, {
+      title: 'Participaciones sociales',
+      content: <SharesForm next={this.next} />,
+    }, {
+      title: 'Adopción de acuerdos',
+      content: 'Last-content',
+    }, {
+      title: 'Órganos de gobierno',
+      content: 'Last-content',
+    }, {
+      title: 'Libro de socios',
+      content: 'Last-content',
+    }];
 
     return (
       <Fragment>

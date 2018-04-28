@@ -1,12 +1,14 @@
 /*
  * action types
  */
-export const ADD_INFORMATION = 'ADD_INFORMATION';
-
+export const SAVE_COMPANY_FORM = 'SAVE_COMPANY_FORM';
 
 /*
  * action creators
  */
-export function addInformation() {
-    return { type: ADD_INFORMATION };
+export function saveCompanyForm(changedFields) {
+    return {
+        type: SAVE_COMPANY_FORM,
+        payload: changedFields
+    };
 }

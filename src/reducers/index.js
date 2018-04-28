@@ -1,13 +1,10 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
+import { SAVE_COMPANY_FORM } from '../actions/index'
 
-function companyForm(state = {
-    denominacionSocial: {
-        value: 'dirk'
-    },
-}, action) {
+function companyForm(state = {}, action) {
     switch(action.type) {
-    case 'save_fields':
+    case SAVE_COMPANY_FORM:
         return {
             ...state,
             ...action.payload,
