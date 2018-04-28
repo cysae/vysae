@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { Form, Input, InputNumber, Button, Icon, Row, Col, Radio } from 'antd'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
+const RadioButton = Radio.Button
+const RadioGroup = Radio.Group
 
 const FormItem = Form.Item
 
@@ -110,52 +112,50 @@ class RawSharesForm extends Component {
     const formItems = keys.map((k, index) => {
       return (
         <Row key={k}>
-        <Col span={12}>
-        <FormItem
-        label={'Numeración: de la'}
-        labelCol={{span: 8}}
-        >
-        {getFieldDecorator(`shareIntervalStart_${k}`, {
-          validateTrigger: ['onChange', 'onBlur'],
-          rules: [{
-            required: true,
-            message: "Este campo es obligatorio.",
-          }, {
-            type: 'number',
-            message: "Tiene que ser un numero.",
-          }],
-        })(
-          <InputNumber />
-        )}
-        </FormItem>
-        </Col>
-        <Col span={12}>
-        <FormItem
-        labelCol={{span: 8}}
-        label={'a la'}
-        >
-        {getFieldDecorator(`shareIntervalEnd_${k}`, {
-          validateTrigger: ['onChange', 'onBlur'],
-          rules: [{
-            required: true,
-            message: "Este campo es obligatorio.",
-          }, {
-            type: 'number',
-            message: "Tiene que ser un numero.",
-          }],
-        })(
-          <InputNumber />
-        )}
-        {keys.length > 1 ? (
-          <Icon
-          className="dynamic-delete-button"
-          type="minus-circle-o"
-          disabled={keys.length === 1}
-          onClick={() => this.removeShareIntervalField(k)}
-          />
-        ) : null}
-        </FormItem>
-        </Col>
+          <Col span={12}>
+            <FormItem
+              label={'Numeración: de la'}
+              labelCol={{span: 8}}
+            >
+              {getFieldDecorator(`shareIntervalStart_${k}`, {
+                 rules: [{
+                   required: true,
+                   message: "Este campo es obligatorio.",
+                 }, {
+                   type: 'number',
+                   message: "Tiene que ser un numero.",
+                 }],
+              })(
+                 <InputNumber />
+               )}
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              labelCol={{span: 8}}
+              label={'a la'}
+            >
+              {getFieldDecorator(`shareIntervalEnd_${k}`, {
+                 rules: [{
+                   required: true,
+                   message: "Este campo es obligatorio.",
+                 }, {
+                   type: 'number',
+                   message: "Tiene que ser un numero.",
+                 }],
+              })(
+                 <InputNumber />
+               )}
+              {keys.length > 1 ? (
+                 <Icon
+                   className="dynamic-delete-button"
+                   type="minus-circle-o"
+                   disabled={keys.length === 1}
+                   onClick={() => this.removeShareIntervalField(k)}
+                 />
+              ) : null}
+            </FormItem>
+          </Col>
         </Row>
       )
     })
@@ -163,15 +163,15 @@ class RawSharesForm extends Component {
     return (
       <Fragment>
         <Form layout="horizontal" onSubmit={this.handleSubmit}>
-      <FormItem
-      label="Capital social"
-      labelCol={{span: 3}}
-      >
+          <FormItem
+            label="Capital social"
+            labelCol={{span: 3}}
+          >
             {getFieldDecorator('socialCapital', {
-              rules: [
-                {type: "number", message: 'Tiene que ser un numero.'},
-                {required: true, message: 'Es obligatorio.' }
-              ],
+               rules: [
+                 {type: "number", message: 'Tiene que ser un numero.'},
+                 {required: true, message: 'Es obligatorio.' }
+               ],
             })(<InputNumber />)}
           </FormItem>
           <FormItem label="Número de participaciones">
@@ -180,12 +180,41 @@ class RawSharesForm extends Component {
             })(<InputNumber />)}
           </FormItem>
           {formItems}
+          <FormItem label="¿Tienen todas las participaciones el mismo valor nominal?">
+            {getFieldDecorator('sharesSameValue', {
+               rules: [{
+                 required: true,
+                 message: 'Este campo es obligatorio.',
+               }]
+            })(
+               <RadioGroup>
+                 <RadioButton value="yes">Sí</RadioButton>
+                 <RadioButton value="no">No</RadioButton>
+               </RadioGroup>
+             )}
+          </FormItem>
+          <FormItem label="¿Todas las participaciones tienen el mismo derecho de voto?">
+            {getFieldDecorator('sharesSameVote', {
+               rules: [{
+                 required: true,
+                 message: 'Este campo es obligatorio.',
+               }]
+            })(
+               <RadioGroup>
+                 <RadioButton value="yes">Sí</RadioButton>
+                 <RadioButton value="no">No</RadioButton>
+               </RadioGroup>
+             )}
+          </FormItem>
           <FormItem>
             <Button type="dashed" onClick={this.addShareIntervalField} style={{ width: '60%' }}>
               <Icon type="plus" /> Añadir Intervalo de Participaciones
             </Button>
           </FormItem>
           <FormItem>
+            <Button type="primary" onClick={this.props.prev}>
+              Atrás
+            </Button>
             <Button type="primary" htmlType="submit">
               Continuar
             </Button>

@@ -30,10 +30,10 @@ class AddCompany extends React.Component {
 
     const steps = [{
       title: 'Información',
-      content: <BasicForm next={this.next} />,
+      content: <BasicForm next={this.next} prev={this.prev} />,
     }, {
       title: 'Participaciones sociales',
-      content: <SharesForm next={this.next} />,
+      content: <SharesForm next={this.next} prev={this.prev} />,
     }, {
       title: 'Adopción de acuerdos',
       content: 'Last-content',
