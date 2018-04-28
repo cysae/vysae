@@ -1,19 +1,28 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Form, Input } from 'antd'
+import { connect } from 'react-redux'
 
 const FormItem = Form.Item
 
-const BasicInfo = Form.create({
+
+const BasicForm = connect((state) => {
+  return {
+    formState: {
+      name: state.companyForm.name,
+      registeredOffice: state.companyForm.registeredOffice
+    }
+  }
+})(Form.create({
   onFieldsChange(props, changedFields) {
-    props.onChange(changedFields);
+    props.dispatch({
+      type: 'save_fields',
+      payload: changedFields,
+    })
   },
   mapPropsToFields(props) {
-    console.log(props);
     return {
-      username: Form.createFormField({
-        ...props.username,
-        value: props.username.value,
-      }),
+      name: Form.createFormField(props.formState.name),
+      registeredOffice: Form.createFormField(props.formState.registeredOffice),
     }
   },
   onValuesChange(_, values) {
@@ -22,42 +31,24 @@ const BasicInfo = Form.create({
 })((props) => {
   const { getFieldDecorator } = props.form;
   return (
+    <Fragment>
     <Form layout="inline">
-      <FormItem label="Username">
-        {getFieldDecorator('username', {
-           rules: [{ required: true, message: 'Username is required!' }],
+      <FormItem label="Denominación social">
+        {getFieldDecorator('name', {
+           rules: [{ required: true, message: 'Es obligatorio.' }],
+        })(<Input />)}
+      </FormItem>
+      <FormItem label="Domicilio Social">
+        {getFieldDecorator('registeredOffice', {
+           rules: [{ required: true, message: 'Es obligatorio.' }],
         })(<Input />)}
       </FormItem>
     </Form>
+    <pre>
+      {JSON.stringify(props.formState, null, 2)}
+    </pre>
+    </Fragment>
   );
-})
+}))
 
-class Demo extends Component {
-  state = {
-    fields: {
-      username: {
-        value: 'dirk'
-      }
-    }
-  };
-
-  handleFormChange = (changedFields) => {
-    this.setState(({ fields }) => ({
-      fields: { ...fields, ...changedFields }
-    }))
-  }
-
-  render() {
-    const fields = this.state.fields;
-    return (
-      <div>
-        <BasicInfo {...fields} onChange={this.handleFormChange} />
-        <pre className="lanugage-bash">
-          {JSON.stringify(fields, null, 2)}
-        </pre>
-      </div>
-    )
-  }
-}
-
-export default Demo
+export default BasicForm

@@ -22,10 +22,7 @@ import './App.css'
 const history = createHistory()
 const middleware = routerMiddleware(history)
 const store = createStore(
-  combineReducers({
-    ...reducers,
-    router: routerReducer
-  }),
+  reducers,
   applyMiddleware(
     logger,
     middleware

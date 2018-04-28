@@ -1,14 +1,25 @@
 import { combineReducers } from 'redux'
+import { routerReducer } from 'react-router-redux'
 
-function companyToAdd(state = [], action) {
-    switch (action.type) {
+function companyForm(state = {
+    denominacionSocial: {
+        value: 'dirk'
+    },
+}, action) {
+    switch(action.type) {
+    case 'save_fields':
+        return {
+            ...state,
+            ...action.payload,
+        }
     default:
-        return state
+        return state;
     }
 }
 
 const reducers = combineReducers({
-    companyToAdd
+    companyForm,
+    router: routerReducer
 })
 
 export default reducers;
