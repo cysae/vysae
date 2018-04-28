@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Icon, Row, Col } from 'antd'
+import { Form, Input, InputNumber, Button, Icon, Row, Col, Radio } from 'antd'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
 
@@ -109,37 +109,42 @@ class RawSharesForm extends Component {
     const keys = getFieldValue('keys')
     const formItems = keys.map((k, index) => {
       return (
-        <Form layout="inline">
+        <Row key={k}>
+        <Col span={12}>
         <FormItem
-        label={index === 0 ? 'Intervalos de Participaciones' : ''}
-        required={false}
-        key={k}
+        label={'Numeración: de la'}
+        labelCol={{span: 8}}
         >
         {getFieldDecorator(`shareIntervalStart_${k}`, {
           validateTrigger: ['onChange', 'onBlur'],
           rules: [{
             required: true,
-            whitespace: true,
-            message: "Please input passenger's name or delete this field.",
+            message: "Este campo es obligatorio.",
+          }, {
+            type: 'number',
+            message: "Tiene que ser un numero.",
           }],
         })(
-          <Input style={{ width: '60%', marginRight: 8 }} />
+          <InputNumber />
         )}
         </FormItem>
+        </Col>
+        <Col span={12}>
         <FormItem
-        label={index === 0 ? 'Intervalos de Participaciones' : ''}
-        required={false}
-        key={k}
+        labelCol={{span: 8}}
+        label={'a la'}
         >
         {getFieldDecorator(`shareIntervalEnd_${k}`, {
           validateTrigger: ['onChange', 'onBlur'],
           rules: [{
             required: true,
-            whitespace: true,
-            message: "Please input passenger's name or delete this field.",
+            message: "Este campo es obligatorio.",
+          }, {
+            type: 'number',
+            message: "Tiene que ser un numero.",
           }],
         })(
-          <Input style={{ width: '60%', marginRight: 8 }} />
+          <InputNumber />
         )}
         {keys.length > 1 ? (
           <Icon
@@ -150,14 +155,18 @@ class RawSharesForm extends Component {
           />
         ) : null}
         </FormItem>
-        </Form>
+        </Col>
+        </Row>
       )
     })
 
     return (
       <Fragment>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem label="Capital social">
+        <Form layout="horizontal" onSubmit={this.handleSubmit}>
+      <FormItem
+      label="Capital social"
+      labelCol={{span: 3}}
+      >
             {getFieldDecorator('socialCapital', {
               rules: [
                 {type: "number", message: 'Tiene que ser un numero.'},
