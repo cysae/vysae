@@ -74,6 +74,11 @@ class RawShareIntervalValueFields extends Component {
       )
     })
 
+    // render only if shares have different value
+    if(getFieldValue('sharesHaveSameValue') !== 'no') {
+      return (null)
+    }
+
     return (
       <Fragment>
         <FormItem

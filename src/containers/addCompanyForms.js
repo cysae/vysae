@@ -129,7 +129,7 @@ class RawSharesForm extends Component {
             label="¿Tienen todas las participaciones el mismo valor nominal?"
             {...formItemLayout}
           >
-            {getFieldDecorator('sharesSameValue', {
+            {getFieldDecorator('sharesHaveSameValue', {
                rules: [{
                  required: true,
                  message: 'Este campo es obligatorio.',
