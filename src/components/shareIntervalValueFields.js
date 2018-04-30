@@ -43,14 +43,13 @@ class RawShareIntervalValueFields extends Component {
     const formItems = shareIntervalValueKeys.map((k, index) => {
 
       return (
-        <Fragment>
+        <Fragment key={index} >
           <FormItem
             label={`Tipo ${index+1}`}
             labelCol={{span: 8}}
-            key={index}
           >
             <span>Valor nominal de cada participación </span>
-            {getFieldDecorator(`shareIntervalValue_${k}`, {
+            {getFieldDecorator(`shareIntervalValue_${index}`, {
                rules: [{
                  required: true,
                  message: "Este campo es obligatorio.",
@@ -70,7 +69,7 @@ class RawShareIntervalValueFields extends Component {
                />
             ) : null}
           </FormItem>
-          <ShareIntervalFields fieldId={`shareIntervalValue_${index}`} />
+          <ShareIntervalFields fieldId={`shareIntervalValueField_${index}`} />
           <Divider dashed />
         </Fragment>
       )

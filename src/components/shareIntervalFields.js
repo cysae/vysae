@@ -52,7 +52,7 @@ class RawShareIntervals extends Component {
         <FormItem
           label={`Numeración ${index+1}`}
           labelCol={{span: 8}}
-          key={`${fieldId}_index`}
+          key={index}
         >
           <span>de la </span>
           {getFieldDecorator(`${fieldId}Start_${k}`, {
