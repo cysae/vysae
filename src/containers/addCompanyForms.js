@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Icon, Row, Col, Radio } from 'antd'
+import { Form, Input, InputNumber, Button, Icon, Row, Col, Radio, Divider } from 'antd'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
 import ShareIntervalFields from '../components/shareIntervalFields'
+import ShareIntervalValueFields from '../components/shareIntervalValueFields'
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
@@ -85,7 +86,6 @@ class RawBasicForm extends Component {
 }
 
 
-
 class RawSharesForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
@@ -123,6 +123,8 @@ class RawSharesForm extends Component {
             })(<InputNumber />)}
           </FormItem>
           <ShareIntervalFields />
+          <Divider />
+
           <FormItem
             label="¿Tienen todas las participaciones el mismo valor nominal?"
             {...formItemLayout}
@@ -139,6 +141,9 @@ class RawSharesForm extends Component {
                </RadioGroup>
              )}
           </FormItem>
+          <ShareIntervalValueFields />
+          <Divider />
+
           <FormItem label="¿Todas las participaciones tienen el mismo derecho de voto?">
             {getFieldDecorator('sharesSameVote', {
                rules: [{

@@ -7,13 +7,20 @@ class RawShareIntervals extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { uuid: 0 }
+    this.state = {
+      uuid: 0,
+      fieldId: 'shareInterval'
+    }
+    if(props.fieldId) {
+      this.state.fieldId = props.fieldId
+    }
     this.addShareIntervalField
   }
 
   removeShareIntervalField = (k) => {
-    const { form } = this.props;
-    const shareIntervalKeys = form.getFieldValue('shareIntervalKeys');
+    const { form } = this.props
+    const { fieldId } = this.state
+    const shareIntervalKeys = form.getFieldValue(`${fieldId}Keys`);
     if (shareIntervalKeys.length === 1) {
       return;
     }
@@ -22,29 +29,33 @@ class RawShareIntervals extends Component {
       shareIntervalKeys: shareIntervalKeys.filter(key => key !== k),
     });
   }
+
   addShareIntervalField = () => {
-    const { form } = this.props;
-    const shareIntervalKeys = form.getFieldValue('shareIntervalKeys');
-    const nextShareIntervalKeys = shareIntervalKeys.concat(this.state.uuid);
-    this.state.uuid++;
-    form.setFieldsValue({
-      shareIntervalKeys: nextShareIntervalKeys,
-    })
+    const { form } = this.props
+    const { uuid, fieldId } = this.state
+    const shareIntervalKeys = form.getFieldValue(`${fieldId}Keys`);
+    const nextShareIntervalKeys = shareIntervalKeys.concat(uuid);
+    this.setState({ uuid: uuid+1 })
+    const fieldsValue = {}
+    fieldsValue[`${fieldId}Keys`] = nextShareIntervalKeys
+    form.setFieldsValue(fieldsValue)
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form
+    const { fieldId } = this.state
 
-    getFieldDecorator('shareIntervalKeys', { initialValue: [] })
-    const shareIntervalKeys = getFieldValue('shareIntervalKeys')
+    getFieldDecorator(`${fieldId}Keys`, { initialValue: [] })
+    const shareIntervalKeys = getFieldValue(`${fieldId}Keys`)
     const formItems = shareIntervalKeys.map((k, index) => {
       return (
         <FormItem
           label={`Numeración ${index+1}`}
           labelCol={{span: 8}}
+          key={`${fieldId}_index`}
         >
           <span>de la </span>
-          {getFieldDecorator(`shareIntervalStart_${k}`, {
+          {getFieldDecorator(`${fieldId}Start_${k}`, {
              rules: [{
                required: true,
                message: "Este campo es obligatorio.",
@@ -56,7 +67,7 @@ class RawShareIntervals extends Component {
              <InputNumber />
            )}
           <span> a la </span>
-          {getFieldDecorator(`shareIntervalEnd_${k}`, {
+          {getFieldDecorator(`${fieldId}End_${k}`, {
              rules: [{
                required: true,
                message: "Este campo es obligatorio.",
