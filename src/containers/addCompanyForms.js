@@ -60,17 +60,26 @@ class RawBasicForm extends Component {
     return (
       <Fragment>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem label="Denominación social">
+          <FormItem
+            label="Denominación social"
+            {...formItemLayout}
+          >
             {getFieldDecorator('name', {
                rules: [{ required: true, message: 'Es obligatorio.' }],
             })(<Input />)}
           </FormItem>
-          <FormItem label="Domicilio Social">
+          <FormItem
+            label="Domicilio Social"
+            {...formItemLayout}
+          >
             {getFieldDecorator('registeredOffice', {
                rules: [{ required: true, message: 'Es obligatorio.' }],
             })(<Input />)}
           </FormItem>
-          <FormItem label="NIF">
+          <FormItem
+            label="NIF"
+            {...formItemLayout}
+          >
             {getFieldDecorator('nif', {
                rules: [{ required: true, message: 'Es obligatorio.' }],
             })(<Input />)}
