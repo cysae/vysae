@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Icon, Row, Col, Radio, Divider } from 'antd'
+import { Form, Input, InputNumber, Button, Radio, Divider } from 'antd'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
 import ShareIntervalFields from '../components/shareIntervalFields'
@@ -97,7 +97,7 @@ class RawSharesForm extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
 
 
     return (

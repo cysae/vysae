@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Icon, Row, Col, Radio } from 'antd'
+import { Form, InputNumber, Button, Icon } from 'antd'
 import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
 const FormItem = Form.Item
 
@@ -14,7 +14,6 @@ class RawShareIntervals extends Component {
     if(props.fieldId) {
       this.state.fieldId = props.fieldId
     }
-    this.addShareIntervalField
   }
 
   removeShareIntervalField = (k) => {

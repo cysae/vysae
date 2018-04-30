@@ -8,14 +8,14 @@ import registerServiceWorker from './registerServiceWorker'
 import { Layout, Menu, Breadcrumb } from 'antd'
 // Redux
 import { Provider } from 'react-redux'
-import { combineReducers, applyMiddleware, createStore } from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import { Link } from 'react-router-dom'
 import logger from 'redux-logger'
 import reducers from './reducers/index.js'
 // Redux-Router
 import createHistory from 'history/createBrowserHistory'
 import { Route } from 'react-router'
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux'
+import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
 
 import './App.css'
 
