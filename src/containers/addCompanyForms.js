@@ -97,8 +97,7 @@ class RawSharesForm extends Component {
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-
+    const { getFieldDecorator, getFieldValue } = this.props.form;
 
     return (
       <Fragment>
@@ -144,7 +143,10 @@ class RawSharesForm extends Component {
           <ShareIntervalValueFields />
           <Divider />
 
-          <FormItem label="¿Todas las participaciones tienen el mismo derecho de voto?">
+          <FormItem
+            label="¿Todas las participaciones tienen el mismo derecho de voto?"
+            {...formItemLayout}
+          >
             {getFieldDecorator('sharesSameVote', {
                rules: [{
                  required: true,
@@ -157,6 +159,26 @@ class RawSharesForm extends Component {
                </RadioGroup>
              )}
           </FormItem>
+          <Divider />
+
+          <FormItem
+            label="¿Hay acciones en autocartera?"
+            {...formItemLayout}
+          >
+            {getFieldDecorator('hasTreasuryShares', {
+               rules: [{
+                 required: true,
+                 message: 'Este campo es obligatorio.',
+               }]
+            })(
+               <RadioGroup>
+                 <RadioButton value="yes">Sí</RadioButton>
+                 <RadioButton value="no">No</RadioButton>
+               </RadioGroup>
+             )}
+          </FormItem>
+          {(getFieldValue('hasTreasuryShares') === 'yes') ? <ShareIntervalFields fieldId="treasuryShareIntervals" /> : null}
+
           <FormItem>
             <Button type="primary" onClick={this.props.prev}>
               Atrás
