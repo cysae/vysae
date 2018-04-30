@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
 import ShareIntervalFields from '../components/shareIntervalFields'
 import ShareIntervalValueFields from '../components/shareIntervalValueFields'
+import ShareSuffrageFields from '../components/shareSuffrageFields'
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
@@ -147,7 +148,7 @@ class RawSharesForm extends Component {
             label="¿Todas las participaciones tienen el mismo derecho de voto?"
             {...formItemLayout}
           >
-            {getFieldDecorator('sharesSameVote', {
+            {getFieldDecorator('sharesHaveEqualSuffrage', {
                rules: [{
                  required: true,
                  message: 'Este campo es obligatorio.',
@@ -159,6 +160,7 @@ class RawSharesForm extends Component {
                </RadioGroup>
              )}
           </FormItem>
+          {(getFieldValue('sharesHaveEqualSuffrage') === 'no') && <ShareSuffrageFields />}
           <Divider />
 
           <FormItem
