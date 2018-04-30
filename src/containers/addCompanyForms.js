@@ -2,12 +2,24 @@ import React, { Component, Fragment } from 'react'
 import { Form, Input, InputNumber, Button, Icon, Row, Col, Radio } from 'antd'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
+import ShareIntervalFields from '../components/shareIntervalFields'
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
 const FormItem = Form.Item
 
-function HOCForm(formComponent) {
+export const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
+  },
+};
+
+export function HOCForm(formComponent) {
   return connect((state) => {
     return {
       formState: {
@@ -72,7 +84,8 @@ class RawBasicForm extends Component {
   }
 }
 
-let uuid = 0;
+
+
 class RawSharesForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
@@ -83,89 +96,16 @@ class RawSharesForm extends Component {
     });
   }
 
-  removeShareIntervalField = (k) => {
-    const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-    if (keys.length === 1) {
-      return;
-    }
-
-    form.setFieldsValue({
-      keys: keys.filter(key => key !== k),
-    });
-  }
-  addShareIntervalField = () => {
-    const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-    const nextKeys = keys.concat(uuid);
-    uuid++;
-    form.setFieldsValue({
-      keys: nextKeys,
-    })
-  }
-
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
 
-    getFieldDecorator('keys', { initialValue: [] })
-    const keys = getFieldValue('keys')
-    const formItems = keys.map((k, index) => {
-      return (
-        <Row key={k}>
-          <Col span={12}>
-            <FormItem
-              label={'Numeración: de la'}
-              labelCol={{span: 8}}
-            >
-              {getFieldDecorator(`shareIntervalStart_${k}`, {
-                 rules: [{
-                   required: true,
-                   message: "Este campo es obligatorio.",
-                 }, {
-                   type: 'number',
-                   message: "Tiene que ser un numero.",
-                 }],
-              })(
-                 <InputNumber />
-               )}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem
-              labelCol={{span: 8}}
-              label={'a la'}
-            >
-              {getFieldDecorator(`shareIntervalEnd_${k}`, {
-                 rules: [{
-                   required: true,
-                   message: "Este campo es obligatorio.",
-                 }, {
-                   type: 'number',
-                   message: "Tiene que ser un numero.",
-                 }],
-              })(
-                 <InputNumber />
-               )}
-              {keys.length > 1 ? (
-                 <Icon
-                   className="dynamic-delete-button"
-                   type="minus-circle-o"
-                   disabled={keys.length === 1}
-                   onClick={() => this.removeShareIntervalField(k)}
-                 />
-              ) : null}
-            </FormItem>
-          </Col>
-        </Row>
-      )
-    })
 
     return (
       <Fragment>
         <Form layout="horizontal" onSubmit={this.handleSubmit}>
           <FormItem
             label="Capital social"
-            labelCol={{span: 3}}
+            {...formItemLayout}
           >
             {getFieldDecorator('socialCapital', {
                rules: [
@@ -174,13 +114,19 @@ class RawSharesForm extends Component {
                ],
             })(<InputNumber />)}
           </FormItem>
-          <FormItem label="Número de participaciones">
+          <FormItem
+            label="Número de participaciones"
+            {...formItemLayout}
+          >
             {getFieldDecorator('numberOfShares', {
                rules: [{ type: "number", required: true, message: 'Es obligatorio y tiene que ser un numero.' }],
             })(<InputNumber />)}
           </FormItem>
-          {formItems}
-          <FormItem label="¿Tienen todas las participaciones el mismo valor nominal?">
+          <ShareIntervalFields />
+          <FormItem
+            label="¿Tienen todas las participaciones el mismo valor nominal?"
+            {...formItemLayout}
+          >
             {getFieldDecorator('sharesSameValue', {
                rules: [{
                  required: true,
@@ -205,11 +151,6 @@ class RawSharesForm extends Component {
                  <RadioButton value="no">No</RadioButton>
                </RadioGroup>
              )}
-          </FormItem>
-          <FormItem>
-            <Button type="dashed" onClick={this.addShareIntervalField} style={{ width: '60%' }}>
-              <Icon type="plus" /> Añadir Intervalo de Participaciones
-            </Button>
           </FormItem>
           <FormItem>
             <Button type="primary" onClick={this.props.prev}>
