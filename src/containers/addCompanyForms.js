@@ -5,6 +5,7 @@ import { saveCompanyForm } from '../actions/index'
 import ShareIntervalFields from '../components/shareIntervalFields'
 import ShareIntervalValueFields from '../components/shareIntervalValueFields'
 import ShareSuffrageFields from '../components/shareSuffrageFields'
+import DefineAgreementRules from '../components/defineAgreementRules'
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
@@ -13,11 +14,11 @@ const FormItem = Form.Item
 export const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 8 },
+    sm: { span: 10 },
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 16 },
+    sm: { span: 14 },
   },
 };
 
@@ -207,5 +208,44 @@ class RawSharesForm extends Component {
   }
 }
 
+class RawAgreementRules extends Component {
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.props.next()
+      }
+    });
+  }
+  render() {
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    return (
+      <Fragment>
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem
+            label="¿Tu empresa está sometida al régimen legal supletorio establecido en la (LSC)?"
+            {...formItemLayout}
+          >
+            {getFieldDecorator('underliesLSC', {
+               rules: [{
+                 required: true,
+                 message: 'Este campo es obligatorio.',
+               }]
+            })(
+               <RadioGroup>
+                 <RadioButton value="yes">Sí</RadioButton>
+                 <RadioButton value="no">No</RadioButton>
+               </RadioGroup>
+             )}
+          </FormItem>
+          <Divider />
+        </Form>
+        {(getFieldValue('underliesLSC') === 'no') && <DefineAgreementRules />}
+      </Fragment>
+    );
+  }
+}
+
 export const BasicForm = HOCForm(RawBasicForm)
 export const SharesForm = HOCForm(RawSharesForm)
+export const AgreementRules = HOCForm(RawAgreementRules)
