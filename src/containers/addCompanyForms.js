@@ -241,6 +241,9 @@ class RawAgreementRules extends Component {
           <Divider />
         </Form>
         {(getFieldValue('underliesLSC') === 'no') && <DefineAgreementRules />}
+        <pre>
+          {JSON.stringify(this.props.formState, null, 2)}
+        </pre>
       </Fragment>
     );
   }

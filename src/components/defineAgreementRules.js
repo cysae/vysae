@@ -1,26 +1,17 @@
 import React, { Component, Fragment } from 'react'
-import { Form, InputNumber, Button, Icon, Radio, Divider } from 'antd'
+import { Form, InputNumber, Button, Icon, Radio, Divider, Select } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
 import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
+const Option = Select.Option
 
-class RawDefineAgreementRules extends Component {
-  render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+function agreementOptions(props) {
+  const { getFieldDecorator, getFieldValue } = props.form;
 
-    return (
-      <Fragment>
-        <h3>Mayoría ordinaria</h3>
-        <FormItem
-          {...formItemLayout}
-        >
-          <span>
-            Se requiere el voto favorable de la mayoría simple de los votos correspondientes a las participaciones sociales en que se divida el capital social.
-          </span>
-        </FormItem>
-        <Divider dashed />
+  return (
+    <Fragment>
         <FormItem
           {...formItemLayout}
         >
@@ -162,7 +153,63 @@ class RawDefineAgreementRules extends Component {
              </RadioGroup>
            )}
         </FormItem>
+    </Fragment>
+  )
+}
+
+
+class RawDefineAgreementRules extends Component {
+  state = {
+    agreementTypes: [
+      'Aumento o reducción de capital',
+      'Autorización a administradores para que se dediquen a actividad inmersa en el objecto social',
+      'Autorización a administradores para que se dediquen a actividad inmersa en el objeto social',
+      'Exclusión y separación de socios',
+      'Cambio de domicilio',
+      'Supresión o limitación del derecho de prederencia en aumentos de capital',
+      'Modificación estructural',
+      'Cesión global de activo y pasivo',
+    ]
+  }
+
+  render() {
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { agreementTypes } = this.state
+
+    return (
+      <Fragment>
+        <h3>Mayoría ordinaria</h3>
+        <FormItem
+          {...formItemLayout}
+        >
+          <span>
+            Se requiere el voto favorable de la mayoría simple de los votos correspondientes a las participaciones sociales en que se divida el capital social.
+          </span>
+        </FormItem>
+        <Divider dashed />
+        {agreementOptions( {form: this.props.form} )}
         <Divider />
+
+        <h3>Mayoría Reforzada</h3>
+        <FormItem
+          {...formItemLayout}
+        >
+          <span>Los votos en blanco se computarán. </span>
+          {getFieldDecorator('selectedReinforcedAgreementTypes', {
+             rules: [{
+               required: true,
+               message: 'Este campo es obligatorio.',
+             }]
+          })(
+             <Select
+               mode="multiple"
+               style={{ width: '100%' }}
+               placeholder="Selecciona"
+               >
+               {agreementTypes.map((type) => <Option key={type}>{type}</Option>)}
+             </Select>
+           )}
+        </FormItem>
       </Fragment>
     )
   }
