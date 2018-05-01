@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react'
-import { Form, InputNumber, Button, Icon, Radio, Divider, Select } from 'antd'
+import { Form, Input, InputNumber, Button, Icon, Radio, Divider, Select } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
 import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 const Option = Select.Option
+const Search = Input.Search
 
 function agreementOptions(props) {
   const { getFieldDecorator, getFieldValue } = props.form;
@@ -160,6 +161,7 @@ function agreementOptions(props) {
 
 class RawDefineAgreementRules extends Component {
   state = {
+    addAgreementInput: null,
     agreementTypes: [
       'Aumento o reducción de capital',
       'Autorización a administradores para que se dediquen a actividad inmersa en el objecto social',
@@ -172,9 +174,65 @@ class RawDefineAgreementRules extends Component {
     ]
   }
 
+  handleAddAgreementInput = (e) => {
+    this.setState({ addAgreementInput: e.target.value })
+  }
+
+  addAgreementType = (agreementType) => {
+    if(agreementType.length !== 0) {
+      let selectedReinforcedAgreementTypes = this.props.form.getFieldValue('selectedReinforcedAgreementTypes')
+      if(!selectedReinforcedAgreementTypes) {
+        selectedReinforcedAgreementTypes = []
+      }
+      const agreementTypeOptions = this.state.agreementTypes;
+
+      // check if type is already in selected
+      let isAlreadySelected = false
+      for (const type of selectedReinforcedAgreementTypes) {
+        if(type === agreementType) {
+          isAlreadySelected = true
+          break
+        }
+      }
+
+      // check if type is already in selection list
+      let isAlreadyInSelectOptions = false
+      for (const option of agreementTypeOptions) {
+        console.log(option)
+        if(option === agreementType) {
+          isAlreadyInSelectOptions = true
+          break
+        }
+      }
+
+      if(!isAlreadyInSelectOptions) {
+        // add to select options
+        agreementTypeOptions.push(agreementType)
+        this.setState({
+          addAgreementInput: null,
+          agreementTypes: agreementTypeOptions,
+        })
+      }
+
+      if(!isAlreadySelected) {
+        // mark as selected
+        selectedReinforcedAgreementTypes.push(agreementType)
+        this.props.form.setFields({
+          selectedReinforcedAgreementTypes: {
+            value: selectedReinforcedAgreementTypes
+          }
+        })
+        if(isAlreadyInSelectOptions) {
+          this.setState({ addAgreementInput: null })
+        }
+      }
+
+    }
+  }
+
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { agreementTypes } = this.state
+    const { agreementTypes, addAgreementInput } = this.state
 
     return (
       <Fragment>
@@ -203,12 +261,21 @@ class RawDefineAgreementRules extends Component {
           })(
              <Select
                mode="multiple"
-               style={{ width: '100%' }}
                placeholder="Selecciona"
+               style={{width: '100%'}}
                >
                {agreementTypes.map((type) => <Option key={type}>{type}</Option>)}
              </Select>
            )}
+          <Search
+            placeholder="Introducir más tipos de acuerdos"
+            onChange={this.handleAddAgreementInput}
+            onSearch={this.addAgreementType}
+            value={this.state.addAgreementInput}
+            enterButton="Añadir Tipo de Acuerdo"
+          />
+
+          {agreementOptions({ form: this.props.form })}
         </FormItem>
       </Fragment>
     )
