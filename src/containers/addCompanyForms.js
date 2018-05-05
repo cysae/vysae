@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Radio, Divider } from 'antd'
+import { Form, Input, InputNumber, Button, Radio, Divider, Mention } from 'antd'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
 import ShareIntervalFields from '../components/shareIntervalFields'
@@ -290,8 +290,60 @@ class RawShareholderRegistry extends Component {
                </RadioGroup>
              )}
           </FormItem>
-          <Divider />
           <ShareholderFields personType={getFieldValue('personType')} />
+          <Divider />
+          <FormItem>
+            <Button type="primary" onClick={this.props.prev}>
+              Atrás
+            </Button>
+            <Button type="primary" htmlType="submit">
+              Continuar
+            </Button>
+          </FormItem>
+        </Form>
+        <pre>
+          {JSON.stringify(this.props.formState, null, 2)}
+        </pre>
+      </Fragment>
+    );
+  }
+}
+
+class RawGoverningBodies extends Component {
+  state = {
+    shareholderNames: ['Dirk', 'Javi', 'Goncho', 'Toni', 'Cesar']
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.props.next()
+      }
+    });
+  }
+
+  render() {
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    return (
+      <Fragment>
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem
+            label="Persona "
+            {...formItemLayout}
+          >
+            {getFieldDecorator('personType', {
+               rules: [{
+                 required: true,
+                 message: 'Este campo es obligatorio.',
+               }]
+            })(
+               <RadioGroup>
+                 <RadioButton value="physical">Física</RadioButton>
+                 <RadioButton value="juridic">Jurídica</RadioButton>
+               </RadioGroup>
+             )}
+          </FormItem>
           <FormItem>
             <Button type="primary" onClick={this.props.prev}>
               Atrás
@@ -313,3 +365,4 @@ export const BasicForm = HOCForm(RawBasicForm)
 export const SharesForm = HOCForm(RawSharesForm)
 export const AgreementRules = HOCForm(RawAgreementRules)
 export const ShareHolderRegistry = HOCForm(RawShareholderRegistry)
+export const GoverningBodies = HOCForm(RawGoverningBodies)

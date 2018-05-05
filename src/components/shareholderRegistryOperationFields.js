@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, Button, Icon, Radio, Divider } from 'antd'
+import { Form, DatePicker, Input, Button, Icon, Radio, Divider } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
 import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
+const { TextArea } = Input;
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
@@ -12,161 +13,53 @@ class RawShareholderRegistryOperationFields extends Component {
 
     return (
       <Fragment>
-        <h3>Persona Física</h3>
+        <h3>Operations</h3>
         <FormItem
-          label="Nombre"
+          label="Fecha de la operación"
           {...formItemLayout}
         >
-          {getFieldDecorator('prename', {
+          {getFieldDecorator('operationDate', {
              rules: [{
                required: true,
                message: 'Este campo es obligatorio.',
              }]
           })(
-             <Input />
+             <DatePicker placeholder="Seleccionar fecha" />
            )}
         </FormItem>
         <FormItem
-          label="Apellidos"
+          label="Tipo de operación:"
           {...formItemLayout}
         >
-          {getFieldDecorator('prename', {
+          {getFieldDecorator('operationType', {
              rules: [{
                required: true,
                message: 'Este campo es obligatorio.',
              }]
           })(
-             <Input />
+             <RadioGroup>
+               <RadioButton value="aquisition">adquisición</RadioButton>
+               <RadioButton value="">enajenación</RadioButton>
+             </RadioGroup>
            )}
         </FormItem>
         <FormItem
-          label="DNI"
+          label="Concepto:"
           {...formItemLayout}
         >
-          {getFieldDecorator('prename', {
+          {getFieldDecorator('operationConcept', {
              rules: [{
                required: true,
                message: 'Este campo es obligatorio.',
              }]
           })(
-             <Input />
+             <TextArea placholder="Concepto" autosize/>
            )}
         </FormItem>
-        <FormItem
-          label="Domiciolio"
-          {...formItemLayout}
-        >
-          {getFieldDecorator('prename', {
-             rules: [{
-               required: true,
-               message: 'Este campo es obligatorio.',
-             }]
-          })(
-             <Input />
-           )}
-        </FormItem>
-        <FormItem
-          label="Nacionalidad"
-          {...formItemLayout}
-        >
-          {getFieldDecorator('prename', {
-             rules: [{
-               required: true,
-               message: 'Este campo es obligatorio.',
-             }]
-          })(
-             <Input />
-           )}
-        </FormItem>
-        <FormItem
-          label="Email"
-          {...formItemLayout}
-        >
-          {getFieldDecorator('prename', {
-             rules: [{
-               required: true,
-               message: 'Este campo es obligatorio.',
-             }]
-          })(
-             <Input />
-           )}
-        </FormItem>
-        <Divider dashed/>
-
-        {/* jurdic person */}
-        {(this.props.personType === 'juridic') && (
-           <Fragment>
-             <h3>Persona Jurídica</h3>
-             <FormItem
-               label="Denominación social"
-               {...formItemLayout}
-             >
-               {getFieldDecorator('prename', {
-                  rules: [{
-                    required: true,
-                    message: 'Este campo es obligatorio.',
-                  }]
-               })(
-                  <Input />
-                )}
-             </FormItem>
-             <FormItem
-               label="NIF"
-               {...formItemLayout}
-             >
-               {getFieldDecorator('prename', {
-                  rules: [{
-                    required: true,
-                    message: 'Este campo es obligatorio.',
-                  }]
-               })(
-                  <Input />
-                )}
-             </FormItem>
-             <FormItem
-               label="Domicilio"
-               {...formItemLayout}
-             >
-               {getFieldDecorator('prename', {
-                  rules: [{
-                    required: true,
-                    message: 'Este campo es obligatorio.',
-                  }]
-               })(
-                  <Input />
-                )}
-             </FormItem>
-             <FormItem
-               label="Nacionalidad"
-               {...formItemLayout}
-             >
-               {getFieldDecorator('prename', {
-                  rules: [{
-                    required: true,
-                    message: 'Este campo es obligatorio.',
-                  }]
-               })(
-                  <Input />
-                )}
-             </FormItem>
-             <FormItem
-               label="Datos de registro"
-               {...formItemLayout}
-             >
-               {getFieldDecorator('prename', {
-                  rules: [{
-                    required: true,
-                    message: 'Este campo es obligatorio.',
-                  }]
-               })(
-                  <Input />
-                )}
-             </FormItem>
-           </Fragment>
-        )}
+        <ShareIntervalFields />
       </Fragment>
     )
   }
 }
 
-export default HOCForm(RawShareholderRegistyOperationFields)
+export default HOCForm(RawShareholderRegistryOperationFields)

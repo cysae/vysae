@@ -4,7 +4,8 @@ import {
   BasicForm,
   SharesForm,
   AgreementRules,
-  ShareHolderRegistry
+  ShareHolderRegistry,
+  GoverningBodies
 } from '../containers/addCompanyForms.js'
 const Step = Steps.Step
 
@@ -12,7 +13,7 @@ class AddCompany extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 3,
+      current: 4,
     };
 
     this.next = this.next.bind(this)
@@ -44,7 +45,7 @@ class AddCompany extends React.Component {
       content: <ShareHolderRegistry next={this.next} prev={this.prev} />,
     }, {
       title: 'Órganos de gobierno',
-      content: 'Last-content',
+      content: <GoverningBodies next={this.next} prev={this.prev} />,
     }];
 
     return (
