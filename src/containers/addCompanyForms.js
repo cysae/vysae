@@ -42,7 +42,7 @@ export function HOCForm(formComponent) {
       return fields;
     },
     onValuesChange(_, values) {
-      console.log(values);
+      /* console.log(values); */
     },
   })(formComponent))
 

@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, Button, Icon, Radio, Divider } from 'antd'
+import { Form, Input, Divider } from 'antd'
 import ShareholderRegistryOperationFields from './shareholderRegistryOperationFields'
 import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
 const FormItem = Form.Item
-const RadioButton = Radio.Button
-const RadioGroup = Radio.Group
 
 class RawShareholderFields extends Component {
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
 
     return (
       <Fragment>

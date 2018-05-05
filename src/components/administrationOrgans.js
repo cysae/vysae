@@ -1,14 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { Form, InputNumber, Button, Icon, Radio, Divider, Mention } from 'antd'
-import ShareIntervalFields from './shareIntervalFields'
+import { Form, Mention } from 'antd'
 import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
 const FormItem = Form.Item
-const RadioButton = Radio.Button
-const RadioGroup = Radio.Group
 
 class RawBoardOfDirectors extends Component {
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form
+    const { getFieldDecorator } = this.props.form
     const { shareholders } = this.props
 
     return (
@@ -81,7 +78,7 @@ class RawBoardOfDirectors extends Component {
 
 class RawSoleAdministrator extends Component {
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form
+    const { getFieldDecorator } = this.props.form
     const { shareholders } = this.props
 
     return (
@@ -109,7 +106,7 @@ class RawSoleAdministrator extends Component {
 
 class RawJointAdministrators extends Component {
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form
+    const { getFieldDecorator } = this.props.form
     const { shareholders } = this.props
 
     return (
@@ -137,7 +134,7 @@ class RawJointAdministrators extends Component {
 
 class RawSolidarityAdministrators extends Component {
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form
+    const { getFieldDecorator } = this.props.form
     const { shareholders } = this.props
 
     return (
@@ -165,7 +162,6 @@ class RawSolidarityAdministrators extends Component {
 
 class RawAdministrationOrgans extends Component {
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form
     const { shareholders, type } = this.props
     switch(type) {
       case 'boardOfDirectors':

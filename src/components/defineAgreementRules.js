@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Icon, Radio, Divider, Select } from 'antd'
-import ShareIntervalFields from './shareIntervalFields'
+import { Form, Input, InputNumber, Radio, Divider, Select } from 'antd'
 import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
@@ -231,7 +230,7 @@ class RawDefineAgreementRules extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
     const { agreementTypes, addAgreementInput } = this.state
 
     return (
@@ -271,7 +270,7 @@ class RawDefineAgreementRules extends Component {
             placeholder="Introducir más tipos de acuerdos"
             onChange={this.handleAddAgreementInput}
             onSearch={this.addAgreementType}
-            value={this.state.addAgreementInput}
+            value={addAgreementInput}
             enterButton="Añadir Tipo de Acuerdo"
           />
 

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, DatePicker, Input, Button, Icon, Radio, Divider } from 'antd'
+import { Form, DatePicker, Input, Radio } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
 import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
 const { TextArea } = Input;
@@ -9,7 +9,7 @@ const RadioGroup = Radio.Group
 
 class RawShareholderRegistryOperationFields extends Component {
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
 
     return (
       <Fragment>

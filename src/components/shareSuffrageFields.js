@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, InputNumber, Button, Icon, Radio, Divider } from 'antd'
+import { Form, Radio, Divider } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
 import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
 const FormItem = Form.Item
