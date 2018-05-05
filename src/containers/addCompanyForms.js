@@ -6,6 +6,7 @@ import ShareIntervalFields from '../components/shareIntervalFields'
 import ShareIntervalValueFields from '../components/shareIntervalValueFields'
 import ShareSuffrageFields from '../components/shareSuffrageFields'
 import DefineAgreementRules from '../components/defineAgreementRules'
+import ShareholderFields from '../components/shareholderFields'
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
@@ -217,6 +218,7 @@ class RawAgreementRules extends Component {
       }
     });
   }
+
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     return (
@@ -239,8 +241,66 @@ class RawAgreementRules extends Component {
              )}
           </FormItem>
           <Divider />
+          {(getFieldValue('underliesLSC') === 'no') && <DefineAgreementRules />}
+          <FormItem>
+            <Button type="primary" onClick={this.props.prev}>
+              Atrás
+            </Button>
+            <Button type="primary" htmlType="submit">
+              Continuar
+            </Button>
+          </FormItem>
         </Form>
-        {(getFieldValue('underliesLSC') === 'no') && <DefineAgreementRules />}
+        <pre>
+          {JSON.stringify(this.props.formState, null, 2)}
+        </pre>
+      </Fragment>
+    );
+  }
+}
+
+class RawShareholderRegistry extends Component {
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.props.next()
+      }
+    });
+  }
+
+  render() {
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    return (
+      <Fragment>
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem
+            label="Persona "
+            {...formItemLayout}
+          >
+            {getFieldDecorator('personType', {
+               rules: [{
+                 required: true,
+                 message: 'Este campo es obligatorio.',
+               }]
+            })(
+               <RadioGroup>
+                 <RadioButton value="physical">Física</RadioButton>
+                 <RadioButton value="juridic">Jurídica</RadioButton>
+               </RadioGroup>
+             )}
+          </FormItem>
+          <Divider />
+          <ShareholderFields personType={getFieldValue('personType')} />
+          <FormItem>
+            <Button type="primary" onClick={this.props.prev}>
+              Atrás
+            </Button>
+            <Button type="primary" htmlType="submit">
+              Continuar
+            </Button>
+          </FormItem>
+        </Form>
         <pre>
           {JSON.stringify(this.props.formState, null, 2)}
         </pre>
@@ -252,3 +312,4 @@ class RawAgreementRules extends Component {
 export const BasicForm = HOCForm(RawBasicForm)
 export const SharesForm = HOCForm(RawSharesForm)
 export const AgreementRules = HOCForm(RawAgreementRules)
+export const ShareHolderRegistry = HOCForm(RawShareholderRegistry)

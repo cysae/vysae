@@ -3,7 +3,8 @@ import { Steps } from 'antd'
 import {
   BasicForm,
   SharesForm,
-  AgreementRules
+  AgreementRules,
+  ShareHolderRegistry
 } from '../containers/addCompanyForms.js'
 const Step = Steps.Step
 
@@ -11,7 +12,7 @@ class AddCompany extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 2,
+      current: 3,
     };
 
     this.next = this.next.bind(this)
@@ -39,10 +40,10 @@ class AddCompany extends React.Component {
       title: 'Adopción de acuerdos',
       content: <AgreementRules next={this.next} prev={this.prev} />,
     }, {
-      title: 'Órganos de gobierno',
-      content: 'Last-content',
-    }, {
       title: 'Libro de socios',
+      content: <ShareHolderRegistry next={this.next} prev={this.prev} />,
+    }, {
+      title: 'Órganos de gobierno',
       content: 'Last-content',
     }];
 
