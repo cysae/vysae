@@ -16,7 +16,7 @@ class AddCompany extends React.Component {
       current: 4,
     };
 
-    this.next = this.next.bind(this)
+    this.next = sthis.next.bind(this)
     this.prev = this.prev.bind(this)
   }
   next() {

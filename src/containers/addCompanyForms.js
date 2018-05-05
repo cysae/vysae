@@ -7,9 +7,9 @@ import ShareIntervalValueFields from '../components/shareIntervalValueFields'
 import ShareSuffrageFields from '../components/shareSuffrageFields'
 import DefineAgreementRules from '../components/defineAgreementRules'
 import ShareholderFields from '../components/shareholderFields'
+import AdministrationOrgans from '../components/administrationOrgans'
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
-
 const FormItem = Form.Item
 
 export const formItemLayout = {
@@ -310,48 +310,93 @@ class RawShareholderRegistry extends Component {
 }
 
 class RawGoverningBodies extends Component {
-  state = {
-    shareholderNames: ['Dirk', 'Javi', 'Goncho', 'Toni', 'Cesar']
+  constructor(props) {
+    super(props)
+    this.state = {
+      shareholders: [ '1-Dirk-Hornung', '2-Javi-Whatever' ]
+    }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.next()
+        console.log('save')
       }
     });
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form
+    const { shareholders } = this.state
     return (
       <Fragment>
+        <h2>Junta General</h2>
         <Form onSubmit={this.handleSubmit}>
           <FormItem
-            label="Persona "
+            label="Presidente"
             {...formItemLayout}
           >
-            {getFieldDecorator('personType', {
-               rules: [{
-                 required: true,
-                 message: 'Este campo es obligatorio.',
-               }]
+            {getFieldDecorator('president', {
             })(
-               <RadioGroup>
-                 <RadioButton value="physical">Física</RadioButton>
-                 <RadioButton value="juridic">Jurídica</RadioButton>
-               </RadioGroup>
+               <Mention
+                 suggestions={shareholders}
+               />
              )}
           </FormItem>
-          <FormItem>
-            <Button type="primary" onClick={this.props.prev}>
-              Atrás
-            </Button>
-            <Button type="primary" htmlType="submit">
-              Continuar
-            </Button>
+          <FormItem
+            label="Vicepresidente"
+            {...formItemLayout}
+          >
+            {getFieldDecorator('vicepresident', {
+            })(
+               <Mention
+                 suggestions={shareholders}
+               />
+             )}
           </FormItem>
+          <FormItem
+            label="Secretario"
+            {...formItemLayout}
+          >
+            {getFieldDecorator('vicepresident', {
+            })(
+               <Mention
+                 suggestions={shareholders}
+               />
+             )}
+          </FormItem>
+
+          <h2>Órgano de Administración</h2>
+      <FormItem
+      label="Elige un órgano"
+      {...formItemLayout}
+      >
+      {getFieldDecorator('adminstrationOrganType', {
+        rules: [{
+          required: true,
+          message: 'Este campo es obligatorio.',
+        }]
+      })(
+        <RadioGroup>
+          <RadioButton value="boardOfDirectors">Consejo de Administracíon</RadioButton>
+          <RadioButton value="soleAdministrator">Administrador único</RadioButton>
+          <RadioButton value="jointAdministrators">Administradores mancomunados</RadioButton>
+          <RadioButton value="solidarityAdministrators">Administradores solidarios</RadioButton>
+        </RadioGroup>
+      )}
+      </FormItem>
+      <AdministrationOrgans type={getFieldValue('adminstrationOrganType')} shareholders={shareholders} />
+
+      <Divider/>
+      <FormItem>
+        <Button type="primary" onClick={this.props.prev}>
+          Atrás
+        </Button>
+        <Button type="primary" htmlType="submit">
+          Guardar
+        </Button>
+      </FormItem>
         </Form>
         <pre>
           {JSON.stringify(this.props.formState, null, 2)}
