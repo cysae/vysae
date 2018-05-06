@@ -28,10 +28,10 @@ class ShareIntervals extends Component {
     if (shareIntervalKeys.length === 1) {
       return;
     }
+    const nextShareIntervalKeys = {}
+    nextShareIntervalKeys[`${fieldId}Keys`] = shareIntervalKeys.filter(key => key !== k)
 
-    form.setFieldsValue({
-      shareIntervalKeys: shareIntervalKeys.filter(key => key !== k),
-    });
+    form.setFieldsValue(nextShareIntervalKeys);
   }
 
   addShareIntervalField = () => {
