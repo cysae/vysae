@@ -13,7 +13,7 @@ const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
 
-const MyInputNumber = styled(InputNumber)`
+export const MyInputNumber = styled(InputNumber)`
   width: 40% !important;
 `
 

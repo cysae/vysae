@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Radio, Divider, Row, Col } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
+import ShareIntervalValueFields from './shareIntervalValueFields'
+import { MyInputNumber } from '../containers/addCompanyForms'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
@@ -54,11 +56,13 @@ class ShareSuffrageFields extends Component {
            )}
         </FormItem>
         {(getFieldValue('hasSharesWithUnequalSuffrage') === 'yes') && (
-           <Row>
-             <Col offset={12}>
-               <ShareIntervalFields form={form} fieldId="shareIntervalWithUnequalSuffrage" />
-             </Col>
-           </Row>
+           <ShareIntervalValueFields
+             form={form}
+             fieldId="shareIntervalWithUnequalSuffrage"
+             shareTypeField={<MyInputNumber />}
+             shareTypeLabel="Peso de voto"
+             shareTypeRootId="votingWeight"
+           />
         )}
       </Fragment>
     )

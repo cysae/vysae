@@ -10,10 +10,22 @@ class ShareIntervalValueFields extends Component {
 
     this.state = {
       uuid: 0,
-      fieldId: 'shareIntervalType'
+      fieldId: 'shareIntervalType',
+      shareTypeField: <EURInput />,
+      shareTypeLabel: 'Valor nominal de cada participación',
+      shareTypeRootId: 'shareIntervalValue'
     }
     if(props.fieldId) {
       this.state.fieldId = props.fieldId
+    }
+    if(props.shareTypeLabel) {
+      this.state.shareTypeLabel = props.shareTypeLabel
+    }
+    if(props.shareTypeRootId) {
+      this.state.shareTypeRootId = props.shareTypeRootId
+    }
+    if(props.shareTypeField) {
+      this.state.shareTypeField = props.shareTypeField
     }
   }
 
@@ -37,7 +49,7 @@ class ShareIntervalValueFields extends Component {
 
   addShareIntervalValueField = () => {
     const { form } = this.props;
-    const { uuid, fieldId } = this.state;
+    const { uuid, fieldId  } = this.state;
     const shareIntervalValueKeys = form.getFieldValue(`${fieldId}Keys`);
     const nextShareIntervalValueKeys = shareIntervalValueKeys.concat(uuid);
     this.setState({ uuid: uuid+1 })
@@ -48,7 +60,7 @@ class ShareIntervalValueFields extends Component {
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { fieldId } = this.state
+    const { fieldId, shareTypeLabel, shareTypeRootId, shareTypeField } = this.state
 
     getFieldDecorator(`${fieldId}Keys`, { initialValue: [] })
     const shareIntervalValueKeys = getFieldValue(`${fieldId}Keys`)
@@ -58,11 +70,10 @@ class ShareIntervalValueFields extends Component {
         <Fragment key={index}>
         <h4>{`Tipo ${index+1}`}</h4>
         <FormItem
-        label="Valor nominal de cada participación"
+        label={shareTypeLabel}
         labelCol={{span: 10}}
-
         >
-        {getFieldDecorator(`shareIntervalValue_${index}`, {
+        {getFieldDecorator(`${shareTypeRootId}_${index}`, {
           rules: [{
                  required: true,
                  message: "Este campo es obligatorio.",
@@ -71,7 +82,7 @@ class ShareIntervalValueFields extends Component {
                  message: "Tiene que ser un numero.",
                }],
             })(
-              <EURInput />
+              shareTypeField
              )}
             {shareIntervalValueKeys.length > 1 ? (
                <Icon
