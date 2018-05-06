@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Input, InputNumber, Button, Icon, Row, Col } from 'antd'
-import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
+import { formItemLayout } from '../containers/addCompanyForms'
 const InputGroup = Input.Group
 const FormItem = Form.Item
 
-class RawShareIntervals extends Component {
+class ShareIntervals extends Component {
   constructor(props) {
     super(props)
 
@@ -87,19 +87,15 @@ class RawShareIntervals extends Component {
 
     return (
       <Fragment>
-        <Row>
-          <Col offset={12} span={12}>
-            {formItems}
-            <FormItem>
-              <Button type="dashed" onClick={this.addShareIntervalField} style={{ width: '80%' }}>
-                <Icon type="plus" /> Añadir Intervalo de participaciones
-              </Button>
-            </FormItem>
-          </Col>
-        </Row>
+        {formItems}
+        <FormItem>
+          <Button type="dashed" onClick={this.addShareIntervalField} style={{ width: '80%' }}>
+            <Icon type="plus" /> Añadir Intervalo de participaciones
+          </Button>
+        </FormItem>
       </Fragment>
     )
   }
 }
 
-export default RawShareIntervals
+export default ShareIntervals

@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import { Form, InputNumber, Button, Icon, Divider } from 'antd'
+import { Form, InputNumber, Button, Icon, Divider, Row, Col } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
-import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
+import { EURInput, formItemLayout } from '../containers/addCompanyForms'
 const FormItem = Form.Item
 
-class RawShareIntervalValueFields extends Component {
+class ShareIntervalValueFields extends Component {
   constructor(props) {
     super(props)
 
@@ -42,14 +42,16 @@ class RawShareIntervalValueFields extends Component {
     const formItems = shareIntervalValueKeys.map((k, index) => {
 
       return (
-        <Fragment key={index} >
-          <FormItem
-            label={`Tipo ${index+1}`}
-            labelCol={{span: 8}}
-          >
-            <span>Valor nominal de cada participación </span>
-            {getFieldDecorator(`shareIntervalValue_${index}`, {
-               rules: [{
+        <Row key={index} >
+        <Col offset={12}>
+        <h4>{`Tipo ${index+1}`}</h4>
+        <FormItem
+        label="Valor nominal de cada participación"
+        labelCol={{span: 10}}
+
+        >
+        {getFieldDecorator(`shareIntervalValue_${index}`, {
+          rules: [{
                  required: true,
                  message: "Este campo es obligatorio.",
                }, {
@@ -57,7 +59,7 @@ class RawShareIntervalValueFields extends Component {
                  message: "Tiene que ser un numero.",
                }],
             })(
-               <InputNumber />
+              <EURInput />
              )}
             {shareIntervalValueKeys.length > 1 ? (
                <Icon
@@ -68,9 +70,10 @@ class RawShareIntervalValueFields extends Component {
                />
             ) : null}
           </FormItem>
-          <ShareIntervalFields fieldId={`shareIntervalValueField_${index}`} />
+          <ShareIntervalFields form={this.props.form} fieldId={`shareIntervalValueField_${index}`} />
           <Divider dashed />
-        </Fragment>
+          </Col>
+        </Row>
       )
     })
 
@@ -82,10 +85,10 @@ class RawShareIntervalValueFields extends Component {
     return (
       <Fragment>
         <FormItem
-          label="Numeración de participaciones"
-          {...formItemLayout}
+          label="Tipos de participaciones"
+          labelCol={{span: 12}}
         >
-          <Button type="dashed" onClick={this.addShareIntervalValueField} style={{ width: '60%' }}>
+          <Button type="dashed" onClick={this.addShareIntervalValueField} style={{ width: '40%' }}>
             <Icon type="plus" /> Añadir tipo de participación
           </Button>
         </FormItem>
@@ -95,5 +98,5 @@ class RawShareIntervalValueFields extends Component {
   }
 }
 
-export default HOCForm(RawShareIntervalValueFields)
+export default ShareIntervalValueFields
 

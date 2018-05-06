@@ -17,6 +17,8 @@ const MyInputNumber = styled(InputNumber)`
   width: 40% !important;
 `
 
+export const EURInput = () => <MyInputNumber min={1} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />
+
 export const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -126,11 +128,7 @@ class RawSharesForm extends Component {
                  {required: true, message: 'Este campo es obligatorio'},
                ],
             })(
-               <MyInputNumber
-                 min={1}
-                 formatter={value => `${value}€`}
-                 parser={value => value.replace('€', '')}
-               />
+               <EURInput />
             )}
           </FormItem>
           <FormItem
@@ -144,7 +142,11 @@ class RawSharesForm extends Component {
                ],
             })(<MyInputNumber min={1} />)}
           </FormItem>
-          <ShareIntervalFields form={this.props.form} />
+          <Row>
+            <Col offset={12} span={12}>
+              <ShareIntervalFields form={this.props.form} />
+            </Col>
+          </Row>
           <Divider />
 
           <FormItem
@@ -163,7 +165,7 @@ class RawSharesForm extends Component {
                </RadioGroup>
              )}
           </FormItem>
-          <ShareIntervalValueFields />
+          <ShareIntervalValueFields form={this.props.form} />
           <Divider />
 
           <FormItem
