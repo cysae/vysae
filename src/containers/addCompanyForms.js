@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Radio, Divider, Mention } from 'antd'
+import { Form, Input, InputNumber, Button, Radio, Divider, Mention, Row, Col } from 'antd'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
 import ShareIntervalFields from '../components/shareIntervalFields'
@@ -11,6 +12,10 @@ import AdministrationOrgans from '../components/administrationOrgans'
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
+
+const MyInputNumber = styled(InputNumber)`
+  width: 40% !important;
+`
 
 export const formItemLayout = {
   labelCol: {
@@ -110,32 +115,40 @@ class RawSharesForm extends Component {
 
     return (
       <Fragment>
-        <Form layout="horizontal" onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit}>
           <FormItem
             label="Capital social"
-            {...formItemLayout}
+            labelCol={{span: 12}}
           >
             {getFieldDecorator('socialCapital', {
                rules: [
-                 {type: "number", message: 'Tiene que ser un numero.'},
-                 {required: true, message: 'Es obligatorio.' }
+                 {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
+                 {required: true, message: 'Es obligatorio'},
                ],
-            })(<InputNumber />)}
+            })(<MyInputNumber
+                 min={1}
+              formatter={value => `${value}€`}
+              parser={value => value.replace('€', '')}
+              />
+            )}
           </FormItem>
           <FormItem
             label="Número de participaciones"
-            {...formItemLayout}
+            labelCol={{span: 12}}
           >
             {getFieldDecorator('numberOfShares', {
-               rules: [{ type: "number", required: true, message: 'Es obligatorio y tiene que ser un numero.' }],
-            })(<InputNumber />)}
+               rules: [
+                 {required: true, message: 'Es obligatorio.'},
+                 {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
+               ],
+            })(<MyInputNumber min={1} />)}
           </FormItem>
           <ShareIntervalFields />
           <Divider />
 
           <FormItem
             label="¿Tienen todas las participaciones el mismo valor nominal?"
-            {...formItemLayout}
+            labelCol={{span: 12}}
           >
             {getFieldDecorator('sharesHaveSameValue', {
                rules: [{

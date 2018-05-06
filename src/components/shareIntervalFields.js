@@ -94,9 +94,9 @@ class RawShareIntervals extends Component {
       <Fragment>
         <FormItem
           label="Numeración de participaciones"
-          {...formItemLayout}
+          labelCol={{span: 12}}
         >
-          <Button type="dashed" onClick={this.addShareIntervalField} style={{ width: '60%' }}>
+          <Button type="dashed" onClick={this.addShareIntervalField} style={{ width: '40%' }}>
             <Icon type="plus" /> Añadir Intervalo de participaciones
           </Button>
         </FormItem>
