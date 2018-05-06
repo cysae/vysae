@@ -1,20 +1,20 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Radio, Divider } from 'antd'
+import { Form, Radio, Divider, Row, Col } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
-import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
-class RawShareSuffrageFields extends Component {
+class ShareSuffrageFields extends Component {
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { form } = this.props
+    const { getFieldDecorator, getFieldValue } = form;
 
     return (
       <Fragment>
         <FormItem
           label="¿Hay participaciones sin voto?"
-          {...formItemLayout}
+          labelCol={{span: 12}}
         >
           {getFieldDecorator('hasSharesWithoutSuffrage', {
              rules: [{
@@ -28,12 +28,18 @@ class RawShareSuffrageFields extends Component {
              </RadioGroup>
            )}
         </FormItem>
-        {(getFieldValue('hasSharesWithoutSuffrage') === 'yes') && <ShareIntervalFields fieldId="shareIntervalWithoutSuffrage" />}
+        {(getFieldValue('hasSharesWithoutSuffrage') === 'yes') && (
+           <Row>
+             <Col offset={12}>
+               <ShareIntervalFields form={form} fieldId="shareIntervalWithoutSuffrage" />
+             </Col>
+           </Row>
+        )}
         <Divider dashed />
 
         <FormItem
           label="¿Hay participaciones con derecho de voto differente?"
-          {...formItemLayout}
+          labelCol={{span: 12}}
         >
           {getFieldDecorator('hasSharesWithUnequalSuffrage', {
              rules: [{
@@ -47,10 +53,16 @@ class RawShareSuffrageFields extends Component {
              </RadioGroup>
            )}
         </FormItem>
-        {(getFieldValue('hasSharesWithUnequalSuffrage') === 'yes') && <ShareIntervalFields fieldId="shareIntervalWithUnequalSuffrage" />}
+        {(getFieldValue('hasSharesWithUnequalSuffrage') === 'yes') && (
+           <Row>
+             <Col offset={12}>
+               <ShareIntervalFields form={form} fieldId="shareIntervalWithUnequalSuffrage" />
+             </Col>
+           </Row>
+        )}
       </Fragment>
     )
   }
 }
 
-export default HOCForm(RawShareSuffrageFields)
+export default ShareSuffrageFields

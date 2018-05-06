@@ -113,7 +113,8 @@ class RawSharesForm extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { form } = this.props
+    const { getFieldDecorator, getFieldValue } = form;
 
     return (
       <Fragment>
@@ -144,7 +145,7 @@ class RawSharesForm extends Component {
           </FormItem>
           <Row>
             <Col offset={12} span={12}>
-              <ShareIntervalFields form={this.props.form} />
+              <ShareIntervalFields form={form} />
             </Col>
           </Row>
           <Divider />
@@ -165,12 +166,12 @@ class RawSharesForm extends Component {
                </RadioGroup>
              )}
           </FormItem>
-          <ShareIntervalValueFields form={this.props.form} />
+          <ShareIntervalValueFields form={form} />
           <Divider />
 
           <FormItem
             label="¿Todas las participaciones tienen el mismo derecho de voto?"
-            {...formItemLayout}
+            labelCol={{span: 12}}
           >
             {getFieldDecorator('sharesHaveEqualSuffrage', {
                rules: [{
@@ -184,12 +185,12 @@ class RawSharesForm extends Component {
                </RadioGroup>
              )}
           </FormItem>
-          {(getFieldValue('sharesHaveEqualSuffrage') === 'no') && <ShareSuffrageFields />}
+          {(getFieldValue('sharesHaveEqualSuffrage') === 'no') && <ShareSuffrageFields form={form} />}
           <Divider />
 
           <FormItem
             label="¿Hay acciones en autocartera?"
-            {...formItemLayout}
+            labelCol={{span: 12}}
           >
             {getFieldDecorator('hasTreasuryShares', {
                rules: [{
@@ -203,7 +204,14 @@ class RawSharesForm extends Component {
                </RadioGroup>
              )}
           </FormItem>
-          {(getFieldValue('hasTreasuryShares') === 'yes') ? <ShareIntervalFields fieldId="treasuryShareIntervals" /> : null}
+          {(getFieldValue('hasTreasuryShares') === 'yes') ? (
+             <Row>
+               <Col offset={12}>
+                 <ShareIntervalFields form={form} fieldId="treasuryShareIntervals" />
+               </Col>
+             </Row>
+          ) : null}
+          <Divider />
 
           <FormItem>
             <Button type="primary" onClick={this.props.prev}>

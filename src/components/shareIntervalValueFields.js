@@ -11,6 +11,10 @@ class ShareIntervalValueFields extends Component {
     this.state = { uuid: 0 }
   }
 
+  componentDidMount() {
+    this.addShareIntervalValueField()
+  }
+
   removeShareIntervalValueField = (k) => {
     const { form } = this.props;
     const shareIntervalValueKeys = form.getFieldValue('shareIntervalValueKeys');
