@@ -8,7 +8,13 @@ class ShareIntervalValueFields extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { uuid: 0 }
+    this.state = {
+      uuid: 0,
+      fieldId: 'shareIntervalType'
+    }
+    if(props.fieldId) {
+      this.state.fieldId = props.fieldId
+    }
   }
 
   componentDidMount() {
@@ -16,33 +22,36 @@ class ShareIntervalValueFields extends Component {
   }
 
   removeShareIntervalValueField = (k) => {
-    const { form } = this.props;
-    const shareIntervalValueKeys = form.getFieldValue('shareIntervalValueKeys');
+    const { form } = this.props
+    const { fieldId } = this.state
+    const shareIntervalValueKeys = form.getFieldValue(`${fieldId}Keys`);
     if (shareIntervalValueKeys.length === 1) {
       return;
     }
 
-    form.setFieldsValue({
-      shareIntervalValueKeys: shareIntervalValueKeys.filter(key => key !== k),
-    });
+    const nextShareIntervalValueKeys = {}
+    nextShareIntervalValueKeys[`${fieldId}Keys`] = shareIntervalValueKeys.filter(key => key !== k)
+
+    form.setFieldsValue(nextShareIntervalValueKeys);
   }
 
   addShareIntervalValueField = () => {
     const { form } = this.props;
-    const { uuid } = this.state;
-    const shareIntervalValueKeys = form.getFieldValue('shareIntervalValueKeys');
+    const { uuid, fieldId } = this.state;
+    const shareIntervalValueKeys = form.getFieldValue(`${fieldId}Keys`);
     const nextShareIntervalValueKeys = shareIntervalValueKeys.concat(uuid);
     this.setState({ uuid: uuid+1 })
-    form.setFieldsValue({
-      shareIntervalValueKeys: nextShareIntervalValueKeys,
-    })
+    const fieldsValue = {}
+    fieldsValue[`${fieldId}Keys`] = nextShareIntervalValueKeys
+    form.setFieldsValue(fieldsValue)
   }
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { fieldId } = this.state
 
-    getFieldDecorator('shareIntervalValueKeys', { initialValue: [] })
-    const shareIntervalValueKeys = getFieldValue('shareIntervalValueKeys')
+    getFieldDecorator(`${fieldId}Keys`, { initialValue: [] })
+    const shareIntervalValueKeys = getFieldValue(`${fieldId}Keys`)
     const formItems = shareIntervalValueKeys.map((k, index) => {
 
       return (
@@ -78,11 +87,6 @@ class ShareIntervalValueFields extends Component {
         </Fragment>
       )
     })
-
-    // render only if shares have different value
-    if(getFieldValue('sharesHaveSameValue') !== 'no') {
-      return (null)
-    }
 
     return (
       <Fragment>

@@ -166,7 +166,9 @@ class RawSharesForm extends Component {
                </RadioGroup>
              )}
           </FormItem>
-          <ShareIntervalValueFields form={form} />
+          {getFieldValue('sharesHaveSameValue') === 'no' && (
+             <ShareIntervalValueFields form={form} />
+          )}
           <Divider />
 
           <FormItem
