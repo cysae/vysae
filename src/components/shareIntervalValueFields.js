@@ -42,8 +42,7 @@ class ShareIntervalValueFields extends Component {
     const formItems = shareIntervalValueKeys.map((k, index) => {
 
       return (
-        <Row key={index} >
-        <Col offset={12}>
+        <Fragment key={index}>
         <h4>{`Tipo ${index+1}`}</h4>
         <FormItem
         label="Valor nominal de cada participación"
@@ -72,8 +71,7 @@ class ShareIntervalValueFields extends Component {
           </FormItem>
           <ShareIntervalFields form={this.props.form} fieldId={`shareIntervalValueField_${index}`} />
           <Divider dashed />
-          </Col>
-        </Row>
+        </Fragment>
       )
     })
 
@@ -84,15 +82,18 @@ class ShareIntervalValueFields extends Component {
 
     return (
       <Fragment>
-        <FormItem
-          label="Tipos de participaciones"
-          labelCol={{span: 12}}
-        >
-          <Button type="dashed" onClick={this.addShareIntervalValueField} style={{ width: '40%' }}>
+        <Row >
+          <Col offset={12}>
+          {formItems}
+          </Col>
+        </Row>
+        <Row>
+          <Col offset={12}>
+          <Button type="dashed" onClick={this.addShareIntervalValueField} style={{ width: '80%' }}>
             <Icon type="plus" /> Añadir tipo de participación
           </Button>
-        </FormItem>
-        {formItems}
+          </Col>
+        </Row>
       </Fragment>
     )
   }
