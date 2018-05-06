@@ -123,13 +123,14 @@ class RawSharesForm extends Component {
             {getFieldDecorator('socialCapital', {
                rules: [
                  {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
-                 {required: true, message: 'Es obligatorio'},
+                 {required: true, message: 'Este campo es obligatorio'},
                ],
-            })(<MyInputNumber
+            })(
+               <MyInputNumber
                  min={1}
-              formatter={value => `${value}€`}
-              parser={value => value.replace('€', '')}
-              />
+                 formatter={value => `${value}€`}
+                 parser={value => value.replace('€', '')}
+               />
             )}
           </FormItem>
           <FormItem
@@ -138,12 +139,12 @@ class RawSharesForm extends Component {
           >
             {getFieldDecorator('numberOfShares', {
                rules: [
-                 {required: true, message: 'Es obligatorio.'},
+                 {required: true, message: 'Este campo es obligatorio.'},
                  {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
                ],
             })(<MyInputNumber min={1} />)}
           </FormItem>
-          <ShareIntervalFields />
+          <ShareIntervalFields form={this.props.form} />
           <Divider />
 
           <FormItem

@@ -57,27 +57,21 @@ class RawShareIntervals extends Component {
           <InputGroup compact>
             <Input style={{ width: 130, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder={`${index+1}. Numeración`} disabled />
             {getFieldDecorator(`${fieldId}Start_${k}`, {
-               rules: [{
-                 required: true,
-                 message: "Este campo es obligatorio.",
-               }, {
-                 type: 'number',
-                 message: "Tiene que ser un numero.",
-               }],
+              rules: [
+                {required: true, message: 'Este campo es obligatorio.'},
+                {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
+              ],
             })(
-               <InputNumber />
+               <InputNumber min={1} />
              )}
             <Input style={{ width: 30, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="-" disabled />
             {getFieldDecorator(`${fieldId}End_${k}`, {
-               rules: [{
-                 required: true,
-                 message: "Este campo es obligatorio.",
-               }, {
-                 type: 'number',
-                 message: "Tiene que ser un numero.",
-               }],
+              rules: [
+                {required: true, message: 'Este campo es obligatorio.'},
+                {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
+              ],
             })(
-               <InputNumber />
+               <InputNumber min={1} />
              )}
         {shareIntervalKeys.length > 1 ? (
             <Input
@@ -108,4 +102,4 @@ class RawShareIntervals extends Component {
   }
 }
 
-export default HOCForm(RawShareIntervals)
+export default RawShareIntervals
