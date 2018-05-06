@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import { Form, InputNumber, Button, Icon } from 'antd'
+import { Form, Input, InputNumber, Button, Icon, Row, Col } from 'antd'
 import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
+const InputGroup = Input.Group
 const FormItem = Form.Item
 
 class RawShareIntervals extends Component {
@@ -14,6 +15,10 @@ class RawShareIntervals extends Component {
     if(props.fieldId) {
       this.state.fieldId = props.fieldId
     }
+  }
+
+  componentDidMount() {
+    this.addShareIntervalField()
   }
 
   removeShareIntervalField = (k) => {
@@ -48,59 +53,56 @@ class RawShareIntervals extends Component {
     const shareIntervalKeys = getFieldValue(`${fieldId}Keys`)
     const formItems = shareIntervalKeys.map((k, index) => {
       return (
-        <FormItem
-          label={`Numeración ${index+1}`}
-          labelCol={{span: 8}}
-          key={index}
-        >
-          <span>de la </span>
-          {getFieldDecorator(`${fieldId}Start_${k}`, {
-             rules: [{
-               required: true,
-               message: "Este campo es obligatorio.",
-             }, {
-               type: 'number',
-               message: "Tiene que ser un numero.",
-             }],
-          })(
-             <InputNumber />
-           )}
-          <span> a la </span>
-          {getFieldDecorator(`${fieldId}End_${k}`, {
-             rules: [{
-               required: true,
-               message: "Este campo es obligatorio.",
-             }, {
-               type: 'number',
-               message: "Tiene que ser un numero.",
-             }],
-          })(
-             <InputNumber />
-           )}
-          <span> ambas inclusive</span>
-          {shareIntervalKeys.length > 1 ? (
-             <Icon
-               className="dynamic-delete-button"
-               type="minus-circle-o"
-               disabled={shareIntervalKeys.length === 1}
-               onClick={() => this.removeShareIntervalField(k)}
-             />
-          ) : null}
+        <FormItem key={index}>
+          <InputGroup compact>
+            <Input style={{ width: 130, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder={`${index+1}. Numeración`} disabled />
+            {getFieldDecorator(`${fieldId}Start_${k}`, {
+               rules: [{
+                 required: true,
+                 message: "Este campo es obligatorio.",
+               }, {
+                 type: 'number',
+                 message: "Tiene que ser un numero.",
+               }],
+            })(
+               <InputNumber />
+             )}
+            <Input style={{ width: 30, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="-" disabled />
+            {getFieldDecorator(`${fieldId}End_${k}`, {
+               rules: [{
+                 required: true,
+                 message: "Este campo es obligatorio.",
+               }, {
+                 type: 'number',
+                 message: "Tiene que ser un numero.",
+               }],
+            })(
+               <InputNumber />
+             )}
+        {shareIntervalKeys.length > 1 ? (
+            <Input
+              style={{ width: 40, backgroundColor: '#fff' }}
+              suffix={<Icon type="minus-circle-o" disabled={shareIntervalKeys.length === 1} onClick={() => this.removeShareIntervalField(k)}/>}
+              disabled
+            />
+        ) : null}
+          </InputGroup>
         </FormItem>
       )
     })
 
     return (
       <Fragment>
-        <FormItem
-          label="Numeración de participaciones"
-          labelCol={{span: 12}}
-        >
-          <Button type="dashed" onClick={this.addShareIntervalField} style={{ width: '40%' }}>
-            <Icon type="plus" /> Añadir Intervalo de participaciones
-          </Button>
-        </FormItem>
-        {formItems}
+        <Row>
+          <Col offset={12} span={12}>
+            {formItems}
+            <FormItem>
+              <Button type="dashed" onClick={this.addShareIntervalField} style={{ width: '80%' }}>
+                <Icon type="plus" /> Añadir Intervalo de participaciones
+              </Button>
+            </FormItem>
+          </Col>
+        </Row>
       </Fragment>
     )
   }
