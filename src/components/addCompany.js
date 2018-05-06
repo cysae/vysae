@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Steps } from 'antd'
+import { Steps, Divider } from 'antd'
 import {
   BasicForm,
   SharesForm,
@@ -13,7 +13,7 @@ class AddCompany extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 4,
+      current: 0,
     };
 
     this.next = this.next.bind(this)
@@ -53,6 +53,7 @@ class AddCompany extends React.Component {
         <Steps current={current}>
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
+        <Divider />
         <div className="steps-content">{steps[current].content}</div>
       </Fragment>
     )

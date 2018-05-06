@@ -3,6 +3,7 @@ import { Form, Input, Row, Col } from 'antd'
 import Amplify from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import aws_exports from './aws-exports.js'
+import './App.css'
 Amplify.configure(aws_exports)
 const FormItem = Form.Item
 

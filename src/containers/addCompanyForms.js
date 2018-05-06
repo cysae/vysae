@@ -61,10 +61,9 @@ class RawBasicForm extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Fragment>
-        <Form onSubmit={this.handleSubmit}>
+        <Form layout="vertical" onSubmit={this.handleSubmit}>
           <FormItem
             label="Denominación social"
-            {...formItemLayout}
           >
             {getFieldDecorator('name', {
                rules: [{ required: true, message: 'Es obligatorio.' }],
@@ -72,7 +71,6 @@ class RawBasicForm extends Component {
           </FormItem>
           <FormItem
             label="Domicilio Social"
-            {...formItemLayout}
           >
             {getFieldDecorator('registeredOffice', {
                rules: [{ required: true, message: 'Es obligatorio.' }],
@@ -80,7 +78,6 @@ class RawBasicForm extends Component {
           </FormItem>
           <FormItem
             label="NIF"
-            {...formItemLayout}
           >
             {getFieldDecorator('nif', {
                rules: [{ required: true, message: 'Es obligatorio.' }],
