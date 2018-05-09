@@ -18,7 +18,10 @@ class ShareIntervals extends Component {
   }
 
   componentDidMount() {
-    this.addShareIntervalField()
+    const numberOfShareIntervals = this.props.form.getFieldValue(`${this.state.fieldId}Keys`).length
+    if (numberOfShareIntervals === 0) {
+      this.addShareIntervalField()
+    }
   }
 
   removeShareIntervalField = (k) => {
