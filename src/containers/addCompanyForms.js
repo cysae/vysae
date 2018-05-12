@@ -17,7 +17,8 @@ export const MyInputNumber = styled(InputNumber)`
   width: 40% !important;
 `
 
-export const EURInput = () => <MyInputNumber min={1} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />
+
+export const EURInput = (props) => <MyInputNumber min={1} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />
 
 export const formItemLayout = {
   labelCol: {
@@ -125,11 +126,11 @@ class RawSharesForm extends Component {
           >
             {getFieldDecorator('socialCapital', {
                rules: [
-                 {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
+                 {pattern: /^.*$/, message: 'Tiene que ser un número entero positivo'},
                  {required: true, message: 'Este campo es obligatorio'},
                ],
             })(
-               <EURInput />
+               <MyInputNumber min={1} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />
             )}
           </FormItem>
           <FormItem

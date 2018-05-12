@@ -8,32 +8,62 @@ const Option = Select.Option
 const Search = Input.Search
 
 function agreementOptions(props) {
-  const { getFieldDecorator, getFieldValue } = props.form;
+  const { getFieldDecorator, getFieldValue } = props.form
+  const { containsRelativeMajority } = props
 
   return (
     <Fragment>
-        <FormItem
-          {...formItemLayout}
-        >
-          <span>Se requiere el voto favorable de, al menos, el </span>
-          {getFieldDecorator('minimumRatioOfVotingShares', {
-             initialValue: 33.33,
-             rules: [{
-               required: true,
-               message: 'Este campo es obligatorio.',
-             }]
-          })(
-             <InputNumber
-               min={33.33}
-               max={100}
-               formatter={value => `${value}%`}
-               parser={value => value.replace('%', '')}
-             />
-           )}
-          <span> de los votos correspondientes a las participaciones sociales en que se divida el capital social.</span>
+    <FormItem>
+    {getFieldDecorator('majorityType', {
+      rules: [{
+        required: true, message: 'este campo es obligatorio.',
+      }]
+    })(
+      <RadioGroup>
+        {containsRelativeMajority && <RadioButton value="relativeMajority">mayoría simple</RadioButton>}
+        <RadioButton value="favorableMajority">mayoría favorable</RadioButton>
+        <RadioButton value="favorableMajorityWithMinimum">mayoría favorable con minimum</RadioButton>
+      </RadioGroup>
+    )}
+    </FormItem>
+
+    { getFieldValue('majorityType') === 'relativeMajority' && (
+      <Fragment>
+        <FormItem>
+          <span>
+            Se requiere el voto favorable de la mayoría simple de los votos correspondientes a las participaciones sociales en que se divida el capital social.
+          </span>
         </FormItem>
         <Divider dashed />
+      </Fragment>
+    )}
 
+    {getFieldValue('majorityType') === 'favorableMajority' && (
+      <Fragment>
+      <FormItem>
+        <span>Se requiere el voto favorable de, al menos, el </span>
+        {getFieldDecorator('minimumRatioOfVotingShares', {
+           initialValue: 33.33,
+           rules: [{
+             required: true,
+             message: 'Este campo es obligatorio.',
+           }]
+        })(
+           <InputNumber
+             min={33.33}
+             max={100}
+             formatter={value => `${value}%`}
+             parser={value => value.replace('%', '')}
+           />
+         )}
+        <span> de los votos correspondientes a las participaciones sociales en que se divida el capital social.</span>
+      </FormItem>
+      <Divider dashed />
+      </Fragment>
+    )}
+
+    {getFieldValue('majorityType') === 'favorableMajorityWithMinimum' && (
+      <Fragment>
         <FormItem
           {...formItemLayout}
         >
@@ -82,16 +112,18 @@ function agreementOptions(props) {
            )}
         </FormItem>
         <Divider dashed />
+      </Fragment>
+    )}
 
         <FormItem
           {...formItemLayout}
         >
           <span>¿Se requiere, además, el voto favorable de un número mínimo de socios?</span>
           {getFieldDecorator('hasMinNumberOfAssociates', {
-             initialValue: 'no',
+             initialvalue: 'no',
              rules: [{
                required: true,
-               message: 'Este campo es obligatorio.',
+               message: 'este campo es obligatorio.',
              }]
           })(
              <RadioGroup>
@@ -236,21 +268,11 @@ class RawDefineAgreementRules extends Component {
     return (
       <Fragment>
         <h3>Mayoría ordinaria</h3>
-        <FormItem
-          {...formItemLayout}
-        >
-          <span>
-            Se requiere el voto favorable de la mayoría simple de los votos correspondientes a las participaciones sociales en que se divida el capital social.
-          </span>
-        </FormItem>
-        <Divider dashed />
-        {agreementOptions( {form: this.props.form} )}
+        {agreementOptions( {form: this.props.form, containsRelativeMajority: true } )}
         <Divider />
 
         <h3>Mayoría Reforzada</h3>
-        <FormItem
-          {...formItemLayout}
-        >
+        <FormItem>
           <span>Los votos en blanco se computarán. </span>
           {getFieldDecorator('selectedReinforcedAgreementTypes', {
              rules: [{
@@ -274,7 +296,7 @@ class RawDefineAgreementRules extends Component {
             enterButton="Añadir Tipo de Acuerdo"
           />
 
-          {agreementOptions({ form: this.props.form })}
+          {agreementOptions({ form: this.props.form, containsRelativeMajority: false })}
         </FormItem>
       </Fragment>
     )

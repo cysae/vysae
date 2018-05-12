@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Input, InputNumber, Button, Icon, Row, Col } from 'antd'
 import { formItemLayout } from '../containers/addCompanyForms'
+import styled from 'styled-components'
 const InputGroup = Input.Group
 const FormItem = Form.Item
 
@@ -56,35 +57,37 @@ class ShareIntervals extends Component {
     const shareIntervalKeys = getFieldValue(`${fieldId}Keys`)
     const formItems = shareIntervalKeys.map((k, index) => {
       return (
-        <FormItem key={index}>
-          <InputGroup compact>
-            <Input style={{ width: 130, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder={`${index+1}. Numeración`} disabled />
-            {getFieldDecorator(`${fieldId}Start_${k}`, {
-              rules: [
-                {required: true, message: 'Este campo es obligatorio.'},
-                {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
-              ],
-            })(
-               <InputNumber min={1} />
-             )}
-            <Input style={{ width: 30, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="-" disabled />
+        <InputGroup key={index} compact>
+          <span style={{lineHeight: '39px', marginRight: 10}}>{`${index+1}. Numeración: `}</span>
+            <FormItem>
+              {getFieldDecorator(`${fieldId}Start_${k}`, {
+                 rules: [
+                   {required: true, message: 'Este campo es obligatorio.'},
+                   {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
+                 ],
+              })(
+                 <InputNumber min={1} />
+               )}
+            </FormItem>
+            <FormItem>
+            <span style={{margin: '0 10px 0 10px'}}>-</span>
             {getFieldDecorator(`${fieldId}End_${k}`, {
-              rules: [
-                {required: true, message: 'Este campo es obligatorio.'},
-                {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
-              ],
+               rules: [
+                 {required: true, message: 'Este campo es obligatorio.'},
+                 {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
+               ],
             })(
                <InputNumber min={1} />
              )}
-        {shareIntervalKeys.length > 1 ? (
-            <Input
-              style={{ width: 40, backgroundColor: '#fff' }}
-              suffix={<Icon type="minus-circle-o" disabled={shareIntervalKeys.length === 1} onClick={() => this.removeShareIntervalField(k)}/>}
-              disabled
-            />
-        ) : null}
+            </FormItem>
+            {shareIntervalKeys.length > 1 ? (
+               <Input
+                 style={{ width: 40, backgroundColor: '#fff' }}
+                 suffix={<Icon type="minus-circle-o" disabled={shareIntervalKeys.length === 1} onClick={() => this.removeShareIntervalField(k)}/>}
+                 disabled
+               />
+            ) : null}
           </InputGroup>
-        </FormItem>
       )
     })
 
