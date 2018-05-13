@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Form, InputNumber, Button, Icon, Divider, Row, Col } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
-import { EURInput, formItemLayout } from '../containers/addCompanyForms'
+import { MyInputNumber, formItemLayout } from '../containers/addCompanyForms'
 const FormItem = Form.Item
 
 class ShareIntervalValueFields extends Component {
@@ -11,7 +11,7 @@ class ShareIntervalValueFields extends Component {
     this.state = {
       uuid: 0,
       fieldId: 'shareIntervalType',
-      shareTypeField: <EURInput />,
+      shareTypeField: <MyInputNumber min={1} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />,
       shareTypeLabel: 'Valor nominal de cada participación',
       shareTypeRootId: 'shareIntervalValue'
     }

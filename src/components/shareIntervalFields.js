@@ -73,26 +73,20 @@ class ShareIntervals extends Component {
           </Col>
           <Col>
             <FormItem>
-            <span style={{margin: '0 10px 0 10px'}}>-</span>
-            {getFieldDecorator(`${fieldId}End_${k}`, {
-               rules: [
-                 {required: true, message: 'Este campo es obligatorio.'},
-                 {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
-               ],
-            })(
-               <InputNumber min={1} />
-             )}
+              <span style={{margin: '0 10px 0 10px'}}>-</span>
+              {getFieldDecorator(`${fieldId}End_${k}`, {
+                 rules: [
+                   {required: true, message: 'Este campo es obligatorio.'},
+                   {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
+                 ],
+              })(
+                 <InputNumber min={1} />
+               )}
+              {shareIntervalKeys.length > 1 ? (
+                 <Icon style={{marginLeft: 10}} type="minus-circle-o" disabled={shareIntervalKeys.length === 1} onClick={() => this.removeShareIntervalField(k)}/>
+              ) : null}
             </FormItem>
           </Col>
-            {shareIntervalKeys.length > 1 ? (
-              <Col>
-               <Input
-                 style={{ width: 40, backgroundColor: '#fff' }}
-                 suffix={<Icon type="minus-circle-o" disabled={shareIntervalKeys.length === 1} onClick={() => this.removeShareIntervalField(k)}/>}
-                 disabled
-               />
-              </Col>
-            ) : null}
           </Row>
       )
     })
