@@ -57,9 +57,10 @@ class ShareIntervals extends Component {
     const shareIntervalKeys = getFieldValue(`${fieldId}Keys`)
     const formItems = shareIntervalKeys.map((k, index) => {
       return (
-        <InputGroup key={index} compact>
-          <span style={{lineHeight: '39px', marginRight: 10}}>{`${index+1}. Numeración: `}</span>
+        <Row key={index} type="flex" align="middle">
+          <Col>
             <FormItem>
+              <span style={{marginRight: 10}}>{`${index+1}. Numeración: `}</span>
               {getFieldDecorator(`${fieldId}Start_${k}`, {
                  rules: [
                    {required: true, message: 'Este campo es obligatorio.'},
@@ -69,6 +70,8 @@ class ShareIntervals extends Component {
                  <InputNumber min={1} />
                )}
             </FormItem>
+          </Col>
+          <Col>
             <FormItem>
             <span style={{margin: '0 10px 0 10px'}}>-</span>
             {getFieldDecorator(`${fieldId}End_${k}`, {
@@ -80,14 +83,17 @@ class ShareIntervals extends Component {
                <InputNumber min={1} />
              )}
             </FormItem>
+          </Col>
             {shareIntervalKeys.length > 1 ? (
+              <Col>
                <Input
                  style={{ width: 40, backgroundColor: '#fff' }}
                  suffix={<Icon type="minus-circle-o" disabled={shareIntervalKeys.length === 1} onClick={() => this.removeShareIntervalField(k)}/>}
                  disabled
                />
+              </Col>
             ) : null}
-          </InputGroup>
+          </Row>
       )
     })
 
