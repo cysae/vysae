@@ -33,7 +33,9 @@ const MyDivider = styled(Divider)`
 `
 
 function Majority(props) {
-  const { getFieldDecorator, getFieldValue } = props.form
+  const { form, removeMajorityType } = props
+  const { getFieldDecorator, getFieldValue } = form
+  console.log(removeMajorityType)
   const {
     isUsualMajority,
     agreementTypes,
@@ -46,7 +48,8 @@ function Majority(props) {
 
   return (
     <MajorityContainer>
-      <h3>{title}</h3>
+      <h3 style={{float: 'left'}}>{title}</h3>
+      {!isNaN(id) && (<Icon style={{marginLeft: 10}} type="minus-circle-o" onClick={() => removeMajorityType(id)}/>)}
       <MyDivider orientation="left">Tipo de mayoría</MyDivider>
       <FormItem>
         {getFieldDecorator(`${id}_majorityType`, {
@@ -328,6 +331,27 @@ class DefineAgreementRules extends Component {
     form.setFieldsValue(fieldsValue)
   }
 
+  removeMajorityType = (id) => {
+    const { form } = this.props
+    const { fieldId } = this.state
+    const majorityTypes = form.getFieldValue(`majorityTypes`);
+    const nextMajorityTypes = {}
+    nextMajorityTypes[`majorityTypes`] = majorityTypes.filter(key => key !== id)
+
+    form.setFieldsValue(nextMajorityTypes);
+  }
+
+  addShareIntervalField = () => {
+    const { form } = this.props
+    const { uuid, fieldId } = this.state
+    const shareIntervalKeys = form.getFieldValue(`${fieldId}Keys`);
+    const nextShareIntervalKeys = shareIntervalKeys.concat(uuid);
+    this.setState({ uuid: uuid+1 })
+    const fieldsValue = {}
+    fieldsValue[`${fieldId}Keys`] = nextShareIntervalKeys
+    form.setFieldsValue(fieldsValue)
+  }
+
   render() {
     const { form } = this.props
     const { getFieldDecorator, getFieldValue } = form;
@@ -347,6 +371,7 @@ class DefineAgreementRules extends Component {
             addAgreementType={this.addAgreementType}
             handleAddAgreementInput={this.handleAddAgreementInput}
             addAgreementInput={addAgreementInput}
+            removeMajorityType={this.removeMajorityType}
           />
           <Divider />
         </Fragment>
