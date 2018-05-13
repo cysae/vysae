@@ -1,16 +1,18 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Input, Divider } from 'antd'
 import ShareholderRegistryOperationFields from './shareholderRegistryOperationFields'
-import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
+import { formItemLayout } from '../containers/addCompanyForms'
+import PropTypes from 'prop-types'
 const FormItem = Form.Item
 
-class RawShareholderFields extends Component {
+class ShareholderFields extends Component {
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form } = this.props
+    const { getFieldDecorator } = form;
 
     return (
       <Fragment>
-        <h3>Persona Física</h3>
+        <h3>Attributos Persona Física</h3>
         <FormItem
           label="Nombre"
           {...formItemLayout}
@@ -94,7 +96,7 @@ class RawShareholderFields extends Component {
         {/* jurdic person */}
         {(this.props.personType === 'juridic') && (
            <Fragment>
-             <h3>Persona Jurídica</h3>
+             <h3>Attributos Persona Jurídica</h3>
              <FormItem
                label="Denominación social"
                {...formItemLayout}
@@ -163,10 +165,14 @@ class RawShareholderFields extends Component {
            </Fragment>
         )}
 
-        <ShareholderRegistryOperationFields />
+        <ShareholderRegistryOperationFields form={form} />
       </Fragment>
     )
   }
 }
 
-export default HOCForm(RawShareholderFields)
+ShareholderFields.propTypes = {
+  form: PropTypes.object.isRequired,
+}
+
+export default ShareholderFields

@@ -16,7 +16,7 @@ const FormItem = Form.Item
 export const MyInputNumber = styled(InputNumber)`
   width: 40% !important;
 `
-e
+
 export const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -222,9 +222,6 @@ class RawSharesForm extends Component {
             </Button>
           </FormItem>
         </Form>
-        <pre>
-          {JSON.stringify(this.props.formState, null, 2)}
-        </pre>
       </Fragment>
     );
   }
@@ -241,10 +238,11 @@ class RawAgreementRules extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { form } = this.props
+    const { getFieldDecorator, getFieldValue } = form;
     return (
       <Fragment>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} layout='inline'>
           <FormItem
             label="¿Tu empresa está sometida al régimen legal supletorio establecido en la (LSC)?"
             {...formItemLayout}
@@ -262,7 +260,7 @@ class RawAgreementRules extends Component {
              )}
           </FormItem>
           <Divider />
-          {(getFieldValue('underliesLSC') === 'no') && <DefineAgreementRules />}
+          {(getFieldValue('underliesLSC') === 'no') && <DefineAgreementRules form={form} />}
           <FormItem>
             <Button type="primary" onClick={this.props.prev}>
               Atrás
@@ -291,7 +289,8 @@ class RawShareholderRegistry extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { form } = this.props
+    const { getFieldDecorator, getFieldValue } = form;
     return (
       <Fragment>
         <Form onSubmit={this.handleSubmit}>
@@ -311,7 +310,7 @@ class RawShareholderRegistry extends Component {
                </RadioGroup>
              )}
           </FormItem>
-          <ShareholderFields personType={getFieldValue('personType')} />
+          <ShareholderFields form={form} personType={getFieldValue('personType')} />
           <Divider />
           <FormItem>
             <Button type="primary" onClick={this.props.prev}>

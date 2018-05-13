@@ -1,15 +1,17 @@
 import React, { Component, Fragment } from 'react'
-import { Form, DatePicker, Input, Radio } from 'antd'
+import { Form, DatePicker, Input, Radio, Row, Col } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
-import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
+import PropTypes from 'prop-types'
+import { formItemLayout } from '../containers/addCompanyForms'
 const { TextArea } = Input;
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
-class RawShareholderRegistryOperationFields extends Component {
+class ShareholderRegistryOperationFields extends Component {
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form } = this.props
+    const { getFieldDecorator } = form;
 
     return (
       <Fragment>
@@ -56,10 +58,18 @@ class RawShareholderRegistryOperationFields extends Component {
              <TextArea placholder="Concepto" autosize/>
            )}
         </FormItem>
-        <ShareIntervalFields />
+        <Row type="flex">
+          <Col span={17} offset={10}>
+            <ShareIntervalFields form={form} />
+          </Col>
+        </Row>
       </Fragment>
     )
   }
 }
 
-export default HOCForm(RawShareholderRegistryOperationFields)
+ShareholderRegistryOperationFields.propTypes = {
+  form: PropTypes.object.isRequired
+}
+
+export default ShareholderRegistryOperationFields
