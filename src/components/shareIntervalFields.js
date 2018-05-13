@@ -10,6 +10,7 @@ const ShareIntervalsContainer = styled.div`
   padding: 10px;
   border-radius: 5px;
   background-color: #e9e9e9;
+  margin: ${props => props.isValueField ? 'auto !important' : '0'};
 `
 
 class ShareIntervals extends Component {
@@ -57,7 +58,8 @@ class ShareIntervals extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form
+    const { form, isValueField } = this.props
+    const { getFieldDecorator, getFieldValue } = form
     const { fieldId } = this.state
 
     getFieldDecorator(`${fieldId}Keys`, { initialValue: [] })
@@ -99,7 +101,7 @@ class ShareIntervals extends Component {
     })
 
     return (
-      <ShareIntervalsContainer>
+      <ShareIntervalsContainer isValueField={isValueField}>
         {formItems}
         <FormItem style={{margin: 0}}>
           <Button type="dashed" onClick={this.addShareIntervalField} style={{width: '100%'}}>

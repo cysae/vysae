@@ -16,7 +16,7 @@ const FormItem = Form.Item
 export const MyInputNumber = styled(InputNumber)`
   width: 40% !important;
 `
-
+e
 export const formItemLayout = {
   labelCol: {
     xs: { span: 24 },

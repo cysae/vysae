@@ -2,7 +2,14 @@ import React, { Component, Fragment } from 'react'
 import { Form, InputNumber, Button, Icon, Divider, Row, Col } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
 import { MyInputNumber, formItemLayout } from '../containers/addCompanyForms'
+import styled from 'styled-components'
 const FormItem = Form.Item
+
+const ContainerCol = styled(Col)`
+  padding: 10px !important;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+`
 
 class ShareIntervalValueFields extends Component {
   constructor(props) {
@@ -71,13 +78,13 @@ class ShareIntervalValueFields extends Component {
 
       return (
         <Fragment key={index}>
-        <h4>{`Tipo ${index+1}`}</h4>
-        <FormItem
-        label={shareTypeLabel}
-        labelCol={{span: 10}}
-        >
-        {getFieldDecorator(`${shareTypeRootId}_${index}`, {
-          rules: [{
+          <h4>{`Tipo ${index+1}`}</h4>
+          <FormItem
+            label={shareTypeLabel}
+            labelCol={{span: 12}}
+          >
+            {getFieldDecorator(`${shareTypeRootId}_${index}`, {
+               rules: [{
                  required: true,
                  message: "Este campo es obligatorio.",
                }, {
@@ -85,7 +92,7 @@ class ShareIntervalValueFields extends Component {
                  message: "Tiene que ser un numero.",
                }],
             })(
-              shareTypeField
+               shareTypeField
              )}
             {shareIntervalValueKeys.length > 1 ? (
                <Icon
@@ -96,27 +103,21 @@ class ShareIntervalValueFields extends Component {
                />
             ) : null}
           </FormItem>
-          <ShareIntervalFields form={this.props.form} fieldId={`shareIntervalValueField_${index}`} />
+          <ShareIntervalFields isValueField={true} form={this.props.form} fieldId={`shareIntervalValueField_${index}`} />
           <Divider dashed />
         </Fragment>
       )
     })
 
     return (
-      <Fragment>
-        <Row >
-          <Col offset={12}>
+      <Row>
+        <ContainerCol span={10} offset={12}>
           {formItems}
-          </Col>
-        </Row>
-        <Row>
-          <Col offset={12}>
-          <Button type="dashed" onClick={this.addShareIntervalValueField} style={{ width: '80%' }}>
+          <Button type="dashed" onClick={this.addShareIntervalValueField} style={{ width: '100%' }}>
             <Icon type="plus" /> Añadir tipo de participación
           </Button>
-          </Col>
-        </Row>
-      </Fragment>
+        </ContainerCol>
+      </Row>
     )
   }
 }
