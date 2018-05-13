@@ -5,6 +5,13 @@ import styled from 'styled-components'
 const InputGroup = Input.Group
 const FormItem = Form.Item
 
+const ShareIntervalsContainer = styled.div`
+  width: 80%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #e9e9e9;
+`
+
 class ShareIntervals extends Component {
   constructor(props) {
     super(props)
@@ -57,7 +64,7 @@ class ShareIntervals extends Component {
     const shareIntervalKeys = getFieldValue(`${fieldId}Keys`)
     const formItems = shareIntervalKeys.map((k, index) => {
       return (
-        <Row key={index} type="flex" align="middle">
+        <Row key={index} type="flex">
           <Col>
             <FormItem>
               <span style={{marginRight: 10}}>{`${index+1}. Numeración: `}</span>
@@ -92,14 +99,14 @@ class ShareIntervals extends Component {
     })
 
     return (
-      <Fragment>
+      <ShareIntervalsContainer>
         {formItems}
-        <FormItem>
-          <Button type="dashed" onClick={this.addShareIntervalField} style={{ width: '80%' }}>
+        <FormItem style={{margin: 0}}>
+          <Button type="dashed" onClick={this.addShareIntervalField} style={{width: '100%'}}>
             <Icon type="plus" /> Añadir Intervalo de participaciones
           </Button>
         </FormItem>
-      </Fragment>
+      </ShareIntervalsContainer>
     )
   }
 }

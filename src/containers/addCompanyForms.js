@@ -17,9 +17,6 @@ export const MyInputNumber = styled(InputNumber)`
   width: 40% !important;
 `
 
-
-export const EURInput = (props) => <MyInputNumber min={1} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />
-
 export const formItemLayout = {
   labelCol: {
     xs: { span: 24 },

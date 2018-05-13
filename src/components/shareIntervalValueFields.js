@@ -30,8 +30,6 @@ class ShareIntervalValueFields extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state)
-    console.log(this.props.form.getFieldValue('shareIntervalTypeKeys'))
     const numberOfShareIntervalValueFields = this.props.form.getFieldValue(`${this.state.fieldId}Keys`).length
     if(numberOfShareIntervalValueFields === 0) {
       this.addShareIntervalValueField()
