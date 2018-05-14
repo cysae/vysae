@@ -18,17 +18,17 @@ class ShareIntervals extends Component {
     super(props)
 
     this.state = {
-      uuid: 0,
+      id: 0,
       fieldId: 'shareInterval'
     }
     if(props.fieldId) {
       this.state.fieldId = props.fieldId
     }
-    props.form.getFieldDecorator(`${this.state.fieldId}Keys`, { initialValue: [] })
+    props.form.getFieldDecorator(`${this.state.fieldId}_ids`, { initialValue: [] })
   }
 
   componentDidMount() {
-    const numberOfShareIntervals = this.props.form.getFieldValue(`${this.state.fieldId}Keys`).length
+    const numberOfShareIntervals = this.props.form.getFieldValue(`${this.state.fieldId}_ids`).length
     if (numberOfShareIntervals === 0) {
       this.addShareIntervalField()
     }
@@ -37,24 +37,24 @@ class ShareIntervals extends Component {
   removeShareIntervalField = (k) => {
     const { form } = this.props
     const { fieldId } = this.state
-    const shareIntervalKeys = form.getFieldValue(`${fieldId}Keys`);
-    if (shareIntervalKeys.length === 1) {
+    const shareIntervalIds = form.getFieldValue(`${fieldId}_ids`);
+    if (shareIntervalIds.length === 1) {
       return;
     }
-    const nextShareIntervalKeys = {}
-    nextShareIntervalKeys[`${fieldId}Keys`] = shareIntervalKeys.filter(key => key !== k)
+    const nextShareIntervalIds = {}
+    nextShareIntervalIds[`${fieldId}_ids`] = shareIntervalIds.filter(key => key !== k)
 
-    form.setFieldsValue(nextShareIntervalKeys);
+    form.setFieldsValue(nextShareIntervalIds);
   }
 
   addShareIntervalField = () => {
     const { form } = this.props
-    const { uuid, fieldId } = this.state
-    const shareIntervalKeys = form.getFieldValue(`${fieldId}Keys`);
-    const nextShareIntervalKeys = shareIntervalKeys.concat(uuid);
-    this.setState({ uuid: uuid+1 })
+    const { id, fieldId } = this.state
+    const shareIntervalIds = form.getFieldValue(`${fieldId}_ids`);
+    const nextShareIntervalIds = shareIntervalIds.concat(id);
+    this.setState({ id: id+1 })
     const fieldsValue = {}
-    fieldsValue[`${fieldId}Keys`] = nextShareIntervalKeys
+    fieldsValue[`${fieldId}_ids`] = nextShareIntervalIds
     form.setFieldsValue(fieldsValue)
   }
 
@@ -63,14 +63,14 @@ class ShareIntervals extends Component {
     const { getFieldDecorator, getFieldValue } = form
     const { fieldId } = this.state
 
-    const shareIntervalKeys = getFieldValue(`${fieldId}Keys`)
-    const formItems = shareIntervalKeys.map((k, index) => {
+    const shareIntervalIds = getFieldValue(`${fieldId}_ids`)
+    const formItems = shareIntervalIds.map((k, index) => {
       return (
         <Row key={index} type="flex">
           <Col>
             <FormItem>
               <span style={{marginRight: 10}}>{`${index+1}. Numeración: `}</span>
-              {getFieldDecorator(`${fieldId}Start_${k}`, {
+        {getFieldDecorator(`${k}_${fieldId}_begin`, {
                  rules: [
                    {required: true, message: 'Este campo es obligatorio.'},
                    {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
@@ -83,7 +83,7 @@ class ShareIntervals extends Component {
           <Col>
             <FormItem>
               <span style={{margin: '0 10px 0 10px'}}>-</span>
-              {getFieldDecorator(`${fieldId}End_${k}`, {
+              {getFieldDecorator(`${k}_${fieldId}_end`, {
                  rules: [
                    {required: true, message: 'Este campo es obligatorio.'},
                    {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
@@ -91,8 +91,8 @@ class ShareIntervals extends Component {
               })(
                  <InputNumber min={1} />
                )}
-              {shareIntervalKeys.length > 1 ? (
-                 <Icon style={{marginLeft: 10}} type="minus-circle-o" disabled={shareIntervalKeys.length === 1} onClick={() => this.removeShareIntervalField(k)}/>
+              {shareIntervalIds.length > 1 ? (
+                 <Icon style={{marginLeft: 10}} type="minus-circle-o" disabled={shareIntervalIds.length === 1} onClick={() => this.removeShareIntervalField(k)}/>
               ) : null}
             </FormItem>
           </Col>

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Radio, Divider, Mention, Row, Col } from 'antd'
+import { Form, Input, InputNumber, Button, Radio, Divider, Mention, Row, Col, Alert} from 'antd'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
@@ -101,14 +101,44 @@ class RawBasicForm extends Component {
 
 
 class RawSharesForm extends Component {
+  state = {
+    error: null
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      if (!err) {
+      /* if (!err && this.isExtraValid()) { */
+      if (this.isExtraValid()) {
         this.props.next()
       }
     });
   }
+
+  handleErrorClose = () => {
+    console.log('close')
+    this.setState({ error: null })
+  }
+
+  isExtraValid() {
+    const { getFieldValue } = this.props.form
+    const socialCapital = getFieldValue('socialCapital')
+    // total share number
+    let totalShareNumber = 0
+    const shareIntervalIds = getFieldValue('shareInterval_ids')
+    for (const id of shareIntervalIds) {
+      totalShareNumber += Math.abs(getFieldValue(`${id}_shareInterval_begin`)-getFieldValue(`${id}_shareInterval_end`))
+    }
+    console.log(totalShareNumber)
+
+    if (socialCapital < 100) {
+      this.setState({ error: "error" })
+      return false
+    }
+
+    return true
+  }
+
 
   render() {
     const { form } = this.props
@@ -213,6 +243,18 @@ class RawSharesForm extends Component {
           ) : null}
           <Divider />
 
+          {
+            this.state.error ? (
+              <Alert
+                type="error"
+                message="Error"
+                closable
+                banner
+                afterClose={this.handleErrorClose}
+              />
+            ) : null
+          }
+
           <FormItem>
             <Button type="primary" onClick={this.props.prev}>
               Atrás
@@ -222,6 +264,10 @@ class RawSharesForm extends Component {
             </Button>
           </FormItem>
         </Form>
+
+        <pre>
+          {JSON.stringify(this.props.formState, null, 2)}
+        </pre>
       </Fragment>
     );
   }

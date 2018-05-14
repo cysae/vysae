@@ -13,7 +13,7 @@ class AddCompany extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 3,
+      current: 1,
     };
 
     this.next = this.next.bind(this)
@@ -35,16 +35,16 @@ class AddCompany extends React.Component {
       title: 'Información',
       content: <BasicForm next={this.next} prev={this.prev} />,
     }, {
-      title: 'Participaciones sociales',
+      title: 'Participaciones',
       content: <SharesForm next={this.next} prev={this.prev} />,
     }, {
-      title: 'Adopción de acuerdos',
+      title: 'Acuerdos',
       content: <AgreementRules next={this.next} prev={this.prev} />,
     }, {
-      title: 'Libro de socios',
+      title: 'Socios',
       content: <ShareHolderRegistry next={this.next} prev={this.prev} />,
     }, {
-      title: 'Órganos de gobierno',
+      title: 'Gobierno',
       content: <GoverningBodies next={this.next} prev={this.prev} />,
     }];
 
