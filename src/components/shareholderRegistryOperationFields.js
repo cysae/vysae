@@ -10,7 +10,7 @@ const RadioGroup = Radio.Group
 
 class ShareholderRegistryOperationFields extends Component {
   render() {
-    const { form } = this.props
+    const { form, id } = this.props
     const { getFieldDecorator } = form;
 
     return (
@@ -60,7 +60,9 @@ class ShareholderRegistryOperationFields extends Component {
         </FormItem>
         <Row type="flex">
           <Col span={17} offset={10}>
-            <ShareIntervalFields form={form} />
+            <ShareIntervalFields
+              fieldId={`${id}_shareholder`}
+              form={form} />
           </Col>
         </Row>
       </Fragment>

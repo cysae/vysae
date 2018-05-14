@@ -24,6 +24,7 @@ class ShareIntervals extends Component {
     if(props.fieldId) {
       this.state.fieldId = props.fieldId
     }
+    props.form.getFieldDecorator(`${this.state.fieldId}Keys`, { initialValue: [] })
   }
 
   componentDidMount() {
@@ -62,7 +63,6 @@ class ShareIntervals extends Component {
     const { getFieldDecorator, getFieldValue } = form
     const { fieldId } = this.state
 
-    getFieldDecorator(`${fieldId}Keys`, { initialValue: [] })
     const shareIntervalKeys = getFieldValue(`${fieldId}Keys`)
     const formItems = shareIntervalKeys.map((k, index) => {
       return (

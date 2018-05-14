@@ -7,7 +7,7 @@ import ShareIntervalFields from '../components/shareIntervalFields'
 import ShareIntervalValueFields from '../components/shareIntervalValueFields'
 import ShareSuffrageFields from '../components/shareSuffrageFields'
 import DefineAgreementRules from '../components/defineAgreementRules'
-import ShareholderFields from '../components/shareholderFields'
+import Shareholders from '../components/shareholderFields'
 import AdministrationOrgans from '../components/administrationOrgans'
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
@@ -294,23 +294,7 @@ class RawShareholderRegistry extends Component {
     return (
       <Fragment>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem
-            label="Persona "
-            {...formItemLayout}
-          >
-            {getFieldDecorator('personType', {
-               rules: [{
-                 required: true,
-                 message: 'Este campo es obligatorio.',
-               }]
-            })(
-               <RadioGroup>
-                 <RadioButton value="physical">Física</RadioButton>
-                 <RadioButton value="juridic">Jurídica</RadioButton>
-               </RadioGroup>
-             )}
-          </FormItem>
-          <ShareholderFields form={form} personType={getFieldValue('personType')} />
+          <Shareholders form={form} personType={getFieldValue('personType')} />
           <Divider />
           <FormItem>
             <Button type="primary" onClick={this.props.prev}>

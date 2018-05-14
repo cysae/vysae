@@ -13,7 +13,7 @@ class AddCompany extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 2,
+      current: 3,
     };
 
     this.next = this.next.bind(this)
