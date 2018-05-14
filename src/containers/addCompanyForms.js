@@ -316,9 +316,22 @@ class RawShareholderRegistry extends Component {
 class RawGoverningBodies extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      shareholders: [ '1-Dirk-Hornung', '2-Javi-Whatever' ]
+    this.state = { shareholders: this.getShareholderNames() }
+  }
+
+  componentDidMount() {
+    this.setState({ shareholders: this.getShareholderNames() })
+  }
+
+  getShareholderNames() {
+    const { getFieldValue } = this.props.form
+    const shareholderKeys = getFieldValue('shareholders')
+    const shareholderNames = []
+    for (const id of shareholderKeys) {
+      const name = (id+1)+'-'+getFieldValue(`${id}_prename`)+'-'+getFieldValue(`${id}_surname`)
+      shareholderNames.push(name)
     }
+    return shareholderNames
   }
 
   handleSubmit = (e) => {
