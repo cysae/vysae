@@ -25,13 +25,19 @@ const MyDivider = styled(Divider)`
 
 class Shareholder extends Component {
   render() {
-    const { form, id } = this.props
+    const { form, id, removeShareholder } = this.props
     const { getFieldDecorator, getFieldValue } = form;
     const personType = getFieldValue(`${id}_personType`)
+    const shareholderKeys = getFieldValue(`shareholders`)
 
     return (
       <Fragment>
-        <MyDivider orientation="left">{`${id+1}. Persona`}</MyDivider>
+        <MyDivider orientation="left">
+          {`${id+1}. Persona`}
+          {shareholderKeys.length > 1 ? (
+             <Icon style={{marginLeft: 10}} type="minus-circle-o" onClick={() => removeShareholder(id)}/>
+          ) : null}
+        </MyDivider>
         <FormItem
           label="Persona "
           {...formItemLayout}
@@ -241,6 +247,18 @@ class Shareholders extends Component {
     setFieldsValue(fieldsValue)
   }
 
+  removeShareholder = (id) => {
+    const { form } = this.props
+    const shareholderKeys = form.getFieldValue(`shareholders`);
+    if (shareholderKeys.length === 1) {
+      return;
+    }
+    const nextShareholderKeys = {}
+    nextShareholderKeys[`shareholders`] = shareholderKeys.filter(key => key !== id)
+
+    form.setFieldsValue(nextShareholderKeys);
+  }
+
   render() {
     const { form } = this.props
     const { getFieldDecorator, getFieldValue } = form
@@ -252,6 +270,7 @@ class Shareholders extends Component {
           key={id}
           id={id}
           form={form}
+          removeShareholder={this.removeShareholder}
         />
       )
     })
