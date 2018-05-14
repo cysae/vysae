@@ -20,7 +20,7 @@ class ShareholderRegistryOperationFields extends Component {
           label="Fecha de la operación"
           {...formItemLayout}
         >
-          {getFieldDecorator('operationDate', {
+          {getFieldDecorator(`${id}_operationDate`, {
              rules: [{
                required: true,
                message: 'Este campo es obligatorio.',
@@ -33,7 +33,7 @@ class ShareholderRegistryOperationFields extends Component {
           label="Tipo de operación:"
           {...formItemLayout}
         >
-          {getFieldDecorator('operationType', {
+          {getFieldDecorator(`${id}_operationType`, {
              rules: [{
                required: true,
                message: 'Este campo es obligatorio.',
@@ -49,7 +49,7 @@ class ShareholderRegistryOperationFields extends Component {
           label="Concepto:"
           {...formItemLayout}
         >
-          {getFieldDecorator('operationConcept', {
+          {getFieldDecorator(`${id}_operationConcept`, {
              rules: [{
                required: true,
                message: 'Este campo es obligatorio.',
