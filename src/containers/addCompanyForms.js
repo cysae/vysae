@@ -123,17 +123,28 @@ class RawSharesForm extends Component {
   isExtraValid() {
     const { getFieldValue } = this.props.form
     const socialCapital = getFieldValue('socialCapital')
+    const totalShareNumber = getFieldValue('numberOfShares')
+
     // total share number
-    let totalShareNumber = 0
+    let totalShareIntervalNumber = 0
     const shareIntervalIds = getFieldValue('shareInterval_ids')
     for (const id of shareIntervalIds) {
-      totalShareNumber += Math.abs(getFieldValue(`${id}_shareInterval_begin`)-getFieldValue(`${id}_shareInterval_end`))
+      totalShareIntervalNumber += Math.abs(getFieldValue(`${id}_shareInterval_begin`)-getFieldValue(`${id}_shareInterval_end`))+1
     }
-    console.log(totalShareNumber)
 
-    if (socialCapital < 100) {
-      this.setState({ error: "error" })
+
+    // number of shares have to coincide
+    if (totalShareNumber !== totalShareIntervalNumber) {
+      this.setState({ error: "El numero total de las participaciones no coincide con la suma sobre las numeraciones." })
       return false
+    }
+
+    // social capital has to coincide with shares and their corresponding values
+    const sharesHaveSameValue = getFieldValue('sharesHaveSameValue')
+    if(sharesHaveSameValue === 'yes') {
+      if (socialCapital !== totalShareIntervalNumber) {
+
+      }
     }
 
     return true

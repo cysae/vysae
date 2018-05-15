@@ -91,6 +91,7 @@ class ShareIntervals extends Component {
               })(
                  <InputNumber min={1} />
                )}
+              <span style={{marginLeft: 10}}> ambas inclusive.</span>
               {shareIntervalIds.length > 1 ? (
                  <Icon style={{marginLeft: 10}} type="minus-circle-o" disabled={shareIntervalIds.length === 1} onClick={() => this.removeShareIntervalField(k)}/>
               ) : null}
