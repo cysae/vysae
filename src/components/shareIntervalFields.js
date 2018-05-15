@@ -64,13 +64,13 @@ class ShareIntervals extends Component {
     const { fieldId } = this.state
 
     const shareIntervalIds = getFieldValue(`${fieldId}_ids`)
-    const formItems = shareIntervalIds.map((k, index) => {
+    const formItems = shareIntervalIds.map((id) => {
       return (
-        <Row key={index} type="flex">
+        <Row key={id} type="flex">
           <Col>
             <FormItem>
-              <span style={{marginRight: 10}}>{`${index+1}. Numeración: `}</span>
-        {getFieldDecorator(`${k}_${fieldId}_begin`, {
+              <span style={{marginRight: 10}}>{`${id+1}. Numeración: `}</span>
+              {getFieldDecorator(`${fieldId}_begin_${id}`, {
                  rules: [
                    {required: true, message: 'Este campo es obligatorio.'},
                    {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
@@ -83,7 +83,7 @@ class ShareIntervals extends Component {
           <Col>
             <FormItem>
               <span style={{margin: '0 10px 0 10px'}}>-</span>
-              {getFieldDecorator(`${k}_${fieldId}_end`, {
+              {getFieldDecorator(`${fieldId}_end_${id}`, {
                  rules: [
                    {required: true, message: 'Este campo es obligatorio.'},
                    {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
@@ -93,7 +93,11 @@ class ShareIntervals extends Component {
                )}
               <span style={{marginLeft: 10}}> ambas inclusive.</span>
               {shareIntervalIds.length > 1 ? (
-                 <Icon style={{marginLeft: 10}} type="minus-circle-o" disabled={shareIntervalIds.length === 1} onClick={() => this.removeShareIntervalField(k)}/>
+                 <Icon
+                   style={{marginLeft: 10}}
+                   type="minus-circle-o"
+                   disabled={shareIntervalIds.length === 1}
+                   onClick={() => this.removeShareIntervalField(id)}/>
               ) : null}
             </FormItem>
           </Col>

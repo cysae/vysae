@@ -16,11 +16,11 @@ class ShareIntervalValueFields extends Component {
     super(props)
 
     this.state = {
-      uuid: 0,
-      fieldId: 'shareIntervalType',
+      id: 0,
+      fieldId: 'shareValueType',
       shareTypeField: <MyInputNumber min={1} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />,
       shareTypeLabel: 'Valor nominal de cada participación',
-      shareTypeRootId: 'shareIntervalValue'
+      shareTypeRootId: 'shareValue'
     }
     if(props.fieldId) {
       this.state.fieldId = props.fieldId
@@ -34,37 +34,39 @@ class ShareIntervalValueFields extends Component {
     if(props.shareTypeField) {
       this.state.shareTypeField = props.shareTypeField
     }
+
+    props.form.getFieldDecorator(`${this.state.fieldId}_ids`, { initialValue: [] })
   }
 
   componentDidMount() {
-    const numberOfShareIntervalValueFields = this.props.form.getFieldValue(`${this.state.fieldId}Keys`).length
+    const numberOfShareIntervalValueFields = this.props.form.getFieldValue(`${this.state.fieldId}_ids`).length
     if(numberOfShareIntervalValueFields === 0) {
       this.addShareIntervalValueField()
     }
   }
 
-  removeShareIntervalValueField = (k) => {
+  removeShareIntervalValueField = (id) => {
     const { form } = this.props
     const { fieldId } = this.state
-    const shareIntervalValueKeys = form.getFieldValue(`${fieldId}Keys`);
-    if (shareIntervalValueKeys.length === 1) {
+    const shareIntervalValueIds = form.getFieldValue(`${fieldId}_ids`);
+    if (shareIntervalValueIds.length === 1) {
       return;
     }
 
-    const nextShareIntervalValueKeys = {}
-    nextShareIntervalValueKeys[`${fieldId}Keys`] = shareIntervalValueKeys.filter(key => key !== k)
+    const nextShareIntervalValueIds = {}
+    nextShareIntervalValueIds[`${fieldId}_ids`] = shareIntervalValueIds.filter(key => key !== id)
 
-    form.setFieldsValue(nextShareIntervalValueKeys);
+    form.setFieldsValue(nextShareIntervalValueIds);
   }
 
   addShareIntervalValueField = () => {
     const { form } = this.props;
-    const { uuid, fieldId  } = this.state;
-    const shareIntervalValueKeys = form.getFieldValue(`${fieldId}Keys`);
-    const nextShareIntervalValueKeys = shareIntervalValueKeys.concat(uuid);
-    this.setState({ uuid: uuid+1 })
+    const { id, fieldId  } = this.state;
+    const shareIntervalValueIds = form.getFieldValue(`${fieldId}_ids`);
+    const nextShareIntervalValueIds = shareIntervalValueIds.concat(id);
+    this.setState({ id: id+1 })
     const fieldsValue = {}
-    fieldsValue[`${fieldId}Keys`] = nextShareIntervalValueKeys
+    fieldsValue[`${fieldId}_ids`] = nextShareIntervalValueIds
     form.setFieldsValue(fieldsValue)
   }
 
@@ -72,18 +74,17 @@ class ShareIntervalValueFields extends Component {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { fieldId, shareTypeLabel, shareTypeRootId, shareTypeField } = this.state
 
-    getFieldDecorator(`${fieldId}Keys`, { initialValue: [] })
-    const shareIntervalValueKeys = getFieldValue(`${fieldId}Keys`)
-    const formItems = shareIntervalValueKeys.map((k, index) => {
+    const shareIntervalValueIds = getFieldValue(`${fieldId}_ids`)
+    const formItems = shareIntervalValueIds.map((id) => {
 
       return (
-        <Fragment key={index}>
-          <h4>{`Tipo ${index+1}`}</h4>
+        <Fragment key={id}>
+          <h4>{`Tipo ${id+1}`}</h4>
           <FormItem
             label={shareTypeLabel}
             labelCol={{span: 12}}
           >
-            {getFieldDecorator(`${shareTypeRootId}_${index}`, {
+            {getFieldDecorator(`${shareTypeRootId}_${id}`, {
                rules: [{
                  required: true,
                  message: "Este campo es obligatorio.",
@@ -94,16 +95,19 @@ class ShareIntervalValueFields extends Component {
             })(
                shareTypeField
              )}
-            {shareIntervalValueKeys.length > 1 ? (
+            {shareIntervalValueIds.length > 1 ? (
                <Icon
                  className="dynamic-delete-button"
                  type="minus-circle-o"
-                 disabled={shareIntervalValueKeys.length === 1}
-                 onClick={() => this.removeShareIntervalValueField(k)}
+                 disabled={shareIntervalValueIds.length === 1}
+                 onClick={() => this.removeShareIntervalValueField(id)}
                />
             ) : null}
           </FormItem>
-          <ShareIntervalFields isValueField={true} form={this.props.form} fieldId={`shareIntervalValueField_${index}`} />
+          <ShareIntervalFields
+            isValueField={true}
+            form={this.props.form}
+            fieldId={`shareValueType_${id}`} />
           <Divider dashed />
         </Fragment>
       )
@@ -111,7 +115,7 @@ class ShareIntervalValueFields extends Component {
 
     return (
       <Row>
-        <ContainerCol span={10} offset={12}>
+        <ContainerCol span={12} offset={12}>
           {formItems}
           <Button type="dashed" onClick={this.addShareIntervalValueField} style={{ width: '100%' }}>
             <Icon type="plus" /> Añadir tipo de participación

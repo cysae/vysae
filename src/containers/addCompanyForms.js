@@ -122,28 +122,44 @@ class RawSharesForm extends Component {
 
   isExtraValid() {
     const { getFieldValue } = this.props.form
-    const socialCapital = getFieldValue('socialCapital')
+    const capital = getFieldValue('capital')
     const totalShareNumber = getFieldValue('numberOfShares')
 
     // total share number
     let totalShareIntervalNumber = 0
     const shareIntervalIds = getFieldValue('shareInterval_ids')
     for (const id of shareIntervalIds) {
-      totalShareIntervalNumber += Math.abs(getFieldValue(`${id}_shareInterval_begin`)-getFieldValue(`${id}_shareInterval_end`))+1
+      totalShareIntervalNumber += Math.abs(getFieldValue(`shareInterval_begin_${id}`)-getFieldValue(`shareInterval_end_${id}`))+1
     }
 
 
     // number of shares have to coincide
     if (totalShareNumber !== totalShareIntervalNumber) {
-      this.setState({ error: "El numero total de las participaciones no coincide con la suma sobre las numeraciones." })
+      this.setState({ error: `El numero total de las participaciones (${totalShareNumber}) no coincide con la suma sobre las numeraciones (${totalShareIntervalNumber}).` })
       return false
     }
 
     // social capital has to coincide with shares and their corresponding values
+    let totalShareValue = 0
     const sharesHaveSameValue = getFieldValue('sharesHaveSameValue')
-    if(sharesHaveSameValue === 'yes') {
-      if (socialCapital !== totalShareIntervalNumber) {
+    if(sharesHaveSameValue === 'no') {
+      const shareValueTypeIds = getFieldValue('shareValueType_ids')
+      for(const valueTypeId of shareValueTypeIds) {
+        const shareValue = getFieldValue(`shareValue_${valueTypeId}`)
+        const shareIntervalIds = getFieldValue(`shareValueType_${valueTypeId}_ids`)
+        for(const id of shareIntervalIds) {
+          const shareCountOfInterval = Math.abs(
+            getFieldValue(`shareValueType_${valueTypeId}_begin_${id}`)-getFieldValue(`shareValueType_${valueTypeId}_end_${id}`)
+          )+1
+          totalShareValue += shareCountOfInterval*shareValue
+        }
+      }
 
+      if(capital !== totalShareValue) {
+        this.setState({
+          error: `La suma del valor de las participaciones (${totalShareValue}€) no coincide con el capital social.`
+        })
+        return false
       }
     }
 
@@ -162,7 +178,7 @@ class RawSharesForm extends Component {
             label="Capital social"
             labelCol={{span: 12}}
           >
-            {getFieldDecorator('socialCapital', {
+            {getFieldDecorator('capital', {
                rules: [
                  {pattern: /^.*$/, message: 'Tiene que ser un número entero positivo'},
                  {required: true, message: 'Este campo es obligatorio'},
@@ -258,7 +274,7 @@ class RawSharesForm extends Component {
             this.state.error ? (
               <Alert
                 type="error"
-                message="Error"
+                message={this.state.error}
                 closable
                 banner
                 afterClose={this.handleErrorClose}
