@@ -58,14 +58,14 @@ function Majority(props) {
            }]
         })(
            <RadioGroup>
-             {isUsualMajority && <RadioButton value="relativeMajority">mayoría simple</RadioButton>}
-             <RadioButton value="favorableMajority">mayoría favorable</RadioButton>
-             <RadioButton value="favorableMajorityWithMinimum">mayoría favorable con minimum</RadioButton>
+             {isUsualMajority && <RadioButton value="type1">Opción 1</RadioButton>}
+             <RadioButton value="type2">Opción 2</RadioButton>
+             <RadioButton value="type3">Opción 3</RadioButton>
            </RadioGroup>
          )}
       </FormItem>
 
-      { getFieldValue(`${id}_majorityType`) === 'relativeMajority' && (
+      { getFieldValue(`${id}_majorityType`) === 'type1' && (
           <Fragment>
             <FormItem>
               <span>
@@ -75,7 +75,7 @@ function Majority(props) {
           </Fragment>
       )}
 
-      {getFieldValue(`${id}_majorityType`) === 'favorableMajority' && (
+      {getFieldValue(`${id}_majorityType`) === 'type2' && (
          <Fragment>
            <FormItem>
              <span>Se requiere el voto favorable de, al menos, el </span>
@@ -98,7 +98,7 @@ function Majority(props) {
          </Fragment>
       )}
 
-      {getFieldValue(`${id}_majorityType`) === 'favorableMajorityWithMinimum' && (
+      {getFieldValue(`${id}_majorityType`) === 'type3' && (
          <Row>
            <FormItem>
              <span>Se requiere el voto favorable de, al menos, el </span>

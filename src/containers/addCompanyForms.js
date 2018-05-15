@@ -6,7 +6,7 @@ import { saveCompanyForm } from '../actions/index'
 import ShareIntervalFields from '../components/shareIntervalFields'
 import ShareIntervalValueFields from '../components/shareIntervalValueFields'
 import ShareSuffrageFields from '../components/shareSuffrageFields'
-import DefineAgreementRules from '../components/defineAgreementRules'
+import DefineAgreementRules from '../components/majorities'
 import Shareholders from '../components/shareholderFields'
 import AdministrationOrgans from '../components/administrationOrgans'
 const RadioButton = Radio.Button
@@ -316,10 +316,10 @@ class RawAgreementRules extends Component {
     return (
       <Fragment>
         <Form onSubmit={this.handleSubmit} layout='inline'>
-          <FormItem
-            label="¿Tu empresa está sometida al régimen legal supletorio establecido en la (LSC)?"
-            {...formItemLayout}
-          >
+          <FormItem>
+            <span style={{marginRight: 10}}>
+              ¿Tu empresa está sometida al régimen legal supletorio establecido en la (LSC)?
+            </span>
             {getFieldDecorator('underliesLSC', {
                rules: [{
                  required: true,
