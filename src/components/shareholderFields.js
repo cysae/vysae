@@ -54,7 +54,83 @@ class Shareholder extends Component {
              </RadioGroup>
            )}
         </FormItem>
-        <h3>Attributos Persona Física</h3>
+
+          {/* jurdic person */}
+          {(personType === 'juridic') && (
+             <Fragment>
+               <h3>Persona jurídica</h3>
+               <FormItem
+                 label="Denominación social"
+                 {...formItemLayout}
+               >
+                 {getFieldDecorator(`${id}_companyName`, {
+                    rules: [{
+                      required: true,
+                      message: 'Este campo es obligatorio.',
+                    }]
+                 })(
+                    <Input />
+                  )}
+               </FormItem>
+               <FormItem
+                 label="NIF"
+                 {...formItemLayout}
+               >
+                 {getFieldDecorator(`${id}_nif`, {
+                    rules: [{
+                      required: true,
+                      message: 'Este campo es obligatorio.',
+                    }]
+                 })(
+                    <Input />
+                  )}
+               </FormItem>
+               <FormItem
+                 label="Domicilio social"
+                 {...formItemLayout}
+               >
+                 {getFieldDecorator(`${id}_placeOfBusiness`, {
+                    rules: [{
+                      required: true,
+                      message: 'Este campo es obligatorio.',
+                    }]
+                 })(
+                    <Input />
+                  )}
+               </FormItem>
+               <FormItem
+                 label="Nacionalidad"
+                 {...formItemLayout}
+               >
+                 {getFieldDecorator(`${id}_companyNationality`, {
+                    rules: [{
+                      required: true,
+                      message: 'Este campo es obligatorio.',
+                    }]
+                 })(
+                    <Input />
+                  )}
+               </FormItem>
+               <FormItem
+                 label="Datos de registro"
+                 {...formItemLayout}
+               >
+                 {getFieldDecorator(`${id}_companyRegister`, {
+                    rules: [{
+                      required: true,
+                      message: 'Este campo es obligatorio.',
+                    }]
+                 })(
+                    <Input />
+                  )}
+               </FormItem>
+             </Fragment>
+          )}
+
+        <h3>
+          Persona física
+          {personType == 'juridic' && (' representante')}
+        </h3>
           <FormItem
             label="Nombre"
             {...formItemLayout}
@@ -135,77 +211,6 @@ class Shareholder extends Component {
           </FormItem>
           <Divider dashed/>
 
-          {/* jurdic person */}
-          {(personType === 'juridic') && (
-             <Fragment>
-               <h3>Attributos Persona Jurídica</h3>
-               <FormItem
-                 label="Denominación social"
-                 {...formItemLayout}
-               >
-                 {getFieldDecorator(`${id}_companyName`, {
-                    rules: [{
-                      required: true,
-                      message: 'Este campo es obligatorio.',
-                    }]
-                 })(
-                    <Input />
-                  )}
-               </FormItem>
-               <FormItem
-                 label="NIF"
-                 {...formItemLayout}
-               >
-                 {getFieldDecorator(`${id}_nif`, {
-                    rules: [{
-                      required: true,
-                      message: 'Este campo es obligatorio.',
-                    }]
-                 })(
-                    <Input />
-                  )}
-               </FormItem>
-               <FormItem
-                 label="Domicilio social"
-                 {...formItemLayout}
-               >
-                 {getFieldDecorator(`${id}_placeOfBusiness`, {
-                    rules: [{
-                      required: true,
-                      message: 'Este campo es obligatorio.',
-                    }]
-                 })(
-                    <Input />
-                  )}
-               </FormItem>
-               <FormItem
-                 label="Nacionalidad"
-                 {...formItemLayout}
-               >
-                 {getFieldDecorator(`${id}_companyNationality`, {
-                    rules: [{
-                      required: true,
-                      message: 'Este campo es obligatorio.',
-                    }]
-                 })(
-                    <Input />
-                  )}
-               </FormItem>
-               <FormItem
-                 label="Datos de registro"
-                 {...formItemLayout}
-               >
-                 {getFieldDecorator(`${id}_companyRegister`, {
-                    rules: [{
-                      required: true,
-                      message: 'Este campo es obligatorio.',
-                    }]
-                 })(
-                    <Input />
-                  )}
-               </FormItem>
-             </Fragment>
-          )}
 
           <ShareholderRegistryOperationFields id={id} form={form} />
 

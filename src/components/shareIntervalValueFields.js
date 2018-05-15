@@ -18,7 +18,7 @@ class ShareIntervalValueFields extends Component {
     this.state = {
       id: 0,
       fieldId: 'shareValueType',
-      shareTypeField: <MyInputNumber min={1} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />,
+      shareTypeField: <MyInputNumber min={0} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />,
       shareTypeLabel: 'Valor nominal de cada participación',
       shareTypeRootId: 'shareValue'
     }
