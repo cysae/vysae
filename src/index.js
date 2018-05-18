@@ -46,7 +46,7 @@ ReactDOM.render(
           >
             <Menu.Item key="1"><Link to="/">Dashboard</Link></Menu.Item>
             <Menu.Item key="3"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
-            <Menu.Item key="3"><Link to="/info/company">Empresa</Link></Menu.Item>
+            <Menu.Item key="3"><Link to="/info/company">Info</Link></Menu.Item>
           </Menu>
         </Header>
         <Content style={{ padding: '0 50px' }}>
@@ -56,7 +56,7 @@ ReactDOM.render(
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
             <Route exact path="/" component={Dashboard}/>
             <Route path="/añadirSociedad" component={AddCompany}/>
-            <Route path="/info/company" component={Info}/>
+            <Route path="/info" component={Info}/>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
