@@ -3,6 +3,8 @@ import { Row, Col, Menu } from 'antd'
 import { Route } from 'react-router'
 import { Link } from 'react-router-dom'
 import Company from './company.js'
+import { Profile } from './shareholder.js'
+import VotingSystem from './votingSystem.js'
 
 export default class Info extends Component {
   render() {
@@ -26,8 +28,8 @@ export default class Info extends Component {
         </Col>
         <Col span={20}>
           <Route path="/info/company" component={Company} />
-          <Route path="/info/profile" component={Company} />
-          <Route path="/info/voting-system" component={Company} />
+          <Route path="/info/profile" component={Profile} />
+          <Route path="/info/voting-system" component={VotingSystem} />
           <Route path="/info/shareholder-registry" component={Company} />
         </Col>
       </Row>
