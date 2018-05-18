@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import Dashboard from './dashboard'
-import AddCompany from './components/addCompany'
 import registerServiceWorker from './registerServiceWorker'
 // Antd
 import { Layout, Menu, Breadcrumb } from 'antd'
@@ -16,6 +14,10 @@ import reducers from './reducers/index.js'
 import createHistory from 'history/createBrowserHistory'
 import { Route } from 'react-router'
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
+// Components
+import Dashboard from './dashboard'
+import AddCompany from './components/addCompany'
+import Info from './components/info'
 
 import './App.css'
 
@@ -44,6 +46,7 @@ ReactDOM.render(
           >
             <Menu.Item key="1"><Link to="/">Dashboard</Link></Menu.Item>
             <Menu.Item key="3"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
+            <Menu.Item key="3"><Link to="/info/company">Empresa</Link></Menu.Item>
           </Menu>
         </Header>
         <Content style={{ padding: '0 50px' }}>
@@ -53,6 +56,7 @@ ReactDOM.render(
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
             <Route exact path="/" component={Dashboard}/>
             <Route path="/añadirSociedad" component={AddCompany}/>
+            <Route path="/info/company" component={Info}/>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>

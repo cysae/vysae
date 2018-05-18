@@ -106,7 +106,7 @@ class ShareIntervals extends Component {
     })
 
     return (
-      <ShareIntervalsContainer isValueField={isValueField}>
+      <ShareIntervalsContainer style={{...this.props.style}}isValueField={isValueField}>
         {formItems}
         <FormItem style={{margin: 0}}>
           <Button type="dashed" onClick={this.addShareIntervalField} style={{width: '100%'}}>

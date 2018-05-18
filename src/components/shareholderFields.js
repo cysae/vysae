@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Input, Divider, Radio, Button, Icon } from 'antd'
-import ShareholderRegistryOperationFields from './shareholderRegistryOperationFields'
+import ShareIntervalFields from './shareIntervalFields'
 import { formItemLayout } from '../containers/addCompanyForms'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -27,7 +27,7 @@ class Shareholder extends Component {
   render() {
     const { form, id, removeShareholder } = this.props
     const { getFieldDecorator, getFieldValue } = form;
-    const personType = getFieldValue(`${id}_personType`)
+    const personType = getFieldValue(`personType_${id}`)
     const shareholderKeys = getFieldValue(`shareholders`)
 
     return (
@@ -42,7 +42,7 @@ class Shareholder extends Component {
           label="Persona "
           {...formItemLayout}
         >
-          {getFieldDecorator(`${id}_personType`, {
+          {getFieldDecorator(`personType_${id}`, {
              rules: [{
                required: true,
                message: 'Este campo es obligatorio.',
@@ -63,7 +63,7 @@ class Shareholder extends Component {
                  label="Denominación social"
                  {...formItemLayout}
                >
-                 {getFieldDecorator(`${id}_companyName`, {
+                 {getFieldDecorator(`companyName_${id}`, {
                     rules: [{
                       required: true,
                       message: 'Este campo es obligatorio.',
@@ -76,7 +76,7 @@ class Shareholder extends Component {
                  label="NIF"
                  {...formItemLayout}
                >
-                 {getFieldDecorator(`${id}_nif`, {
+                 {getFieldDecorator(`nif_${id}`, {
                     rules: [{
                       required: true,
                       message: 'Este campo es obligatorio.',
@@ -89,7 +89,7 @@ class Shareholder extends Component {
                  label="Domicilio social"
                  {...formItemLayout}
                >
-                 {getFieldDecorator(`${id}_placeOfBusiness`, {
+                 {getFieldDecorator(`placeOfBusiness_${id}`, {
                     rules: [{
                       required: true,
                       message: 'Este campo es obligatorio.',
@@ -102,7 +102,7 @@ class Shareholder extends Component {
                  label="Nacionalidad"
                  {...formItemLayout}
                >
-                 {getFieldDecorator(`${id}_companyNationality`, {
+                 {getFieldDecorator(`companyNationality_${id}`, {
                     rules: [{
                       required: true,
                       message: 'Este campo es obligatorio.',
@@ -115,7 +115,7 @@ class Shareholder extends Component {
                  label="Datos de registro"
                  {...formItemLayout}
                >
-                 {getFieldDecorator(`${id}_companyRegister`, {
+                 {getFieldDecorator(`companyRegister_${id}`, {
                     rules: [{
                       required: true,
                       message: 'Este campo es obligatorio.',
@@ -124,6 +124,7 @@ class Shareholder extends Component {
                     <Input />
                   )}
                </FormItem>
+               <Divider dashed/>
              </Fragment>
           )}
 
@@ -135,7 +136,7 @@ class Shareholder extends Component {
             label="Nombre"
             {...formItemLayout}
           >
-            {getFieldDecorator(`${id}_prename`, {
+            {getFieldDecorator(`prename_${id}`, {
                rules: [{
                  required: true,
                  message: 'Este campo es obligatorio.',
@@ -148,7 +149,7 @@ class Shareholder extends Component {
             label="Apellidos"
             {...formItemLayout}
           >
-            {getFieldDecorator(`${id}_surname`, {
+            {getFieldDecorator(`surname_${id}`, {
                rules: [{
                  required: true,
                  message: 'Este campo es obligatorio.',
@@ -161,7 +162,7 @@ class Shareholder extends Component {
             label="DNI"
             {...formItemLayout}
           >
-            {getFieldDecorator(`${id}_dni`, {
+            {getFieldDecorator(`dni_${id}`, {
                rules: [{
                  required: true,
                  message: 'Este campo es obligatorio.',
@@ -174,7 +175,7 @@ class Shareholder extends Component {
             label="Domiciolio"
             {...formItemLayout}
           >
-            {getFieldDecorator(`${id}_permanentAddress`, {
+            {getFieldDecorator(`permanentAddress_${id}`, {
                rules: [{
                  required: true,
                  message: 'Este campo es obligatorio.',
@@ -187,7 +188,7 @@ class Shareholder extends Component {
             label="Nacionalidad"
             {...formItemLayout}
           >
-            {getFieldDecorator(`${id}_nationality`, {
+            {getFieldDecorator(`nationality_${id}`, {
                rules: [{
                  required: true,
                  message: 'Este campo es obligatorio.',
@@ -200,7 +201,7 @@ class Shareholder extends Component {
             label="Email"
             {...formItemLayout}
           >
-            {getFieldDecorator(`${id}_email`, {
+            {getFieldDecorator(`email_${id}`, {
                rules: [{
                  required: true,
                  message: 'Este campo es obligatorio.',
@@ -211,9 +212,12 @@ class Shareholder extends Component {
           </FormItem>
           <Divider dashed/>
 
-
-          <ShareholderRegistryOperationFields id={id} form={form} />
-
+          <h3>Participaciones</h3>
+          <ShareIntervalFields
+            form={form}
+            isValueField={true}
+            fieldId={`shareholderShareInterval_${id}`}
+          />
       </Fragment>
     )
   }
@@ -283,7 +287,7 @@ class Shareholders extends Component {
     return (
       <Container>
         {shareholders}
-        <FormItem style={{margin: 0}}>
+        <FormItem style={{margin: '16px 0 0 0'}}>
           <Button type="dashed" onClick={this.addShareholder} style={{width: '100%'}}>
             <Icon type="plus" /> Añadir socio
           </Button>

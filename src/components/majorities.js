@@ -52,30 +52,19 @@ function Majority(props) {
       {!isNaN(id) && (<Icon style={{marginLeft: 10}} type="minus-circle-o" onClick={() => removeMajorityType(id)}/>)}
       <MyDivider orientation="left">Tipo de mayoría</MyDivider>
       <FormItem>
-        {getFieldDecorator(`${id}_majorityType`, {
+        {getFieldDecorator(`${id}_majorityOption`, {
            rules: [{
              required: true, message: 'este campo es obligatorio.',
            }]
         })(
            <RadioGroup>
-             {isUsualMajority && <RadioButton value="option1">Opción 1</RadioButton>}
+             <RadioButton value="option1">Opción 1</RadioButton>
              <RadioButton value="option2">Opción 2</RadioButton>
-             <RadioButton value="option3">Opción 3</RadioButton>
            </RadioGroup>
          )}
       </FormItem>
 
-      { getFieldValue(`${id}_majorityType`) === 'option1' && (
-          <Fragment>
-            <FormItem>
-              <span>
-                Se requiere el voto favorable de la mayoría simple de los votos correspondientes a las participaciones sociales en que se divida el capital social.
-              </span>
-            </FormItem>
-          </Fragment>
-      )}
-
-      {getFieldValue(`${id}_majorityType`) === 'option2' && (
+      {getFieldValue(`${id}_majorityOption`) === 'option1' && (
          <Fragment>
            <FormItem>
              <span>Se requiere el voto favorable de, al menos, el </span>
@@ -98,7 +87,7 @@ function Majority(props) {
          </Fragment>
       )}
 
-      {getFieldValue(`${id}_majorityType`) === 'option3' && (
+      {getFieldValue(`${id}_majorityOption`) === 'option2' && (
          <Row>
            <FormItem>
              <span>Se requiere el voto favorable de, al menos, el </span>
