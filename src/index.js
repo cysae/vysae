@@ -18,6 +18,7 @@ import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
 import Dashboard from './dashboard'
 import AddCompany from './components/addCompany'
 import Info from './components/info'
+import Meetings from './components/meetings'
 
 import './App.css'
 
@@ -46,6 +47,7 @@ ReactDOM.render(
           >
             <Menu.Item key="dashboard"><Link to="/">Dashboard</Link></Menu.Item>
             <Menu.Item key="info"><Link to="/info/company">Info</Link></Menu.Item>
+            <Menu.Item key="info"><Link to="/meetings/next">Juntas</Link></Menu.Item>
             <Menu.Item key="addCompany"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
           </Menu>
         </Header>
@@ -57,6 +59,7 @@ ReactDOM.render(
             <Route exact path="/" component={Dashboard}/>
             <Route path="/añadirSociedad" component={AddCompany}/>
             <Route path="/info" component={Info}/>
+            <Route path="/meetings" component={Meetings}/>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
