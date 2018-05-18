@@ -16,11 +16,19 @@ export default class Info extends Component {
             <Menu.Item key="profile">
               <Link to='/info/profile'>Perfil</Link>
             </Menu.Item>
+            <Menu.Item key="votingSystem">
+              <Link to='/info/voting-system'>Sistema de votación</Link>
+            </Menu.Item>
+            <Menu.Item key="shareholderRegistry">
+              <Link to='/info/shareholder-registry'>Libro de socios</Link>
+            </Menu.Item>
           </Menu>
         </Col>
         <Col span={20}>
           <Route path="/info/company" component={Company} />
           <Route path="/info/profile" component={Company} />
+          <Route path="/info/voting-system" component={Company} />
+          <Route path="/info/shareholder-registry" component={Company} />
         </Col>
       </Row>
     )

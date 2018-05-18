@@ -44,9 +44,9 @@ ReactDOM.render(
             defaultSelectedKeys={['1']}
             style={{ lineHeight: '64px' }}
           >
-            <Menu.Item key="1"><Link to="/">Dashboard</Link></Menu.Item>
-            <Menu.Item key="3"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
-            <Menu.Item key="3"><Link to="/info/company">Info</Link></Menu.Item>
+            <Menu.Item key="dashboard"><Link to="/">Dashboard</Link></Menu.Item>
+            <Menu.Item key="info"><Link to="/info/company">Info</Link></Menu.Item>
+            <Menu.Item key="addCompany"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
           </Menu>
         </Header>
         <Content style={{ padding: '0 50px' }}>
