@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import Company from './company.js'
 import { Profile } from './shareholder.js'
 import VotingSystem from './votingSystem.js'
+import ShareholderRegister from './shareholderRegister.js'
 
 export default class Info extends Component {
   render() {
@@ -30,7 +31,7 @@ export default class Info extends Component {
           <Route path="/info/company" component={Company} />
           <Route path="/info/profile" component={Profile} />
           <Route path="/info/voting-system" component={VotingSystem} />
-          <Route path="/info/shareholder-registry" component={Company} />
+          <Route path="/info/shareholder-registry" component={ShareholderRegister} />
         </Col>
       </Row>
     )
