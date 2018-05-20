@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { Row, Col, Menu } from 'antd'
 import { Route } from 'react-router'
 import { Link } from 'react-router-dom'
-import Company from './company.js'
+import NextMeeting from './nextMeeting.js'
+import AnnounceMeeting from './announceMeeting.js'
 
 export default class Meetings extends Component {
   render() {
@@ -10,19 +11,20 @@ export default class Meetings extends Component {
       <Row type="flex">
         <Col span={4}>
           <Menu>
-            <Menu.Item key="next">
+            <Menu.Item key="nextMeeting">
               <Link to='/meetings/next'>Próxima Junta</Link>
             </Menu.Item>
-            <Menu.Item key="announce">
+            <Menu.Item key="announceMeeting">
               <Link to='/meetings/announce'>Convocatoria</Link>
             </Menu.Item>
-            <Menu.Item key="history">
+            <Menu.Item key="meetingHistory">
               <Link to='/meetings/history'>Historial de Juntas</Link>
             </Menu.Item>
           </Menu>
         </Col>
         <Col span={20}>
-          <Route path="/meetings/next" component={Company} />
+          <Route path="/meetings/next" component={NextMeeting} />
+          <Route path="/meetings/announce" component={AnnounceMeeting} />
         </Col>
       </Row>
     )

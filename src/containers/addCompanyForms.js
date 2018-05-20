@@ -7,7 +7,7 @@ import ShareIntervalFields from '../components/shareIntervalFields'
 import ShareIntervalValueFields from '../components/shareIntervalValueFields'
 import ShareSuffrageFields from '../components/shareSuffrageFields'
 import DefineAgreementRules from '../components/majorities'
-import Shareholders from '../components/shareholderFields'
+import Shareholders from '../components/shareholder'
 import AdministrationOrgans from '../components/administrationOrgans'
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
@@ -65,36 +65,34 @@ class RawBasicForm extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Fragment>
-        <Form layout="vertical" onSubmit={this.handleSubmit}>
-          <FormItem
-            label="Denominación social"
-          >
-            {getFieldDecorator('name', {
-               rules: [{ required: true, message: 'Es obligatorio.' }],
-            })(<Input />)}
-          </FormItem>
-          <FormItem
-            label="Domicilio Social"
-          >
-            {getFieldDecorator('registeredOffice', {
-               rules: [{ required: true, message: 'Es obligatorio.' }],
-            })(<Input />)}
-          </FormItem>
-          <FormItem
-            label="NIF"
-          >
-            {getFieldDecorator('nif', {
-               rules: [{ required: true, message: 'Es obligatorio.' }],
-            })(<Input />)}
-          </FormItem>
-          <FormItem>
-            <Button type="primary" htmlType="submit">
-              Continuar
-            </Button>
-          </FormItem>
-        </Form>
-      </Fragment>
+      <Form layout="vertical" onSubmit={this.handleSubmit}>
+        <FormItem
+          label="Denominación social"
+        >
+          {getFieldDecorator('name', {
+             rules: [{ required: true, message: 'Es obligatorio.' }],
+          })(<Input />)}
+        </FormItem>
+        <FormItem
+          label="Domicilio Social"
+        >
+          {getFieldDecorator('registeredOffice', {
+             rules: [{ required: true, message: 'Es obligatorio.' }],
+          })(<Input />)}
+        </FormItem>
+        <FormItem
+          label="NIF"
+        >
+          {getFieldDecorator('nif', {
+             rules: [{ required: true, message: 'Es obligatorio.' }],
+          })(<Input />)}
+        </FormItem>
+        <FormItem>
+          <Button type="primary" htmlType="submit">
+            Continuar
+          </Button>
+        </FormItem>
+      </Form>
     );
   }
 }
