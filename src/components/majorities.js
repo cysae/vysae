@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Input, InputNumber, Radio, Divider, Select, Row, Col, Button, Icon } from 'antd'
+import AgreementSelector from './agreementSelector.js'
 import { formItemLayout } from '../containers/addCompanyForms'
 import styled from 'styled-components'
 const FormItem = Form.Item
@@ -39,11 +40,8 @@ function Majority(props) {
   const {
     isUsualMajority,
     agreementTypes,
-    addAgreementInput,
     title,
     id,
-    handleAddAgreementInput,
-    addAgreementType
   } = props
 
   return (
@@ -207,30 +205,10 @@ function Majority(props) {
       </FormItem>
       {!isUsualMajority && (
          <Row>
-           <FormItem style={{margin: 0}}>
-             <span>Selecciona tipos de acuerdos: </span>
-             {getFieldDecorator(`${id}_selectedReinforcedAgreementTypes`, {
-                rules: [{
-                  required: true,
-                  message: 'Este campo es obligatorio.',
-                }]
-             })(
-                <Select
-                  mode="multiple"
-                  placeholder="Selecciona"
-                  style={{width: '100%'}}
-                  >
-                  {agreementTypes.map((type) => <Option key={type}>{type}</Option>)}
-                </Select>
-              )}
-             <Search
-               placeholder="Introducir más tipos de acuerdos"
-               onChange={handleAddAgreementInput}
-               onSearch={addAgreementType}
-               value={addAgreementInput}
-               enterButton="Añadir Tipo de Acuerdo"
-             />
-           </FormItem>
+           <AgreementSelector
+             form={form}
+             fieldId={`${id}_selectedReinforcedAgreementTypes`}
+           />
          </Row>
       )}
     </MajorityContainer>
@@ -240,73 +218,7 @@ function Majority(props) {
 
 class DefineAgreementRules extends Component {
   state = {
-    addAgreementInput: null,
-    agreementTypes: [
-      'Aumento o reducción de capital',
-      'Autorización a administradores para que se dediquen a actividad inmersa en el objecto social',
-      'Autorización a administradores para que se dediquen a actividad inmersa en el objeto social',
-      'Exclusión y separación de socios',
-      'Cambio de domicilio',
-      'Supresión o limitación del derecho de prederencia en aumentos de capital',
-      'Modificación estructural',
-      'Cesión global de activo y pasivo',
-    ],
-    id: 0,
-  }
-
-  handleAddAgreementInput = (e) => {
-    this.setState({ addAgreementInput: e.target.value })
-  }
-
-  addAgreementType = (agreementType) => {
-    if(agreementType.length !== 0) {
-      let selectedReinforcedAgreementTypes = this.props.form.getFieldValue('selectedReinforcedAgreementTypes')
-      if(!selectedReinforcedAgreementTypes) {
-        selectedReinforcedAgreementTypes = []
-      }
-      const agreementTypeOptions = this.state.agreementTypes;
-
-      // check if type is already in selected
-      let isAlreadySelected = false
-      for (const type of selectedReinforcedAgreementTypes) {
-        if(type === agreementType) {
-          isAlreadySelected = true
-          break
-        }
-      }
-
-      // check if type is already in selection list
-      let isAlreadyInSelectOptions = false
-      for (const option of agreementTypeOptions) {
-        if(option === agreementType) {
-          isAlreadyInSelectOptions = true
-          break
-        }
-      }
-
-      if(!isAlreadyInSelectOptions) {
-        // add to select options
-        agreementTypeOptions.push(agreementType)
-        this.setState({
-          addAgreementInput: null,
-          agreementTypes: agreementTypeOptions,
-        })
-      }
-
-      if(!isAlreadySelected) {
-        // mark as selected
-        selectedReinforcedAgreementTypes.push(agreementType)
-        this.props.form.setFields({
-          selectedReinforcedAgreementTypes: {
-            value: selectedReinforcedAgreementTypes
-          }
-        })
-        if(isAlreadyInSelectOptions) {
-          this.setState({ addAgreementInput: null })
-        }
-      }
-
-    }
+    id: 0
   }
 
   addMajorityType = () => {
@@ -344,7 +256,6 @@ class DefineAgreementRules extends Component {
   render() {
     const { form } = this.props
     const { getFieldDecorator, getFieldValue } = form;
-    const { agreementTypes, addAgreementInput } = this.state
 
     getFieldDecorator(`majorityTypes`, { initialValue: [] })
     const majorityTypeKeys = getFieldValue(`majorityTypes`)
@@ -356,10 +267,6 @@ class DefineAgreementRules extends Component {
             title={`${id+1}. Mayoría`}
             form={form}
             isUsualMajority={false}
-            agreementTypes={agreementTypes}
-            addAgreementType={this.addAgreementType}
-            handleAddAgreementInput={this.handleAddAgreementInput}
-            addAgreementInput={addAgreementInput}
             removeMajorityType={this.removeMajorityType}
           />
           <Divider />
@@ -374,10 +281,6 @@ class DefineAgreementRules extends Component {
           title="Mayoría ordinaria"
           form={form}
           isUsualMajority={true}
-          agreementTypes={agreementTypes}
-          addAgreementType={this.addAgreementType}
-          handleAddAgreementInput={this.handleAddAgreementInput}
-          addAgreementInput={addAgreementInput}
         />
 
         <Divider />
@@ -387,10 +290,6 @@ class DefineAgreementRules extends Component {
           title="Mayoría Reforzada"
           form={form}
           isUsualMajority={false}
-          agreementTypes={agreementTypes}
-          addAgreementType={this.addAgreementType}
-          handleAddAgreementInput={this.handleAddAgreementInput}
-          addAgreementInput={addAgreementInput}
         />
 
         <Divider />
