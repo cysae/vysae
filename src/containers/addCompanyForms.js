@@ -106,8 +106,7 @@ class RawSharesForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      /* if (!err && this.isExtraValid()) { */
-      if (this.isExtraValid()) {
+      if (!err && this.isExtraValid()) {
         this.props.next()
       }
     });
