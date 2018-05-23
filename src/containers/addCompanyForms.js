@@ -1,8 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Input, InputNumber, Button, Radio, Divider, Mention, Row, Col, Alert} from 'antd'
 import styled from 'styled-components'
+import { API } from 'aws-amplify'
+import { v4 as uuid } from 'uuid'
+// redux
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
+// components
 import ShareIntervalFields from '../components/shareIntervalFields'
 import ShareIntervalValueFields from '../components/shareIntervalValueFields'
 import ShareSuffrageFields from '../components/shareSuffrageFields'
@@ -58,10 +62,28 @@ class RawBasicForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.save()
         this.props.next()
       }
     });
   }
+
+  async save() {
+    const { getFieldValue } = this.props.form
+    const companyId = uuid()
+    const name = getFieldValue('name')
+    const placeOfBusiness = getFieldValue('placeOfBusiness')
+    const nif = getFieldValue('nif')
+
+    const body = {
+      uuid: companyId,
+      name,
+      placeOfBusiness,
+      nif,
+    }
+    const result = await API.put('companyCRUD', '/company', { body })
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -76,7 +98,7 @@ class RawBasicForm extends Component {
         <FormItem
           label="Domicilio Social"
         >
-          {getFieldDecorator('registeredOffice', {
+          {getFieldDecorator('placeOfBusiness', {
              rules: [{ required: true, message: 'Es obligatorio.' }],
           })(<Input />)}
         </FormItem>

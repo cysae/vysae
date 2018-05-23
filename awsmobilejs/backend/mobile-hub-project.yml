@@ -1,11 +1,63 @@
 --- !com.amazonaws.mobilehub.v0.Project 
+apps:
+  web: !com.amazonaws.mobilehub.v0.AppDO {}
 features:
+  cloudlogic: !com.amazonaws.mobilehub.v0.CloudLogic 
+    components:
+      companyCRUD: !com.amazonaws.mobilehub.v0.API 
+        attributes:
+          name: companyCRUD
+          requires-signin: true
+          sdk-generation-stage-name: Development
+        paths:
+          /company: !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/company-20180523171419.zip
+            description: 'Handler for calls to resource path : /company/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: x6k3dSkgnYu3UeYY8mIfUVbHq826/jCmp5Vocs/iIk0=
+            memorySize: '128'
+            modified: '2018-05-23T15:14:54.907+0000'
+            name: company
+            runtime: nodejs6.10
+            timeout: '3'
+            version: gmL6rZRCw9XbDMB7k3Fhh1lp7xdTKWP0
+          '/company/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/company-20180523171419.zip
+            description: 'Handler for calls to resource path : /company/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: x6k3dSkgnYu3UeYY8mIfUVbHq826/jCmp5Vocs/iIk0=
+            memorySize: '128'
+            modified: '2018-05-23T15:14:54.907+0000'
+            name: company
+            runtime: nodejs6.10
+            timeout: '3'
+            version: ZhYg8EAB0W71rSiVgEVBNEOfHe2poo5Y
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true
       visibility: public-global
     components:
       release: !com.amazonaws.mobilehub.v0.Bucket {}
+  database: !com.amazonaws.mobilehub.v0.Database 
+    components:
+      database-nosql: !com.amazonaws.mobilehub.v0.NoSQLDatabase 
+        tables:
+          - !com.amazonaws.mobilehub.v0.NoSQLTable 
+            attributes:
+              name: S
+              nif: S
+              placeOfBirth: S
+              uuid: S
+            hashKeyName: uuid
+            hashKeyType: S
+            rangeKeyName: ''
+            rangeKeyType: ''
+            tableName: ___DYNAMIC_PREFIX___-company
+            tablePrivacy: public
   mobile-analytics: !com.amazonaws.mobilehub.v0.Pinpoint 
     components:
       analytics: !com.amazonaws.mobilehub.v0.PinpointAnalytics {}
