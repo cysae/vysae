@@ -7,10 +7,10 @@ import { v4 as uuid } from 'uuid'
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
 // utils
-import { mergeIntervalTriplets } from '../utils/mergeIntervalTiplets.js'
+import { mergeTriplets } from '../utils/mergeIntervalTiplets.js'
 // components
 import ShareIntervalFields from '../components/shareIntervalFields'
-import ShareIntervalValueFields from '../components/shareIntervalValueFields'
+import IntervalTypeField from '../components/intervalTypeField.js'
 import ShareSuffrageFields from '../components/shareSuffrageFields'
 import DefineAgreementRules from '../components/majorities'
 import Shareholders from '../components/shareholder'
@@ -148,16 +148,17 @@ class RawSharesForm extends Component {
 
     // valued shares
     if(getFieldValue('sharesHaveSameValue') === 'no') {
-      const valueTypeIds = getFieldValue('shareValueType_ids')
+      const valueTypeIds = getFieldValue('shareValue_type_ids')
+      console.log(valueTypeIds)
       for (const id in valueTypeIds) {
         const attr = { valueInEur: getFieldValue(`shareValue_${id}`) }
-        intvls = intvls.concat(this.toIntervalFrom(`shareValueType_${id}`, attr))
+        intvls = intvls.concat(this.toIntervalFrom(`shareValue_type_${id}`, attr))
       }
     }
 
     const triplets = this.toTripleFrom(intvls)
     console.log(triplets)
-    console.log(mergeIntervalTriplets(triplets))
+    console.log(mergeTriplets(triplets))
 
 
     body['shareIntervals'] = [
@@ -173,7 +174,18 @@ class RawSharesForm extends Component {
     /* const result = await API.post('companyCRUD', '/company', { body }) */
   }
 
-  toIntervalFrom(name, attr = { normal: true }) {
+  toIntervalWithAttributeFrom(fieldId, attrName, ) {
+    const { getFieldValue } = this.props.form
+    let intvls = []
+
+    const valueTypeIds = getFieldValue(`${fieldId}_type_ids`)
+    for (const id in valueTypeIds) {
+      const attr = { valueInEur: getFieldValue(`${fieldId}_${id}`) }
+      intvls = intvls.concat(this.toIntervalFrom(`${fieldId}_type_${id}`, attr))
+    }
+  }
+
+  toIntervalFrom(name, attr = { }) {
     const triplets = []
     const intvlIds = this.props.form.getFieldValue(`${name}_ids`)
     for (const id in intvlIds) {
@@ -301,7 +313,7 @@ class RawSharesForm extends Component {
              )}
           </FormItem>
           {getFieldValue('sharesHaveSameValue') === 'no' && (
-             <ShareIntervalValueFields form={form} />
+             <IntervalTypeField fieldId='shareValue' form={form}  />
           )}
           <Divider />
 

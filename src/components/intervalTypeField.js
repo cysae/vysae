@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import PropTypes from 'prop-types'
 import { Form, InputNumber, Button, Icon, Divider, Row, Col } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
 import { MyInputNumber, formItemLayout } from '../containers/addCompanyForms'
@@ -11,16 +12,15 @@ const ContainerCol = styled(Col)`
   border-radius: 5px;
 `
 
-class ShareIntervalValueFields extends Component {
+class IntervalTypeField extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       id: 0,
-      fieldId: 'shareValueType',
+      fieldId: 'shareValue_type',
       shareTypeField: <MyInputNumber min={0} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />,
       shareTypeLabel: 'Valor nominal de cada participación',
-      shareTypeRootId: 'shareValue'
     }
     if(props.fieldId) {
       this.state.fieldId = props.fieldId
@@ -28,18 +28,15 @@ class ShareIntervalValueFields extends Component {
     if(props.shareTypeLabel) {
       this.state.shareTypeLabel = props.shareTypeLabel
     }
-    if(props.shareTypeRootId) {
-      this.state.shareTypeRootId = props.shareTypeRootId
-    }
     if(props.shareTypeField) {
       this.state.shareTypeField = props.shareTypeField
     }
 
-    props.form.getFieldDecorator(`${this.state.fieldId}_ids`, { initialValue: [] })
+    props.form.getFieldDecorator(`${this.state.fieldId}_type_ids`, { initialValue: [] })
   }
 
   componentDidMount() {
-    const numberOfShareIntervalValueFields = this.props.form.getFieldValue(`${this.state.fieldId}_ids`).length
+    const numberOfShareIntervalValueFields = this.props.form.getFieldValue(`${this.state.fieldId}_type_ids`).length
     if(numberOfShareIntervalValueFields === 0) {
       this.addShareIntervalValueField()
     }
@@ -48,7 +45,7 @@ class ShareIntervalValueFields extends Component {
   removeShareIntervalValueField = (id) => {
     const { form } = this.props
     const { fieldId } = this.state
-    const shareIntervalValueIds = form.getFieldValue(`${fieldId}_ids`);
+    const shareIntervalValueIds = form.getFieldValue(`${fieldId}_type_ids`);
     if (shareIntervalValueIds.length === 1) {
       return;
     }
@@ -62,19 +59,19 @@ class ShareIntervalValueFields extends Component {
   addShareIntervalValueField = () => {
     const { form } = this.props;
     const { id, fieldId  } = this.state;
-    const shareIntervalValueIds = form.getFieldValue(`${fieldId}_ids`);
+    const shareIntervalValueIds = form.getFieldValue(`${fieldId}_type_ids`);
     const nextShareIntervalValueIds = shareIntervalValueIds.concat(id);
     this.setState({ id: id+1 })
     const fieldsValue = {}
-    fieldsValue[`${fieldId}_ids`] = nextShareIntervalValueIds
+    fieldsValue[`${fieldId}_type_ids`] = nextShareIntervalValueIds
     form.setFieldsValue(fieldsValue)
   }
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { fieldId, shareTypeLabel, shareTypeRootId, shareTypeField } = this.state
+    const { fieldId, shareTypeLabel, shareTypeField } = this.state
 
-    const shareIntervalValueIds = getFieldValue(`${fieldId}_ids`)
+    const shareIntervalValueIds = getFieldValue(`${fieldId}_type_ids`)
     const formItems = shareIntervalValueIds.map((id) => {
 
       return (
@@ -84,7 +81,7 @@ class ShareIntervalValueFields extends Component {
             label={shareTypeLabel}
             labelCol={{span: 12}}
           >
-            {getFieldDecorator(`${shareTypeRootId}_${id}`, {
+            {getFieldDecorator(`${fieldId}_${id}`, {
                rules: [{
                  required: true,
                  message: "Este campo es obligatorio.",
@@ -107,7 +104,7 @@ class ShareIntervalValueFields extends Component {
           <ShareIntervalFields
             isValueField={true}
             form={this.props.form}
-            fieldId={`shareValueType_${id}`} />
+            fieldId={`shareValue_type_${id}`} />
           <Divider dashed />
         </Fragment>
       )
@@ -126,5 +123,10 @@ class ShareIntervalValueFields extends Component {
   }
 }
 
-export default ShareIntervalValueFields
+IntervalTypeField.prototype = {
+  form: PropTypes.object.isRequired,
+  fieldId: PropTypes.object.isRequired,
+}
+
+export default IntervalTypeField
 
