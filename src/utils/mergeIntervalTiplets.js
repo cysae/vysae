@@ -24,9 +24,10 @@ function sortBy(field1, field2) {
     }
 }
 
+
 function disjunctiveUnionOf(obj1, obj2) {
     Object.keys(obj1)
-        .filter(key => !Object.keys(obj2).includes(key))
+        .filter(key => Object.keys(obj2).includes(key))
         .forEach(key => delete obj1[key])
     return obj1
 }
@@ -46,7 +47,9 @@ export function mergeTriplets(triplets) {
             attr = { ...attr, ...lTriplet.attr}
             xStart = lTriplet.num
         } else {
+            console.log('remove', lTriplet)
             attr = disjunctiveUnionOf(attr, lTriplet.attr)
+            console.log('attr removed', attr)
             xStart = lTriplet.num+1
         }
 

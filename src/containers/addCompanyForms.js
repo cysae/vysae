@@ -148,13 +148,10 @@ class RawSharesForm extends Component {
 
     // valued shares
     if(getFieldValue('sharesHaveSameValue') === 'no') {
-      const valueTypeIds = getFieldValue('shareValue_type_ids')
-      console.log(valueTypeIds)
-      for (const id in valueTypeIds) {
-        const attr = { valueInEur: getFieldValue(`shareValue_${id}`) }
-        intvls = intvls.concat(this.toIntervalFrom(`shareValue_type_${id}`, attr))
-      }
+      intvls = intvls.concat(this.toIntervalFromTypeWithFieldId('shareValue', 'valueInEur'))
     }
+
+    console.log(intvls)
 
     const triplets = this.toTripleFrom(intvls)
     console.log(triplets)
@@ -174,18 +171,20 @@ class RawSharesForm extends Component {
     /* const result = await API.post('companyCRUD', '/company', { body }) */
   }
 
-  toIntervalWithAttributeFrom(fieldId, attrName, ) {
+  toIntervalFromTypeWithFieldId(fieldId, attrName, ) {
     const { getFieldValue } = this.props.form
     let intvls = []
 
     const valueTypeIds = getFieldValue(`${fieldId}_type_ids`)
     for (const id in valueTypeIds) {
-      const attr = { valueInEur: getFieldValue(`${fieldId}_${id}`) }
+      const attr = {}
+      attr[attrName] = getFieldValue(`${fieldId}_${id}`)
       intvls = intvls.concat(this.toIntervalFrom(`${fieldId}_type_${id}`, attr))
     }
+    return intvls
   }
 
-  toIntervalFrom(name, attr = { }) {
+  toIntervalFrom(name, attr = {}) {
     const triplets = []
     const intvlIds = this.props.form.getFieldValue(`${name}_ids`)
     for (const id in intvlIds) {
