@@ -25,6 +25,13 @@ function sortBy(field1, field2) {
     }
 }
 
+function objectRemoveKeyIntersection(obj1, obj2) {
+    Object.keys(obj1)
+        .filter(key => !Object.keys(obj2).includes(key))
+        .forEach(key => delete obj1[key])
+    return obj1
+}
+
 function lexicalySortTriplets(triplets) {
     let sortedTriplets = []
     sortedTriplets = triplets.sort(sortBy('start', 'isEnd'));
@@ -34,8 +41,14 @@ function lexicalySortTriplets(triplets) {
 export function mergeIntervalTriplets() {
     const mergedIntervals = []
     let lTriplet = triplets[0]
+    let attr = {}
     console.log(lexicalySortTriplets(triplets))
     for(let i=1; i<triplets.length; i++) {
         let rTriplet = triplets[i]
+
+        if(!lTriplet.isEnd) {
+            attr = { ...attr, ...lTriplet.attr}
+        } else {
+        }
     }
 }
