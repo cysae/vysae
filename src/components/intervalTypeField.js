@@ -104,7 +104,7 @@ class IntervalTypeField extends Component {
           <ShareIntervalFields
             isValueField={true}
             form={this.props.form}
-            fieldId={`shareValue_type_${id}`} />
+            fieldId={`${fieldId}_type_${id}`} />
           <Divider dashed />
         </Fragment>
       )

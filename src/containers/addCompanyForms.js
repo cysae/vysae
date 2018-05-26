@@ -158,6 +158,15 @@ class RawSharesForm extends Component {
           this.toIntervalFrom('shareIntervalWithoutSuffrage', { relativeVoteWeight: 0 })
         )
       }
+
+      // shares with unequal suffrage
+      if(getFieldValue('hasSharesWithUnequalSuffrage') === 'yes') {
+        intvls = intvls.concat(
+          this.toIntervalFromTypeWithFieldId(
+            'shareIntervalWithUnequalSuffrage', 'relativeVoteWeight'
+          )
+        )
+      }
     }
 
 
