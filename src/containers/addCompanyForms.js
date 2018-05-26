@@ -145,17 +145,24 @@ class RawSharesForm extends Component {
     let intvls = []
     // normal shares
     intvls = intvls.concat(this.toIntervalFrom('shareInterval'))
-
     // valued shares
     if(getFieldValue('sharesHaveSameValue') === 'no') {
       intvls = intvls.concat(this.toIntervalFromTypeWithFieldId('shareValue', 'valueInEur'))
     }
 
-    console.log(intvls)
+    // share suffrage
+    if(getFieldValue('sharesHaveEqualSuffrage') === 'no') {
+      // shares without right to vote
+      if(getFieldValue('hasSharesWithoutSuffrage') === 'yes') {
+        intvls = intvls.concat(
+          this.toIntervalFrom('shareIntervalWithoutSuffrage', { relativeVoteWeight: 0 })
+        )
+      }
+    }
 
-    const triplets = this.toTripleFrom(intvls)
+
+    const triplets = mergeTriplets(this.toTripleFrom(intvls))
     console.log(triplets)
-    console.log(mergeTriplets(triplets))
 
 
     body['shareIntervals'] = [
