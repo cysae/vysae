@@ -169,8 +169,15 @@ class RawSharesForm extends Component {
       }
     }
 
+    // treasury shares
+    if(getFieldValue('hasTreasuryShares') === 'yes') {
+      intvls = intvls.concat(
+        this.toIntervalFrom('treasuryShareIntervals', { isTreasury: true })
+      )
+    }
 
-    const triplets = mergeTriplets(this.toTripleFrom(intvls))
+
+      const triplets = mergeTriplets(this.toTripleFrom(intvls))
     console.log(triplets)
 
 
