@@ -6,6 +6,8 @@ import { v4 as uuid } from 'uuid'
 // redux
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
+// utils
+import { mergeIntervalTriplets } from '../utils/mergeIntervalTiplets.js'
 // components
 import ShareIntervalFields from '../components/shareIntervalFields'
 import ShareIntervalValueFields from '../components/shareIntervalValueFields'
@@ -20,6 +22,8 @@ const FormItem = Form.Item
 export const MyInputNumber = styled(InputNumber)`
   width: 40% !important;
 `
+
+mergeIntervalTriplets()
 
 export const formItemLayout = {
   labelCol: {
@@ -54,21 +58,23 @@ export function HOCForm(formComponent) {
       /* console.log(values); */
     },
   })(formComponent))
-
 }
+
+
+
 
 class RawBasicForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.save()
+        this.createCompany()
         this.props.next()
       }
     });
   }
 
-  async save() {
+  async createCompany() {
     const { getFieldValue } = this.props.form
     const companyId = uuid()
     const name = getFieldValue('name')
@@ -127,12 +133,32 @@ class RawSharesForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    this.update()
     this.props.form.validateFields((err, values) => {
       if (!err && this.isExtraValid()) {
-        this.props.next()
+        /* this.props.next() */
       }
     });
   }
+
+  async update() {
+    const companyId = '34fbd646-4fa7-4869-b15f-d1344585ebb9'
+    const company = await API.get('companyCRUD', `/company/${companyId}`)
+    const body = company[0]
+
+    body['shareIntervals'] = [
+      {
+        start: 1,
+        end: 100,
+        relativeVoteWeight: 1,
+        valueInEur: 1,
+        isTreasury: false,
+      }
+    ]
+
+    const result = await API.post('companyCRUD', '/company', { body })
+  }
+
 
   handleErrorClose = () => {
     console.log('close')

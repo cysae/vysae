@@ -51,13 +51,14 @@ features:
               name: S
               nif: S
               placeOfBirth: S
-              uuid: S
+              shareIntervals: L
             hashKeyName: uuid
             hashKeyType: S
             rangeKeyName: ''
             rangeKeyType: ''
             tableName: ___DYNAMIC_PREFIX___-company
             tablePrivacy: public
+            indexes: []
   mobile-analytics: !com.amazonaws.mobilehub.v0.Pinpoint 
     components:
       analytics: !com.amazonaws.mobilehub.v0.PinpointAnalytics {}
