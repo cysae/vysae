@@ -70,7 +70,7 @@ class ShareIntervals extends Component {
           <Col>
             <FormItem>
               <span style={{marginRight: 10}}>{`${id+1}. Numeración: `}</span>
-              {getFieldDecorator(`${fieldId}_begin_${id}`, {
+              {getFieldDecorator(`${fieldId}_start_${id}`, {
                  rules: [
                    {required: true, message: 'Este campo es obligatorio.'},
                    {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},

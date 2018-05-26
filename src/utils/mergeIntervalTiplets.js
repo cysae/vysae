@@ -61,6 +61,5 @@ export function mergeIntervalTriplets() {
         }
         lTriplet = rTriplet
     }
-    console.log(mergedIntervals)
     return mergedIntervals
 }

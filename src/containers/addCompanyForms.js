@@ -23,8 +23,6 @@ export const MyInputNumber = styled(InputNumber)`
   width: 40% !important;
 `
 
-mergeIntervalTriplets()
-
 export const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -35,6 +33,18 @@ export const formItemLayout = {
     sm: { span: 14 },
   },
 };
+
+// converts form share intervals to model from name and attribute
+toTripletsFrom(name, attr = {}) {
+  const triplets = []
+  const intvlIds = this.props.form.getFieldValue(`${name}_ids`)
+  for (const id in intvlIds) {
+    const start = this.props.form.getFieldValue(`${name}_start_${id}`)
+    const end = this.props.form.getFieldValue(`${name}_end_${id}`)
+    triplets.push({ start, end, attr })
+  }
+  return triplets
+}
 
 export function HOCForm(formComponent) {
   return connect((state) => {
@@ -59,9 +69,6 @@ export function HOCForm(formComponent) {
     },
   })(formComponent))
 }
-
-
-
 
 class RawBasicForm extends Component {
   handleSubmit = (e) => {
@@ -133,7 +140,7 @@ class RawSharesForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.update()
+    this.shareIntervalsToTriplets('shareInterval')
     this.props.form.validateFields((err, values) => {
       if (!err && this.isExtraValid()) {
         /* this.props.next() */
@@ -158,6 +165,7 @@ class RawSharesForm extends Component {
 
     const result = await API.post('companyCRUD', '/company', { body })
   }
+
 
 
   handleErrorClose = () => {
