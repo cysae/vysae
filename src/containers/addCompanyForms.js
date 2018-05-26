@@ -34,18 +34,6 @@ export const formItemLayout = {
   },
 };
 
-// converts form share intervals to model from name and attribute
-toTripletsFrom(name, attr = {}) {
-  const triplets = []
-  const intvlIds = this.props.form.getFieldValue(`${name}_ids`)
-  for (const id in intvlIds) {
-    const start = this.props.form.getFieldValue(`${name}_start_${id}`)
-    const end = this.props.form.getFieldValue(`${name}_end_${id}`)
-    triplets.push({ start, end, attr })
-  }
-  return triplets
-}
-
 export function HOCForm(formComponent) {
   return connect((state) => {
     return {
@@ -140,7 +128,7 @@ class RawSharesForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.shareIntervalsToTriplets('shareInterval')
+    this.update()
     this.props.form.validateFields((err, values) => {
       if (!err && this.isExtraValid()) {
         /* this.props.next() */
@@ -149,9 +137,28 @@ class RawSharesForm extends Component {
   }
 
   async update() {
+    const { getFieldValue } = this.props.form
     const companyId = '34fbd646-4fa7-4869-b15f-d1344585ebb9'
     const company = await API.get('companyCRUD', `/company/${companyId}`)
     const body = company[0]
+
+    let intvls = []
+    // normal shares
+    intvls = intvls.concat(this.toIntervalFrom('shareInterval'))
+
+    // valued shares
+    if(getFieldValue('sharesHaveSameValue') === 'no') {
+      const valueTypeIds = getFieldValue('shareValueType_ids')
+      for (const id in valueTypeIds) {
+        const attr = { valueInEur: getFieldValue(`shareValue_${id}`) }
+        intvls = intvls.concat(this.toIntervalFrom(`shareValueType_${id}`, attr))
+      }
+    }
+
+    const triplets = this.toTripleFrom(intvls)
+    console.log(triplets)
+    console.log(mergeIntervalTriplets(triplets))
+
 
     body['shareIntervals'] = [
       {
@@ -163,9 +170,28 @@ class RawSharesForm extends Component {
       }
     ]
 
-    const result = await API.post('companyCRUD', '/company', { body })
+    /* const result = await API.post('companyCRUD', '/company', { body }) */
   }
 
+  toIntervalFrom(name, attr = { normal: true }) {
+    const triplets = []
+    const intvlIds = this.props.form.getFieldValue(`${name}_ids`)
+    for (const id in intvlIds) {
+      const start = this.props.form.getFieldValue(`${name}_start_${id}`)
+      const end = this.props.form.getFieldValue(`${name}_end_${id}`)
+      triplets.push({ start, end, attr })
+    }
+    return triplets
+  }
+
+  toTripleFrom(intvls) {
+    const triplets = []
+    for (const intvl of intvls) {
+      triplets.push({ num: intvl.start, attr: intvl.attr, isEnd: false})
+      triplets.push({ num: intvl.end, attr: intvl.attr, isEnd: true})
+    }
+    return triplets
+  }
 
 
   handleErrorClose = () => {

@@ -31,7 +31,7 @@ function disjunctiveUnionOf(obj1, obj2) {
     return obj1
 }
 
-export function mergeIntervalTriplets() {
+export function mergeIntervalTriplets(triplets) {
     const mergedIntervals = []
     let attr = {}
 
@@ -57,7 +57,7 @@ export function mergeIntervalTriplets() {
         }
 
         if(xStart <= xEnd) {
-            mergedIntervals.push({start: xStart, end: xEnd, attr })
+            mergedIntervals.push({start: xStart, end: xEnd, attr: {...attr} })
         }
         lTriplet = rTriplet
     }
