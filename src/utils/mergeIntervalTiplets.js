@@ -1,11 +1,10 @@
 const triplets = [
-    {start: 1, attr: {a: true}, isEnd: false},
-    {start: 10, attr: {a: true}, isEnd: true},
-    {start: 7, attr: {lol: 'lol'}, isEnd: true},
-    {start: 7, attr: {b: true}, isEnd: false},
-    {start: 12, attr: {b: true}, isEnd: true},
-    {start: 9, attr: {c: true}, isEnd: false},
-    {start: 15, attr: {c: true}, isEnd: true},
+    {num: 1, attr: {a: true}, isEnd: false},
+    {num: 10, attr: {a: true}, isEnd: true},
+    {num: 7, attr: {b: true}, isEnd: false},
+    {num: 12, attr: {b: true}, isEnd: true},
+    {num: 9, attr: {c: true}, isEnd: false},
+    {num: 15, attr: {c: true}, isEnd: true},
 ]
 
 function sortBy(field1, field2) {
@@ -25,30 +24,43 @@ function sortBy(field1, field2) {
     }
 }
 
-function objectRemoveKeyIntersection(obj1, obj2) {
+function disjunctiveUnionOf(obj1, obj2) {
     Object.keys(obj1)
         .filter(key => !Object.keys(obj2).includes(key))
         .forEach(key => delete obj1[key])
     return obj1
 }
 
-function lexicalySortTriplets(triplets) {
-    let sortedTriplets = []
-    sortedTriplets = triplets.sort(sortBy('start', 'isEnd'));
-    return sortedTriplets
-}
-
 export function mergeIntervalTriplets() {
     const mergedIntervals = []
-    let lTriplet = triplets[0]
     let attr = {}
-    console.log(lexicalySortTriplets(triplets))
-    for(let i=1; i<triplets.length; i++) {
-        let rTriplet = triplets[i]
+
+    const sortedTriplets = triplets.sort(sortBy('num', 'isEnd'));
+    let lTriplet = sortedTriplets[0]
+
+    for(let i=1; i<sortedTriplets.length; i++) {
+        let rTriplet = sortedTriplets[i]
+        let xStart, xEnd
 
         if(!lTriplet.isEnd) {
             attr = { ...attr, ...lTriplet.attr}
+            xStart = lTriplet.num
         } else {
+            attr = disjunctiveUnionOf(attr, lTriplet.attr)
+            xStart = lTriplet.num+1
         }
+
+        if(!rTriplet.isEnd) {
+            xEnd = rTriplet.num-1
+        } else {
+            xEnd = rTriplet.num
+        }
+
+        if(xStart <= xEnd) {
+            mergedIntervals.push({start: xStart, end: xEnd, attr })
+        }
+        lTriplet = rTriplet
     }
+    console.log(mergedIntervals)
+    return mergedIntervals
 }
