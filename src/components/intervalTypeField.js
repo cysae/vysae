@@ -123,7 +123,7 @@ class IntervalTypeField extends Component {
   }
 }
 
-IntervalTypeField.prototype = {
+IntervalTypeField.protoTypes = {
   form: PropTypes.object.isRequired,
   fieldId: PropTypes.object.isRequired,
 }
