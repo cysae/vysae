@@ -177,21 +177,12 @@ class RawSharesForm extends Component {
     }
 
 
-      const triplets = mergeTriplets(this.toTripleFrom(intvls))
-    console.log(triplets)
+    const triplets = mergeTriplets(this.toTripleFrom(intvls))
 
+    body['capitalInEur'] = getFieldValue('capital')
+    body['shareIntervals'] = triplets;
 
-    body['shareIntervals'] = [
-      {
-        start: 1,
-        end: 100,
-        relativeVoteWeight: 1,
-        valueInEur: 1,
-        isTreasury: false,
-      }
-    ]
-
-    /* const result = await API.post('companyCRUD', '/company', { body }) */
+    const result = await API.post('companyCRUD', '/company', { body })
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {
