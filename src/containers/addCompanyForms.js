@@ -476,9 +476,9 @@ class RawShareholderRegistry extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      this.update()
+      /* this.update() */
       if (!err) {
-        /* this.props.next() */
+        this.props.next()
       }
     });
   }

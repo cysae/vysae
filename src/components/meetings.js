@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import NextMeeting from './nextMeeting.js'
 import AnnounceMeeting from './announceMeeting.js'
 import MeetingHistory from './meetingHistory.js'
+import MeetingPDF from './meetingPDF.js'
 
 export default class Meetings extends Component {
   render() {
@@ -27,6 +28,7 @@ export default class Meetings extends Component {
           <Route path="/meetings/next" component={NextMeeting} />
           <Route path="/meetings/announce" component={AnnounceMeeting} />
           <Route path="/meetings/history" component={MeetingHistory} />
+          <Route path="/meetings/pdf" component={MeetingPDF} />
         </Col>
       </Row>
     )
