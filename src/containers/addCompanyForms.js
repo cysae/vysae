@@ -1,13 +1,15 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Input, InputNumber, Button, Radio, Divider, Mention, Row, Col, Alert} from 'antd'
 import styled from 'styled-components'
-import { API } from 'aws-amplify'
-import { v4 as uuid } from 'uuid'
+import Amplify, { Auth, API } from 'aws-amplify'
+import aws_exports from '../aws-exports.js'
 // redux
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
 // utils
 import { mergeTriplets } from '../utils/mergeIntervalTiplets.js'
+import { updateCompany } from '../utils/dynamodb.js'
+import { v4 as uuid } from 'uuid'
 // components
 import ShareIntervalFields from '../components/shareIntervalFields'
 import IntervalTypeField from '../components/intervalTypeField.js'
@@ -15,6 +17,7 @@ import ShareSuffrageFields from '../components/shareSuffrageFields'
 import DefineAgreementRules from '../components/majorities'
 import Shareholders from '../components/shareholder'
 import AdministrationOrgans from '../components/administrationOrgans'
+Amplify.configure(aws_exports)
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
@@ -407,11 +410,26 @@ class RawAgreementRules extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      this.updateDynamoDB()
       if (!err) {
-        this.props.next()
+        /* this.props.next() */
       }
     });
   }
+
+  async updateDynamoDB() {
+    const { getFieldValue } = this.props.form
+    const companyId = '34fbd646-4fa7-4869-b15f-d1344585ebb9'
+    const body = {}
+
+    // Ordinary majority
+
+    updateCompany(companyId, body)
+
+    /* const result = await API.post('companyCRUD', '/company', { body }) */
+  }
+
+
 
   render() {
     const { form } = this.props
@@ -458,11 +476,29 @@ class RawShareholderRegistry extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      this.update()
       if (!err) {
-        this.props.next()
+        /* this.props.next() */
       }
     });
   }
+
+  async update() {
+    const user = {
+      username: 'test',
+      password: '%Test1991',
+      attributes: {
+        email: 'test@test.de',
+        phone_number: '+14155552671',
+        [`custom:firstName`]: 'Dirk',
+        [`custom:lastName`]: 'Hornung',
+      }
+    }
+    await Auth.signUp(user)
+      .then(data => console.log(data))
+      .catch(err => console.log(err))
+  }
+
 
   render() {
     const { form } = this.props
