@@ -128,10 +128,10 @@ class RawSharesForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.update()
     this.props.form.validateFields((err, values) => {
       if (!err && this.isExtraValid()) {
-        /* this.props.next() */
+        this.update()
+        this.props.next()
       }
     });
   }
@@ -179,7 +179,6 @@ class RawSharesForm extends Component {
 
     const triplets = mergeTriplets(this.toTripleFrom(intvls))
 
-    body['capitalInEur'] = getFieldValue('capital')
     body['shareIntervals'] = triplets;
 
     const result = await API.post('companyCRUD', '/company', { body })
