@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Form, Radio, Button, DatePicker, TimePicker, Row, Col, Input, Upload, Icon, message } from 'antd'
 import { HOCForm } from '../containers/addCompanyForms.js'
 import AgreementSelector from './agreementSelector.js'
+import { withRouter } from 'react-router-dom'
 const FormItem = Form.Item
 const { TextArea } = Input
 const RadioButton = Radio.Button
@@ -12,6 +13,7 @@ class AnnounceMeeting extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       /* if (!err) { */
+      this.props.history.push('/meetings/pdf')
     });
   }
 
