@@ -7,6 +7,7 @@ import AnnounceMeeting from './announceMeeting.js'
 import MeetingHistory from './meetingHistory.js'
 import MeetingPDF from './meetingPDF.js'
 import VoteForMeeting from './voteForMeeting.js'
+import MeetingResult from './meetingResult.js'
 
 export default class Meetings extends Component {
   render() {
@@ -31,6 +32,7 @@ export default class Meetings extends Component {
           <Route path="/meetings/history" component={MeetingHistory} />
           <Route path="/meetings/pdf" component={MeetingPDF} />
           <Route path="/meetings/vote" component={VoteForMeeting} />
+          <Route path="/meetings/result" component={MeetingResult} />
         </Col>
       </Row>
     )

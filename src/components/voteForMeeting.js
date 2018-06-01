@@ -22,6 +22,7 @@ class VoteForMeeting extends Component {
             <List.Item actions={[
               <RadioGroup>
                 <RadioButton value="yes">Sí</RadioButton>
+                <RadioButton value="blank">En blanco</RadioButton>
                 <RadioButton value="no">No</RadioButton>
               </RadioGroup>
             ]}>
