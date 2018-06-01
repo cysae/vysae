@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { List, Radio, Button } from 'antd'
+import { Link } from 'react-router-dom'
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -29,7 +30,7 @@ class VoteForMeeting extends Component {
               {item}
             </List.Item>)}
         />
-      <Button>Votar</Button>
+        <Button><Link to="/meetings/result">Votar</Link></Button>
       </Fragment>
     )
   }
