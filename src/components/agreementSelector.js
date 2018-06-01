@@ -86,37 +86,38 @@ export default class AgreementSelector extends Component {
   }
 
   render() {
-    const { form, fieldId } = this.props
+    const { form, fieldId, label, formItemLayout } = this.props
     const { getFieldDecorator } = form
     const { addAgreementInput, agreementTypes, selectedAgreements } = this.state
 
     return(
-      <Fragment>
-        <FormItem style={{margin: 0}}>
-          <span>Selecciona tipos de acuerdos: </span>
-          {getFieldDecorator(fieldId, {
-             rules: [{
-               required: true,
-               message: 'Este campo es obligatorio.',
-             }]
-          })(
-             <Select
-               mode="multiple"
-               placeholder="Selecciona"
-               style={{width: '100%'}}
-               >
-               {agreementTypes.map((type) => <Option key={type}>{type}</Option>)}
-             </Select>
-           )}
-          <Search
-            placeholder="Introducir más tipos de acuerdos"
-            onChange={this.handleAddAgreementInput}
-            onSearch={this.addAgreementType}
-            value={addAgreementInput}
-            enterButton="Añadir Tipo de Acuerdo"
-          />
-        </FormItem>
-      </Fragment>
+      <FormItem
+        label={label}
+        style={{margin: 0}}
+        {...formItemLayout}
+      >
+        {getFieldDecorator(fieldId, {
+           rules: [{
+             required: true,
+             message: 'Este campo es obligatorio.',
+           }]
+        })(
+           <Select
+             mode="multiple"
+             placeholder="Selecciona"
+             style={{width: '100%'}}
+             >
+             {agreementTypes.map((type) => <Option key={type}>{type}</Option>)}
+           </Select>
+         )}
+        <Search
+          placeholder="Introducir más tipos de acuerdos"
+          onChange={this.handleAddAgreementInput}
+          onSearch={this.addAgreementType}
+          value={addAgreementInput}
+          enterButton="Añadir Tipo de Acuerdo"
+        />
+      </FormItem>
     )
   }
 }

@@ -16,26 +16,26 @@ features:
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: x6k3dSkgnYu3UeYY8mIfUVbHq826/jCmp5Vocs/iIk0=
+            hashcode: Lo9teBpx04XOzlYLiraIuihyg4GTB044DXbDOKG5/JY=
             memorySize: '128'
-            modified: '2018-05-23T15:14:54.907+0000'
+            modified: '2018-06-01T16:46:14.870+0000'
             name: company
             runtime: nodejs6.10
             timeout: '3'
-            version: gmL6rZRCw9XbDMB7k3Fhh1lp7xdTKWP0
+            version: GD1udoUWDTFuyJbySR1txeGVQSCuBXue
           '/company/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
             codeFilename: uploads/company-20180601184535.zip
             description: 'Handler for calls to resource path : /company/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: x6k3dSkgnYu3UeYY8mIfUVbHq826/jCmp5Vocs/iIk0=
+            hashcode: Lo9teBpx04XOzlYLiraIuihyg4GTB044DXbDOKG5/JY=
             memorySize: '128'
-            modified: '2018-05-23T15:14:54.907+0000'
+            modified: '2018-06-01T16:46:14.870+0000'
             name: company
             runtime: nodejs6.10
             timeout: '3'
-            version: ZhYg8EAB0W71rSiVgEVBNEOfHe2poo5Y
+            version: 4hxQSzYQR6icdunru_vs_tEgkILSJhk6
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true
@@ -52,13 +52,13 @@ features:
               nif: S
               placeOfBirth: S
               shareIntervals: L
+              uuid: S
             hashKeyName: uuid
             hashKeyType: S
             rangeKeyName: ''
             rangeKeyType: ''
             tableName: ___DYNAMIC_PREFIX___-company
             tablePrivacy: public
-            indexes: []
   mobile-analytics: !com.amazonaws.mobilehub.v0.Pinpoint 
     components:
       analytics: !com.amazonaws.mobilehub.v0.PinpointAnalytics {}

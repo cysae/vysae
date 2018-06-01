@@ -7,6 +7,9 @@ const FormItem = Form.Item
 const { TextArea } = Input
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
+const { RangePicker } = DatePicker;
+
+
 
 class AnnounceMeeting extends Component {
   handleSubmit = (e) => {
@@ -20,6 +23,17 @@ class AnnounceMeeting extends Component {
   render() {
     const { form } = this.props
     const { getFieldDecorator } = form
+
+    const formItemLayout = {
+      labelCol: { span: 6 },
+      wrapperCol: { span: 18 }
+    }
+    const tailFormItemLayout = {
+      wrapperCol: {
+        span: 18,
+        offset: 6
+      }
+    }
 
     const uploadProps = {
       name: 'file',
@@ -40,8 +54,8 @@ class AnnounceMeeting extends Component {
     };
 
     return (
-      <Form onSubmit={this.handleSubmit} layout='inline' >
-        <FormItem>
+      <Form onSubmit={this.handleSubmit} >
+        <FormItem label="Tipo" {...formItemLayout} >
           {getFieldDecorator('meetingType', {
              rules: [{ required: true, message: 'Es obligatorio.' }],
           })(
@@ -51,72 +65,51 @@ class AnnounceMeeting extends Component {
              </RadioGroup>
            )}
         </FormItem>
-        <Row type="flex">
-          <Col>
-            <FormItem label="Fecha Inicio:">
-              {getFieldDecorator('startDate', {
-                 rules: [{ required: true, message: 'Es obligatorio.' }],
-              })(<DatePicker />)}
-            </FormItem>
-          </Col>
-          <Col>
-            <FormItem>
-              {getFieldDecorator('startTime', {
-                 rules: [{ required: true, message: 'Es obligatorio.' }],
-              })(<TimePicker />)}
-            </FormItem>
-          </Col>
-        </Row>
+        <FormItem
+          label="Duracion:"
+          {...formItemLayout}
+        >
+          {getFieldDecorator('startDate', {
+             rules: [{ required: true, message: 'Es obligatorio.' }],
+          })(
+             <RangePicker
+               showTime={{ format: "HH:mm" }}
+               format="DD-MM-YYYY HH:mm"
+               placeholder={['Inicio', 'Final']}
+             />
+           )}
+        </FormItem>
+        <AgreementSelector
+          form={form}
+          label="Selecciona tipos de acuerdos"
+          formItemLayout={formItemLayout}
+          fieldId="agreementTypes"
+        />
 
-        <Row type="flex">
-          <Col>
-            <FormItem label="Fecha Final:">
-              {getFieldDecorator('endDate', {
-                 rules: [{ required: true, message: 'Es obligatorio.' }],
-              })(<DatePicker />)}
-            </FormItem>
-          </Col>
-          <Col>
-            <FormItem>
-              {getFieldDecorator('endTime', {
-                 rules: [{ required: true, message: 'Es obligatorio.' }],
-              })(<TimePicker />)}
-            </FormItem>
-          </Col>
-        </Row>
+        <FormItem
+          label="Informacion Addicional"
+          {...formItemLayout}
+        >
+          {getFieldDecorator('additionalInfo', {
+             rules: [{ required: true, message: 'Es obligatorio.' }],
+          })(<TextArea autosize={{ minRows: 4}}  />)}
+        </FormItem>
 
-        <Row type="flex">
-          <Col>
-            <AgreementSelector
-              form={form}
-              fieldId="agreementTypes"
-            />
-          </Col>
-        </Row>
-
-        <Row type="flex">
-          <Col>
-            <FormItem label="Informacion Addicional">
-              {getFieldDecorator('additionalInfo', {
-                 rules: [{ required: true, message: 'Es obligatorio.' }],
-              })(<TextArea autosize />)}
-            </FormItem>
-          </Col>
-        </Row>
-
-        <Upload {...uploadProps}>
-          <Button>
+        {/* <Upload {...uploadProps}>
+            <Button>
             <Icon type="upload" /> Click to Upload
+            </Button>
+            </Upload> */}
+
+        <FormItem {...tailFormItemLayout}>
+          <Button type="primary" htmlType="submit" style={{width: '100%'}}>
+            Enviar Convocatoria
           </Button>
-        </Upload>
+        </FormItem>
 
-        <Button type="primary" htmlType="submit">
-          Enviar Convocatoria
-        </Button>
-
-        <pre>
-          {JSON.stringify(this.props.formState, null, 2)}
-        </pre>
+        {/* <pre>
+            {JSON.stringify(this.props.formState, null, 2)}
+            </pre> */}
       </Form>
     )
   }

@@ -6,19 +6,28 @@ const RadioGroup = Radio.Group;
 
 class VoteForMeeting extends Component {
   state = {
-    orderOfTheDay: [ 'point 1', 'point 2' ]
+    agreementTypes: [
+      'Aumento o reducción de capital',
+      'Autorización a administradores para que se dediquen a actividad inmersa en el objecto social',
+      'Autorización a administradores para que se dediquen a actividad inmersa en el objeto social',
+      'Exclusión y separación de socios',
+      'Cambio de domicilio',
+      'Supresión o limitación del derecho de prederencia en aumentos de capital',
+      'Modificación estructural',
+      'Cesión global de activo y pasivo',
+    ]
   }
 
   render() {
-    const { orderOfTheDay } = this.state
+    const { agreementTypes } = this.state
     return (
 
       <Fragment>
         <List
-          header={<div>Header</div>}
-          footer={<div>Footer</div>}
+          header={<div>CONVOCATORIA A LA JUNTA GENERAL DE SOCIOS</div>}
+          footer={<Button><Link to="/meetings/result">Votar</Link></Button>}
           bordered
-          dataSource={orderOfTheDay}
+          dataSource={agreementTypes}
           renderItem={item => (
             <List.Item actions={[
               <RadioGroup>
@@ -30,7 +39,6 @@ class VoteForMeeting extends Component {
               {item}
             </List.Item>)}
         />
-        <Button><Link to="/meetings/result">Votar</Link></Button>
       </Fragment>
     )
   }
