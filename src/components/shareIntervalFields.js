@@ -1,8 +1,6 @@
-import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Icon, Row, Col } from 'antd'
-import { formItemLayout } from '../containers/addCompanyForms'
+import React, { Component } from 'react'
+import { Form, InputNumber, Button, Icon, Row, Col } from 'antd'
 import styled from 'styled-components'
-const InputGroup = Input.Group
 const FormItem = Form.Item
 
 const ShareIntervalsContainer = styled.div`

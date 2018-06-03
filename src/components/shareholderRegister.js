@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Icon, Divider } from 'antd';
+import { Table } from 'antd';
 
 const columns = [{
   title: 'Nombre',

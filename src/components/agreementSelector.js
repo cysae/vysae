@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Form, Select, Input } from 'antd'
 import PropTypes from 'prop-types'
 const FormItem = Form.Item
 const Search = Input.Search
-const { Option, OptGroup } = Select
+const { Option } = Select
 
 export default class AgreementSelector extends Component {
   state = {
@@ -88,7 +88,7 @@ export default class AgreementSelector extends Component {
   render() {
     const { form, fieldId, label, formItemLayout } = this.props
     const { getFieldDecorator } = form
-    const { addAgreementInput, agreementTypes, selectedAgreements } = this.state
+    const { addAgreementInput, agreementTypes } = this.state
 
     return(
       <FormItem

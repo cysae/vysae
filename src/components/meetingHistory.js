@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Divider, Input } from 'antd'
-const Search = Input.Search
+import { Table, Divider } from 'antd'
 
 class MeetingHistory extends Component {
   render() {
@@ -31,9 +30,9 @@ class MeetingHistory extends Component {
       render: (meeting) => {
         return (
           <span>
-            <a href="javascript:;">Ver documentación</a>
+            <a href="/">Ver documentación</a>
             <Divider type="vertical" />
-            <a href="javascript:;">Enviar</a>
+            <a href="/">Enviar</a>
           </span>
         )
       }

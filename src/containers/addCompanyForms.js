@@ -85,7 +85,7 @@ class RawBasicForm extends Component {
       placeOfBusiness,
       nif,
     }
-    const result = await API.put('companyCRUD', '/company', { body })
+    await API.put('companyCRUD', '/company', { body })
   }
 
   render() {
@@ -184,7 +184,7 @@ class RawSharesForm extends Component {
 
     body['shareIntervals'] = triplets;
 
-    const result = await API.post('companyCRUD', '/company', { body })
+    await API.post('companyCRUD', '/company', { body })
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {
@@ -418,7 +418,6 @@ class RawAgreementRules extends Component {
   }
 
   async updateDynamoDB() {
-    const { getFieldValue } = this.props.form
     const companyId = '34fbd646-4fa7-4869-b15f-d1344585ebb9'
     const body = {}
 
@@ -502,7 +501,7 @@ class RawShareholderRegistry extends Component {
 
   render() {
     const { form } = this.props
-    const { getFieldDecorator, getFieldValue } = form;
+    const { getFieldValue } = form;
     return (
       <Fragment>
         <Form onSubmit={this.handleSubmit}>

@@ -233,7 +233,7 @@ class Shareholder extends Component {
 
         <h3>
           Persona física
-          {personType == 'juridic' && (' representante')}
+          {personType === 'juridic' && (' representante')}
         </h3>
         <Person {...this.props} />
           <Divider dashed/>
@@ -296,8 +296,7 @@ class Shareholders extends Component {
 
   render() {
     const { form } = this.props
-    const { getFieldDecorator, getFieldValue } = form
-    const { id } = this.state
+    const { getFieldValue } = form
     const shareholderKeys = getFieldValue(`shareholders`)
     const shareholders = shareholderKeys.map((id) => {
       return (

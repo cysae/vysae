@@ -1,13 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Radio, Divider, Select, Row, Col, Button, Icon } from 'antd'
+import { Form, InputNumber, Radio, Divider, Row, Button, Icon } from 'antd'
 import AgreementSelector from './agreementSelector.js'
-import { formItemLayout } from '../containers/addCompanyForms'
 import styled from 'styled-components'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
-const Option = Select.Option
-const Search = Input.Search
 
 const MajoritiesContainer = styled.div`
   padding: 20px !important;
@@ -36,10 +33,8 @@ const MyDivider = styled(Divider)`
 function Majority(props) {
   const { form, removeMajorityType } = props
   const { getFieldDecorator, getFieldValue } = form
-  console.log(removeMajorityType)
   const {
     isUsualMajority,
-    agreementTypes,
     title,
     id,
   } = props
@@ -234,7 +229,6 @@ class DefineAgreementRules extends Component {
 
   removeMajorityType = (id) => {
     const { form } = this.props
-    const { fieldId } = this.state
     const majorityTypes = form.getFieldValue(`majorityTypes`);
     const nextMajorityTypes = {}
     nextMajorityTypes[`majorityTypes`] = majorityTypes.filter(key => key !== id)

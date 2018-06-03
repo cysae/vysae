@@ -1,9 +1,8 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { Row, Col, Button } from 'antd'
+import { Row, Col } from 'antd'
 import { Document } from '@react-pdf/dom'
-import { Page, Text, View, StyleSheet, PDFRenderer, createElement, pdf } from '@react-pdf/core'
+import { Page, Text, View, StyleSheet } from '@react-pdf/core'
 import { connect } from 'react-redux'
 import { formDict } from '../utils/formDict.js'
 import moment from 'moment'
@@ -14,10 +13,6 @@ const Wrapper = styled.div`
   iframe {
     flex: 1;
   }
-`
-
-const MyButton = styled(Button)`
-  width: 100%;
 `
 
 // Create styles
@@ -69,15 +64,14 @@ class MeetingPDF extends Component {
       meetingType,
       person,
       votingStart,
-      votingEnd,
       agreementTypes,
       location,
       additionalInfo
     } = this.props
     const startDate = votingStart.format('DD-MM-YYYY')
     const startHour = votingStart.format('HH:mm')
-    const endDate = votingEnd.format('DD-MM-YYYY')
-    const endHour = votingEnd.format('HH:mm')
+    /* const endDate = votingEnd.format('DD-MM-YYYY') */
+    /* const endHour = votingEnd.format('HH:mm') */
 
     return (
       <Row type="flex">

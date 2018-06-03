@@ -1,17 +1,17 @@
-const triplets = [
-    {num: 1, attr: {a: true}, isEnd: false},
-    {num: 10, attr: {a: true}, isEnd: true},
-    {num: 7, attr: {b: true}, isEnd: false},
-    {num: 12, attr: {b: true}, isEnd: true},
-    {num: 9, attr: {c: true}, isEnd: false},
-    {num: 15, attr: {c: true}, isEnd: true},
-]
+// const triplets = [
+//     {num: 1, attr: {a: true}, isEnd: false},
+//     {num: 10, attr: {a: true}, isEnd: true},
+//     {num: 7, attr: {b: true}, isEnd: false},
+//     {num: 12, attr: {b: true}, isEnd: true},
+//     {num: 9, attr: {c: true}, isEnd: false},
+//     {num: 15, attr: {c: true}, isEnd: true},
+// ]
 
 function sortBy(field1, field2) {
     return function(a, b) {
         if (a[field1] > b[field1]) {
             return 1
-        } else if (a[field1] == b[field1]) {
+        } else if (a[field1] === b[field1]) {
             if (a[field2] > b[field2]) {
                 return 1
             } else if (a[field2] < b[field2]) {

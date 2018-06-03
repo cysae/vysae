@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Form, Input, Row, Col } from 'antd'
 import Amplify from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import aws_exports from './aws-exports.js'

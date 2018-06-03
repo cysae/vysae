@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Form, InputNumber, Button, Icon, Divider, Row, Col } from 'antd'
+import { Form, Button, Icon, Divider, Row, Col } from 'antd'
 import ShareIntervalFields from './shareIntervalFields'
-import { MyInputNumber, formItemLayout } from '../containers/addCompanyForms'
+import { MyInputNumber } from '../containers/addCompanyForms'
 import styled from 'styled-components'
 const FormItem = Form.Item
 

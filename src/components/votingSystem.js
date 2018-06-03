@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Row, Col, List, Icon } from 'antd'
-import PropTypes from 'prop-types'
 
 const majorities = [{
   id: 0,
@@ -29,7 +28,6 @@ class VotingSystem extends Component {
   }
 
   getAgreementList(id) {
-    const agreementList = []
     for(const majority of majorities) {
       if(majority.id === id) {
         return majority.agreements

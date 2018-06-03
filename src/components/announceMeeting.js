@@ -1,13 +1,11 @@
 import React, {Component} from 'react'
-import { Form, Radio, Button, DatePicker, TimePicker, Row, Col, Input, Upload, Icon, message } from 'antd'
+import { Form, Radio, Button, DatePicker, Input } from 'antd'
 // Redux
 import { updateAnnouncement } from '../actions/index.js'
 import { connect } from 'react-redux'
 import { HOCForm } from '../containers/addCompanyForms.js'
 import AgreementSelector from './agreementSelector.js'
-import { withRouter } from 'react-router-dom'
 // components
-import MeetingPDF from './meetingPDF.js'
 const FormItem = Form.Item
 const { TextArea } = Input
 const RadioButton = Radio.Button
@@ -16,7 +14,6 @@ const { RangePicker } = DatePicker;
 
 class AnnounceMeeting extends Component {
   handleSubmit = (e) => {
-    const { getFieldValue } = this.props.form
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       /* if (!err) { */
@@ -53,24 +50,6 @@ class AnnounceMeeting extends Component {
         offset: 6
       }
     }
-
-    const uploadProps = {
-      name: 'file',
-      action: '//jsonplaceholder.typicode.com/posts/',
-      headers: {
-        authorization: 'authorization-text',
-      },
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    };
 
     return (
       <Form onSubmit={this.handleSubmit} >
@@ -113,12 +92,6 @@ class AnnounceMeeting extends Component {
              rules: [{ required: true, message: 'Es obligatorio.' }],
           })(<TextArea autosize={{ minRows: 4}}  />)}
         </FormItem>
-
-        {/* <Upload {...uploadProps}>
-            <Button>
-            <Icon type="upload" /> Click to Upload
-            </Button>
-            </Upload> */}
 
         <FormItem {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit" style={{width: '100%'}}>
