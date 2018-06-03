@@ -75,9 +75,9 @@ class MeetingPDF extends Component {
       additionalInfo
     } = this.props
     const startDate = votingStart.format('DD-MM-YYYY')
-    const startHour = votingStart.format('HH:ii')
+    const startHour = votingStart.format('HH:mm')
     const endDate = votingEnd.format('DD-MM-YYYY')
-    const endHour = votingEnd.format('DD-MM-YYYY')
+    const endHour = votingEnd.format('HH:mm')
 
     return (
       <Row type="flex">
