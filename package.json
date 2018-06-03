@@ -6,7 +6,7 @@
     "@react-pdf/core": "^0.7.6",
     "@react-pdf/dom": "^0.7.6",
     "antd": "^3.4.1",
-    "aws-amplify": "^0.3.0",
+    "aws-amplify": "^0.4.0",
     "aws-amplify-react": "^0.1.41",
     "babel-plugin-import": "^1.7.0",
     "history": "^4.7.2",
@@ -20,13 +20,15 @@
     "recharts": "^1.0.0-beta.10",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
-    "styled-components": "^3.2.6",
-    "transform-loader": "^0.2.4"
+    "styled-components": "^3.2.6"
   },
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject"
+  },
+  "devDependencies": {
+    "transform-loader": "^0.2.4"
   }
 }

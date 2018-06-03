@@ -9,6 +9,7 @@ class AnnouncementSent extends Component {
         <Row type="flex" justify="center" style={{marginBottom: 20}}>
           <Col>
             <h1 style={{textAlign: 'center', color: 'green'}}>Convocatoria enviado</h1>
+            <h2>Hemos informado a todas las socios</h2>
           </Col>
         </Row>
         <Row type="flex" justify="center">
