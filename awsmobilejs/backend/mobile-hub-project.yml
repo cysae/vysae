@@ -11,31 +11,31 @@ features:
           sdk-generation-stage-name: Development
         paths:
           /company: !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/company-20180603082435.zip
+            codeFilename: uploads/company-20180603114435.zip
             description: 'Handler for calls to resource path : /company/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: GnSHtkU3RDWKy4XZiJXZSzv8+RcWp0EXrbeSYr36+mk=
+            hashcode: XmQhLib6+G/ToGhkK93Nf6zHwLaZM/bGcrUBvU0ZqZA=
             memorySize: '128'
-            modified: '2018-06-03T06:25:00.909+0000'
+            modified: '2018-06-03T09:45:01.156+0000'
             name: company
             runtime: nodejs6.10
             timeout: '3'
-            version: BEQCwoXDCRDJQM674a0j.NEeQ0advAGJ
+            version: wXRLb2KvS9fdU2VRG8wUt9QMyDQw9acz
           '/company/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/company-20180603082435.zip
+            codeFilename: uploads/company-20180603114435.zip
             description: 'Handler for calls to resource path : /company/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: GnSHtkU3RDWKy4XZiJXZSzv8+RcWp0EXrbeSYr36+mk=
+            hashcode: XmQhLib6+G/ToGhkK93Nf6zHwLaZM/bGcrUBvU0ZqZA=
             memorySize: '128'
-            modified: '2018-06-03T06:25:00.909+0000'
+            modified: '2018-06-03T09:45:01.156+0000'
             name: company
             runtime: nodejs6.10
             timeout: '3'
-            version: Q2JJNN0CuRwhhgujbSKfl8aqhiurIdGL
+            version: FBvSVSyzrWBcdcom.ZaYC0htOsS5WiNm
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true

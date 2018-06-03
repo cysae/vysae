@@ -235,8 +235,10 @@ class RawSharesForm extends Component {
     let totalShareIntervalNumber = 0
     const shareIntervalIds = getFieldValue('shareInterval_ids')
     for (const id of shareIntervalIds) {
-      totalShareIntervalNumber += Math.abs(getFieldValue(`shareInterval_begin_${id}`)-getFieldValue(`shareInterval_end_${id}`))+1
+      totalShareIntervalNumber += Math.abs(getFieldValue(`shareInterval_start_${id}`)-getFieldValue(`shareInterval_end_${id}`))+1
     }
+
+    console.log(totalShareIntervalNumber)
 
 
     // number of shares have to coincide
