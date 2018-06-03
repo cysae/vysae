@@ -24,7 +24,7 @@ const MyDivider = styled(Divider)`
   }
 `
 
-function Person(props) {
+function RawPerson(props) {
   const { id, form } = props
   const { getFieldDecorator } = form;
 
@@ -124,7 +124,7 @@ function Person(props) {
     </Fragment>
   )
 }
-export const Profile = HOCForm(Person)
+export const Person = HOCForm(RawPerson)
 
 class Shareholder extends Component {
   render() {
@@ -235,7 +235,7 @@ class Shareholder extends Component {
           Persona física
           {personType == 'juridic' && (' representante')}
         </h3>
-        <Profile {...this.props} />
+        <Person {...this.props} />
           <Divider dashed/>
 
           <h3>Participaciones</h3>
