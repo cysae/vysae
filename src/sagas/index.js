@@ -5,13 +5,14 @@ Amplify.configure(aws_exports)
 
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-function* fetchCompany(action) {
+function* updateCompany(action) {
     let { companyId, body } = action.payload
     try {
         const company = yield call([API, 'get'], 'companyCRUD', `/company/${companyId}`)
         body = {...company[0], ...body}
+        console.log('body', body)
         yield call([API, 'put'], 'companyCRUD', `/company`, {body})
-        yield put({type: "USER_FETCH_SUCCEEDED", company });
+        yield put({type: "COMPANY_UPDATE_SUCCEEDED", company });
     } catch (e) {
         console.log('error: ', e)
     }
@@ -33,7 +34,7 @@ function* mySaga() {
   and only the latest one will be run.
 */
 function* mySaga() {
-    yield takeLatest("COMPANY_UPDATE_REQUESTED", fetchCompany);
+    yield takeLatest("COMPANY_UPDATE_REQUESTED", updateCompany);
 }
 
 export default mySaga;

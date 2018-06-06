@@ -15,7 +15,7 @@ class BasicForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.createCompany()
-        /* this.props.next() */
+        this.props.next()
       }
     });
   }
@@ -40,13 +40,10 @@ class BasicForm extends Component {
     }
 
     this.props.requestCompanyUpdate( companyId, body)
-
-    /* await API.put('companyCRUD', '/company', { body }) */
   }
 
   render() {
     const { getFieldDecorator } = this.props.form;
-
 
     return (
       <Form layout="vertical" onSubmit={this.handleSubmit}>

@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Button, Radio, Divider, Row, Col, Alert} from 'antd'
+// redux
+import { connect } from 'react-redux'
 // utils
 import { mergeTriplets } from '../utils/mergeIntervalTiplets.js'
-import { updateCompany } from '../utils/dynamodb.js'
+import { requestCompanyUpdate } from '../actions/index.js'
 // components
 import ShareIntervalFields from '../components/shareIntervalFields'
 import IntervalTypeField from '../components/intervalTypeField.js'
@@ -12,7 +14,7 @@ const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
-export default class SharesForm extends Component {
+class SharesForm extends Component {
   state = {
     error: null
   }
@@ -27,7 +29,7 @@ export default class SharesForm extends Component {
     });
   }
 
-  async update() {
+  update() {
     const { getFieldValue } = this.props.form
 
     let intvls = []
@@ -71,8 +73,10 @@ export default class SharesForm extends Component {
       shareIntervals: triplets,
     }
 
-    const companyId = '34fbd646-4fa7-4869-b15f-d1344585ebb9'
-    await updateCompany(companyId, body)
+
+    // const companyId = this.props.form.getFieldValue('companyId')
+    const companyId = '64eb118f-d73c-42d6-8ce7-16113dc083bd'
+    this.props.requestCompanyUpdate(companyId, body)
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {
@@ -125,9 +129,6 @@ export default class SharesForm extends Component {
     for (const id of shareIntervalIds) {
       totalShareIntervalNumber += Math.abs(getFieldValue(`shareInterval_start_${id}`)-getFieldValue(`shareInterval_end_${id}`))+1
     }
-
-    console.log(totalShareIntervalNumber)
-
 
     // number of shares have to coincide
     if (totalShareNumber !== totalShareIntervalNumber) {
@@ -287,11 +288,16 @@ export default class SharesForm extends Component {
             </Button>
           </FormItem>
         </Form>
-
-        <pre>
-          {JSON.stringify(this.props.formState, null, 2)}
-        </pre>
       </Fragment>
     );
   }
 }
+
+const mapStateToProps = state => {}
+const mapDispatchToProps = dispatch => {
+  return {
+    requestCompanyUpdate: (companyId, body) => { dispatch(requestCompanyUpdate(companyId, body)) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SharesForm)
