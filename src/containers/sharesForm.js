@@ -66,7 +66,6 @@ class SharesForm extends Component {
       )
     }
 
-
     const triplets = mergeTriplets(this.toTripleFrom(intvls))
 
     const body = {
@@ -74,8 +73,7 @@ class SharesForm extends Component {
     }
 
 
-    // const companyId = this.props.form.getFieldValue('companyId')
-    const companyId = '64eb118f-d73c-42d6-8ce7-16113dc083bd'
+    const companyId = this.props.form.getFieldValue('companyId')
     this.props.requestCompanyUpdate(companyId, body)
   }
 
@@ -278,7 +276,7 @@ class SharesForm extends Component {
               />
             ) : null
           }
-
+          
           <FormItem>
             <Button type="primary" onClick={this.props.prev}>
               Atrás

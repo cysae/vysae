@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react'
 import { Steps, Divider } from 'antd'
 import {
-  AgreementRules,
   ShareHolderRegistry,
   GoverningBodies
 } from '../containers/addCompanyForms.js'
 import BasicForm from '../containers/basicForm.js'
 import SharesForm from '../containers/sharesForm.js'
+import AgreementRules from '../containers/agreementRulesForm.js'
 import { connect } from 'react-redux'
 import { Form } from 'antd'
 import { saveCompanyForm } from '../actions/index'
@@ -16,7 +16,7 @@ class AddCompany extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 1,
+      current: 2,
     };
 
     this.next = this.next.bind(this)
@@ -43,7 +43,7 @@ class AddCompany extends React.Component {
       content: <SharesForm next={this.next} prev={this.prev} form={form} />,
     }, {
       title: 'Acuerdos',
-      content: <AgreementRules next={this.next} prev={this.prev} />,
+      content: <AgreementRules next={this.next} prev={this.prev} form={form} />,
     }, {
       title: 'Socios',
       content: <ShareHolderRegistry next={this.next} prev={this.prev} />,

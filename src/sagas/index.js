@@ -10,11 +10,10 @@ function* updateCompany(action) {
     try {
         const company = yield call([API, 'get'], 'companyCRUD', `/company/${companyId}`)
         body = {...company[0], ...body}
-        console.log('body', body)
         yield call([API, 'put'], 'companyCRUD', `/company`, {body})
         yield put({type: "COMPANY_UPDATE_SUCCEEDED", company });
     } catch (e) {
-        console.log('error: ', e)
+        console.log('saga error: ', e)
     }
 }
 

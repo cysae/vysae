@@ -9,7 +9,6 @@ import { saveCompanyForm } from '../actions/index'
 // utils
 import { updateCompany } from '../utils/dynamodb.js'
 // components
-import DefineAgreementRules from '../components/majorities'
 import Shareholders from '../components/shareholder'
 import AdministrationOrgans from '../components/administrationOrgans'
 Amplify.configure(aws_exports)
@@ -59,67 +58,6 @@ export function HOCForm(formComponent) {
 
 
 
-class RawAgreementRules extends Component {
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.updateDynamoDB()
-        this.props.next()
-      }
-    });
-  }
-
-  async updateDynamoDB() {
-    const companyId = '34fbd646-4fa7-4869-b15f-d1344585ebb9'
-    const body = {}
-
-    // Ordinary majority
-    updateCompany(companyId, body)
-
-    /* const result = await API.post('companyCRUD', '/company', { body }) */
-  }
-
-  render() {
-    const { form } = this.props
-    const { getFieldDecorator, getFieldValue } = form;
-    return (
-      <Fragment>
-        <Form onSubmit={this.handleSubmit} layout='inline'>
-          <FormItem>
-            <span style={{marginRight: 10}}>
-              ¿Tu empresa está sometida al régimen legal supletorio establecido en la (LSC)?
-            </span>
-            {getFieldDecorator('underliesLSC', {
-               rules: [{
-                 required: true,
-                 message: 'Este campo es obligatorio.',
-               }]
-            })(
-               <RadioGroup>
-                 <RadioButton value="yes">Sí</RadioButton>
-                 <RadioButton value="no">No</RadioButton>
-               </RadioGroup>
-             )}
-          </FormItem>
-          <Divider />
-          {(getFieldValue('underliesLSC') === 'no') && <DefineAgreementRules form={form} />}
-          <FormItem>
-            <Button type="primary" onClick={this.props.prev}>
-              Atrás
-            </Button>
-            <Button type="primary" htmlType="submit">
-              Continuar
-            </Button>
-          </FormItem>
-        </Form>
-        <pre>
-          {JSON.stringify(this.props.formState, null, 2)}
-        </pre>
-      </Fragment>
-    );
-  }
-}
 
 class RawShareholderRegistry extends Component {
   handleSubmit = (e) => {
@@ -284,6 +222,5 @@ class RawGoverningBodies extends Component {
   }
 }
 
-export const AgreementRules = HOCForm(RawAgreementRules)
 export const ShareHolderRegistry = HOCForm(RawShareholderRegistry)
 export const GoverningBodies = HOCForm(RawGoverningBodies)
