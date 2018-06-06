@@ -10,7 +10,7 @@ import { Layout, Menu, Breadcrumb } from 'antd'
 
 // Components
 import Dashboard from './dashboard'
-import AddCompany from './components/addCompany'
+import AddCompany from './containers/addCompany'
 import Info from './components/info'
 import Meetings from './components/meetings'
 

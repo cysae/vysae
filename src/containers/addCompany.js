@@ -1,12 +1,15 @@
 import React, { Fragment } from 'react'
 import { Steps, Divider } from 'antd'
 import {
-  BasicForm,
   SharesForm,
   AgreementRules,
   ShareHolderRegistry,
   GoverningBodies
 } from '../containers/addCompanyForms.js'
+import BasicForm from '../containers/basicForm.js'
+import { connect } from 'react-redux'
+import { Form } from 'antd'
+import { saveCompanyForm } from '../actions/index'
 const Step = Steps.Step
 
 class AddCompany extends React.Component {
@@ -29,11 +32,12 @@ class AddCompany extends React.Component {
   }
 
   render() {
-    const { current } = this.state;
+    const { form } = this.props
+    const { current } = this.state
 
     const steps = [{
       title: 'Información',
-      content: <BasicForm next={this.next} prev={this.prev} />,
+      content: <BasicForm next={this.next} prev={this.prev} form={form}/>,
     }, {
       title: 'Participaciones',
       content: <SharesForm next={this.next} prev={this.prev} />,
@@ -60,4 +64,28 @@ class AddCompany extends React.Component {
   }
 }
 
-export default AddCompany;
+export function HOCForm(formComponent) {
+  return connect((state) => {
+    return {
+      formState: {
+        ...state.companyForm
+      }
+    }
+  })(Form.create({
+    onFieldsChange(props, changedFields) {
+      props.dispatch(saveCompanyForm(changedFields))
+    },
+    mapPropsToFields(props) {
+      const fields = {};
+      for (const key in props.formState) {
+        fields[key] = Form.createFormField(props.formState[key])
+      }
+      return fields;
+    },
+    onValuesChange(_, values) {
+      /* console.log(values); */
+    },
+  })(formComponent))
+}
+
+export default HOCForm(AddCompany);

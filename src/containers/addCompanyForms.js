@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, InputNumber, Button, Radio, Divider, Mention, Row, Col, Alert} from 'antd'
+import { Form, InputNumber, Button, Radio, Divider, Mention, Row, Col, Alert} from 'antd'
 import styled from 'styled-components'
-import Amplify, { Auth, API } from 'aws-amplify'
+import Amplify, { Auth } from 'aws-amplify'
 import aws_exports from '../aws-exports.js'
 // redux
 import { connect } from 'react-redux'
@@ -9,7 +9,6 @@ import { saveCompanyForm } from '../actions/index'
 // utils
 import { mergeTriplets } from '../utils/mergeIntervalTiplets.js'
 import { updateCompany } from '../utils/dynamodb.js'
-import { v4 as uuid } from 'uuid'
 // components
 import ShareIntervalFields from '../components/shareIntervalFields'
 import IntervalTypeField from '../components/intervalTypeField.js'
@@ -61,67 +60,6 @@ export function HOCForm(formComponent) {
   })(formComponent))
 }
 
-class RawBasicForm extends Component {
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.createCompany()
-        this.props.next()
-      }
-    });
-  }
-
-  async createCompany() {
-    const { getFieldValue } = this.props.form
-    const companyId = uuid()
-    const name = getFieldValue('name')
-    const placeOfBusiness = getFieldValue('placeOfBusiness')
-    const nif = getFieldValue('nif')
-
-    const body = {
-      uuid: companyId,
-      name,
-      placeOfBusiness,
-      nif,
-    }
-    await API.put('companyCRUD', '/company', { body })
-  }
-
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Form layout="vertical" onSubmit={this.handleSubmit}>
-        <FormItem
-          label="Denominación social"
-        >
-          {getFieldDecorator('name', {
-             rules: [{ required: true, message: 'Es obligatorio.' }],
-          })(<Input />)}
-        </FormItem>
-        <FormItem
-          label="Domicilio Social"
-        >
-          {getFieldDecorator('placeOfBusiness', {
-             rules: [{ required: true, message: 'Es obligatorio.' }],
-          })(<Input />)}
-        </FormItem>
-        <FormItem
-          label="NIF"
-        >
-          {getFieldDecorator('nif', {
-             rules: [{ required: true, message: 'Es obligatorio.' }],
-          })(<Input />)}
-        </FormItem>
-        <FormItem>
-          <Button type="primary" htmlType="submit">
-            Continuar
-          </Button>
-        </FormItem>
-      </Form>
-    );
-  }
-}
 
 
 class RawSharesForm extends Component {
@@ -141,9 +79,6 @@ class RawSharesForm extends Component {
 
   async update() {
     const { getFieldValue } = this.props.form
-    const companyId = '34fbd646-4fa7-4869-b15f-d1344585ebb9'
-    const company = await API.get('companyCRUD', `/company/${companyId}`)
-    const body = company[0]
 
     let intvls = []
     // normal shares
@@ -182,9 +117,12 @@ class RawSharesForm extends Component {
 
     const triplets = mergeTriplets(this.toTripleFrom(intvls))
 
-    body['shareIntervals'] = triplets;
+    const body = {
+      shareIntervals: triplets,
+    }
 
-    await API.post('companyCRUD', '/company', { body })
+    const companyId = '34fbd646-4fa7-4869-b15f-d1344585ebb9'
+    await updateCompany(companyId, body)
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {
@@ -412,9 +350,9 @@ class RawAgreementRules extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      this.updateDynamoDB()
       if (!err) {
-        /* this.props.next() */
+        this.updateDynamoDB()
+        this.props.next()
       }
     });
   }
@@ -424,13 +362,10 @@ class RawAgreementRules extends Component {
     const body = {}
 
     // Ordinary majority
-
     updateCompany(companyId, body)
 
     /* const result = await API.post('companyCRUD', '/company', { body }) */
   }
-
-
 
   render() {
     const { form } = this.props
@@ -636,7 +571,6 @@ class RawGoverningBodies extends Component {
   }
 }
 
-export const BasicForm = HOCForm(RawBasicForm)
 export const SharesForm = HOCForm(RawSharesForm)
 export const AgreementRules = HOCForm(RawAgreementRules)
 export const ShareHolderRegistry = HOCForm(RawShareholderRegistry)
