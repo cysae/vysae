@@ -3,23 +3,24 @@ import { Form, Input, Button} from 'antd'
 import Amplify, { API } from 'aws-amplify'
 import aws_exports from '../aws-exports.js'
 import { v4 as uuid } from 'uuid'
+import { connect } from 'react-redux'
+import { requestCompanyUpdate } from '../actions/index.js'
 // components
 Amplify.configure(aws_exports)
 const FormItem = Form.Item
 
-export default class BasicForm extends Component {
+class BasicForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.createCompany()
-        this.props.next()
+        /* this.props.next() */
       }
     });
   }
 
   componentDidMount() {
-    console.log('mounted')
     const { setFieldsValue } = this.props.form
     setFieldsValue({ companyId: uuid() })
   }
@@ -37,7 +38,10 @@ export default class BasicForm extends Component {
       placeOfBusiness,
       nif,
     }
-    await API.put('companyCRUD', '/company', { body })
+
+    this.props.requestCompanyUpdate( companyId, body)
+
+    /* await API.put('companyCRUD', '/company', { body }) */
   }
 
   render() {
@@ -84,3 +88,12 @@ export default class BasicForm extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {}
+const mapDispatchToProps = dispatch => {
+  return {
+    requestCompanyUpdate: (companyId, body) => { dispatch(requestCompanyUpdate(companyId, body)) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BasicForm)
