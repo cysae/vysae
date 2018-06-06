@@ -25,6 +25,7 @@ const announcementExample = {
     agreementTypes: ['hello', 'hola'],
     additionalInfo: 'test',
 }
+
 function announcement(state = announcementExample, action) {
     switch(action.type) {
     case UPDATE_ANNOUNCEMENT:

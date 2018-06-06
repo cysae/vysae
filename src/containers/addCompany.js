@@ -59,6 +59,9 @@ class AddCompany extends React.Component {
         </Steps>
         <Divider />
         <div className="steps-content">{steps[current].content}</div>
+        <pre>
+          {JSON.stringify(this.props.formState, null, 2)}
+        </pre>
       </Fragment>
     )
   }
