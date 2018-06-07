@@ -34,7 +34,7 @@ function RawPerson(props) {
         label="Nombre"
         {...formItemLayout}
       >
-        {getFieldDecorator(`prename_${id}`, {
+        {getFieldDecorator(`firstName_${id}`, {
            rules: [{
              required: true,
              message: 'Este campo es obligatorio.',
@@ -47,7 +47,7 @@ function RawPerson(props) {
         label="Apellidos"
         {...formItemLayout}
       >
-        {getFieldDecorator(`surname_${id}`, {
+        {getFieldDecorator(`lastName_${id}`, {
            rules: [{
              required: true,
              message: 'Este campo es obligatorio.',

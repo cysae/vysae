@@ -4,20 +4,54 @@ import { Form, Button, Divider} from 'antd'
 // Redux
 import { requestUsersSignUp } from '../actions/index.js'
 import { connect } from 'react-redux'
+// utils
+import { generatePassword } from '../utils/index.js'
 // components
 import Shareholders from '../components/shareholder'
 const FormItem = Form.Item
 
+
 class ShareholderRegistry extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.requestUsersSignUp()
+    this.registerUsers()
     this.props.form.validateFields((err, values) => {
-      /* this.update() */
       if (!err) {
         this.props.next()
       }
     });
+  }
+
+  registerUsers() {
+    const { getFieldValue } = this.props.form
+    const user2 = {
+      username: 'test2',
+      password: '%Test1991',
+      attributes: {
+        email: 'test@test.de',
+        phone_number: '+14155552671',
+        [`custom:firstName`]: 'Dirk',
+        [`custom:lastName`]: 'Hornung',
+      }
+    }
+
+    const shareholderIds = getFieldValue('shareholders')
+    const users = shareholderIds.map((id) => {
+      return {
+        username: getFieldValue(`dni_${id}`),
+        password: generatePassword(),
+        attributes: {
+          email: getFieldValue(`email_${id}`),
+          phone_number: getFieldValue(`telefon_${id}`),
+          [`custom:firstName`]: getFieldValue(`firstName_${id}`),
+          [`custom:lastName`]: getFieldValue(`lastName_${id}`),
+          [`custom:permanentAddress`]: getFieldValue(`permanentAddress_${id}`),
+          [`custom:nationality`]: getFieldValue(`nationality_${id}`),
+        }
+      }
+    })
+
+    this.props.requestUsersSignUp(users)
   }
 
   render() {
