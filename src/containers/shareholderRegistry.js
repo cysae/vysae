@@ -1,17 +1,17 @@
 import React, { Component, Fragment } from 'react'
 // Antd
 import { Form, Button, Divider} from 'antd'
-// Amplify
-import Amplify, { Auth } from 'aws-amplify'
-import aws_exports from '../aws-exports.js'
+// Redux
+import { requestUsersSignUp } from '../actions/index.js'
+import { connect } from 'react-redux'
 // components
 import Shareholders from '../components/shareholder'
-Amplify.configure(aws_exports)
 const FormItem = Form.Item
 
-export default class ShareholderRegistry extends Component {
+class ShareholderRegistry extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
+    this.props.requestUsersSignUp()
     this.props.form.validateFields((err, values) => {
       /* this.update() */
       if (!err) {
@@ -19,23 +19,6 @@ export default class ShareholderRegistry extends Component {
       }
     });
   }
-
-  async update() {
-    const user = {
-      username: 'test',
-      password: '%Test1991',
-      attributes: {
-        email: 'test@test.de',
-        phone_number: '+14155552671',
-        [`custom:firstName`]: 'Dirk',
-        [`custom:lastName`]: 'Hornung',
-      }
-    }
-    await Auth.signUp(user)
-      .then(data => console.log(data))
-      .catch(err => console.log(err))
-  }
-
 
   render() {
     const { form } = this.props
@@ -61,3 +44,13 @@ export default class ShareholderRegistry extends Component {
     );
   }
 }
+
+
+const mapStateToProps = state => {}
+const mapDispatchToProps = dispatch => {
+  return {
+    requestUsersSignUp: (users) => { dispatch(requestUsersSignUp(users)) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShareholderRegistry)

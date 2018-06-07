@@ -4,6 +4,7 @@
 export const SAVE_COMPANY_FORM = 'SAVE_COMPANY_FORM'
 export const UPDATE_ANNOUNCEMENT = 'UPDATE_ANNOUNCEMENT'
 export const COMPANY_UPDATE_REQUESTED = 'COMPANY_UPDATE_REQUESTED'
+export const USERS_SIGNUP_REQUESTED = 'USERS_SIGNUP_REQUESTED'
 
 /*
  * action creators
@@ -26,5 +27,12 @@ export function requestCompanyUpdate(companyId, body) {
     return {
         type: COMPANY_UPDATE_REQUESTED,
         payload: { companyId, body }
+    }
+}
+
+export function requestUsersSignUp(users) {
+    return {
+        type: USERS_SIGNUP_REQUESTED,
+        payload: { users }
     }
 }
