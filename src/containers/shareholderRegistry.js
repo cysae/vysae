@@ -24,20 +24,10 @@ class ShareholderRegistry extends Component {
 
   registerUsers() {
     const { getFieldValue } = this.props.form
-    const user2 = {
-      username: 'test2',
-      password: '%Test1991',
-      attributes: {
-        email: 'test@test.de',
-        phone_number: '+14155552671',
-        [`custom:firstName`]: 'Dirk',
-        [`custom:lastName`]: 'Hornung',
-      }
-    }
 
     const shareholderIds = getFieldValue('shareholders')
     const users = shareholderIds.map((id) => {
-      return {
+      const user = {
         username: getFieldValue(`dni_${id}`),
         password: generatePassword(),
         attributes: {
@@ -47,8 +37,22 @@ class ShareholderRegistry extends Component {
           [`custom:lastName`]: getFieldValue(`lastName_${id}`),
           [`custom:permanentAddress`]: getFieldValue(`permanentAddress_${id}`),
           [`custom:nationality`]: getFieldValue(`nationality_${id}`),
+          [`custom:type`]: getFieldValue(`personType_${id}`),
         }
       }
+
+      console.log(getFieldValue(`personType_${id}`))
+      if(getFieldValue(`personType_${id}`) === 'juridic') {
+        console.log('juridic')
+        user['attributes'][`custom:companyName`] = getFieldValue(`companyName_${id}`)
+        user['attributes'][`custom:nif`] = getFieldValue(`nif_${id}`)
+        user['attributes'][`custom:placeOfBusiness`] = getFieldValue(`placeOfBusiness_${id}`)
+        user['attributes'][`custom:companyNationality`] = getFieldValue(`companyNationality_${id}`)
+        user['attributes'][`custom:companyRegister`] = getFieldValue(`companyRegister_${id}`)
+      }
+      console.log(user)
+
+      return user
     })
 
     this.props.requestUsersSignUp(users)
