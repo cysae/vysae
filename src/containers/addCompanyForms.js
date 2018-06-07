@@ -1,17 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import { Form, InputNumber, Button, Radio, Divider, Mention} from 'antd'
 import styled from 'styled-components'
-import Amplify, { Auth } from 'aws-amplify'
-import aws_exports from '../aws-exports.js'
 // redux
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
-// utils
-import { updateCompany } from '../utils/dynamodb.js'
 // components
-import Shareholders from '../components/shareholder'
 import AdministrationOrgans from '../components/administrationOrgans'
-Amplify.configure(aws_exports)
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
@@ -59,58 +53,6 @@ export function HOCForm(formComponent) {
 
 
 
-class RawShareholderRegistry extends Component {
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      /* this.update() */
-      if (!err) {
-        this.props.next()
-      }
-    });
-  }
-
-  async update() {
-    const user = {
-      username: 'test',
-      password: '%Test1991',
-      attributes: {
-        email: 'test@test.de',
-        phone_number: '+14155552671',
-        [`custom:firstName`]: 'Dirk',
-        [`custom:lastName`]: 'Hornung',
-      }
-    }
-    await Auth.signUp(user)
-      .then(data => console.log(data))
-      .catch(err => console.log(err))
-  }
-
-
-  render() {
-    const { form } = this.props
-    const { getFieldValue } = form;
-    return (
-      <Fragment>
-        <Form onSubmit={this.handleSubmit}>
-          <Shareholders form={form} personType={getFieldValue('personType')} />
-          <Divider />
-          <FormItem>
-            <Button type="primary" onClick={this.props.prev}>
-              Atrás
-            </Button>
-            <Button type="primary" htmlType="submit">
-              Continuar
-            </Button>
-          </FormItem>
-        </Form>
-        <pre>
-          {JSON.stringify(this.props.formState, null, 2)}
-        </pre>
-      </Fragment>
-    );
-  }
-}
 
 class RawGoverningBodies extends Component {
   constructor(props) {
@@ -222,5 +164,4 @@ class RawGoverningBodies extends Component {
   }
 }
 
-export const ShareHolderRegistry = HOCForm(RawShareholderRegistry)
 export const GoverningBodies = HOCForm(RawGoverningBodies)

@@ -103,7 +103,7 @@ class Majority extends Component {
                <span>  de los votos emitidos, siempre que dichos votos representen un mínimo del </span>
              </FormItem>
              <FormItem>
-               {getFieldDecorator(`${id}_minimumRatioOfShareCapital`, {
+               {getFieldDecorator(`${id}_minCapitalRatio`, {
                   initialValue: 0,
                   rules: [{
                     required: true,
@@ -117,22 +117,22 @@ class Majority extends Component {
                     parser={value => value.replace('%', '')}
                   />
                 )}
-               <span> del capital social </span>
+               <span> del capital social total.</span>
              </FormItem>
-             <FormItem>
-               {getFieldDecorator(`${id}_typeOfShareCapital`, {
-                  initialValue: 'total',
-                  rules: [{
-                    required: true,
-                    message: 'Este campo es obligatorio.',
-                  }]
-               })(
-                  <RadioGroup>
-                    <RadioButton value="total">total</RadioButton>
-                    <RadioButton value="withRightToVote">con derecho a voto</RadioButton>
-                  </RadioGroup>
-                )}
-             </FormItem>
+             {/* <FormItem>
+                 {getFieldDecorator(`${id}_typeOfShareCapital`, {
+                 initialValue: 'total',
+                 rules: [{
+                 required: true,
+                 message: 'Este campo es obligatorio.',
+                 }]
+                 })(
+                 <RadioGroup>
+                 <RadioButton value="total">total</RadioButton>
+                 <RadioButton value="withRightToVote">con derecho a voto</RadioButton>
+                 </RadioGroup>
+                 )}
+                 </FormItem> */}
            </Row>
         )}
 

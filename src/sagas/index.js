@@ -1,4 +1,4 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
+import { call, put, takeLatest } from 'redux-saga/effects'
 import Amplify, { API } from 'aws-amplify'
 import aws_exports from '../aws-exports.js'
 Amplify.configure(aws_exports)
@@ -17,21 +17,7 @@ function* updateCompany(action) {
     }
 }
 
-/*
-  Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
-  Allows concurrent fetches of user.
-*/
-function* mySaga() {
-    yield takeEvery("COMPANY_FETCH_REQUESTED", 'test');
-}
 
-/*
-  Alternatively you may use takeLatest.
-
-  Does not allow concurrent fetches of user. If "USER_FETCH_REQUESTED" gets
-  dispatched while a fetch is already pending, that pending fetch is cancelled
-  and only the latest one will be run.
-*/
 function* mySaga() {
     yield takeLatest("COMPANY_UPDATE_REQUESTED", updateCompany);
 }

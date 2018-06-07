@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, InputNumber, Button, Radio, Divider, Mention} from 'antd'
+import { Form, Button, Radio, Divider} from 'antd'
 // redux
 import { requestCompanyUpdate } from '../actions/index.js'
 import { connect } from 'react-redux'
@@ -26,6 +26,9 @@ class AgreementRulesForm extends Component {
 
     body['type'] = getFieldValue(`${id}_majorityOption`)
     body['electionThreshold'] = getFieldValue(`${id}_electionThreshold`)
+    if (body['type'] === 2) {
+      body['minCapitalRatio'] = getFieldValue(`${id}_minCapitalRatio`)
+    }
     if(getFieldValue(`${id}_hasMinNumberOfAssociates`) === 'yes') {
       body['minAssociateRatio'] = getFieldValue(`${id}_minAssociateRatio`)
     }

@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import { Form, Input, Button} from 'antd'
-import Amplify, { API } from 'aws-amplify'
-import aws_exports from '../aws-exports.js'
 import { v4 as uuid } from 'uuid'
 import { connect } from 'react-redux'
 import { requestCompanyUpdate } from '../actions/index.js'
 // components
-Amplify.configure(aws_exports)
 const FormItem = Form.Item
 
 class BasicForm extends Component {
