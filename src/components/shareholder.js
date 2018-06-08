@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Input, Divider, Radio, Button, Icon } from 'antd'
-import { HOCForm } from '../containers/addCompanyForms.js'
 import ShareIntervalFields from './shareIntervalFields'
 import { formItemLayout } from '../containers/addCompanyForms'
 import PropTypes from 'prop-types'
@@ -24,7 +23,7 @@ const MyDivider = styled(Divider)`
   }
 `
 
-function RawPerson(props) {
+export function Person(props) {
   const { id, form } = props
   const { getFieldDecorator } = form;
 
@@ -124,7 +123,6 @@ function RawPerson(props) {
     </Fragment>
   )
 }
-export const Person = HOCForm(RawPerson)
 
 class Shareholder extends Component {
   render() {

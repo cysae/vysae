@@ -1,9 +1,21 @@
 import React, { Component, Fragment } from 'react'
+import styled from 'styled-components'
 import { Form, Mention } from 'antd'
-import { HOCForm, formItemLayout } from '../containers/addCompanyForms'
+
 const FormItem = Form.Item
 
-class RawBoardOfDirectors extends Component {
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 10 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 14 },
+  },
+};
+
+class BoardOfDirectors extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const { shareholders } = this.props
@@ -76,7 +88,7 @@ class RawBoardOfDirectors extends Component {
   }
 }
 
-class RawSoleAdministrator extends Component {
+class SoleAdministrator extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const { shareholders } = this.props
@@ -104,7 +116,7 @@ class RawSoleAdministrator extends Component {
   }
 }
 
-class RawJointAdministrators extends Component {
+class JointAdministrators extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const { shareholders } = this.props
@@ -132,7 +144,7 @@ class RawJointAdministrators extends Component {
   }
 }
 
-class RawSolidarityAdministrators extends Component {
+class SolidarityAdministrators extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const { shareholders } = this.props
@@ -160,26 +172,23 @@ class RawSolidarityAdministrators extends Component {
   }
 }
 
-class RawAdministrationOrgans extends Component {
+export default class AdministrationOrgans extends Component {
   render() {
-    const { shareholders, type } = this.props
-    switch(type) {
-      case 'boardOfDirectors':
-        return <BoardOfDirectors shareholders={shareholders} />
-      case 'soleAdministrator':
-        return <SoleAdministrator shareholders={shareholders} />
-      case 'jointAdministrators':
-        return <JointAdministrators shareholders={shareholders} />
-        case 'solidarityAdministrators':
-        return <SolidarityAdministrators shareholders={shareholders} />
-      default:
-        return (null)
-    }
+    let { shareholders, type, form } = this.props
+
+    return (null)
+    /* switch(type) {
+     *   case 'boardOfDirectors':
+     *     return <BoardOfDirectors shareholders={shareholders} form={form} />
+     *   case 'soleAdministrator':
+     *     return <SoleAdministrator shareholders={shareholders} form={form} />
+     *   case 'jointAdministrators':
+     *     return <JointAdministrators shareholders={shareholders} form={form} />
+     *     case 'solidarityAdministrators':
+     *     return <SolidarityAdministrators shareholders={shareholders} form={form} />
+     *   default:
+     *     return (null)
+     * } */
   }
 }
 
-const BoardOfDirectors = HOCForm(RawBoardOfDirectors)
-const SoleAdministrator = HOCForm(RawSoleAdministrator)
-const JointAdministrators = HOCForm(RawJointAdministrators)
-const SolidarityAdministrators = HOCForm(RawSolidarityAdministrators)
-export default HOCForm(RawAdministrationOrgans)

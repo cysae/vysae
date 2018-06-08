@@ -3,14 +3,38 @@ import { Form, Radio, Button, DatePicker, Input } from 'antd'
 // Redux
 import { updateAnnouncement } from '../actions/index.js'
 import { connect } from 'react-redux'
-import { HOCForm } from '../containers/addCompanyForms.js'
-import AgreementSelector from './agreementSelector.js'
+import { saveCompanyForm } from '../actions/index'
 // components
+import AgreementSelector from './agreementSelector.js'
 const FormItem = Form.Item
 const { TextArea } = Input
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 const { RangePicker } = DatePicker;
+
+function HOCForm(formComponent) {
+  return connect((state) => {
+    return {
+      formState: {
+        ...state.companyForm
+      }
+    }
+  })(Form.create({
+    onFieldsChange(props, changedFields) {
+      props.dispatch(saveCompanyForm(changedFields))
+    },
+    mapPropsToFields(props) {
+      const fields = {};
+      for (const key in props.formState) {
+        fields[key] = Form.createFormField(props.formState[key])
+      }
+      return fields;
+    },
+    onValuesChange(_, values) {
+      /* console.log(values); */
+    },
+  })(formComponent))
+}
 
 class AnnounceMeeting extends Component {
   handleSubmit = (e) => {
