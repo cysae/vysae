@@ -22,7 +22,7 @@ class BasicForm extends Component {
     setFieldsValue({ companyId: uuid() })
   }
 
-  async createCompany() {
+  createCompany() {
     const { getFieldValue } = this.props.form
     const companyId = uuid()
     const name = getFieldValue('name')

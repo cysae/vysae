@@ -11,31 +11,31 @@ features:
           sdk-generation-stage-name: Development
         paths:
           /company: !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/company-20180604102847.zip
+            codeFilename: uploads/company-20180608185448.zip
             description: 'Handler for calls to resource path : /company/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: 2EkE8cDJ90TcdZlJFHBH/t8Yr9pNOqgWYzJ4nrNeZJo=
+            hashcode: 0bKAtes2upIYNDnXacXmCKTYv7PY59X/SjEHMF0g46I=
             memorySize: '128'
-            modified: '2018-06-04T08:29:48.376+0000'
+            modified: '2018-06-08T16:56:43.488+0000'
             name: company
             runtime: nodejs6.10
             timeout: '3'
-            version: MFWo3yxzoZsUK3tJiXiMR91WhRF7lFsW
+            version: s8mOVuhbfvOxhD4.vgl_Mb9kwf9kJYlo
           '/company/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/company-20180604102847.zip
+            codeFilename: uploads/company-20180608185448.zip
             description: 'Handler for calls to resource path : /company/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: 2EkE8cDJ90TcdZlJFHBH/t8Yr9pNOqgWYzJ4nrNeZJo=
+            hashcode: 0bKAtes2upIYNDnXacXmCKTYv7PY59X/SjEHMF0g46I=
             memorySize: '128'
-            modified: '2018-06-04T08:29:48.376+0000'
+            modified: '2018-06-08T16:56:43.488+0000'
             name: company
             runtime: nodejs6.10
             timeout: '3'
-            version: xH6T5kDzCSxWCCdKdYSBY7Nax9KvjCrI
+            version: rXqVh1tWi_kVBW7kdJ5sURmgG2L1t2vG
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true
@@ -46,6 +46,17 @@ features:
     components:
       database-nosql: !com.amazonaws.mobilehub.v0.NoSQLDatabase 
         tables:
+          - !com.amazonaws.mobilehub.v0.NoSQLTable 
+            attributes:
+              shareIntervals: L
+              userId: S
+              username: S
+            hashKeyName: userId
+            hashKeyType: S
+            rangeKeyName: username
+            rangeKeyType: S
+            tableName: ___DYNAMIC_PREFIX___-shareholder
+            tablePrivacy: private
           - !com.amazonaws.mobilehub.v0.NoSQLTable 
             attributes:
               name: S

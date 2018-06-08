@@ -3,6 +3,7 @@ import React, { Component, Fragment } from 'react'
 import { Form, Button, Divider} from 'antd'
 // Redux
 import { requestUsersSignUp } from '../actions/index.js'
+import { requestCompanyUpdate } from '../actions/index.js'
 import { connect } from 'react-redux'
 // utils
 import { generatePassword } from '../utils/index.js'
@@ -14,15 +15,43 @@ const FormItem = Form.Item
 class ShareholderRegistry extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
-    this.registerUsers()
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.registerUsers()
         this.props.next()
       }
     });
   }
 
   registerUsers() {
+    this.userPoolsignUpUsers()
+    this.dynamodbSaveUsers()
+  }
+
+  dynamodbSaveUsers() {
+    const { getFieldValue } = this.props.form
+
+    const body = { shareholders: [] }
+    const shareholderIds = getFieldValue('shareholders')
+    shareholderIds.forEach((id) => {
+      const shareIntervalIds = getFieldValue(`shareholderShareInterval_${id}_ids`)
+      const shareIntervals = shareIntervalIds.map(intvlId => {
+        return {
+          start: getFieldValue(`shareholderShareInterval_${id}_start_${intvlId}`),
+          end: getFieldValue(`shareholderShareInterval_${id}_end_${intvlId}`)
+        }
+      })
+      body.shareholders.push({
+        dni: getFieldValue(`dni_${id}`),
+        shareIntervals
+      })
+    })
+
+    const companyId = getFieldValue('companyId')
+    this.props.requestCompanyUpdate(companyId, body)
+  }
+
+  userPoolsignUpUsers() {
     const { getFieldValue } = this.props.form
 
     const shareholderIds = getFieldValue('shareholders')
@@ -41,16 +70,13 @@ class ShareholderRegistry extends Component {
         }
       }
 
-      console.log(getFieldValue(`personType_${id}`))
       if(getFieldValue(`personType_${id}`) === 'juridic') {
-        console.log('juridic')
         user['attributes'][`custom:companyName`] = getFieldValue(`companyName_${id}`)
         user['attributes'][`custom:nif`] = getFieldValue(`nif_${id}`)
         user['attributes'][`custom:placeOfBusiness`] = getFieldValue(`placeOfBusiness_${id}`)
         user['attributes'][`custom:companyNationality`] = getFieldValue(`companyNationality_${id}`)
         user['attributes'][`custom:companyRegister`] = getFieldValue(`companyRegister_${id}`)
       }
-      console.log(user)
 
       return user
     })
@@ -87,6 +113,7 @@ class ShareholderRegistry extends Component {
 const mapStateToProps = state => {}
 const mapDispatchToProps = dispatch => {
   return {
+    requestCompanyUpdate: (companyId, body) => { dispatch(requestCompanyUpdate(companyId, body)) },
     requestUsersSignUp: (users) => { dispatch(requestUsersSignUp(users)) }
   }
 }
