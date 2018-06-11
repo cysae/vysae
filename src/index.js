@@ -16,6 +16,7 @@ import createHistory from 'history/createBrowserHistory'
 import { ConnectedRouter, routerMiddleware as createRouterMiddleware} from 'react-router-redux'
 // Components
 import App from './App.js'
+import './utils/company.js'
 
 import './App.css'
 

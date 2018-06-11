@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { Table } from 'antd'
+// Redux
+import { connect } from 'react-redux'
+import { requestCompanySelection } from './actions/index.js'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -28,6 +31,11 @@ class Dashboard extends Component {
     }
   }
 
+  componentDidMount() {
+    const companyId = '7171d409-8e7b-4096-ab6c-3145abfec561'
+    this.props.requestCompanySelection(companyId)
+  }
+
   render() {
     const { companies } = this.state;
 
@@ -52,5 +60,16 @@ class Dashboard extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    selectedCompany: state.selectedCompany
+  }
+}
 
-export default Dashboard;
+const mapDispatchToProps = dispatch => {
+  return {
+    requestCompanySelection: (companyId) => { dispatch(requestCompanySelection(companyId))}
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

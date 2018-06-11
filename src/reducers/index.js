@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
-import { SAVE_COMPANY_FORM, UPDATE_ANNOUNCEMENT } from '../actions/index'
+import {
+    SAVE_COMPANY_FORM,
+    UPDATE_ANNOUNCEMENT,
+    COMPANY_SELECTION_SUCCEEDED,
+} from '../actions/index'
 import moment from 'moment'
 
 function companyForm(state = {}, action) {
@@ -38,9 +42,21 @@ function announcement(state = announcementExample, action) {
     }
 }
 
+function selectedCompany(state = {}, action) {
+    switch(action.type) {
+    case COMPANY_SELECTION_SUCCEEDED:
+        return {
+            ...action.company
+        }
+    default:
+        return state
+    }
+}
+
 const reducers = combineReducers({
     companyForm,
     announcement,
+    selectedCompany,
     router: routerReducer
 })
 

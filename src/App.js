@@ -7,8 +7,8 @@ import { Route } from 'react-router'
 import { Link } from 'react-router-dom'
 // Antd
 import { Layout, Menu, Breadcrumb } from 'antd'
-
 // Components
+import SelectedCompanyRoute from './selectedCompanyRoute.js'
 import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
 import Info from './components/info'
@@ -19,8 +19,8 @@ Amplify.configure(aws_exports)
 const { Header, Content, Footer } = Layout;
 
 class App extends Component {
-  render() {
 
+  render() {
     return (
       <Layout>
         <Header>
@@ -44,7 +44,7 @@ class App extends Component {
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
             <Route exact path="/" component={Dashboard}/>
             <Route path="/añadirSociedad" component={AddCompany}/>
-            <Route path="/info" component={Info}/>
+            <SelectedCompanyRoute path="/info" component={Info}/>
             <Route path="/meetings" component={Meetings}/>
           </div>
         </Content>

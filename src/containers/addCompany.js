@@ -14,7 +14,7 @@ class AddCompany extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 4,
+      current: 0,
     };
 
     this.next = this.next.bind(this)

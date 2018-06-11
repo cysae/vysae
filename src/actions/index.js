@@ -5,6 +5,9 @@ export const SAVE_COMPANY_FORM = 'SAVE_COMPANY_FORM'
 export const UPDATE_ANNOUNCEMENT = 'UPDATE_ANNOUNCEMENT'
 export const COMPANY_UPDATE_REQUESTED = 'COMPANY_UPDATE_REQUESTED'
 export const USERS_SIGNUP_REQUESTED = 'USERS_SIGNUP_REQUESTED'
+export const COMPANY_SELECTION_REQUESTED = 'COMPANY_SELECT_REQUESTED'
+export const COMPANY_SELECTION_SUCCEEDED = 'COMPANY_SELECT_SUCCEEDED'
+export const SELECT_COMPANY = 'SELECT_COMPANY'
 
 /*
  * action creators
@@ -34,5 +37,18 @@ export function requestUsersSignUp(users) {
     return {
         type: USERS_SIGNUP_REQUESTED,
         payload: { users }
+    }
+}
+
+export function requestCompanySelection(companyId) {
+    return {
+        type: COMPANY_SELECTION_REQUESTED,
+        payload: { companyId }
+    }
+}
+export function selectCompany(company) {
+    return {
+        type: SELECT_COMPANY,
+        payload: company
     }
 }
