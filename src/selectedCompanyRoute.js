@@ -1,12 +1,11 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 import { Redirect, Route } from 'react-router-dom'
 // Redux
 import { connect } from 'react-redux'
 
-const SelectedCompanyRoute = ({ component: Component, ...rest }) => {
-  console.log(rest.selectedCompany)
+const SelectCompanyRoute = ({ component: Component, ...rest }) => {
   const needsSelectedCompany = (Object.keys(rest.selectedCompany).length === 0 && rest.selectedCompany.constructor === Object)
-  console.log(needsSelectedCompany)
   return (
     <Route
       {...rest}
@@ -14,7 +13,7 @@ const SelectedCompanyRoute = ({ component: Component, ...rest }) => {
         needsSelectedCompany ? (
           <Redirect to={{ pathname: '/', state: { from: props.location } }} />
         ) : (
-          <Component {...props} />
+          <Component {...props} selectedCompany={rest.selectedCompany} />
         )
       }
     />
@@ -27,4 +26,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(SelectedCompanyRoute)
+export default withRouter(connect(mapStateToProps)(SelectCompanyRoute))

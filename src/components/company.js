@@ -33,12 +33,14 @@ Shareholder.propTypes = {
 
 class Company extends Component {
   render() {
+    const { name } = this.props.selectedCompany
+
     return (
       <Row type="flex">
         <Col span={12}>
           <Card title="Tu empresa">
             <ul>
-              <li>Razon social: CYSAE SL.</li>
+              <li>Razon social: {name}</li>
               <li>Capital Social: 3000€</li>
               <li>Número de participaciones: 3000</li>
             </ul>
