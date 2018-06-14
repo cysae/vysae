@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react'
 import { Form, Button, Radio, Divider, Row, Col, Alert} from 'antd'
 // redux
 import { connect } from 'react-redux'
+import { requestCompanyUpdate } from '../actions/index.js'
 // utils
 import { mergeTriplets } from '../utils/mergeIntervalTiplets.js'
-import { requestCompanyUpdate } from '../actions/index.js'
 // components
 import ShareIntervalFields from '../components/shareIntervalFields'
 import IntervalTypeField from '../components/intervalTypeField.js'

@@ -81,7 +81,8 @@ class ShareholderRegistry extends Component {
       return user
     })
 
-    this.props.requestUsersSignUp(users)
+    const companyId = getFieldValue('companyId')
+    this.props.requestUsersSignUp(users, companyId)
   }
 
   render() {
@@ -114,7 +115,7 @@ const mapStateToProps = state => {}
 const mapDispatchToProps = dispatch => {
   return {
     requestCompanyUpdate: (companyId, body) => { dispatch(requestCompanyUpdate(companyId, body)) },
-    requestUsersSignUp: (users) => { dispatch(requestUsersSignUp(users)) }
+    requestUsersSignUp: (users, companyId) => { dispatch(requestUsersSignUp(users, companyId)) }
   }
 }
 

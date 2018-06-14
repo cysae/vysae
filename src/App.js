@@ -44,7 +44,7 @@ class App extends Component {
             <Route exact path="/" component={Dashboard}/>
             <Route path="/añadirSociedad" component={AddCompany}/>
             <SelectCompanyRoute path="/info" component={Info}/>
-            <Route path="/meetings" component={Meetings}/>
+            <SelectCompanyRoute path="/meetings" component={Meetings}/>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>

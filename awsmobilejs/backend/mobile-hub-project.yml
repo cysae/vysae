@@ -11,31 +11,63 @@ features:
           sdk-generation-stage-name: Development
         paths:
           /company: !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/company-20180608225109.zip
+            codeFilename: uploads/company-20180614084744.zip
             description: 'Handler for calls to resource path : /company/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: 4a2SECgwUIiKmgE1DwppEwqFquJpgtwuhxgB46VhYFk=
+            hashcode: Ci9w0GtoGMoHU6Y+EQ7ig11EOrCPUtcFxAWJ67X98kI=
             memorySize: '128'
-            modified: '2018-06-08T20:54:57.857+0000'
+            modified: '2018-06-14T06:48:19.219+0000'
             name: company
             runtime: nodejs6.10
             timeout: '3'
-            version: vNZjmZJygzV5BQvadNI_3ckBlXLUZ.Kc
+            version: 13OTXH_AMgclf8usi53fkAAZILzYXD.O
           '/company/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/company-20180608225109.zip
+            codeFilename: uploads/company-20180614084744.zip
             description: 'Handler for calls to resource path : /company/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: 4a2SECgwUIiKmgE1DwppEwqFquJpgtwuhxgB46VhYFk=
+            hashcode: Ci9w0GtoGMoHU6Y+EQ7ig11EOrCPUtcFxAWJ67X98kI=
             memorySize: '128'
-            modified: '2018-06-08T20:54:57.857+0000'
+            modified: '2018-06-14T06:48:19.219+0000'
             name: company
             runtime: nodejs6.10
             timeout: '3'
-            version: zzOf61k3U2hSZn8nYl4wDXMj7i1.GMM3
+            version: 45SP9..0HG82jhRDe9sbdo8RdpIpC7XW
+      userCRUD: !com.amazonaws.mobilehub.v0.API 
+        attributes:
+          name: userCRUD
+          requires-signin: true
+          sdk-generation-stage-name: Development
+        paths:
+          /user: !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/user-20180614084744.zip
+            description: 'Handler for calls to resource path : /user/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: j7E794f7TSClRwZ8iS7KxlvqIKtI0bqYaKdkP2sE5pU=
+            memorySize: '128'
+            modified: '2018-06-14T06:48:18.679+0000'
+            name: user
+            runtime: nodejs6.10
+            timeout: '3'
+            version: ouaLB614u2_74w39hWcxTw9NXOsVEFDu
+          '/user/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/user-20180614084744.zip
+            description: 'Handler for calls to resource path : /user/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: j7E794f7TSClRwZ8iS7KxlvqIKtI0bqYaKdkP2sE5pU=
+            memorySize: '128'
+            modified: '2018-06-14T06:48:18.679+0000'
+            name: user
+            runtime: nodejs6.10
+            timeout: '3'
+            version: _qCcKsiuKVEJ4WKxratCZIe1mSGzTiYf
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true
@@ -48,15 +80,15 @@ features:
         tables:
           - !com.amazonaws.mobilehub.v0.NoSQLTable 
             attributes:
-              shareIntervals: L
-              userId: S
-              username: S
-            hashKeyName: userId
+              administrates: SS
+              companies: SS
+              dni: S
+            hashKeyName: dni
             hashKeyType: S
-            rangeKeyName: username
-            rangeKeyType: S
-            tableName: ___DYNAMIC_PREFIX___-shareholder
-            tablePrivacy: private
+            rangeKeyName: ''
+            rangeKeyType: ''
+            tableName: ___DYNAMIC_PREFIX___-user
+            tablePrivacy: public
           - !com.amazonaws.mobilehub.v0.NoSQLTable 
             attributes:
               name: S

@@ -4,6 +4,10 @@ import styled from 'styled-components'
 import { Form, InputNumber, Button, Radio, Divider, Select, Mention} from 'antd'
 // redux
 import { connect } from 'react-redux'
+import {
+  requestCompanyUpdate,
+  requestUsersToCompanyAdmin,
+} from '../actions/index.js'
 // components
 import AdministrationOrgans from '../components/administrationOrgans'
 const RadioButton = Radio.Button
@@ -23,100 +27,128 @@ const formItemLayout = {
 };
 
 function ShareholderSelect(props) {
-  const { shareholders, multiple } = props
+  const { shareholders, multiple, form, label, fieldId} = props
+  const { getFieldDecorator, getFieldValue } = form
   const mode = multiple ? 'multiple' : 'default'
   return (
-    <Select
-      mode={mode}
-      showSearch
-      placeholder="Seleccionar un presidente"
-      optionFilterProp="children"
-      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+    <FormItem
+      label={label}
+      {...formItemLayout}
     >
-      {shareholders.map(shareholder => {
-         return <Option key={shareholder.dni} value={shareholder.dni}>{`${shareholder.dni}: ${shareholder.firstName} ${shareholder.lastName}`}</Option>
-      })}
-    </Select>
+      {getFieldDecorator(fieldId, {
+      })(
+         <Select
+           mode={mode}
+           showSearch
+           placeholder="Seleccionar una persona"
+           optionFilterProp="children"
+           filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+           >
+           {shareholders.map(shareholder => {
+              return <Option key={shareholder.dni} value={shareholder.dni}>{`${shareholder.dni}: ${shareholder.firstName} ${shareholder.lastName}`}</Option>
+           })}
+         </Select>
+       )}
+    </FormItem>
   )
 }
-export default class GoverningBodies extends Component {
+
+class GoverningBodies extends Component {
   constructor(props) {
     super(props)
-    /* this.state = { shareholders: this.getShareholderNames() } */
+    /* this.state = { shareholders: this.getShareholders() } */
     this.state = { shareholders: [{
-      dni: 'y4310687h',
-      firstName: 'Dirk',
-      lastName: 'Hornung'
+      dni: 'test', firstName: 'dirk', lastName: 'hornung'
     }, {
-      dni: 'yh4310687h',
-      firstName: 'Dirk',
-      lastName: 'Hornung'
+      dni: 'asd', firstName: 'dirk', lastName: 'hornung'
     }]}
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.updateUsersDynamodb()
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.updateCompanyDynamodb()
+        this.updateUsersDynamodb()
+
+        console.log('save')
+      }
+    });
+  }
+
+  updateCompanyDynamodb() {
+    const { getFieldValue } = this.props.form
+
+    const body = {
+      president: getFieldValue('president'),
+      vicePresident: getFieldValue('vicePresident'),
+      secretary: getFieldValue('secretary'),
+    }
+
+    /* const companyId = this.props.form.getFieldValue('companyId') */
+    const companyId = '7171d409-8e7b-4096-ab6c-3145abfec561'
+    this.props.requestCompanyUpdate(companyId, body)
+  }
+
+  updateUsersDynamodb() {
+    const { getFieldValue } = this.props.form
+    const { shareholders } = this.state
+
+    /* const companyId = this.props.form.getFieldValue('companyId') */
+    const companyId = '7171d409-8e7b-4096-ab6c-3145abfec561'
+    this.props.requestUsersToCompanyAdmin(shareholders, companyId)
+  }
+
+
+  getShareholders() {
+    const { getFieldValue } = this.props.form
+
+    const shareholderIds = getFieldValue('shareholders')
+    return shareholderIds.map((id) => {
+      return {
+        dni: getFieldValue(`dni_${id}`),
+        firstName: getFieldValue(`firstName_${id}`),
+        lastName: getFieldValue(`lastName_${id}`),
+      }
+    })
   }
 
   componentDidMount() {
     /* this.setState({ shareholders: this.getShareholderNames() }) */
   }
 
-  getShareholderNames() {
-    /* const { getFieldValue } = this.props.form
-     * const shareholderKeys = getFieldValue('shareholders')
-     * const shareholderNames = []
-     * for (const id of shareholderKeys) {
-     *   const name = (id+1)+'-'+getFieldValue(`${id}_prename`)+'-'+getFieldValue(`${id}_surname`)
-     *   shareholderNames.push(name)
-     * }
-     * return shareholderNames */
-  }
-
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('save')
-      }
-    });
-  }
 
   render() {
     const { form } = this.props
     const { getFieldDecorator, getFieldValue } = form
     const { shareholders } = this.state
+
     return (
       <Fragment>
         <h2>Junta General</h2>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem
+          <ShareholderSelect
             label="Presidente"
-            {...formItemLayout}
-          >
-            {getFieldDecorator('president', {
-            })(
-               <ShareholderSelect shareholders={shareholders} />
-             )}
-          </FormItem>
-          <FormItem
+            fieldId="president"
+            shareholders={shareholders}
+            form={form}
+          />
+          <ShareholderSelect
             label="Vicepresidente"
-            {...formItemLayout}
-          >
-            {getFieldDecorator('vicepresident', {
-            })(
-               <ShareholderSelect shareholders={shareholders} />
-             )}
-          </FormItem>
-          <FormItem
+            fieldId="vicePresident"
+            shareholders={shareholders}
+            form={form}
+          />
+          <ShareholderSelect
             label="Secretario"
-            {...formItemLayout}
-          >
-            {getFieldDecorator('secretario', {
-            })(
-               <ShareholderSelect shareholders={shareholders} multiple/>
-             )}
-          </FormItem>
+            fieldId="secretary"
+            shareholders={shareholders}
+            form={form}
+          />
 
           <h2>Órgano de Administración</h2>
-      <FormItem
+          <FormItem
       label="Elige un órgano"
       {...formItemLayout}
       >
@@ -153,3 +185,13 @@ export default class GoverningBodies extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {}
+const mapDispatchToProps = dispatch => {
+  return {
+    requestCompanyUpdate: (companyId, body) => { dispatch(requestCompanyUpdate(companyId, body)) },
+    requestUsersToCompanyAdmin: (users, companyId) => { dispatch(requestUsersToCompanyAdmin(users, companyId)) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GoverningBodies)
