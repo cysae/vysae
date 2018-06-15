@@ -15,24 +15,22 @@ const shareholder = {
 }
 
 function Shareholder(props) {
-  const { title, name, email, registeredSince, shares, shareRatio } = props
+  const { dni, email } = props
   return (
-    <Card title={title}>
+    <Card title="Tu">
       <ul>
-        <li>{name}</li>
-        <li><a href={`mailto@${email}`}>{email}</a></li>
-        <li>{`${shareRatio} - ${shares} participaciones`}</li>
-        <li>Fecha de alta: {registeredSince}</li>
+        <li>DNI: {dni}</li>
+        <li>Email: {email}</li>
+        {/* <li><a href={`mailto@${email}`}>{email}</a></li>
+            <li>{`${shareRatio} - ${shares} participaciones`}</li>
+            <li>Fecha de alta: {registeredSince}</li> */}
       </ul>
     </Card>
   )
 }
 Shareholder.propTypes = {
-  title: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  dni: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  shares: PropTypes.number.isRequired,
-  shareRatio: PropTypes.number.isRequired
 }
 
 class Company extends Component {
@@ -51,7 +49,7 @@ class Company extends Component {
           </Card>
         </Col>
         <Col span={12}>
-          <Shareholder title="Tus datos" {...shareholder} />
+          <Shareholder title="Tus datos" {...this.props.user} />
         </Col>
         {/* <Col span={12}>
             <Card title="Junta de socios">
