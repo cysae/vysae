@@ -37,7 +37,7 @@ class SharesForm extends Component {
     const valueInEurPerShare = getFieldValue('capital') / getFieldValue('numberOfShares')
     intvls = intvls.concat(this.toIntervalFrom('shareInterval'))
     for(const intvl of intvls) {
-      intvl.attr.valueInEur = ( intvl.end - intvl.start +1) * valueInEurPerShare
+      intvl.attr.valueInEur = valueInEurPerShare
     }
 
     // valued shares

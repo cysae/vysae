@@ -45,8 +45,8 @@ class Company extends Component {
           <Card title="Tu empresa">
             <ul>
               <li>Razon social: {company.name}</li>
-              <li>Capital Social: 3000€</li>
-              <li>Número de participaciones: 3000</li>
+              <li>Capital Social: {company.capital}€</li>
+              <li>Número de participaciones: {company.shares}</li>
             </ul>
           </Card>
         </Col>
