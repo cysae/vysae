@@ -22,6 +22,8 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.props.requestMyCompanies()
+    const companyId = '81291d0e-ac65-44a2-b946-ff83104e4260'
+    this.props.requestCompanySelection(companyId)
   }
 
   getSelectedRow(record, index) {

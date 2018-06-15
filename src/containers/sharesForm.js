@@ -39,7 +39,6 @@ class SharesForm extends Component {
     for(const intvl of intvls) {
       intvl.attr.valueInEur = ( intvl.end - intvl.start +1) * valueInEurPerShare
     }
-    console.log(intvls)
 
     // valued shares
     if(getFieldValue('sharesHaveSameValue') === 'no') {
@@ -80,7 +79,7 @@ class SharesForm extends Component {
 
 
     const companyId = this.props.form.getFieldValue('companyId')
-    /* this.props.requestCompanyUpdate(companyId, body) */
+    this.props.requestCompanyUpdate(companyId, body)
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {

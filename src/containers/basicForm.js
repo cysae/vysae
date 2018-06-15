@@ -28,7 +28,7 @@ class BasicForm extends Component {
   createCompany() {
     const { form, signedInUser } = this.props
     const { getFieldValue } = form
-    const companyId = uuid()
+    const companyId = getFieldValue('companyId')
     const name = getFieldValue('name')
     const placeOfBusiness = getFieldValue('placeOfBusiness')
     const nif = getFieldValue('nif')

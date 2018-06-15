@@ -48,7 +48,7 @@ class RawInfoMenu extends Component {
   render() {
     return (
       <Menu
-        selectedKeys={this.getSelectedKey}
+        selectedKeys={this.getSelectedKey()}
       >
         <Menu.Item key="company">
           <Link to='/info/company'>Empresa</Link>

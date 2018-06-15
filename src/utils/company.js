@@ -1,11 +1,11 @@
 import Amplify, { API } from "aws-amplify";
 import aws_config from "../aws-exports";
 
+export class CompanyClass {
+    constructor(company) {
+        const { shareIntervals } = company
+        this.name = company.name
 
-export async function getCompany(id) {
-    API.get('companyCRUD', `/company/${id}`).then(response => {
-        return response
-    }).catch(error => {
-        console.log('getCompany error: ', error)
-    });
+        // capital
+    }
 }

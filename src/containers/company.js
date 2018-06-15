@@ -1,4 +1,8 @@
 import React, { Component } from 'react'
+// Redux
+import { connect } from 'react-redux'
+// utils
+import { CompanyClass } from '../utils/company.js'
 import { Row, Col, Card } from 'antd'
 import PropTypes from 'prop-types'
 
@@ -33,14 +37,14 @@ Shareholder.propTypes = {
 
 class Company extends Component {
   render() {
-    const { name } = this.props.selectedCompany
+    const company = new CompanyClass(this.props.company)
 
     return (
       <Row type="flex">
         <Col span={12}>
           <Card title="Tu empresa">
             <ul>
-              <li>Razon social: {name}</li>
+              <li>Razon social: {company.name}</li>
               <li>Capital Social: 3000€</li>
               <li>Número de participaciones: 3000</li>
             </ul>
@@ -49,20 +53,27 @@ class Company extends Component {
         <Col span={12}>
           <Shareholder title="Tus datos" {...shareholder} />
         </Col>
-        <Col span={12}>
-          <Card title="Junta de socios">
+        {/* <Col span={12}>
+            <Card title="Junta de socios">
             <Shareholder title="Presidente" {...shareholder} />
             <Shareholder title="Vicepresidente" {...shareholder} />
-          </Card>
-        </Col>
-        <Col span={12}>
-          <Card title="Órgano de administración">
+            </Card>
+            </Col>
+            <Col span={12}>
+            <Card title="Órgano de administración">
             <Shareholder title="Administrador único" {...shareholder} />
-          </Card>
-        </Col>
+            </Card>
+            </Col> */}
       </Row>
     )
   }
 }
 
-export default Company
+const mapStateToProps = state => {
+  return {
+    user: state.signedInUser,
+    company: state.selectedCompany,
+  }
+}
+
+export default connect(mapStateToProps)(Company)

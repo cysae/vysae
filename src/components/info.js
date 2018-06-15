@@ -3,7 +3,7 @@ import { Row, Col, Menu } from 'antd'
 import { Route, Link } from 'react-router-dom'
 // components
 import { InfoMenu } from '../containers/menus.js'
-import Company from './company.js'
+import Company from '../containers/company.js'
 import Profile from './profil.js'
 import VotingSystem from './votingSystem.js'
 import ShareholderRegister from './shareholderRegister.js'
