@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Row, Col, Menu } from 'antd'
 import { Route } from 'react-router'
-import { Link } from 'react-router-dom'
+// components
+import { MeetingMenu } from '../containers/menus.js'
 import NextMeeting from './nextMeeting.js'
 import AnnounceMeeting from './announceMeeting.js'
 import MeetingHistory from './meetingHistory.js'
@@ -15,17 +16,7 @@ export default class Meetings extends Component {
     return (
       <Row type="flex">
         <Col span={4}>
-          <Menu>
-            <Menu.Item key="nextMeeting">
-              <Link to='/meetings/next'>Próxima Junta</Link>
-            </Menu.Item>
-            <Menu.Item key="announceMeeting">
-              <Link to='/meetings/announce'>Convocatoria</Link>
-            </Menu.Item>
-            <Menu.Item key="meetingHistory">
-              <Link to='/meetings/history'>Historial de Juntas</Link>
-            </Menu.Item>
-          </Menu>
+          <MeetingMenu />
         </Col>
         <Col span={20}>
           <Route path="/meetings/next" component={NextMeeting} />

@@ -25,7 +25,7 @@ class RawHeaderMenu extends Component {
       >
         <Menu.Item key="dashboard"><Link to="/">Dashboard</Link></Menu.Item>
         <Menu.Item key="info"><Link to="/info/company">Info</Link></Menu.Item>
-        <Menu.Item key="meetings"><Link to="/meetings/next">Juntas</Link></Menu.Item>
+        <Menu.Item key="meetings"><Link to="/meetings/announce">Juntas</Link></Menu.Item>
         <Menu.Item key="addCompany"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
       </Menu>
     )
@@ -67,3 +67,35 @@ class RawInfoMenu extends Component {
   }
 }
 export const InfoMenu = withRouter(RawInfoMenu)
+
+class RawMeetingMenu extends Component {
+  getSelectedKey() {
+    const { pathname } = this.props.location
+    switch(pathname) {
+      case '/meetings/next': return 'nextMeeting'
+      case '/meetings/announce': return 'announceMeeting'
+      case '/meetings/history': return 'meetingHistory'
+      default: return 'nextMeeting'
+    }
+  }
+
+  render() {
+    return(
+      <Menu
+        selectedKeys={this.getSelectedKey()}
+      >
+        {/* <Menu.Item key="nextMeeting">
+            <Link to='/meetings/next'>Próxima Junta</Link>
+            </Menu.Item> */}
+        <Menu.Item key="announceMeeting">
+          <Link to='/meetings/announce'>Convocatoria</Link>
+        </Menu.Item>
+        {/* <Menu.Item key="meetingHistory">
+            <Link to='/meetings/history'>Historial de Juntas</Link>
+            </Menu.Item> */}
+      </Menu>
+    )
+  }
+}
+
+export const MeetingMenu = withRouter(RawMeetingMenu)

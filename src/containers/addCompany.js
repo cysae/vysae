@@ -12,10 +12,11 @@ const Step = Steps.Step
 
 class AddCompany extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
+
     this.state = {
       current: 0,
-    };
+    }
 
     this.next = this.next.bind(this)
     this.prev = this.prev.bind(this)
