@@ -1,6 +1,7 @@
 import { call, all, put, takeLatest } from 'redux-saga/effects'
 import Amplify, { Auth, API } from 'aws-amplify'
 import Promise from 'bluebird'
+import _ from 'lodash'
 import {
     USERS_SIGNUP_REQUESTED,
     COMPANY_SELECTION_REQUESTED,
@@ -9,9 +10,19 @@ import {
     USERS_TO_COMPANY_ADMIN_SUCCEEDED,
     GET_SIGNED_IN_USER_REQUESTED,
     GET_SIGNED_IN_USER_SUCCEEDED,
+    GET_MY_COMPANIES_REQUESTED,
+    GET_MY_COMPANIES_SUCCEEDED,
 } from '../actions/index.js'
 import aws_exports from '../aws-exports.js'
 Amplify.configure(aws_exports)
+
+const queryCompanies = (companyIds) => {
+    console.log(companyIds)
+    const promises = companyIds.map(id => {
+        return API.get('companyCRUD', `/company/${id}`).then(res => res[0])
+    })
+    return Promise.all(promises)
+}
 
 const queryPoolUser = () => {
     return Auth.currentAuthenticatedUser().then(res => {
@@ -21,7 +32,6 @@ const queryPoolUser = () => {
         }
     })
 }
-
 const queryDBUsers = (users) => {
     const promises = users.map(user => {
         return API.get('userCRUD', `/user/${user.dni}`).then(res => res[0])
@@ -91,6 +101,21 @@ function* usersToCompanyAdmin(action) {
     }
 }
 
+function* getMyCompanies() {
+    try {
+        const poolUser = yield call(queryPoolUser)
+        const dbUsers = yield call(queryDBUsers, [poolUser])
+        const dbUser = dbUsers[0]
+
+        const companyIds = _.uniq(dbUser.administrates, dbUser.companies)
+        const companies = yield call(queryCompanies, companyIds)
+
+        yield put({type: GET_MY_COMPANIES_SUCCEEDED, companies})
+    } catch(e) {
+        console.log(e)
+    }
+}
+
 function* selectCompany(action) {
     let { companyId } = action.payload
     try {
@@ -122,6 +147,7 @@ function* mySaga() {
     yield takeLatest(COMPANY_SELECTION_REQUESTED, selectCompany)
     yield takeLatest(USERS_TO_COMPANY_ADMIN_REQUESTED, usersToCompanyAdmin)
     yield takeLatest(GET_SIGNED_IN_USER_REQUESTED, getSignedInUser)
+    yield takeLatest(GET_MY_COMPANIES_REQUESTED, getMyCompanies)
 }
 
 export default mySaga;

@@ -12,6 +12,8 @@ export const COMPANY_SELECTION_SUCCEEDED = 'COMPANY_SELECT_SUCCEEDED'
 export const SELECT_COMPANY = 'SELECT_COMPANY'
 export const GET_SIGNED_IN_USER_REQUESTED = 'GET_SIGNED_IN_USER_REQUESTED'
 export const GET_SIGNED_IN_USER_SUCCEEDED = 'GET_SIGNED_IN_USER_SUCCEEDED'
+export const GET_MY_COMPANIES_REQUESTED = 'GET_MY_COMPANIES_REQUESTED'
+export const GET_MY_COMPANIES_SUCCEEDED = 'GET_MY_COMPANIES_SUCCEEDED'
 
 /*
  * action creators
@@ -67,5 +69,11 @@ export function selectCompany(company) {
     return {
         type: SELECT_COMPANY,
         payload: company
+    }
+}
+
+export function requestMyCompanies() {
+    return {
+        type: GET_MY_COMPANIES_REQUESTED
     }
 }
