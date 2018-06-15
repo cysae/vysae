@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import Amplify from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import aws_exports from './aws-exports.js'
+// Redux
+import { connect } from 'react-redux'
+import { requestSignedInUser } from './actions/index.js'
 // Router
 import { Route, Link } from 'react-router-dom'
 // Antd
@@ -18,6 +21,9 @@ Amplify.configure(aws_exports)
 const { Header, Content, Footer } = Layout;
 
 class App extends Component {
+  componentDidMount() {
+    this.props.requestSignedInUser()
+  }
 
   render() {
     return (
@@ -55,4 +61,15 @@ class App extends Component {
   }
 }
 
-export default withAuthenticator(App)
+const mapStateToProps = state => {
+  return {
+    signedInUser: state.signedInUser
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    requestSignedInUser: () => {dispatch(requestSignedInUser())}
+  }
+}
+
+export default withAuthenticator(connect(mapStateToProps, mapDispatchToProps)(App))

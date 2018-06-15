@@ -4,6 +4,8 @@ import {
     SAVE_COMPANY_FORM,
     UPDATE_ANNOUNCEMENT,
     COMPANY_SELECTION_SUCCEEDED,
+    GET_SIGNED_IN_USER_REQUESTED,
+    GET_SIGNED_IN_USER_SUCCEEDED,
 } from '../actions/index'
 import moment from 'moment'
 
@@ -53,10 +55,27 @@ function selectedCompany(state = {}, action) {
     }
 }
 
+function signedInUser(state = {}, action) {
+    switch(action.type) {
+    case GET_SIGNED_IN_USER_REQUESTED:
+        return {
+            isLoading: true
+        }
+    case GET_SIGNED_IN_USER_SUCCEEDED:
+        return {
+            isLoading: false,
+            ...action.user
+        }
+    default:
+        return state
+    }
+}
+
 const reducers = combineReducers({
     companyForm,
     announcement,
     selectedCompany,
+    signedInUser,
     router: routerReducer
 })
 

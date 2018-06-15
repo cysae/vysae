@@ -86,8 +86,7 @@ class GoverningBodies extends Component {
       secretary: getFieldValue('secretary'),
     }
 
-    /* const companyId = this.props.form.getFieldValue('companyId') */
-    const companyId = '7171d409-8e7b-4096-ab6c-3145abfec561'
+    const companyId = this.props.form.getFieldValue('companyId')
     this.props.requestCompanyUpdate(companyId, body)
   }
 
@@ -95,8 +94,7 @@ class GoverningBodies extends Component {
     const { getFieldValue } = this.props.form
     const { shareholders } = this.state
 
-    /* const companyId = this.props.form.getFieldValue('companyId') */
-    const companyId = '7171d409-8e7b-4096-ab6c-3145abfec561'
+    const companyId = this.props.form.getFieldValue('companyId')
     this.props.requestUsersToCompanyAdmin(shareholders, companyId)
   }
 

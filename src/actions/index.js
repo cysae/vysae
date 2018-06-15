@@ -10,6 +10,8 @@ export const USERS_SIGNUP_REQUESTED = 'USERS_SIGNUP_REQUESTED'
 export const COMPANY_SELECTION_REQUESTED = 'COMPANY_SELECT_REQUESTED'
 export const COMPANY_SELECTION_SUCCEEDED = 'COMPANY_SELECT_SUCCEEDED'
 export const SELECT_COMPANY = 'SELECT_COMPANY'
+export const GET_SIGNED_IN_USER_REQUESTED = 'GET_SIGNED_IN_USER_REQUESTED'
+export const GET_SIGNED_IN_USER_SUCCEEDED = 'GET_SIGNED_IN_USER_SUCCEEDED'
 
 /*
  * action creators
@@ -46,6 +48,12 @@ export function requestUsersSignUp(users, companyId) {
     return {
         type: USERS_SIGNUP_REQUESTED,
         payload: { users, companyId }
+    }
+}
+
+export function requestSignedInUser() {
+    return {
+        type: GET_SIGNED_IN_USER_REQUESTED
     }
 }
 

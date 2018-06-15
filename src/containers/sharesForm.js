@@ -34,7 +34,13 @@ class SharesForm extends Component {
 
     let intvls = []
     // normal shares
+    const valueInEurPerShare = getFieldValue('capital') / getFieldValue('numberOfShares')
     intvls = intvls.concat(this.toIntervalFrom('shareInterval'))
+    for(const intvl of intvls) {
+      intvl.attr.valueInEur = ( intvl.end - intvl.start +1) * valueInEurPerShare
+    }
+    console.log(intvls)
+
     // valued shares
     if(getFieldValue('sharesHaveSameValue') === 'no') {
       intvls = intvls.concat(this.toIntervalFromTypeWithFieldId('shareValue', 'valueInEur'))
@@ -74,7 +80,7 @@ class SharesForm extends Component {
 
 
     const companyId = this.props.form.getFieldValue('companyId')
-    this.props.requestCompanyUpdate(companyId, body)
+    /* this.props.requestCompanyUpdate(companyId, body) */
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {
@@ -276,7 +282,7 @@ class SharesForm extends Component {
               />
             ) : null
           }
-          
+
           <FormItem>
             <Button type="primary" onClick={this.props.prev}>
               Atrás

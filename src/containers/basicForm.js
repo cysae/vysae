@@ -37,6 +37,9 @@ class BasicForm extends Component {
     }
 
     this.props.requestCompanyUpdate( companyId, body)
+
+
+    this.props.requestUsersToCompanyAdmin(shareholders, companyId)
   }
 
   render() {

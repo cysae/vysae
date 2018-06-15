@@ -7,11 +7,22 @@ import {
     COMPANY_SELECTION_SUCCEEDED,
     USERS_TO_COMPANY_ADMIN_REQUESTED,
     USERS_TO_COMPANY_ADMIN_SUCCEEDED,
+    GET_SIGNED_IN_USER_REQUESTED,
+    GET_SIGNED_IN_USER_SUCCEEDED,
 } from '../actions/index.js'
 import aws_exports from '../aws-exports.js'
 Amplify.configure(aws_exports)
 
-const queryUsers = (users) => {
+const queryPoolUser = () => {
+    return Auth.currentAuthenticatedUser().then(res => {
+        return {
+            dni: res.username,
+            email: res.attributes.email
+        }
+    })
+}
+
+const queryDBUsers = (users) => {
     const promises = users.map(user => {
         return API.get('userCRUD', `/user/${user.dni}`).then(res => res[0])
     })
@@ -64,7 +75,7 @@ function* signUpUsers(action) {
 function* usersToCompanyAdmin(action) {
     const { users, companyId } = action.payload
     try {
-        const shareholders = yield call(queryUsers, users)
+        const shareholders = yield call(queryDBUsers, users)
         for (const shareholder of shareholders) {
             if(shareholder.administrates === undefined || shareholder.administrates.constructor !== Array) {
                 shareholder.administrates = []
@@ -91,12 +102,29 @@ function* selectCompany(action) {
     }
 }
 
+function* getSignedInUser() {
+    try {
+        const poolUser = yield call(queryPoolUser)
+        console.log(poolUser)
+        const dbUsers = yield call(queryDBUsers, [poolUser])
+        const dbUser = dbUsers[0]
+        const user = { ...poolUser, ...dbUser }
+        console.log(user)
+
+        yield put({ type: GET_SIGNED_IN_USER_SUCCEEDED, user })
+    } catch(e) {
+
+    }
+
+}
+
 
 function* mySaga() {
     yield takeLatest("COMPANY_UPDATE_REQUESTED", updateCompany)
     yield takeLatest(USERS_SIGNUP_REQUESTED, signUpUsers)
     yield takeLatest(COMPANY_SELECTION_REQUESTED, selectCompany)
     yield takeLatest(USERS_TO_COMPANY_ADMIN_REQUESTED, usersToCompanyAdmin)
+    yield takeLatest(GET_SIGNED_IN_USER_REQUESTED, getSignedInUser)
 }
 
 export default mySaga;
