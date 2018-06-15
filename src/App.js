@@ -4,9 +4,12 @@ import { withAuthenticator } from 'aws-amplify-react'
 import aws_exports from './aws-exports.js'
 // Redux
 import { connect } from 'react-redux'
-import { requestSignedInUser } from './actions/index.js'
+import {
+  requestSignedInUser,
+} from './actions/index.js'
 // Router
 import { Route, Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
 // Antd
 import { Layout, Menu, Breadcrumb } from 'antd'
 // Components
@@ -68,8 +71,8 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    requestSignedInUser: () => {dispatch(requestSignedInUser())}
+    requestSignedInUser: () => {dispatch(requestSignedInUser())},
   }
 }
 
-export default withAuthenticator(connect(mapStateToProps, mapDispatchToProps)(App))
+export default withAuthenticator(withRouter(connect(mapStateToProps, mapDispatchToProps)(App)))

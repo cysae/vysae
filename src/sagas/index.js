@@ -105,17 +105,14 @@ function* selectCompany(action) {
 function* getSignedInUser() {
     try {
         const poolUser = yield call(queryPoolUser)
-        console.log(poolUser)
         const dbUsers = yield call(queryDBUsers, [poolUser])
         const dbUser = dbUsers[0]
         const user = { ...poolUser, ...dbUser }
-        console.log(user)
 
         yield put({ type: GET_SIGNED_IN_USER_SUCCEEDED, user })
     } catch(e) {
-
+        console.log(e)
     }
-
 }
 
 

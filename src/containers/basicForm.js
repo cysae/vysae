@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { Form, Input, Button} from 'antd'
 import { v4 as uuid } from 'uuid'
 import { connect } from 'react-redux'
-import { requestCompanyUpdate } from '../actions/index.js'
+import {
+  requestCompanyUpdate,
+  requestUsersToCompanyAdmin,
+} from '../actions/index.js'
 // components
 const FormItem = Form.Item
 
@@ -23,7 +26,8 @@ class BasicForm extends Component {
   }
 
   createCompany() {
-    const { getFieldValue } = this.props.form
+    const { form, signedInUser } = this.props
+    const { getFieldValue } = form
     const companyId = uuid()
     const name = getFieldValue('name')
     const placeOfBusiness = getFieldValue('placeOfBusiness')
@@ -37,9 +41,7 @@ class BasicForm extends Component {
     }
 
     this.props.requestCompanyUpdate( companyId, body)
-
-
-    this.props.requestUsersToCompanyAdmin(shareholders, companyId)
+    this.props.requestUsersToCompanyAdmin([signedInUser], companyId)
   }
 
   render() {
@@ -86,10 +88,15 @@ class BasicForm extends Component {
   }
 }
 
-const mapStateToProps = state => {}
+const mapStateToProps = state => {
+  return {
+    signedInUser: state.signedInUser
+  }
+}
 const mapDispatchToProps = dispatch => {
   return {
-    requestCompanyUpdate: (companyId, body) => { dispatch(requestCompanyUpdate(companyId, body)) }
+    requestCompanyUpdate: (companyId, body) => { dispatch(requestCompanyUpdate(companyId, body)) },
+    requestUsersToCompanyAdmin: (users, companyId) => { dispatch(requestUsersToCompanyAdmin(users, companyId)) },
   }
 }
 
