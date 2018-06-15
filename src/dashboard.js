@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 import { Table } from 'antd'
 // Redux
 import { connect } from 'react-redux'
@@ -7,11 +8,27 @@ import {
   requestMyCompanies
 } from './actions/index.js'
 
+const MyTable = styled(Table)`
+  .selectedRow {
+    background-color: #e7f7ff;
+  }
+`
+
 class Dashboard extends Component {
+  constructor(props) {
+    super(props)
+    this.getSelectedRow = this.getSelectedRow.bind(this)
+  }
+
   componentDidMount() {
-    /* const companyId = '7171d409-8e7b-4096-ab6c-3145abfec561' */
-    /* this.props.requestCompanySelection(companyId) */
     this.props.requestMyCompanies()
+  }
+
+  getSelectedRow(record, index) {
+    if(record.uuid === this.props.selectedCompany.uuid) {
+      return 'selectedRow'
+    }
+    return ''
   }
 
   render() {
@@ -20,6 +37,14 @@ class Dashboard extends Component {
     const columns = [{
       title: 'Nombre de la sociedad',
       dataIndex: 'name',
+    }, {
+      title: 'Acciones',
+      dataIndex: 'uuid',
+      render: (text, record) => (
+        <a href="#" onClick={() => this.props.requestCompanySelection(record.uuid)}>
+          Seleccionar
+        </a>
+      ),
     }];
 
     if(myCompanies.isLoading === true) {
@@ -27,7 +52,7 @@ class Dashboard extends Component {
     }
 
     return (
-      <Table columns={columns} dataSource={myCompanies.companies} />
+      <MyTable rowClassName={this.getSelectedRow} rowKey="uuid" columns={columns} dataSource={myCompanies.companies} />
     )
   }
 }
