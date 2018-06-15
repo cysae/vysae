@@ -8,11 +8,12 @@ import {
   requestSignedInUser,
 } from './actions/index.js'
 // Router
-import { Route, Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router'
 // Antd
-import { Layout, Menu, Breadcrumb } from 'antd'
+import { Layout, Breadcrumb } from 'antd'
 // Components
+import { HeaderMenu } from './containers/menus.js'
 import SelectCompanyRoute from './selectedCompanyRoute.js'
 import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
@@ -33,17 +34,7 @@ class App extends Component {
       <Layout>
         <Header>
           <div className="logo" />
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={['1']}
-            style={{ lineHeight: '64px' }}
-          >
-            <Menu.Item key="dashboard"><Link to="/">Dashboard</Link></Menu.Item>
-            <Menu.Item key="info"><Link to="/info/company">Info</Link></Menu.Item>
-            <Menu.Item key="meetings"><Link to="/meetings/next">Juntas</Link></Menu.Item>
-            <Menu.Item key="addCompany"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
-          </Menu>
+          <HeaderMenu />
         </Header>
         <Content style={{ padding: '0 50px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
