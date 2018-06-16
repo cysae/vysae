@@ -3,11 +3,12 @@ import { Form, Divider, Steps } from 'antd'
 // Redux
 import { connect } from 'react-redux'
 import {
-  updateMeetingForm
+  updateMeetingForm,
 } from '../actions/index'
 // components
 import MeetingForm from '../containers/meetingForm.js'
-import MeetingPDF from './meetingPDF.js'
+import MeetingStatus from './meetingStatus.js'
+import MeetingConfirmation from './meetingConfirmation.js'
 const Step = Steps.Step
 
 function HOCForm(formComponent) {
@@ -81,9 +82,11 @@ class AnnounceMeeting extends Component {
       content: <MeetingForm form={form} next={this.next} prev={this.prev} />,
     }, {
       title: 'Comprobar Convocatoria',
-      content: <MeetingPDF meeting={this.getMeetingData()} next={this.next} prev={this.prev}/>,
+      content: <MeetingConfirmation meeting={this.getMeetingData()} next={this.next} prev={this.prev}/>,
+    }, {
+      title: 'Estado',
+      content: <MeetingStatus prev={this.prev}/>,
     }];
-
 
     return (
       <Fragment>
