@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import {
     SAVE_COMPANY_FORM,
-    UPDATE_ANNOUNCEMENT,
+    UPDATE_MEETING_FORM,
     COMPANY_SELECTION_REQUESTED,
     COMPANY_SELECTION_SUCCEEDED,
     GET_SIGNED_IN_USER_REQUESTED,
@@ -24,26 +24,15 @@ function companyForm(state = {}, action) {
     }
 }
 
-const announcementExample = {
-    companyName: 'CYSAE',
-    meetingType: 'ordinaryMeeting',
-    person: 'Javier',
-    votingStart: moment(),
-    votingEnd: moment(),
-    location: 'barcelona',
-    agreementTypes: ['hello', 'hola'],
-    additionalInfo: 'test',
-}
-
-function announcement(state = announcementExample, action) {
+function meetingForm(state = {}, action) {
     switch(action.type) {
-    case UPDATE_ANNOUNCEMENT:
+    case UPDATE_MEETING_FORM:
         return {
             ...state,
-            ...action.payload
+            ...action.payload,
         }
     default:
-        return state
+        return state;
     }
 }
 
@@ -98,7 +87,7 @@ function signedInUser(state = {}, action) {
 
 const reducers = combineReducers({
     companyForm,
-    announcement,
+    meetingForm,
     myCompanies,
     selectedCompany,
     signedInUser,

@@ -2,7 +2,7 @@
  * action types
  */
 export const SAVE_COMPANY_FORM = 'SAVE_COMPANY_FORM'
-export const UPDATE_ANNOUNCEMENT = 'UPDATE_ANNOUNCEMENT'
+export const UPDATE_MEETING_FORM = 'UPDATE_MEETING_FORM'
 export const COMPANY_UPDATE_REQUESTED = 'COMPANY_UPDATE_REQUESTED'
 export const USERS_TO_COMPANY_ADMIN_REQUESTED = 'USERS_TO_COMPANY_ADMIN_REQUESTED'
 export const USERS_TO_COMPANY_ADMIN_SUCCEEDED = 'USERS_TO_COMPANY_ADMIN_SUCEEDED'
@@ -25,10 +25,10 @@ export function saveCompanyForm(changedFields) {
     }
 }
 
-export function updateAnnouncement(announcement) {
+export function updateMeetingForm(changedFields) {
     return {
-        type: UPDATE_ANNOUNCEMENT,
-        payload: announcement
+        type: UPDATE_MEETING_FORM,
+        payload: changedFields
     }
 }
 

@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Row, Col } from 'antd'
 import { Document } from '@react-pdf/dom'
 import { Page, Text, View, StyleSheet } from '@react-pdf/core'
-import { connect } from 'react-redux'
 import { formDict } from '../utils/formDict.js'
 import moment from 'moment'
 
@@ -49,7 +48,7 @@ class MeetingPDF extends Component {
   renderAgreementList(agreementTypes) {
     return agreementTypes.map((agreement, index) => {
       return (
-        <View>
+        <View key={index}>
           <Text>
             {index+1}. Accuerdo: {agreement}
           </Text>
@@ -67,7 +66,7 @@ class MeetingPDF extends Component {
       agreementTypes,
       location,
       additionalInfo
-    } = this.props
+    } = this.props.meeting
     const startDate = votingStart.format('DD-MM-YYYY')
     const startHour = votingStart.format('HH:mm')
     /* const endDate = votingEnd.format('DD-MM-YYYY') */
@@ -156,8 +155,4 @@ class MeetingPDF extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {...state.announcement}
-}
-
-export default connect(mapStateToProps)(MeetingPDF)
+export default MeetingPDF

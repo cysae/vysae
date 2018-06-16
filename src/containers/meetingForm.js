@@ -8,6 +8,14 @@ const RadioGroup = Radio.Group
 const { RangePicker } = DatePicker;
 
 export default class MeetingForm extends Component {
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      /* if (!err) { */
+      this.props.next()
+    });
+  }
+
   render() {
     const { form } = this.props
     const { getFieldDecorator } = form
