@@ -12,6 +12,7 @@ export default class MeetingForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       /* if (!err) { */
+      this.props.saveMeeting()
       this.props.next()
     });
   }

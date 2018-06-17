@@ -14,6 +14,8 @@ export const GET_SIGNED_IN_USER_REQUESTED = 'GET_SIGNED_IN_USER_REQUESTED'
 export const GET_SIGNED_IN_USER_SUCCEEDED = 'GET_SIGNED_IN_USER_SUCCEEDED'
 export const GET_MY_COMPANIES_REQUESTED = 'GET_MY_COMPANIES_REQUESTED'
 export const GET_MY_COMPANIES_SUCCEEDED = 'GET_MY_COMPANIES_SUCCEEDED'
+export const ADD_MEETING_TO_COMPANY_REQUESTED = 'ADD_MEETING_TO_COMPANY_REQUESTED'
+export const ADD_MEETING_TO_COMPANY_SUCCEEDED = 'ADD_MEETING_TO_COMPANY_SUCCEEDED'
 
 /*
  * action creators
@@ -75,5 +77,15 @@ export function selectCompany(company) {
 export function requestMyCompanies() {
     return {
         type: GET_MY_COMPANIES_REQUESTED
+    }
+}
+
+export function requestAddMeetingToCompany(meeting, companyId) {
+    return {
+        type: ADD_MEETING_TO_COMPANY_REQUESTED,
+        payload: {
+            companyId,
+            meeting,
+        }
     }
 }

@@ -12,12 +12,20 @@ import {
     GET_SIGNED_IN_USER_SUCCEEDED,
     GET_MY_COMPANIES_REQUESTED,
     GET_MY_COMPANIES_SUCCEEDED,
+    ADD_MEETING_TO_COMPANY_REQUESTED,
+    ADD_MEETING_TO_COMPANY_SUCCEEDED,
 } from '../actions/index.js'
 import aws_exports from '../aws-exports.js'
 Amplify.configure(aws_exports)
 
+const queryCompany = (companyId) => {
+    return API.get('companyCRUD', `/company/${companyId}`).then(res => res[0])
+}
+const updateCompany = (company) => {
+    return API.put('companyCRUD', '/company', { body: company })
+}
+
 const queryCompanies = (companyIds) => {
-    console.log(companyIds)
     const promises = companyIds.map(id => {
         return API.get('companyCRUD', `/company/${id}`).then(res => res[0])
     })
@@ -44,12 +52,9 @@ const updateUsers = (users) => {
     })
     return Promise.all(promises)
 }
-// const users = [{ dni: 'test' }, { dni: 'asd'}]
-// console.log(queryUsers(users))
-// queryUsers(users).then(res => console.log(res))
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-function* updateCompany(action) {
+function* updateCompanySaga(action) {
     let { companyId, body } = action.payload
     try {
         const company = yield call([API, 'get'], 'companyCRUD', `/company/${companyId}`)
@@ -140,14 +145,28 @@ function* getSignedInUser() {
     }
 }
 
+function* addMeetingToCompany(action) {
+    let { companyId, meeting } = action.payload
+    try {
+        const company = yield call(queryCompany, companyId)
+        company.meetings = company.meetings || []
+        company.meetings.push(meeting)
+        yield call(updateCompany, company)
+        yield put({type: "ADD_MEETING_TO_COMPANY_SUCEEDED"})
+    } catch(e) {
+        console.log(e)
+    }
+}
+
 
 function* mySaga() {
-    yield takeLatest("COMPANY_UPDATE_REQUESTED", updateCompany)
+    yield takeLatest("COMPANY_UPDATE_REQUESTED", updateCompanySaga)
     yield takeLatest(USERS_SIGNUP_REQUESTED, signUpUsers)
     yield takeLatest(COMPANY_SELECTION_REQUESTED, selectCompany)
     yield takeLatest(USERS_TO_COMPANY_ADMIN_REQUESTED, usersToCompanyAdmin)
     yield takeLatest(GET_SIGNED_IN_USER_REQUESTED, getSignedInUser)
     yield takeLatest(GET_MY_COMPANIES_REQUESTED, getMyCompanies)
+    yield takeLatest(ADD_MEETING_TO_COMPANY_REQUESTED, addMeetingToCompany)
 }
 
 export default mySaga;

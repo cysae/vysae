@@ -7,7 +7,7 @@ import {
 } from '../actions/index'
 // components
 import MeetingForm from '../containers/meetingForm.js'
-import MeetingStatus from './meetingStatus.js'
+import MeetingStatus from '../containers/meetingStatus.js'
 import MeetingConfirmation from './meetingConfirmation.js'
 const Step = Steps.Step
 
@@ -40,11 +40,13 @@ class AnnounceMeeting extends Component {
     super(props)
 
     this.state = {
-      current: 0
+      current: 0,
+      meeting: {}
     }
 
     this.next = this.next.bind(this)
     this.prev = this.prev.bind(this)
+    this.saveMeeting = this.saveMeeting.bind(this)
   }
 
   next() {
@@ -56,36 +58,38 @@ class AnnounceMeeting extends Component {
     this.setState({ current });
   }
 
-  getMeetingData() {
+  saveMeeting() {
     const { getFieldValue } = this.props.form
     if( getFieldValue('votingPeriod') ) {
-      return {
-        companyName: 'CYSAE',
-        person: 'Javier Pascual',
-        location: 'Barcelona',
-        meetingType: getFieldValue('meetingType'),
-        votingStart: getFieldValue('votingPeriod')[0],
-        votingEnd: getFieldValue('votingPeriod')[1],
-        agreementTypes: getFieldValue('agreementTypes'),
-        additionalInfo: getFieldValue('additionalInfo')
-      }
+      this.setState({
+        meeting: {
+          companyName: 'CYSAE',
+          person: 'Javier Pascual',
+          location: 'Barcelona',
+          meetingType: getFieldValue('meetingType'),
+          votingStart: getFieldValue('votingPeriod')[0],
+          votingEnd: getFieldValue('votingPeriod')[1],
+          agreementTypes: getFieldValue('agreementTypes'),
+          additionalInfo: getFieldValue('additionalInfo')
+        }
+      })
     }
-    return {}
   }
 
   render() {
-    const { current } = this.state
+    const { current, meeting } = this.state
     const { form } = this.props
+
 
     const steps = [{
       title: 'Convocatoria Formulario',
-      content: <MeetingForm form={form} next={this.next} prev={this.prev} />,
+      content: <MeetingForm form={form} saveMeeting={this.saveMeeting} next={this.next} prev={this.prev} />,
     }, {
       title: 'Comprobar Convocatoria',
-      content: <MeetingConfirmation meeting={this.getMeetingData()} next={this.next} prev={this.prev}/>,
+      content: <MeetingConfirmation meeting={meeting} next={this.next} prev={this.prev}/>,
     }, {
       title: 'Estado',
-      content: <MeetingStatus prev={this.prev}/>,
+      content: <MeetingStatus meeting={meeting} prev={this.prev}/>,
     }];
 
     return (
