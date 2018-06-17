@@ -7,26 +7,19 @@ import {
 } from '../actions/index.js'
 
 class MeetingStatus extends Component {
-  state = {
-    isLoading: true
-  }
-
   componentDidMount() {
     this.updateDynamodb()
   }
 
   updateDynamodb() {
-    console.log(this.props)
     const { requestCompanyUpdate, company, meeting} = this.props
     const companyId = company.uuid
-    console.log(meeting)
 
     this.props.addMeetingToCompany(meeting, companyId)
   }
 
   render() {
-    const { isLoading } = this.state
-    if(isLoading) {
+    if(this.props.meetingForm.isUpdating) {
       return <Spin />
     }
 
@@ -36,7 +29,8 @@ class MeetingStatus extends Component {
 
 const mapStateToProps = state => {
   return {
-    company: state.selectedCompany
+    company: state.selectedCompany,
+    meetingForm: state.meetingForm
   }
 }
 const mapDispatchToProps = dispatch => {

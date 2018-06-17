@@ -9,6 +9,8 @@ import {
     GET_SIGNED_IN_USER_SUCCEEDED,
     GET_MY_COMPANIES_REQUESTED,
     GET_MY_COMPANIES_SUCCEEDED,
+    ADD_MEETING_TO_COMPANY_REQUESTED,
+    ADD_MEETING_TO_COMPANY_SUCCEEDED,
 } from '../actions/index'
 import moment from 'moment'
 
@@ -30,6 +32,16 @@ function meetingForm(state = {}, action) {
         return {
             ...state,
             ...action.payload,
+        }
+    case ADD_MEETING_TO_COMPANY_REQUESTED:
+        return {
+            ...state,
+            isUpdating: true
+        }
+    case ADD_MEETING_TO_COMPANY_SUCCEEDED:
+        return {
+            ...state,
+            isUpdating: false
         }
     default:
         return state;

@@ -152,7 +152,7 @@ function* addMeetingToCompany(action) {
         company.meetings = company.meetings || []
         company.meetings.push(meeting)
         yield call(updateCompany, company)
-        yield put({type: "ADD_MEETING_TO_COMPANY_SUCEEDED"})
+        yield put({type: ADD_MEETING_TO_COMPANY_SUCCEEDED})
     } catch(e) {
         console.log(e)
     }
