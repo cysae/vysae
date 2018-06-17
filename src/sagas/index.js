@@ -14,6 +14,7 @@ import {
     GET_MY_COMPANIES_SUCCEEDED,
     ADD_MEETING_TO_COMPANY_REQUESTED,
     ADD_MEETING_TO_COMPANY_SUCCEEDED,
+    requestCompanySelection,
 } from '../actions/index.js'
 import aws_exports from '../aws-exports.js'
 Amplify.configure(aws_exports)
@@ -153,6 +154,7 @@ function* addMeetingToCompany(action) {
         company.meetings.push(meeting)
         yield call(updateCompany, company)
         yield put({type: ADD_MEETING_TO_COMPANY_SUCCEEDED})
+        yield put(requestCompanySelection(companyId))
     } catch(e) {
         console.log(e)
     }
