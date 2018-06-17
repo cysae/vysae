@@ -13,7 +13,7 @@ import { withRouter } from 'react-router'
 // Antd
 import { Layout, Breadcrumb } from 'antd'
 // Components
-import { HeaderMenu } from './containers/menus.js'
+import MyHeader from './components/header.js'
 import SelectCompanyRoute from './selectedCompanyRoute.js'
 import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
@@ -22,7 +22,7 @@ import Meetings from './components/meetings'
 
 import './App.css'
 Amplify.configure(aws_exports)
-const { Header, Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 
 class App extends Component {
   componentDidMount() {
@@ -32,10 +32,7 @@ class App extends Component {
   render() {
     return (
       <Layout>
-        <Header>
-          <div className="logo" />
-          <HeaderMenu />
-        </Header>
+        <MyHeader />
         <Content style={{ padding: '0 50px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item>
