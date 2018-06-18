@@ -11,6 +11,7 @@ import {
     GET_MY_COMPANIES_SUCCEEDED,
     ADD_MEETING_TO_COMPANY_REQUESTED,
     ADD_MEETING_TO_COMPANY_SUCCEEDED,
+    SELECT_MEETING,
 } from '../actions/index'
 import moment from 'moment'
 
@@ -97,11 +98,21 @@ function signedInUser(state = {}, action) {
     }
 }
 
+function selectedMeeting(state = {}, action) {
+    switch(action.type) {
+    case SELECT_MEETING:
+        return { ...action.payload.meeting }
+    default:
+        return state
+    }
+}
+
 const reducers = combineReducers({
     companyForm,
     meetingForm,
     myCompanies,
     selectedCompany,
+    selectedMeeting,
     signedInUser,
     router: routerReducer
 })

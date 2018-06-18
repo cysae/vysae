@@ -16,6 +16,7 @@ export const GET_MY_COMPANIES_REQUESTED = 'GET_MY_COMPANIES_REQUESTED'
 export const GET_MY_COMPANIES_SUCCEEDED = 'GET_MY_COMPANIES_SUCCEEDED'
 export const ADD_MEETING_TO_COMPANY_REQUESTED = 'ADD_MEETING_TO_COMPANY_REQUESTED'
 export const ADD_MEETING_TO_COMPANY_SUCCEEDED = 'ADD_MEETING_TO_COMPANY_SUCCEEDED'
+export const SELECT_MEETING = 'SELECT_MEETING'
 
 /*
  * action creators
@@ -89,3 +90,8 @@ export function requestAddMeetingToCompany(meeting, companyId) {
         }
     }
 }
+
+export const selectMeeting = meeting => ({
+    type: SELECT_MEETING,
+    payload: { meeting }
+})

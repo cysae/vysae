@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class VoteForMeeting extends Component {
+class meetingVote extends Component {
   state = {
     agreementTypes: [
       'Aumento o reducción de capital',
@@ -44,4 +44,4 @@ class VoteForMeeting extends Component {
   }
 }
 
-export default VoteForMeeting
+export default meetingVote
