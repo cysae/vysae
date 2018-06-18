@@ -84,9 +84,9 @@ class RawMeetingMenu extends Component {
       <Menu
         selectedKeys={this.getSelectedKey()}
       >
-        {/* <Menu.Item key="nextMeeting">
-            <Link to='/meetings/next'>Próxima Junta</Link>
-            </Menu.Item> */}
+        <Menu.Item key="nextMeeting">
+          <Link to='/meetings/next'>Próxima Junta</Link>
+        </Menu.Item>
         <Menu.Item key="announceMeeting">
           <Link to='/meetings/announce'>Convocatoria</Link>
         </Menu.Item>

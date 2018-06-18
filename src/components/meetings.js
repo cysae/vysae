@@ -3,7 +3,7 @@ import { Row, Col, Menu } from 'antd'
 import { Route } from 'react-router'
 // components
 import { MeetingMenu } from '../containers/menus.js'
-import NextMeeting from './nextMeeting.js'
+import NextMeeting from '../containers/nextMeeting.js'
 import AnnounceMeeting from './announceMeeting.js'
 import MeetingHistory from './meetingHistory.js'
 import MeetingPDF from './meetingPDF.js'
