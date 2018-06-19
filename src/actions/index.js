@@ -92,9 +92,9 @@ export const selectMeeting = meeting => ({
     payload: { meeting }
 })
 
-export const requestVote = (vote, meetingId, companyId) => ({
+export const requestVote = (voteForm, meetingId, companyId) => ({
     type: VOTE_REQUESTED,
-    payload: { vote, meetingId, companyId }
+    payload: { voteForm, meetingId, companyId }
 })
 
 export const updateVoteForm = changedFields => ({

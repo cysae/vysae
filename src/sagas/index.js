@@ -165,11 +165,15 @@ function* addMeetingToCompany(action) {
 }
 
 function* addVoteToMeeting(action) {
-    let { vote, companyId, meetingId } = action.payload
+    let { voteForm, meetingId, companyId } = action.payload
     try {
         const company = yield call(queryCompany, companyId)
+        console.log(company)
         for(const meeting of company.meetings) {
             if(meeting.uuid === meetingId) {
+                const vote = {
+                    ...voteForm,
+                }
                 meeting.votes = meeting.votes || []
                 meeting.votes.push(vote)
                 break
