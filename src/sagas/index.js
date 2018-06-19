@@ -1,4 +1,5 @@
 import { call, all, put, takeLatest } from 'redux-saga/effects'
+import { v4 as uuid } from 'uuid'
 import Amplify, { Auth, API } from 'aws-amplify'
 import Promise from 'bluebird'
 import _ from 'lodash'
@@ -148,6 +149,7 @@ function* getSignedInUser() {
 
 function* addMeetingToCompany(action) {
     let { companyId, meeting } = action.payload
+    meeting.uuid = uuid()
     try {
         const company = yield call(queryCompany, companyId)
         company.meetings = company.meetings || []

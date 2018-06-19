@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { List, Radio, Button } from 'antd'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -19,9 +20,9 @@ class meetingVote extends Component {
   }
 
   render() {
-    const { agreementTypes } = this.state
+    console.log(this.props)
+    const { agreementTypes } = this.props.meeting
     return (
-
       <Fragment>
         <List
           header={<div>CONVOCATORIA A LA JUNTA GENERAL DE SOCIOS</div>}
@@ -44,4 +45,8 @@ class meetingVote extends Component {
   }
 }
 
-export default meetingVote
+const mapStateToProps = state => ({
+  meeting: state.selectedMeeting
+})
+
+export default connect(mapStateToProps)(meetingVote)

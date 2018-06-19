@@ -41,10 +41,6 @@ const styles = StyleSheet.create({
 
 // Create Document Component
 class MeetingPDF extends Component {
-  state = {
-    companyName: 'CYSAE',
-  }
-
   renderAgreementList(agreementTypes) {
     return agreementTypes.map((agreement, index) => {
       return (
@@ -67,10 +63,10 @@ class MeetingPDF extends Component {
       location,
       additionalInfo
     } = this.props.meeting
-    const startDate = votingStart.format('DD-MM-YYYY')
-    const startHour = votingStart.format('HH:mm')
-    /* const endDate = votingEnd.format('DD-MM-YYYY') */
-    /* const endHour = votingEnd.format('HH:mm') */
+    const startDate = moment(votingStart).format('DD-MM-YYYY')
+    const startHour = moment(votingStart).format('HH:mm')
+    /* const endDate = moment(votingEnd).format('DD-MM-YYYY') */
+    /* const endHour = moment(votingEnd).format('HH:mm') */
 
     return (
       <Row type="flex">
