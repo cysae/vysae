@@ -11,6 +11,7 @@ import {
     GET_MY_COMPANIES_SUCCEEDED,
     ADD_MEETING_TO_COMPANY_REQUESTED,
     ADD_MEETING_TO_COMPANY_SUCCEEDED,
+    UPDATE_VOTE_FORM,
     SELECT_MEETING,
 } from '../actions/index'
 import moment from 'moment'
@@ -45,7 +46,16 @@ function meetingForm(state = {}, action) {
             isUpdating: false
         }
     default:
-        return state;
+        return state
+    }
+}
+
+function voteForm(state = {}, action) {
+    switch(action.type) {
+    case UPDATE_VOTE_FORM:
+        return { ...state, ...action.payload }
+    default:
+        return state
     }
 }
 
@@ -110,6 +120,7 @@ function selectedMeeting(state = {}, action) {
 const reducers = combineReducers({
     companyForm,
     meetingForm,
+    voteForm,
     myCompanies,
     selectedCompany,
     selectedMeeting,

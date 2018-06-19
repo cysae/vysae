@@ -15,6 +15,8 @@ import {
     GET_MY_COMPANIES_SUCCEEDED,
     ADD_MEETING_TO_COMPANY_REQUESTED,
     ADD_MEETING_TO_COMPANY_SUCCEEDED,
+    VOTE_REQUESTED,
+    VOTE_SUCCEEDED,
     requestCompanySelection,
 } from '../actions/index.js'
 import aws_exports from '../aws-exports.js'
@@ -162,6 +164,23 @@ function* addMeetingToCompany(action) {
     }
 }
 
+function* addVoteToMeeting(action) {
+    let { vote, companyId, meetingId } = action.payload
+    try {
+        const company = yield call(queryCompany, companyId)
+        for(const meeting of company.meetings) {
+            if(meeting.uuid === meetingId) {
+                meeting.votes = meeting.votes || []
+                meeting.votes.push(vote)
+                break
+            }
+        }
+        console.log(company)
+    } catch(e) {
+        console.log(e)
+    }
+}
+
 
 function* mySaga() {
     yield takeLatest("COMPANY_UPDATE_REQUESTED", updateCompanySaga)
@@ -171,6 +190,7 @@ function* mySaga() {
     yield takeLatest(GET_SIGNED_IN_USER_REQUESTED, getSignedInUser)
     yield takeLatest(GET_MY_COMPANIES_REQUESTED, getMyCompanies)
     yield takeLatest(ADD_MEETING_TO_COMPANY_REQUESTED, addMeetingToCompany)
+    yield takeLatest(VOTE_REQUESTED, addVoteToMeeting)
 }
 
 export default mySaga;

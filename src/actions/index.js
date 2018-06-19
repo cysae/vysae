@@ -17,16 +17,17 @@ export const GET_MY_COMPANIES_SUCCEEDED = 'GET_MY_COMPANIES_SUCCEEDED'
 export const ADD_MEETING_TO_COMPANY_REQUESTED = 'ADD_MEETING_TO_COMPANY_REQUESTED'
 export const ADD_MEETING_TO_COMPANY_SUCCEEDED = 'ADD_MEETING_TO_COMPANY_SUCCEEDED'
 export const SELECT_MEETING = 'SELECT_MEETING'
+export const VOTE_REQUESTED = 'VOTE_REQUESTED'
+export const VOTE_SUCCEEDED = 'VOTE_SUCEEDED'
+export const UPDATE_VOTE_FORM = 'UPDATE_VOTE_FORM'
 
 /*
  * action creators
  */
-export function saveCompanyForm(changedFields) {
-    return {
-        type: SAVE_COMPANY_FORM,
-        payload: changedFields
-    }
-}
+export const saveCompanyForm = changedFields => ({
+    type: SAVE_COMPANY_FORM,
+    payload: changedFields
+})
 
 export function updateMeetingForm(changedFields) {
     return {
@@ -81,17 +82,22 @@ export function requestMyCompanies() {
     }
 }
 
-export function requestAddMeetingToCompany(meeting, companyId) {
-    return {
-        type: ADD_MEETING_TO_COMPANY_REQUESTED,
-        payload: {
-            companyId,
-            meeting,
-        }
-    }
-}
+export const requestAddMeetingToCompany = (meeting, companyId) => ({
+    type: ADD_MEETING_TO_COMPANY_REQUESTED,
+    payload: { companyId, meeting }
+})
 
 export const selectMeeting = meeting => ({
     type: SELECT_MEETING,
     payload: { meeting }
+})
+
+export const requestVote = (vote, meetingId, companyId) => ({
+    type: VOTE_REQUESTED,
+    payload: { vote, meetingId, companyId }
+})
+
+export const updateVoteForm = changedFields => ({
+    type: UPDATE_VOTE_FORM,
+    payload: changedFields
 })
