@@ -32,10 +32,6 @@ function NextMeetings(props) {
     dataIndex: 'meetingType',
     key: 'meetingType'
   }, {
-    title: 'Convocado por',
-    dataIndex: 'person',
-    key: 'person'
-  }, {
     title: 'Acciones',
     key: 'action',
     render: (text, record) => (

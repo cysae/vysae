@@ -6,19 +6,16 @@ import {
   updateMeetingForm,
 } from '../actions/index'
 // components
-import MeetingForm from '../containers/meetingForm.js'
-import MeetingStatus from '../containers/meetingStatus.js'
-import MeetingConfirmation from './meetingConfirmation.js'
+import MeetingForm from './meetingForm.js'
+import MeetingStatus from './meetingStatus.js'
+import MeetingConfirmation from '../components/meetingConfirmation.js'
 const Step = Steps.Step
 
 function HOCForm(formComponent) {
-  return connect((state) => {
-    return {
-      formState: {
-        ...state.meetingForm
-      }
-    }
-  })(Form.create({
+  return connect((state) => ({
+    formState: {...state.meetingForm},
+    user: state.signedInUser
+  }))(Form.create({
     onFieldsChange(props, changedFields) {
       props.dispatch(updateMeetingForm(changedFields))
     },
@@ -64,7 +61,7 @@ class AnnounceMeeting extends Component {
       this.setState({
         meeting: {
           companyName: 'CYSAE',
-          person: 'Javier Pascual',
+          dni: this.props.user.dni,
           location: 'Barcelona',
           meetingType: getFieldValue('meetingType'),
           votingStart: getFieldValue('votingPeriod')[0],
@@ -106,6 +103,7 @@ class AnnounceMeeting extends Component {
     )
   }
 }
+
 
 
 export default HOCForm(AnnounceMeeting)

@@ -4,7 +4,7 @@ import { Route } from 'react-router'
 // components
 import { MeetingMenu } from '../containers/menus.js'
 import NextMeetings from '../containers/nextMeetings.js'
-import AnnounceMeeting from './announceMeeting.js'
+import AnnounceMeeting from '../containers/announceMeeting.js'
 import MeetingHistory from './meetingHistory.js'
 import MeetingDisplayPDF from '../containers/meetingDisplayPDF.js'
 import MeetingVote from '../containers/meetingVote.js'
