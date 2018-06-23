@@ -6,6 +6,7 @@ import { resolvers } from './resolvers';
 const myGraphQLSchema = makeExecutableSchema({
     typeDefs,
     resolvers,
+    logger: console
 });
 
 exports.graphqlHandler = function graphqlHandler(event, context, callback) {
@@ -18,6 +19,12 @@ exports.graphqlHandler = function graphqlHandler(event, context, callback) {
     const handler = graphqlLambda({ schema: myGraphQLSchema });
     return handler(event, context, callbackWithHeaders);
 };
+
+exports.graphiqlHandler = graphiqlLambda({
+    endpointURL: process.env.REACT_APP_GRAPHQL_ENDPOINT
+        ? process.env.REACT_APP_GRAPHQL_ENDPOINT
+        : '/production/graphql',
+});
 
 module.exports.hello = (event, context, callback) => {
     const response = {

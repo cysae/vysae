@@ -23,6 +23,27 @@ provider:
   stage: dev
   region: eu-west-1
 
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
+  - serverless-webpack
+
+custom:
+  serverless-offline:
+    port: 4000
+  webpackIncludeModules: true
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+    seed:
+      test:
+        sources:
+          - table: vysae
+            sources: [seedData/vysae.json]
+
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
 #    - Effect: "Allow"
@@ -62,6 +83,14 @@ functions:
           path: graphql
           method: post
           cors: true
+  graphiql:
+    handler: handler.graphiqlHandler
+    role: ServiceRole
+    events:
+    - http:
+        path: graphiql
+        method: get
+        cors: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

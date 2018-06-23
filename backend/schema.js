@@ -1,4 +1,4 @@
 export const typeDefs = `
-  type Query { company: Company! }
+  type Query { getCompany(name: String!): Company }
   type Company { name: String! }
 `
