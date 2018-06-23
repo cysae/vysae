@@ -1,0 +1,111 @@
+--- !com.amazonaws.mobilehub.v0.Project 
+apps:
+  web: !com.amazonaws.mobilehub.v0.AppDO {}
+features:
+  cloudlogic: !com.amazonaws.mobilehub.v0.CloudLogic 
+    components:
+      sampleCloudApi: !com.amazonaws.mobilehub.v0.API 
+        attributes:
+          name: sampleCloudApi
+          requires-signin: false
+          sdk-generation-stage-name: Development
+        paths:
+          /items: !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/sampleLambda-20180621085450.zip
+            description: 'Handler for calls to resource path : /items/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: xvLmXR0lF0r6Ljj+CK5SW/xl7T3DjDlAfKlap462UDo=
+            memorySize: '128'
+            modified: '2018-06-21T06:55:35.733+0000'
+            name: sampleLambda
+            runtime: nodejs6.10
+            timeout: '3'
+            version: mMZnEYOWikeEHVVbeLHqks8.NfhGolEi
+          '/items/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/sampleLambda-20180621085450.zip
+            description: 'Handler for calls to resource path : /items/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: xvLmXR0lF0r6Ljj+CK5SW/xl7T3DjDlAfKlap462UDo=
+            memorySize: '128'
+            modified: '2018-06-21T06:55:35.733+0000'
+            name: sampleLambda
+            runtime: nodejs6.10
+            timeout: '3'
+            version: dRRqSWN1QXW2xK9GsjgZxZBXBmwTki0J
+      vysaeCRUD: !com.amazonaws.mobilehub.v0.API 
+        attributes:
+          name: vysaeCRUD
+          requires-signin: true
+          sdk-generation-stage-name: Development
+        paths:
+          /vysae: !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/vysae-20180621085450.zip
+            description: 'Handler for calls to resource path : /vysae/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: LA2W+OQVRgdSUuxhzA/GaBhB5bYBirnw0Mpa5Y1v0EU=
+            memorySize: '128'
+            modified: '2018-06-21T06:55:35.661+0000'
+            name: vysae
+            runtime: nodejs6.10
+            timeout: '3'
+            version: 0FgPK8HVV1KrI0VjanC7I9tVok81CZq9
+          '/vysae/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/vysae-20180621085450.zip
+            description: 'Handler for calls to resource path : /vysae/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: LA2W+OQVRgdSUuxhzA/GaBhB5bYBirnw0Mpa5Y1v0EU=
+            memorySize: '128'
+            modified: '2018-06-21T06:55:35.661+0000'
+            name: vysae
+            runtime: nodejs6.10
+            timeout: '3'
+            version: kBEgLyYtlSoqaWljUVpBXsaCdxIBMUOz
+  content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
+    attributes:
+      enabled: true
+      visibility: public-global
+    components:
+      release: !com.amazonaws.mobilehub.v0.Bucket {}
+  database: !com.amazonaws.mobilehub.v0.Database 
+    components:
+      database-nosql: !com.amazonaws.mobilehub.v0.NoSQLDatabase 
+        tables:
+          - !com.amazonaws.mobilehub.v0.NoSQLTable 
+            attributes:
+              data: S
+              pk: S
+              sk: S
+            hashKeyName: pk
+            hashKeyType: S
+            indexes:
+              - !com.amazonaws.mobilehub.v0.NoSQLIndex 
+                hashKeyName: sk
+                hashKeyType: S
+                indexName: sk-data
+                rangeKeyName: data
+                rangeKeyType: S
+            rangeKeyName: sk
+            rangeKeyType: S
+            tableName: ___DYNAMIC_PREFIX___-vysae
+            tablePrivacy: public
+  mobile-analytics: !com.amazonaws.mobilehub.v0.Pinpoint 
+    components:
+      analytics: !com.amazonaws.mobilehub.v0.PinpointAnalytics {}
+  sign-in: !com.amazonaws.mobilehub.v0.SignIn 
+    attributes:
+      enabled: true
+      optional-sign-in: false
+    components:
+      sign-in-user-pools: !com.amazonaws.mobilehub.v0.UserPoolsIdentityProvider 
+        attributes:
+          user-pool-id: eu-west-1_MUEHMQ2R2
+name: vysae
+region: eu-west-1
