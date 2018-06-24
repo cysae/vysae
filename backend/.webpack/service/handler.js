@@ -115,7 +115,7 @@ eval("/*** IMPORTS FROM imports-loader ***/\nvar graphql = __webpack_require__(/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("/*** IMPORTS FROM imports-loader ***/\nvar graphql = __webpack_require__(/*! graphql */ \"graphql\");\n\n\"use strict\";\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nconst typeDefs = exports.typeDefs = `\n  type Query { getCompany(name: String!): Company }\n  type Company { name: String! }\n`;\n\n\n//# sourceURL=webpack:///./schema.js?");
+eval("/*** IMPORTS FROM imports-loader ***/\nvar graphql = __webpack_require__(/*! graphql */ \"graphql\");\n\n\"use strict\";\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nconst typeDefs = exports.typeDefs = `\n  type Query { getCompany(name: String!): Company }\n  type Company { name: String! }\n  type Shareholder { id: String! }\n`;\n\n\n//# sourceURL=webpack:///./schema.js?");
 
 /***/ }),
 

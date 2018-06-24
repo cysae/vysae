@@ -41,7 +41,7 @@ custom:
     seed:
       test:
         sources:
-          - table: vysae
+          - table: Vysae
             sources: [seedData/vysae.json]
 
 # you can add statements to the Lambda function's IAM Role here
@@ -131,15 +131,19 @@ resources:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         AttributeDefinitions:
-          - AttributeName: name
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
             AttributeType: S
         KeySchema:
-          - AttributeName: name
+          - AttributeName: PK
             KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: vysae
+        TableName: Vysae
 #  Outputs:
 #     NewOutput:
 #       Description: "Description for the output"
