@@ -62,13 +62,27 @@ function getShareholder(args) {
     return docClient.queryAsync(
         {
             TableName: 'Vysae',
-            KeyConditionExpression: 'PK = :v1',
+            IndexName: 'GSI',
+            KeyConditionExpression: 'SK = :v1',
             ExpressionAttributeValues: {
                 ':v1': `Shareholder-${args.id}`,
             },
         },
     ).then(res => {
-        const item = res.Items[0]
-        return { id: item.PK.slice(-36) }
+        const shareholder = {
+            id: null,
+            companies: []
+        }
+        for(const item of res.Items) {
+            if(item.PK.substr(0, 7) === 'Company') {
+                shareholder.companies.push({
+                    id: item.PK.slice(-36)
+                })
+            }
+            if(item.PK.substr(0, 11) === 'Shareholder') {
+                shareholder.id = item.PK.slice(-36)
+            }
+        }
+        return shareholder
     }).catch(err => console.log(err))
 }

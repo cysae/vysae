@@ -2,7 +2,7 @@ const faker = require('faker');
 const jsonfile = require('jsonfile');
 const uuidv4 = require('uuid/v4');
 
-const numCompanies = 2;
+const numCompanies = 10;
 const numShareholders = 2;
 
 const vData = [];
@@ -35,12 +35,16 @@ for (let i = 0; i < numShareholders; i++) {
     vData.push(shareholder)
 
     // add to company
-    const company = companies[Math.round(Math.random()*(numCompanies-1))]
-    const cShareholder = {
-        PK: company.PK,
-        SK: shareholder.SK
+    const companyNum = Math.round(Math.random()*(numCompanies-1));
+    console.log(companyNum)
+    for(let i=0; i < companyNum; i++) {
+        const company = companies[i]
+        const cShareholder = {
+            PK: company.PK,
+            SK: shareholder.SK
+        }
+        vData.push(cShareholder)
     }
-    vData.push(cShareholder)
 }
 
 const vFile = 'vysae.json';
