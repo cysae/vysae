@@ -28,15 +28,15 @@ for (let i = 0; i < numShareholders; i++) {
     const id = uuidv4()
     const PK = `Shareholder-${id}`
     const SK = `Shareholder-${id}`
+    const name = faker.name.findName()
 
     const shareholder = {
-        PK, SK
+        PK, SK, name
     }
     vData.push(shareholder)
 
     // add to company
     const companyNum = Math.round(Math.random()*(numCompanies-1));
-    console.log(companyNum)
     for(let i=0; i < companyNum; i++) {
         const company = companies[i]
         const cShareholder = {

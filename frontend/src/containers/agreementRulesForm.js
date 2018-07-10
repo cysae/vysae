@@ -15,7 +15,7 @@ class AgreementRulesForm extends Component {
     this.updateDynamoDB()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        /* this.props.next() */
+        this.props.next()
       }
     });
   }

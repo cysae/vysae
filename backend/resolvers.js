@@ -13,49 +13,42 @@ if (process.env.NODE_ENV === 'production') {
     Promise.promisifyAll(Object.getPrototypeOf(docClient));
 }
 
-const promisify = foo =>
-      new Promise((resolve, reject) => {
-          foo((error, result) => {
-              if (error) {
-                  reject(error);
-              } else {
-                  console.log(result)
-                  if(result.Items.length > 0) {
-                      resolve({
-                          id: result.Items[0].PK.slice(-36),
-                          name: result.Items[0].name
-                      })
-                  } else {
-                      resolve(null);
-                  }
-              }
-          });
-      });
-
 
 export const resolvers = {
+    Mutation: {
+        createCompany: (root, args) => createCompany(args),
+    },
     Query: {
         getCompany: (root, args) => getCompany(args),
         getShareholder: (root, args) => getShareholder(args),
     },
 };
 
+function createCompany(args) {
+    console.log(args)
+    return { id: "lol"}
+}
+
+
 function getCompany(args) {
-    return promisify(callback =>
-                     docClient.query(
-                         {
-                             TableName: 'Vysae',
-                             KeyConditionExpression: '#name = :v1',
-                             ExpressionAttributeNames:{
-                                 "#name": "name"
-                             },
-                             ExpressionAttributeValues: {
-                                 ':v1': args.name,
-                             },
-                         },
-                         callback
-                     )
-                    )
+    return docClient.queryAsync(
+        {
+            TableName: 'Vysae',
+            KeyConditionExpression: 'PK = :v1',
+            ExpressionAttributeValues: {
+                ':v1': `Company-${args.id}`
+            },
+        },
+    ).then(res => {
+        if(res.Items.length > 0) {
+            return {
+                id: res.Items[0].PK.slice(-36),
+                name: res.Items[0].name
+            }
+        } else {
+            return null;
+        }
+    }).catch(err => console.log('graphql: getCompany', err))
 }
 
 function getShareholder(args) {
@@ -71,6 +64,7 @@ function getShareholder(args) {
     ).then(res => {
         const shareholder = {
             id: null,
+            name: null,
             companies: []
         }
         for(const item of res.Items) {
@@ -81,8 +75,9 @@ function getShareholder(args) {
             }
             if(item.PK.substr(0, 11) === 'Shareholder') {
                 shareholder.id = item.PK.slice(-36)
+                shareholder.name = item.name
             }
         }
         return shareholder
-    }).catch(err => console.log(err))
+    }).catch(err => console.log('graphql: getShareholder', err))
 }
