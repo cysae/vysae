@@ -25,21 +25,27 @@ export const resolvers = {
 };
 
 function createCompany(args) {
-    console.log(args)
-    return { id: "lol"}
+    const companyId = `Company-${args.id}`
+    return docClient.putAsync({
+        TableName: 'Vysae',
+        Item: {
+            PK: companyId,
+            SK: companyId,
+            name: args.name
+        }
+    }).then(() => ({
+        id: companyId,
+    })).catch(err => console.log(err))
 }
 
-
 function getCompany(args) {
-    return docClient.queryAsync(
-        {
-            TableName: 'Vysae',
-            KeyConditionExpression: 'PK = :v1',
-            ExpressionAttributeValues: {
-                ':v1': `Company-${args.id}`
-            },
+    return docClient.queryAsync({
+        TableName: 'Vysae',
+        KeyConditionExpression: 'PK = :v1',
+        ExpressionAttributeValues: {
+            ':v1': `Company-${args.id}`
         },
-    ).then(res => {
+    }).then(res => {
         if(res.Items.length > 0) {
             return {
                 id: res.Items[0].PK.slice(-36),
