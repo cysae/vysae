@@ -2776,6 +2776,10 @@ querystring@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
 
+ramda@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.25.0.tgz#8fdf68231cffa90bc2f9460390a0cb74a29b29a9"
+
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.0.6.tgz#d302c522948588848a8d300c932b44c24231da80"
@@ -2947,6 +2951,13 @@ semver@^5.3.0, semver@^5.5.0:
 serialize-javascript@^1.4.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-1.5.0.tgz#1aa336162c88a890ddad5384baebc93a655161fe"
+
+serverless-appsync-plugin@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/serverless-appsync-plugin/-/serverless-appsync-plugin-1.0.1.tgz#9ca0de0effba4bc5498d3c69155ddc98b0b70130"
+  dependencies:
+    graphql "^0.13.2"
+    ramda "^0.25.0"
 
 serverless-dynamodb-client@^0.0.2:
   version "0.0.2"
