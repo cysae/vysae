@@ -17,6 +17,7 @@ type Company {
 type Shareholder {
   id: String!
   name: String
+  companies: [Company]
 }
 
 schema {

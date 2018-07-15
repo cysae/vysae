@@ -15,6 +15,7 @@ import {
     SELECT_MEETING,
 } from '../actions/index'
 import moment from 'moment'
+import { companies } from '../companies.js'
 
 function companyForm(state = {}, action) {
     switch(action.type) {
@@ -59,7 +60,10 @@ function voteForm(state = {}, action) {
     }
 }
 
-function myCompanies(state = { isLoading: true }, action) {
+function myCompanies(state = {
+    isLoading: false,
+    companies,
+}, action) {
     switch(action.type) {
     case GET_MY_COMPANIES_REQUESTED:
         return {
@@ -76,7 +80,7 @@ function myCompanies(state = { isLoading: true }, action) {
 }
 
 
-function selectedCompany(state = {}, action) {
+function selectedCompany(state = companies[0], action) {
     switch(action.type) {
     case COMPANY_SELECTION_REQUESTED:
         return {

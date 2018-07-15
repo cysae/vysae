@@ -80,7 +80,6 @@ function* updateCompanySaga(action) {
     }
 }
 
-
 function* signUpUsers(action) {
     const { users, companyId } = action.payload
     try {
@@ -171,6 +170,8 @@ function* addMeetingToCompany(action) {
         yield put(requestCompanySelection(companyId))
     } catch(e) {
         console.log(e)
+        // just for FAKE
+        yield put({type: ADD_MEETING_TO_COMPANY_SUCCEEDED})
     }
 }
 
@@ -178,7 +179,6 @@ function* addVoteToMeeting(action) {
     let { voteForm, meetingId, companyId } = action.payload
     try {
         const company = yield call(queryCompany, companyId)
-        console.log(company)
         for(const meeting of company.meetings) {
             if(meeting.uuid === meetingId) {
                 const vote = {
@@ -189,7 +189,6 @@ function* addVoteToMeeting(action) {
                 break
             }
         }
-        console.log(company)
     } catch(e) {
         console.log(e)
     }

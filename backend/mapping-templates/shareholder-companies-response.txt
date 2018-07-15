@@ -1,0 +1,9 @@
+#set( $arr = [] )
+#foreach($res in $context.result)
+   #set( $map = {} )
+   ##$util.qr($myMap.put($i, "abc"))
+   ##$util.qr($myMap.put($i, $i.toString()+"foo")) ##Concat variable with string
+   $util.qr($map.put("id", "${res.SK}"))     ##Reference a variable in a string with "${varname}"
+   $util.qr($arr.add($map))
+#end
+$util.toJson($arr)

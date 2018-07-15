@@ -1,0 +1,11 @@
+{
+    "version" : "2017-02-28",
+    "operation" : "Query",
+    "query" : {
+        "expression" : "SK = :shareholderId",
+        "expressionValues" : {
+            ":shareholderId" : { "S" : "Shareholder-069fe7c8-b294-4cec-a7ce-1a71830d7034" }
+        }
+    },
+    "index" : "GSI"
+}

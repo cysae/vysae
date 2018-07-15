@@ -6,6 +6,7 @@ import {
   updateVoteForm,
   requestVote
 } from '../actions/index.js'
+import { Link } from 'react-router-dom'
 const FormItem = Form.Item
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -93,7 +94,9 @@ class MeetingVote extends Component {
           footer={
             <FormItem>
               <Button type="primary" htmlType="submit">
-                Continuar
+                <Link to="/meetings/result">
+                  Continuar
+                </Link>
               </Button>
             </FormItem>
           }

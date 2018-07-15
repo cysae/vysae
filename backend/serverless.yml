@@ -49,6 +49,11 @@ custom:
         field: getShareholder
         request: "getShareholder-request-mapping-template.txt"
         response: "getShareholder-response-mapping-template.txt"
+      - dataSource: Vysae
+        type: Shareholder
+        field: companies
+        request: "shareholder-companies-request.txt"
+        response: "shareholder-companies-response.txt"
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
@@ -81,6 +86,8 @@ resources:
             KeySchema:
               - AttributeName: SK
                 KeyType: HASH
+              - AttributeName: PK
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL
             ProvisionedThroughput:
