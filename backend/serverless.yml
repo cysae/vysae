@@ -9,13 +9,11 @@ provider:
 plugins:
   - serverless-offline
   - serverless-dynamodb-local
-  - serverless-webpack
   - serverless-appsync-plugin
 
 custom:
   serverless-offline:
     port: 4000
-  webpackIncludeModules: true
   dynamodb:
     start:
       port: 8000
@@ -34,44 +32,34 @@ custom:
       awsRegion: eu-west-1
       defaultAction: ALLOW
       userPoolId: eu-west-1_MUEHMQ2R2
+    mappingTemplatesLocation: "./mapping-templates"
     mappingTemplates:
       - dataSource: Vysae
         type: Mutation
         field: createCompany
         request: "createCompany-request-mapping-template.txt"
         response: "createCompany-response-mapping-template.txt"
+      - dataSource: Vysae
+        type: Query
+        field: getCompany
+        request: "getCompany-request-mapping-template.txt"
+        response: "getCompany-response-mapping-template.txt"
+      - dataSource: Vysae
+        type: Query
+        field: getShareholder
+        request: "getShareholder-request-mapping-template.txt"
+        response: "getShareholder-response-mapping-template.txt"
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
-        name: CYSAE
-        description: 'Vysae table'
+        name: Vysae
+        description: "Vysae table"
         config:
-          tableName: 'Vysae'
+          tableName: { Ref: "Vysae" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
-      
-
-functions:
-  hello:
-    handler: handler.hello
-  graphql:
-    handler: handler.graphqlHandler
-    events:
-      - http:
-          path: graphql
-          method: post
-          cors: true
-  graphiql:
-    handler: handler.graphiqlHandler
-    role: ServiceRole
-    events:
-    - http:
-        path: graphiql
-        method: get
-        cors: true
-
 resources:
   Resources:
-    vysaeTable:
+    Vysae:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         TableName: Vysae
@@ -79,8 +67,6 @@ resources:
           - AttributeName: PK
             AttributeType: S
           - AttributeName: SK
-            AttributeType: S
-          - AttributeName: Data 
             AttributeType: S
         KeySchema:
           - AttributeName: PK
@@ -126,12 +112,12 @@ resources:
                     - "dynamodb:Query"
                     - "dynamodb:BatchWriteItem"
                     - "dynamodb:GetItem"
+                    - "dynamodb:BatchGetItem"
                     - "dynamodb:DeleteItem"
                     - "dynamodb:PutItem"
                     - "dynamodb:Scan"
                     - "dynamodb:UpdateItem"
                   Resource:
-                    - "arn:aws:dynamodb:us-east-1:*:table/Users"
-                    - "arn:aws:dynamodb:us-east-1:*:table/Users/*"
-                    - "arn:aws:dynamodb:us-east-1:*:table/Tweets"
-                    - "arn:aws:dynamodb:us-east-1:*:table/Tweets/*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/Vysae"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/Vysae/*"
+

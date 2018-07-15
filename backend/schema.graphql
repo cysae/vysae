@@ -1,0 +1,25 @@
+type Mutation {
+  createCompany(
+    name: String
+  ): Company!
+}
+
+type Query {
+  getCompany(id: String!): Company
+  getShareholder(id: String!): Shareholder
+}
+
+type Company {
+  id: String!
+  name: String
+}
+
+type Shareholder {
+  id: String!
+  name: String
+}
+
+schema {
+  query: Query,
+  mutation: Mutation
+}

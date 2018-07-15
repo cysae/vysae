@@ -12,16 +12,17 @@ faker.seed(1000);
 
 // create Companies
 for (let i = 0; i < numCompanies; i++) {
-    const id = uuidv4()
-    const PK = `Company-${id}`
-    const SK = `Company-${id}`
+    const id = uuidv4();
+    const PK = `Company-${id}`;
+    const SK = `Company-${id}`;
+    const name = faker.company.companyName();
 
     const company = {
-        PK, SK
-    }
+        PK, SK, name
+    };
     companies.push(company);
-    vData.push(company)
-}
+    vData.push(company);
+};
 
 // create Shareholders
 for (let i = 0; i < numShareholders; i++) {
@@ -41,7 +42,8 @@ for (let i = 0; i < numShareholders; i++) {
         const company = companies[i]
         const cShareholder = {
             PK: company.PK,
-            SK: shareholder.SK
+            SK: shareholder.SK,
+            name
         }
         vData.push(cShareholder)
     }
