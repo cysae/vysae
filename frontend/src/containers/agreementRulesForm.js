@@ -12,12 +12,12 @@ const FormItem = Form.Item
 class AgreementRulesForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
-    this.updateDynamoDB()
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
+    /* this.updateDynamoDB() */
+    /* this.props.form.validateFields((err, values) => { */
+      /* if (!err) { */
         this.props.next()
-      }
-    });
+      /* } */
+    /* }); */
   }
 
   getAgreementBody(id) {

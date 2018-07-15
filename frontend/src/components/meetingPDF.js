@@ -46,7 +46,7 @@ class MeetingPDF extends Component {
       return (
         <View key={index}>
           <Text>
-            {index+1}. Accuerdo: {agreement}
+            {index+1}. Acuerdo: {agreement}
           </Text>
         </View>
       )

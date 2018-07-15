@@ -58,9 +58,11 @@ class GoverningBodies extends Component {
     super(props)
     /* this.state = { shareholders: this.getShareholders() } */
     this.state = { shareholders: [{
-      dni: 'test', firstName: 'dirk', lastName: 'hornung'
+      dni: 'y687', firstName: 'Javier', lastName: 'Pascual'
     }, {
-      dni: 'asd', firstName: 'dirk', lastName: 'hornung'
+      dni: 'y821', firstName: 'Antonio', lastName: 'Vázquez'
+    }, {
+      dni: 'y231', firstName: 'Goncho', lastName: 'García Valdecasas'
     }]}
   }
 
