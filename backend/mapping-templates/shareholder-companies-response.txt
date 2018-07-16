@@ -1,9 +1,13 @@
 #set( $arr = [] )
-#foreach($res in $context.result)
-   #set( $map = {} )
-   ##$util.qr($myMap.put($i, "abc"))
-   ##$util.qr($myMap.put($i, $i.toString()+"foo")) ##Concat variable with string
-   $util.qr($map.put("id", "${res.SK}"))     ##Reference a variable in a string with "${varname}"
-   $util.qr($arr.add($map))
+#foreach($res in $context.result.items)
+  	#set( $map = {} )
+	#set ($hyphen = $res.PK.indexOf('-'))
+	#set ($substring = $res.PK.substring(0, $hyphen))
+	#if($substring == "Company")
+		$util.qr($map.put("id", $res.PK))
+        $util.qr($map.put("name", $res.name))
+        
+        $util.qr($arr.add($map))
+    #end
 #end
 $util.toJson($arr)
