@@ -20,6 +20,23 @@ type Shareholder {
   companies: [Company]
 }
 
+type Meeting {
+  id: String!
+  agreements: [Agreement]
+}
+
+type Agreement {
+  id: String!
+  name: String!
+  votes: [Vote]
+}
+
+type Vote {
+  id: String!
+  result: Int!
+  shareholder: Shareholder
+}
+
 schema {
   query: Query,
   mutation: Mutation
