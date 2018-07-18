@@ -2,11 +2,11 @@ const faker = require('faker');
 const jsonfile = require('jsonfile');
 const uuidv4 = require('uuid/v4');
 
-const numCompanies = 10;
-const numShareholders = 2;
-const numMeetings = 2;
-const numAgreements = 5;
-const numVotes = 10;
+const numCompanies = 4;
+const numShareholders = numCompanies*2;
+const numMeetings = numCompanies*2;
+const numAgreements = numMeetings*3;
+const numVotes = numAgreements*4;
 
 const vData = [];
 const companies = [];

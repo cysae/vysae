@@ -45,6 +45,16 @@ custom:
         request: "getCompany-request-mapping-template.txt"
         response: "getCompany-response-mapping-template.txt"
       - dataSource: Vysae
+        type: Company
+        field: shareholders
+        request: "company-shareholders-request.txt"
+        response: "company-shareholders-response.txt"
+      - dataSource: Vysae
+        type: Company
+        field: meetings
+        request: "company-meetings-request.txt"
+        response: "company-meetings-response.txt"
+      - dataSource: Vysae
         type: Query
         field: getShareholder
         request: "getShareholder-request-mapping-template.txt"
@@ -54,6 +64,16 @@ custom:
         field: companies
         request: "shareholder-companies-request.txt"
         response: "shareholder-companies-response.txt"
+      - dataSource: Vysae
+        type: Meeting
+        field: agreements
+        request: "meeting-agreements-request.txt"
+        response: "meeting-agreements-response.txt"
+      - dataSource: Vysae
+        type: Agreement
+        field: votes
+        request: "agreement-votes-request.txt"
+        response: "agreement-votes-response.txt"
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB

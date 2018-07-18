@@ -12,6 +12,8 @@ type Query {
 type Company {
   id: String!
   name: String
+  shareholders: [Shareholder]
+  meetings: [Meeting]
 }
 
 type Shareholder {
