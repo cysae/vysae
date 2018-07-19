@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Amplify from 'aws-amplify'
+import Amplify, { Auth } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import aws_exports from './aws-exports.js'
 // Redux
@@ -19,9 +19,24 @@ import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
 import Info from './components/info'
 import Meetings from './components/meetings'
+// AppSync
+import AWSAppSyncClient from "aws-appsync";
+import { Rehydrated } from 'aws-appsync-react';
+import { AUTH_TYPE } from "aws-appsync/lib/link/auth-link";
+import { graphql, ApolloProvider, compose } from 'react-apollo';
+import * as AWS from 'aws-sdk';
+import AppSync from './AppSync.js';
 
 import './App.css'
 Amplify.configure(aws_exports)
+const client = new AWSAppSyncClient({
+  url: AppSync.graphqlEndpoint,
+  region: AppSync.region,
+  auth: {
+     type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
+     jwtToken: async () => (await Auth.currentSession()).getIdToken().getJwtToken(),
+  },
+});
 const { Content, Footer } = Layout;
 
 class App extends Component {
@@ -63,4 +78,13 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default withAuthenticator(withRouter(connect(mapStateToProps, mapDispatchToProps)(App)))
+const WithProvider = () => (
+  <ApolloProvider client={client}>
+    <Rehydrated>
+      <App />
+    </Rehydrated>
+  </ApolloProvider>
+);
+
+export default withAuthenticator(withRouter(connect(mapStateToProps, mapDispatchToProps)(WithProvider)))
+

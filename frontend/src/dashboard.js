@@ -7,6 +7,9 @@ import {
   requestCompanySelection,
   requestMyCompanies
 } from './actions/index.js'
+// AppSync
+import CompanyQuery from './Queries/companyQuery.js';
+import { graphql, ApolloProvider, compose } from 'react-apollo';
 
 const MyTable = styled(Table)`
   .selectedRow {
@@ -34,6 +37,7 @@ class Dashboard extends Component {
   }
 
   render() {
+    console.log(this.props)
     const { myCompanies } = this.props
 
     const columns = [{
@@ -73,4 +77,15 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+const DashboardWithData = compose(
+  graphql(CompanyQuery, {
+    options: {
+      fetchPolicy: 'cache-and-network'
+    },
+    props: (props) => ({
+      company: props.data.getCompany,
+    })
+  }),
+)(Dashboard);
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardWithData);
