@@ -21,15 +21,6 @@ import {
 import aws_exports from '../aws-exports.js'
 Amplify.configure(aws_exports)
 
-const company = {
-    pk: 'company-1',
-    sk: 'company-1',
-    data: 'name'
-}
-console.log('putted')
-API.put('vysaeCRUD', `/vysae`, { body: company })
-    .then(res => console.log(res))
-    .catch(e => console.log(e))
 
 const queryCompany = (companyId) => {
     return API.get('companyCRUD', `/company/${companyId}`).then(res => res[0])
