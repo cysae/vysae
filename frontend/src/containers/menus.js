@@ -7,11 +7,11 @@ class RawHeaderMenu extends Component {
   getSelectedKey() {
     const { pathname } = this.props.location
     switch(pathname.substr(0, 5)) {
-      case '/': return 'dashboard'
-      case '/info': return 'info'
-      case '/meet': return 'meetings'
-      case '/añad': return 'addCompany'
-      default: return 'dashboard'
+      case '/': return ['dashboard']
+      case '/info': return ['info']
+      case '/meet': return ['meetings']
+      case '/añad': return ['addCompany']
+      default: return ['dashboard']
     }
   }
 

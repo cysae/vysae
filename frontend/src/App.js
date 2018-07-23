@@ -23,8 +23,7 @@ import Meetings from './components/meetings'
 import AWSAppSyncClient from "aws-appsync";
 import { Rehydrated } from 'aws-appsync-react';
 import { AUTH_TYPE } from "aws-appsync/lib/link/auth-link";
-import { graphql, ApolloProvider, compose } from 'react-apollo';
-import * as AWS from 'aws-sdk';
+import { ApolloProvider } from 'react-apollo';
 import AppSync from './AppSync.js';
 
 import './App.css'

@@ -14,7 +14,6 @@ import {
     UPDATE_VOTE_FORM,
     SELECT_MEETING,
 } from '../actions/index'
-import moment from 'moment'
 import { companies } from '../companies.js'
 
 function companyForm(state = {}, action) {

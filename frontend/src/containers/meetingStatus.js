@@ -12,7 +12,7 @@ class MeetingStatus extends Component {
   }
 
   updateDynamodb() {
-    const { requestCompanyUpdate, company, meeting} = this.props
+    const { company, meeting} = this.props
     const companyId = company.uuid
 
     this.props.addMeetingToCompany(meeting, companyId)

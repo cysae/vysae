@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Table } from 'antd'
+import { Table, Button } from 'antd'
 // Redux
 import { connect } from 'react-redux'
 import {
@@ -9,7 +9,7 @@ import {
 } from './actions/index.js'
 // AppSync
 import CompanyQuery from './Queries/companyQuery.js';
-import { graphql, ApolloProvider, compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 
 const MyTable = styled(Table)`
   .selectedRow {
@@ -47,9 +47,9 @@ class Dashboard extends Component {
       title: 'Acciones',
       dataIndex: 'uuid',
       render: (text, record) => (
-        <a href="#" onClick={() => this.props.requestCompanySelection(record.uuid)}>
+        <Button  onClick={() => this.props.requestCompanySelection(record.uuid)}>
           Seleccionar
-        </a>
+        </Button>
       ),
     }];
 

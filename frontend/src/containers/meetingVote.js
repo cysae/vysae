@@ -83,9 +83,9 @@ class MeetingVote extends Component {
   }
 
   render() {
-    const { requestVote, meeting, form } = this.props
+    const { meeting, form } = this.props
     const { agreementTypes } = meeting
-    const { getFieldDecorator, getFieldsValue } = form
+    const { getFieldDecorator } = form
     console.log(roughSizeOfObject(this.props.company))
     return (
       <Form layout="vertical" onSubmit={this.handleSubmit}>

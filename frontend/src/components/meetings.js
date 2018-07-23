@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Menu } from 'antd'
+import { Row, Col } from 'antd'
 import { Route } from 'react-router'
 // components
 import { MeetingMenu } from '../containers/menus.js'

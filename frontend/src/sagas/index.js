@@ -16,7 +16,6 @@ import {
     ADD_MEETING_TO_COMPANY_REQUESTED,
     ADD_MEETING_TO_COMPANY_SUCCEEDED,
     VOTE_REQUESTED,
-    VOTE_SUCCEEDED,
     requestCompanySelection,
 } from '../actions/index.js'
 import aws_exports from '../aws-exports.js'

@@ -1,14 +1,8 @@
-import React, { Component, Fragment } from 'react'
-import { Form, InputNumber, Button, Radio, Divider, Mention} from 'antd'
+import { Form, InputNumber} from 'antd'
 import styled from 'styled-components'
 // redux
 import { connect } from 'react-redux'
 import { saveCompanyForm } from '../actions/index'
-// components
-import AdministrationOrgans from '../components/administrationOrgans'
-const RadioButton = Radio.Button
-const RadioGroup = Radio.Group
-const FormItem = Form.Item
 
 export const MyInputNumber = styled(InputNumber)`
   width: 40% !important;

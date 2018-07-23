@@ -6,13 +6,13 @@ import { CompanyClass } from '../utils/company.js'
 import { Row, Col, Card } from 'antd'
 import PropTypes from 'prop-types'
 
-const shareholder = {
-  name: 'Dirk Hornung',
-  email: 'dirkhornung91@gmail.com',
-  registeredSince: '2011-10-05T14:48:00.000Z',
-  shares: 750,
-  shareRatio: 0.25
-}
+/* const shareholder = {
+ *   name: 'Dirk Hornung',
+ *   email: 'dirkhornung91@gmail.com',
+ *   registeredSince: '2011-10-05T14:48:00.000Z',
+ *   shares: 750,
+ *   shareRatio: 0.25
+ * } */
 
 function Shareholder(props) {
   const { dni, email } = props

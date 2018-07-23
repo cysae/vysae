@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import styled from 'styled-components'
 // antd
-import { Form, InputNumber, Button, Radio, Divider, Select, Mention} from 'antd'
+import { Form, Button, Radio, Divider, Select} from 'antd'
 // redux
 import { connect } from 'react-redux'
 import {
@@ -28,7 +27,7 @@ const formItemLayout = {
 
 function ShareholderSelect(props) {
   const { shareholders, multiple, form, label, fieldId} = props
-  const { getFieldDecorator, getFieldValue } = form
+  const { getFieldDecorator } = form
   const mode = multiple ? 'multiple' : 'default'
   return (
     <FormItem
@@ -93,7 +92,6 @@ class GoverningBodies extends Component {
   }
 
   updateUsersDynamodb() {
-    const { getFieldValue } = this.props.form
     const { shareholders } = this.state
 
     const companyId = this.props.form.getFieldValue('companyId')

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Row, Col, Menu } from 'antd'
-import { Route, Link } from 'react-router-dom'
+import { Row, Col } from 'antd'
+import { Route } from 'react-router-dom'
 // components
 import { InfoMenu } from '../containers/menus.js'
 import Company from '../containers/company.js'
