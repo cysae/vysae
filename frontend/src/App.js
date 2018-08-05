@@ -38,19 +38,19 @@ const stateLink = createLinkWithCache(cache => withClientState({
   cache,
   defaults: {
     selectedCompany: {
-      __typename: 'Company',
-      id: 'Company-...',
-      name: 'test',
+      __typename: 'selectedCompany',
+      id: 'Company-e8896',
+      name: 'CYSAE',
     }
   },
   resolvers: {
     Mutation: {
-      selectCompany: (_, { id, name }, { cache }) => {
+      selectCompany: (_, { company }, { cache }) => {
         const data = {
           selectedCompany: {
-            __typename: 'Company',
-            id,
-            name
+            __typename: 'selectedCompany',
+            id: company.id,
+            name: company.name,
           }
         }
         cache.writeData({ data })

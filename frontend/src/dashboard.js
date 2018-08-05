@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { Table, Button } from 'antd'
 // AppSync
 import ShareholderQuery from './queries/shareholderQuery.js'
+import GetSelectedCompany from './queries/getSelectedCompany.js'
+import SelectCompany from './queries/selectCompany.js'
 import { graphql, compose } from 'react-apollo';
 
 const MyTable = styled(Table)`
@@ -24,17 +26,18 @@ class Dashboard extends Component {
   }
 
   getSelectedRow(record, index) {
-    /* if(record.id === this.props.selectedCompany.id) {
-     *   return 'selectedRow'
-     * } */
+    if(record.id === this.props.selectedCompany.id) {
+      return 'selectedRow'
+    }
     return ''
   }
 
   render() {
-    console.log(this.props)
-    const { shareholder, isLoading } = this.props
+    const { shareholder, isShareholderLoading, isSelectedCompanyLoading,
+      selectCompany, selectedCompany } = this.props
+    console.log('compnay', selectedCompany)
 
-    if(isLoading) {
+    if(isShareholderLoading || isSelectedCompanyLoading) {
       return <div>Loading...</div>
     }
 
@@ -46,8 +49,12 @@ class Dashboard extends Component {
     }, {
       title: 'Acciones',
       dataIndex: 'id',
-      render: (text, record) => (
-        <Button  onClick={() => this.props.requestCompanySelection(record.uuid)}>
+      render: (text, record) =>(
+        <Button onClick={() => selectCompany({
+          variables: {
+            company: record,
+          },
+        })}>
           Seleccionar
         </Button>
       ),
@@ -69,11 +76,18 @@ const DashboardWithData = compose(
     options: {
       fetchPolicy: 'cache-and-network'
     },
-    props: (props) => ({
-      isLoading: props.data.loading,
-      shareholder: props.data.getShareholder,
+    props: ({ data: { loading, getShareholder }}) => ({
+      isShareholderLoading: loading,
+      shareholder: getShareholder,
     })
   }),
+  graphql(GetSelectedCompany, {
+    props: ({ data: { loading, selectedCompany } }) => ({
+      isSelectedCompanyLoading: loading,
+      selectedCompany,
+    })
+  }),
+  graphql(SelectCompany, { name: 'selectCompany' })
 )(Dashboard);
 
 export default DashboardWithData;
