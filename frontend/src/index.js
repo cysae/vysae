@@ -6,7 +6,7 @@ import registerServiceWorker from './registerServiceWorker'
 // Redux
 import { Provider } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
-import logger from 'redux-logger'
+/* import logger from 'redux-logger' */
 import reducers from './reducers/index.js'
 // Saga
 import createSagaMiddleware from 'redux-saga'
@@ -26,7 +26,7 @@ const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
   reducers,
   applyMiddleware(
-    logger,
+    /* logger, */
     routerMiddleware,
     sagaMiddleware
   )

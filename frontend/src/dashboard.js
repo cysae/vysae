@@ -1,14 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Table, Button } from 'antd'
-// Redux
-import { connect } from 'react-redux'
-import {
-  requestCompanySelection,
-  requestMyCompanies
-} from './actions/index.js'
 // AppSync
-import CompanyQuery from './Queries/companyQuery.js';
+import ShareholderQuery from './queries/shareholderQuery.js'
 import { graphql, compose } from 'react-apollo';
 
 const MyTable = styled(Table)`
@@ -30,22 +24,28 @@ class Dashboard extends Component {
   }
 
   getSelectedRow(record, index) {
-    if(record.uuid === this.props.selectedCompany.uuid) {
-      return 'selectedRow'
-    }
+    /* if(record.id === this.props.selectedCompany.id) {
+     *   return 'selectedRow'
+     * } */
     return ''
   }
 
   render() {
     console.log(this.props)
-    const { myCompanies } = this.props
+    const { shareholder, isLoading } = this.props
+
+    if(isLoading) {
+      return <div>Loading...</div>
+    }
+
+    const { companies } = shareholder
 
     const columns = [{
       title: 'Nombre de la sociedad',
       dataIndex: 'name',
     }, {
       title: 'Acciones',
-      dataIndex: 'uuid',
+      dataIndex: 'id',
       render: (text, record) => (
         <Button  onClick={() => this.props.requestCompanySelection(record.uuid)}>
           Seleccionar
@@ -53,39 +53,27 @@ class Dashboard extends Component {
       ),
     }];
 
-    if(myCompanies.isLoading === true) {
-      return <div>Loading...</div>
-    }
-
     return (
-      <MyTable rowClassName={this.getSelectedRow} rowKey="uuid" columns={columns} dataSource={myCompanies.companies} />
+      <MyTable
+        rowClassName={this.getSelectedRow}
+        rowKey="id"
+        columns={columns}
+        dataSource={companies}
+      />
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    myCompanies: state.myCompanies,
-    selectedCompany: state.selectedCompany,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    requestCompanySelection: (companyId) => { dispatch(requestCompanySelection(companyId))},
-    requestMyCompanies: (companyId) => { dispatch(requestMyCompanies(companyId))}
-  }
-}
-
 const DashboardWithData = compose(
-  graphql(CompanyQuery, {
+  graphql(ShareholderQuery, {
     options: {
       fetchPolicy: 'cache-and-network'
     },
     props: (props) => ({
-      company: props.data.getCompany,
+      isLoading: props.data.loading,
+      shareholder: props.data.getShareholder,
     })
   }),
 )(Dashboard);
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardWithData);
+export default DashboardWithData;

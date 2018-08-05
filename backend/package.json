@@ -8,7 +8,7 @@
         "dynamodbInsertSeedDataProd": "cd seedData && node insertSeedDataProd.js",
         "start":
           "yarn dynamodbGenerateSeedData && serverless dynamodb install && env-cmd ./config/security.env.local serverless offline start",
-        "deploy-prod": "yarn dynamodbGenerateSeedData && sls deploy && yarn dynamodbInsertSeedDataProd"
+        "deployProd": "yarn dynamodbGenerateSeedData && sls deploy && yarn dynamodbInsertSeedDataProd"
     },
     "dependencies": {
         "aws-sdk": "^2.263.1",

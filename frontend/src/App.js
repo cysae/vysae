@@ -20,23 +20,59 @@ import AddCompany from './containers/addCompany'
 import Info from './components/info'
 import Meetings from './components/meetings'
 // AppSync
-import AWSAppSyncClient from "aws-appsync";
+import AWSAppSyncClient, { createAppSyncLink, createLinkWithCache} from "aws-appsync";
 import { Rehydrated } from 'aws-appsync-react';
 import { AUTH_TYPE } from "aws-appsync/lib/link/auth-link";
 import { ApolloProvider } from 'react-apollo';
 import AppSync from './AppSync.js';
+import { ApolloLink } from 'apollo-link'
+import { withClientState } from 'apollo-link-state'
 
 import './App.css'
 Amplify.configure(aws_exports)
-const client = new AWSAppSyncClient({
+const { Content, Footer } = Layout;
+
+
+// Apollo
+const stateLink = createLinkWithCache(cache => withClientState({
+  cache,
+  defaults: {
+    selectedCompany: {
+      __typename: 'Company',
+      id: 'Company-...',
+      name: 'test',
+    }
+  },
+  resolvers: {
+    Mutation: {
+      selectCompany: (_, { id, name }, { cache }) => {
+        const data = {
+          selectedCompany: {
+            __typename: 'Company',
+            id,
+            name
+          }
+        }
+        cache.writeData({ data })
+        return null
+      }
+    }
+  }
+}))
+
+const appSyncLink = createAppSyncLink({
   url: AppSync.graphqlEndpoint,
   region: AppSync.region,
   auth: {
-     type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
-     jwtToken: async () => (await Auth.currentSession()).getIdToken().getJwtToken(),
+    type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
+    jwtToken: async () => (await Auth.currentSession()).getIdToken().getJwtToken(),
   },
-});
-const { Content, Footer } = Layout;
+})
+
+const link = ApolloLink.from([stateLink, appSyncLink])
+
+const client = new AWSAppSyncClient({}, { link })
+
 
 class App extends Component {
   componentDidMount() {
@@ -77,13 +113,15 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const WithProvider = () => (
-  <ApolloProvider client={client}>
+const WithApollo = () => (
+  <ApolloProvider
+    client={client}
+  >
     <Rehydrated>
       <App />
     </Rehydrated>
   </ApolloProvider>
 );
 
-export default withAuthenticator(withRouter(connect(mapStateToProps, mapDispatchToProps)(WithProvider)))
+export default withAuthenticator(withRouter(connect(mapStateToProps, mapDispatchToProps)(WithApollo)))
 
