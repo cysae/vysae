@@ -1,11 +1,19 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 import { Redirect, Route } from 'react-router-dom'
-// Redux
-import { connect } from 'react-redux'
+// Apollo
+import { compose, graphql } from 'react-apollo'
+import GetSelectedCompany from './queries/getSelectedCompany'
+
 
 const SelectCompanyRoute = ({ component: Component, ...rest }) => {
-  const needsSelectedCompany = (Object.keys(rest.selectedCompany).length === 0 && rest.selectedCompany.constructor === Object)
+  if( rest.isLoading ) return <div>is loading</div>
+
+  const needsSelectedCompany = (
+    Object.keys(rest.selectedCompany).length === 0
+    && rest.selectedCompany.constructor === Object
+  )
+
   return (
     <Route
       {...rest}
@@ -20,10 +28,11 @@ const SelectCompanyRoute = ({ component: Component, ...rest }) => {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    selectedCompany: state.selectedCompany
-  }
-}
-
-export default withRouter(connect(mapStateToProps)(SelectCompanyRoute))
+export default withRouter(compose(
+  graphql(GetSelectedCompany, {
+    props: ({ data: { loading, selectedCompany } }) => ({
+      isSelectedCompanyLoading: loading,
+      selectedCompany,
+    })
+  })
+)(SelectCompanyRoute))
