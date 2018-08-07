@@ -17,7 +17,6 @@ import { ConnectedRouter, routerMiddleware as createRouterMiddleware} from 'reac
 // Components
 import App from './App.js'
 import './utils/company.js'
-
 import './App.css'
 
 const history = createHistory()

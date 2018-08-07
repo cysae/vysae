@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-// Redux
-import { connect } from 'react-redux'
 // utils
-import { CompanyClass } from '../utils/company.js'
 import { Row, Col, Card } from 'antd'
 import PropTypes from 'prop-types'
+// Apollo
+import { graphql, compose } from 'react-apollo'
+import GetSelectedCompany from '../queries/getSelectedCompany.js'
 
 /* const shareholder = {
  *   name: 'Dirk Hornung',
@@ -35,7 +35,9 @@ Shareholder.propTypes = {
 
 class Company extends Component {
   render() {
-    const company = new CompanyClass(this.props.company)
+    const { company, isLoading } = this.props
+
+    if( isLoading ) return <div>loading...</div>
 
     return (
       <Row type="flex">
@@ -43,13 +45,13 @@ class Company extends Component {
           <Card title="Tu empresa">
             <ul>
               <li>Razon social: {company.name}</li>
-              <li>Capital Social: {company.capital}€</li>
-              <li>Número de participaciones: {company.shares}</li>
+              {/* <li>Capital Social: {company.capital}€</li> */}
+              {/* <li>Número de participaciones: {company.shares}</li> */}
             </ul>
           </Card>
         </Col>
         <Col span={12}>
-          <Shareholder title="Tus datos" {...this.props.user} />
+          {/* <Shareholder title="Tus datos" {...this.props.user} /> */}
         </Col>
         {/* <Col span={12}>
             <Card title="Junta de socios">
@@ -67,11 +69,13 @@ class Company extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.signedInUser,
-    company: state.selectedCompany,
-  }
-}
+const CompanyWithData = compose(
+  graphql(GetSelectedCompany, {
+    props: ({ data: { loading, selectedCompany } }) => ({
+      isLoading: loading,
+      company: selectedCompany,
+    })
+  })
+)(Company)
 
-export default connect(mapStateToProps)(Company)
+export default CompanyWithData

@@ -33,40 +33,6 @@ class RawHeaderMenu extends Component {
 }
 export const HeaderMenu = withRouter(RawHeaderMenu)
 
-class RawInfoMenu extends Component {
-  getSelectedKey() {
-    const { pathname } = this.props.location
-    switch(pathname) {
-      case '/info/company': return 'company'
-      case '/info/profile': return 'profile'
-      case '/info/voting-system': return 'votingSystem'
-      case '/info/shareholder-registry': return 'shareholderRegistry'
-      default: return 'company'
-    }
-  }
-
-  render() {
-    return (
-      <Menu
-        selectedKeys={this.getSelectedKey()}
-      >
-        <Menu.Item key="company">
-          <Link to='/info/company'>Empresa</Link>
-        </Menu.Item>
-        {/* <Menu.Item key="profile">
-            <Link to='/info/profile'>Perfil</Link>
-            </Menu.Item>
-            <Menu.Item key="votingSystem">
-            <Link to='/info/voting-system'>Sistema de votación</Link>
-            </Menu.Item>
-            <Menu.Item key="shareholderRegistry">
-            <Link to='/info/shareholder-registry'>Libro de socios</Link>
-            </Menu.Item> */}
-      </Menu>
-    )
-  }
-}
-export const InfoMenu = withRouter(RawInfoMenu)
 
 class RawMeetingMenu extends Component {
   getSelectedKey() {
