@@ -278,6 +278,16 @@ detect-indent@^4.0.0:
   dependencies:
     repeating "^2.0.0"
 
+docxpresso@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/docxpresso/-/docxpresso-0.1.2.tgz#250d0e9d939793c0dd6ebf21c505ab7709f8f367"
+  dependencies:
+    hmacsha1 "^1.0.0"
+    js-base64 "^2.4.8"
+    js-sha1 "^0.6.0"
+    locutus "^2.0.9"
+    uuid "^3.3.2"
+
 dynamodb-localhost@^0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/dynamodb-localhost/-/dynamodb-localhost-0.0.5.tgz#2dfcd5c0ac83e534327f5d5da5dada8d31310755"
@@ -398,6 +408,10 @@ heavy@4.x.x:
     hoek "4.x.x"
     joi "10.x.x"
 
+hmacsha1@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/hmacsha1/-/hmacsha1-1.0.0.tgz#c1b7ae03a4ea116348090af14f8148c12938a917"
+
 hoek@4.X.X, hoek@4.x.x:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
@@ -491,6 +505,14 @@ joi@9.X.X, joi@9.x.x:
     moment "2.x.x"
     topo "2.x.x"
 
+js-base64@^2.4.8:
+  version "2.4.8"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.8.tgz#57a9b130888f956834aa40c5b165ba59c758f033"
+
+js-sha1@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/js-sha1/-/js-sha1-0.6.0.tgz#adbee10f0e8e18aa07cdea807cf08e9183dbc7f9"
+
 js-string-escape@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/js-string-escape/-/js-string-escape-1.0.1.tgz#e2625badbc0d67c7533e9edc1068c587ae4137ef"
@@ -551,6 +573,10 @@ kilt@2.x.x:
   resolved "https://registry.yarnpkg.com/kilt/-/kilt-2.0.2.tgz#04d7183c298a1232efddf7ddca5959a8f6301e20"
   dependencies:
     hoek "4.x.x"
+
+locutus@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/locutus/-/locutus-2.0.9.tgz#e265af1e85fd19173e74386373888560783a02fc"
 
 lodash.includes@^4.3.0:
   version "4.3.0"
@@ -869,6 +895,10 @@ uuid@3.1.0:
 uuid@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.2.1.tgz#12c528bb9d58d0b9265d9a2f6f0fe8be17ff1f14"
+
+uuid@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
 
 velocityjs@^0.9.3:
   version "0.9.6"

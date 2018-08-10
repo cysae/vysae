@@ -1,42 +1,25 @@
-import { graphqlLambda, graphiqlLambda } from 'apollo-server-lambda';
-import { makeExecutableSchema } from 'graphql-tools';
-import { typeDefs } from './schema';
-import { resolvers } from './resolvers';
+const docx = require('docxpresso')
 
-const myGraphQLSchema = makeExecutableSchema({
-    typeDefs,
-    resolvers,
-    logger: console
-});
+module.exports.meetingDocx = (event, context, callback) => {
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify({
+      docxURL: docx.previewDocument(115, 'http://localhost:3000/', 'https://5fmz4wdy17.execute-api.eu-west-1.amazonaws.com/dev/meeting/convene'),
+    }),
+  };
 
-exports.graphqlHandler = function graphqlHandler(event, context, callback) {
-    function callbackWithHeaders(error, output) {
-        // eslint-disable-next-line no-param-reassign
-        output.headers['Access-Control-Allow-Origin'] = '*';
-        callback(error, output);
-    }
-
-    const handler = graphqlLambda({ schema: myGraphQLSchema });
-    return handler(event, context, callbackWithHeaders);
+  callback(null, response);
 };
 
-exports.graphiqlHandler = graphiqlLambda({
-    endpointURL: process.env.REACT_APP_GRAPHQL_ENDPOINT
-        ? process.env.REACT_APP_GRAPHQL_ENDPOINT
-        : '/production/graphql',
-});
+module.exports.conveneMeeting = (event, context, callback) => {
+  console.log(event)
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: 'Go Serverless v1.0! Your function executed successfully!',
+      input: event,
+    }),
+  };
 
-module.exports.hello = (event, context, callback) => {
-    const response = {
-        statusCode: 200,
-        body: JSON.stringify({
-            message: 'Go Serverless v1.0! Your function executed successfully!',
-            input: event,
-        }),
-    };
-
-    callback(null, response);
-
-    // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-    // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
+  callback(null, response);
 };

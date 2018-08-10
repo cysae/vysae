@@ -1,25 +1,26 @@
 {
-    "name": "backend",
-    "version": "1.0.0",
-    "main": "index.js",
-    "license": "MIT",
-    "scripts": {
-        "dynamodbGenerateSeedData": "cd seedData && node createSeedData.js",
-        "dynamodbInsertSeedDataProd": "cd seedData && node insertSeedDataProd.js",
-        "start":
-          "yarn dynamodbGenerateSeedData && serverless dynamodb install && env-cmd ./config/security.env.local serverless offline start",
-        "deployProd": "yarn dynamodbGenerateSeedData && sls deploy && yarn dynamodbInsertSeedDataProd"
-    },
-    "dependencies": {
-        "aws-sdk": "^2.263.1",
-        "serverless-appsync-plugin": "^1.0.1",
-        "serverless-dynamodb-client": "^0.0.2"
-    },
-    "devDependencies": {
-        "faker": "^4.1.0",
-        "jsonfile": "^4.0.0",
-        "serverless-dynamodb-local": "^0.2.30",
-        "serverless-offline": "^3.25.4",
-        "uuid": "^3.2.1"
-    }
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dynamodbGenerateSeedData": "cd seedData && node createSeedData.js",
+    "dynamodbInsertSeedDataProd": "cd seedData && node insertSeedDataProd.js",
+    "start": "yarn dynamodbGenerateSeedData && serverless dynamodb install && env-cmd ./config/security.env.local serverless offline start",
+    "deployProd": "yarn dynamodbGenerateSeedData && sls deploy && yarn dynamodbInsertSeedDataProd",
+    "localDocx": "sls invoke local --function meetingDocx"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.263.1",
+    "docxpresso": "^0.1.2",
+    "serverless-appsync-plugin": "^1.0.1",
+    "serverless-dynamodb-client": "^0.0.2"
+  },
+  "devDependencies": {
+    "faker": "^4.1.0",
+    "jsonfile": "^4.0.0",
+    "serverless-dynamodb-local": "^0.2.30",
+    "serverless-offline": "^3.25.4",
+    "uuid": "^3.2.1"
+  }
 }

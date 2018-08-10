@@ -82,6 +82,31 @@ custom:
         config:
           tableName: { Ref: "Vysae" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
+      - type: AWS_LAMBDA
+        name: meetingDocx
+        description: "get Docxpresso URL for convening a meeting"
+        config:
+          lambdaFunctionArn: { Fn::GetAtt: [MeetingDocxLambdaFunction, Arn] }
+          serviceRoleArn: "arn:aws:iam::037641059503:role/lambda_basic_execution"
+
+functions:
+  meetingDocx:
+    environment:
+      DOCX_API_KEY: $(file(./config.js):docxAPIKEY)
+    handler: handler.meetingDocx
+    events:
+      - http:
+          path: meeting/docx
+          method: get 
+  conveneMeeting:
+    environment:
+      DOCX_API_KEY: $(file(./config.js):docxAPIKEY)
+    handler: handler.conveneMeeting
+    events:
+      - http:
+          path: meeting/convene
+          method: post
+
 resources:
   Resources:
     Vysae:
@@ -147,4 +172,3 @@ resources:
                   Resource:
                     - "arn:aws:dynamodb:eu-west-1:*:table/Vysae"
                     - "arn:aws:dynamodb:eu-west-1:*:table/Vysae/*"
-
