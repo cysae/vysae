@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Table, Button } from 'antd'
 // AppSync
-import ShareholderQuery from './queries/shareholderQuery.js'
-import GetSelectedCompany from './queries/getSelectedCompany.js'
-import SelectCompany from './queries/selectCompany.js'
+import queryShareholder from './queries/queryShareholder'
+import querySelectedCompany from './queries/querySelectedCompany'
+import SelectCompany from './queries/selectCompany'
 import { graphql, compose } from 'react-apollo';
 
 const MyTable = styled(Table)`
@@ -33,9 +33,10 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { shareholder, isShareholderLoading, isSelectedCompanyLoading,
-      selectCompany, selectedCompany } = this.props
-    console.log('compnay', selectedCompany)
+    const {
+      shareholder, isShareholderLoading, isSelectedCompanyLoading,
+      selectCompany
+    } = this.props
 
     if(isShareholderLoading || isSelectedCompanyLoading) {
       return <div>Loading...</div>
@@ -72,8 +73,11 @@ class Dashboard extends Component {
 }
 
 const DashboardWithData = compose(
-  graphql(ShareholderQuery, {
+  graphql(queryShareholder, {
     options: {
+      variables: {
+        id: 'e199e636-5cff-4293-94c4-3e2e996a6ea8'
+      },
       fetchPolicy: 'cache-and-network'
     },
     props: ({ data: { loading, getShareholder }}) => ({
@@ -81,13 +85,13 @@ const DashboardWithData = compose(
       shareholder: getShareholder,
     })
   }),
-  graphql(GetSelectedCompany, {
+  graphql(querySelectedCompany, {
     props: ({ data: { loading, selectedCompany } }) => ({
       isSelectedCompanyLoading: loading,
       selectedCompany,
     })
   }),
   graphql(SelectCompany, { name: 'selectCompany' })
-)(Dashboard);
+)(Dashboard)
 
-export default DashboardWithData;
+export default DashboardWithData

@@ -4,12 +4,16 @@ import { Row, Col } from 'antd'
 import { Route, Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 // components
-import Company from '../containers/company.js'
-import Profile from './profile.js'
-import VotingSystem from './votingSystem.js'
-import ShareholderRegister from './shareholderRegister.js'
+import Company from '../components/company'
+import Profile from '../components/profile'
+import VotingSystem from '../components/votingSystem.js'
+import ShareholderRegister from '../components/shareholderRegister'
 // antd
 import { Menu } from 'antd'
+// apollo
+import { graphql, compose } from 'react-apollo'
+import queryShareholder from '../queries/queryShareholder'
+import querySelectedCompany from '../queries/querySelectedCompany'
 
 class RawInfoMenu extends Component {
   getSelectedKey() {
@@ -46,9 +50,9 @@ class RawInfoMenu extends Component {
 }
 const InfoMenu = withRouter(RawInfoMenu)
 
-export default class Info extends Component {
+class Info extends Component {
   render() {
-    const { selectedCompany } = this.props
+    const { company, shareholder } = this.props
 
     return (
       <Row type="flex">
@@ -58,7 +62,10 @@ export default class Info extends Component {
         <Col span={20}>
           <Route path="/info/company" render=
             {props =>
-              <Company selectedCompany={selectedCompany} />
+              <Company
+                company={company}
+                shareholder={shareholder}
+              />
             }
           />
           <Route path="/info/profile" component={Profile} />
@@ -69,3 +76,26 @@ export default class Info extends Component {
     )
   }
 }
+
+const InfoWithData = compose(
+  graphql(querySelectedCompany, {
+    props: ({ data: { loading, selectedCompany } }) => ({
+      isLoading: loading,
+      company: selectedCompany,
+    })
+  }),
+  graphql(queryShareholder, {
+    options: (props) => ({
+      variables: {
+        id: props.shareholderId
+      },
+      fetchPolicy: 'cache-and-network'
+    }),
+    props: ({ data: { loading, getShareholder }}) => ({
+      isShareholderLoading: loading,
+      shareholder: getShareholder,
+    })
+  }),
+)(Info)
+
+export default InfoWithData

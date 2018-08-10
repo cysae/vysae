@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
+// amplify
 import Amplify, { Auth } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import aws_exports from './aws-exports.js'
-// Redux
-import { connect } from 'react-redux'
-import {
-  requestSignedInUser,
-} from './actions/index.js'
 // Router
 import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router'
@@ -17,9 +13,9 @@ import MyHeader from './components/header.js'
 import SelectCompanyRoute from './selectedCompanyRoute.js'
 import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
-import Info from './components/info'
+import Info from './containers/info'
 import Meetings from './components/meetings'
-// AppSync
+// AppSync/Apollo
 import AWSAppSyncClient, { createAppSyncLink, createLinkWithCache} from "aws-appsync";
 import { Rehydrated } from 'aws-appsync-react';
 import { AUTH_TYPE } from "aws-appsync/lib/link/auth-link";
@@ -32,17 +28,10 @@ import './App.css'
 Amplify.configure(aws_exports)
 const { Content, Footer } = Layout;
 
-
 // Apollo
 const stateLink = createLinkWithCache(cache => withClientState({
   cache,
-  defaults: {
-    selectedCompany: {
-      __typename: 'selectedCompany',
-      id: 'Company-e8896',
-      name: 'CYSAE',
-    }
-  },
+  defaults: {},
   resolvers: {
     Mutation: {
       selectCompany: (_, { company }, { cache }) => {
@@ -51,6 +40,16 @@ const stateLink = createLinkWithCache(cache => withClientState({
             __typename: 'selectedCompany',
             id: company.id,
             name: company.name,
+          }
+        }
+        cache.writeData({ data })
+        return null
+      },
+      setCurrentShareholder: (_, { id }, { cache }) => {
+        const data = {
+          currentShareholder: {
+            __typename: 'shareholder',
+            id
           }
         }
         cache.writeData({ data })
@@ -75,11 +74,24 @@ const client = new AWSAppSyncClient({}, { link })
 
 
 class App extends Component {
-  componentDidMount() {
-    /* this.props.requestSignedInUser() */
+  state = {
+    isLoading: true,
+    shareholderId: null,
+  }
+
+  async componentDidMount() {
+    const user = await Auth.currentAuthenticatedUser()
+    this.setState({
+      isLoading: false,
+      shareholderId: user.attributes['custom:shareholderId'],
+    })
   }
 
   render() {
+    const { isLoading, shareholderId } = this.state
+
+    if(isLoading) return <div>loading...</div>
+
     return (
       <Layout>
         <MyHeader />
@@ -90,7 +102,11 @@ class App extends Component {
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
             <Route exact path="/" component={Dashboard}/>
             <Route path="/añadirSociedad" component={AddCompany}/>
-            <SelectCompanyRoute path="/info" component={Info}/>
+            <SelectCompanyRoute
+              path="/info"
+              component={Info}
+              shareholderId={shareholderId}
+            />
             <SelectCompanyRoute path="/meetings" component={Meetings}/>
           </div>
         </Content>
@@ -99,17 +115,6 @@ class App extends Component {
         </Footer>
       </Layout>
     );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    signedInUser: state.signedInUser
-  }
-}
-const mapDispatchToProps = dispatch => {
-  return {
-    requestSignedInUser: () => {dispatch(requestSignedInUser())},
   }
 }
 
@@ -123,5 +128,6 @@ const WithApollo = () => (
   </ApolloProvider>
 );
 
-export default withAuthenticator(withRouter(connect(mapStateToProps, mapDispatchToProps)(WithApollo)))
+
+export default withAuthenticator(withRouter(WithApollo))
 

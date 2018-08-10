@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 // utils
 import { Row, Col, Card } from 'antd'
-import PropTypes from 'prop-types'
-// Apollo
-import { graphql, compose } from 'react-apollo'
-import GetSelectedCompany from '../queries/getSelectedCompany.js'
+/* import PropTypes from 'prop-types' */
 
 /* const shareholder = {
  *   name: 'Dirk Hornung',
@@ -15,12 +12,13 @@ import GetSelectedCompany from '../queries/getSelectedCompany.js'
  * } */
 
 function Shareholder(props) {
-  const { dni, email } = props
+  const { name } = props
   return (
     <Card title="Tu">
       <ul>
-        <li>DNI: {dni}</li>
-        <li>Email: {email}</li>
+        <li>Name: {name}</li>
+        {/* <li>DNI: {dni}</li> */}
+        {/* <li>Email: {email}</li> */}
         {/* <li><a href={`mailto@${email}`}>{email}</a></li>
             <li>{`${shareRatio} - ${shares} participaciones`}</li>
             <li>Fecha de alta: {registeredSince}</li> */}
@@ -28,10 +26,10 @@ function Shareholder(props) {
     </Card>
   )
 }
-Shareholder.propTypes = {
-  dni: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-}
+/* Shareholder.propTypes = {
+ *   dni: PropTypes.string.isRequired,
+ *   email: PropTypes.string.isRequired,
+ * } */
 
 class Company extends Component {
   render() {
@@ -51,7 +49,7 @@ class Company extends Component {
           </Card>
         </Col>
         <Col span={12}>
-          {/* <Shareholder title="Tus datos" {...this.props.user} /> */}
+          <Shareholder title="Tus datos" {...this.props.shareholder} />
         </Col>
         {/* <Col span={12}>
             <Card title="Junta de socios">
@@ -69,13 +67,4 @@ class Company extends Component {
   }
 }
 
-const CompanyWithData = compose(
-  graphql(GetSelectedCompany, {
-    props: ({ data: { loading, selectedCompany } }) => ({
-      isLoading: loading,
-      company: selectedCompany,
-    })
-  })
-)(Company)
-
-export default CompanyWithData
+export default Company

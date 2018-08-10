@@ -2,8 +2,8 @@
     "version" : "2017-02-28",
     "operation" : "GetItem",
     "key" : {
-        "PK" : { "S" : "Shareholder-${context.arguments.id}" },
-        "SK" : { "S" : "Shareholder-${context.arguments.id}" }
+        "PK" : { "S" : "${context.arguments.id}" },
+        "SK" : { "S" : "${context.arguments.id}" }
     },
     "consistentRead" : true
 }

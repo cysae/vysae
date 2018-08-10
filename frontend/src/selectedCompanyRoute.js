@@ -3,7 +3,7 @@ import { withRouter } from 'react-router'
 import { Redirect, Route } from 'react-router-dom'
 // Apollo
 import { compose, graphql } from 'react-apollo'
-import GetSelectedCompany from './queries/getSelectedCompany'
+import querySelectedCompany from './queries/querySelectedCompany'
 
 
 const SelectCompanyRoute = ({ component: Component, ...rest }) => {
@@ -14,6 +14,8 @@ const SelectCompanyRoute = ({ component: Component, ...rest }) => {
     && rest.selectedCompany.constructor === Object
   )
 
+  console.log('rest', rest.shareholderId)
+
   return (
     <Route
       {...rest}
@@ -21,7 +23,11 @@ const SelectCompanyRoute = ({ component: Component, ...rest }) => {
         needsSelectedCompany ? (
           <Redirect to={{ pathname: '/', state: { from: props.location } }} />
         ) : (
-          <Component {...props} selectedCompany={rest.selectedCompany} />
+          <Component
+            {...props}
+            shareholderId={rest.shareholderId}
+            selectedCompany={rest.selectedCompany}
+          />
         )
       }
     />
@@ -29,7 +35,7 @@ const SelectCompanyRoute = ({ component: Component, ...rest }) => {
 }
 
 export default withRouter(compose(
-  graphql(GetSelectedCompany, {
+  graphql(querySelectedCompany, {
     props: ({ data: { loading, selectedCompany } }) => ({
       isSelectedCompanyLoading: loading,
       selectedCompany,
