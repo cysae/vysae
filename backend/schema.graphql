@@ -7,6 +7,7 @@ type Mutation {
 type Query {
   getCompany(id: String!): Company
   getShareholder(id: String!): Shareholder
+  getDocx: Docx
 }
 
 type Company {
@@ -37,6 +38,10 @@ type Vote {
   id: String!
   result: Int!
   shareholder: Shareholder
+}
+
+type Docx {
+  url: String!
 }
 
 schema {

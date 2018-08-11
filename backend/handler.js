@@ -1,15 +1,14 @@
 const docx = require('docxpresso')
 
 module.exports.meetingDocx = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      docxURL: docx.previewDocument(115, 'http://localhost:3000/', 'https://5fmz4wdy17.execute-api.eu-west-1.amazonaws.com/dev/meeting/convene'),
-    }),
-  };
+  const url = docx.previewDocument(
+    115,
+    'http://localhost:3000/',
+    'https://5fmz4wdy17.execute-api.eu-west-1.amazonaws.com/dev/meeting/convene'
+  )
 
-  callback(null, response);
-};
+  callback(null, { url })
+}
 
 module.exports.conveneMeeting = (event, context, callback) => {
   console.log(event)

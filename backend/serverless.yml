@@ -74,6 +74,11 @@ custom:
         field: votes
         request: "agreement-votes-request.txt"
         response: "agreement-votes-response.txt"
+      - dataSource: meetingDocx
+        type: Query
+        field: getDocx
+        request: "getDocx-request.txt"
+        response: "getDocx-response.txt"
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
@@ -87,7 +92,7 @@ custom:
         description: "get Docxpresso URL for convening a meeting"
         config:
           lambdaFunctionArn: { Fn::GetAtt: [MeetingDocxLambdaFunction, Arn] }
-          serviceRoleArn: "arn:aws:iam::037641059503:role/lambda_basic_execution"
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Lambda-${self:custom.appSync.serviceRole}"
 
 functions:
   meetingDocx:
@@ -172,3 +177,29 @@ resources:
                   Resource:
                     - "arn:aws:dynamodb:eu-west-1:*:table/Vysae"
                     - "arn:aws:dynamodb:eu-west-1:*:table/Vysae/*"
+    AppSyncLambdaServiceRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+        RoleName: "Lambda-AppSyncServiceRole"
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Principal:
+                Service:
+                  - "appsync.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        Policies:
+          -
+            PolicyName: "Lambda-AppSyncServiceRole-Policy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                -
+                  Effect: "Allow"
+                  Action:
+                    - "lambda:InvokeFunction"
+                  Resource:
+                    - "arn:aws:lambda:eu-west-1:*:*"
