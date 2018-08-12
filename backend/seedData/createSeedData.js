@@ -30,24 +30,24 @@ faker.seed(1000);
 
 
 function addTo(type, obj) {
-    let i = 0; toAdd = {};
-    switch(type) {
-    case "company":
-        i = Math.round(Math.random()*(numCompanies-1));
-        toAdd = {...obj, PK: companies[i].PK}
-        break;
-    case "meeting":
-        i = Math.round(Math.random()*(numMeetings-1));
-        toAdd = {...obj, PK: meetings[i].PK}
-        break;
-    case "agreement":
-        i = Math.round(Math.random()*(numAgreements-1));
-        toAdd = {...obj, PK: agreements[i].PK}
-        break;
-    default:
-        break;
-    }
-    vData.push(toAdd)
+  let i = 0; toAdd = {};
+  switch(type) {
+  case "company":
+    i = Math.round(Math.random()*(numCompanies-1));
+    toAdd = {...obj, PK: companies[i].PK}
+    break;
+  case "meeting":
+    i = Math.round(Math.random()*(numMeetings-1));
+    toAdd = {...obj, PK: meetings[i].PK}
+    break;
+  case "agreement":
+    i = Math.round(Math.random()*(numAgreements-1));
+    toAdd = {...obj, PK: agreements[i].PK}
+    break;
+  default:
+    break;
+  }
+  vData.push(toAdd)
 }
 
 // create Companies
@@ -93,8 +93,8 @@ for (let i = 0; i < numMeetings; i++) {
   const meeting = {
     PK,
     SK,
-    votationStart: faker.date.recent(),
-    votationEnd: faker.date.future()
+    start: faker.date.recent(),
+    end: faker.date.future()
   }
 
   vData.push(meeting)

@@ -1,6 +1,6 @@
 #set( $arr = [] )
 #foreach($res in $context.result.items)
-  	#set( $map = {} )
+	#set( $map = {} )
 	#set ($hyphen = $res.SK.indexOf('-'))
 	#set ($substring = $res.SK.substring(0, $hyphen))
 	#if($substring == "Agreement")

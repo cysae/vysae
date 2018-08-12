@@ -25,6 +25,8 @@ type Shareholder {
 
 type Meeting {
   id: String!
+  start: String!
+  end: String!
   agreements: [Agreement]
 }
 

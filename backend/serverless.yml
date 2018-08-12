@@ -42,8 +42,8 @@ custom:
       - dataSource: Vysae
         type: Query
         field: getCompany
-        request: "getCompany-request-mapping-template.txt"
-        response: "getCompany-response-mapping-template.txt"
+        request: "queryCompany-request.txt"
+        response: "queryCompany-response.txt"
       - dataSource: Vysae
         type: Company
         field: shareholders
