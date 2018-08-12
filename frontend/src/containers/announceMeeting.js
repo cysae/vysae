@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Steps } from 'antd'
+// antd
+import { Steps, Spin } from 'antd'
 // components
 import MeetingStatus from './meetingStatus'
 import MeetingConfirmation from '../components/meetingConfirmation'
@@ -55,15 +56,14 @@ class AnnounceMeeting extends Component {
   }
 
   render() {
+    const { isLoading, docxURL } = this.props
     const { current, meeting } = this.state
-    console.log(this.props.url)
+
+    if ( isLoading ) return <Spin size="large"></Spin>
 
     const steps = [{
       title: 'Convocatoria Formulario',
-      content:
-        <Iframe
-          src="https://cysae.a.docxpresso.com/documents/preview/115?uniqid=7bcbdfa2e40a435b80a7cb8d30f44004&timestamp=1534063199&APIKEY=5bce9e199bfbe261a1049bdb472b222ab72c3a2f&options=eyJmb3JtYXQiOiJvZHQiLCJyZXNwb25zZVVSTCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC8iLCJyZXNwb25zZURhdGFVUkkiOiJodHRwczovLzVmbXo0d2R5MTcuZXhlY3V0ZS1hcGkuZXUtd2VzdC0xLmFtYXpvbmF3cy5jb20vZGV2L21lZXRpbmcvY29udmVuZSJ9,,">
-        </Iframe>,
+      content: <Iframe src={docxURL} />
     }, {
       title: 'Comprobar Convocatoria',
       content: <MeetingConfirmation meeting={meeting} next={this.next} prev={this.prev}/>,
@@ -85,11 +85,10 @@ class AnnounceMeeting extends Component {
 
 const AnnounceMeetingWithData = compose(
   graphql(queryMeetingDocx, {
-    props: ( data ) => {
-      console.log(data)
-      return {
-      }
-    }
+    props: ( { data: { loading, queryMeetingDocx: { url } } } ) => ({
+      loading,
+      docxURL: url
+    })
   })
 )(AnnounceMeeting)
 
