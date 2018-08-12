@@ -32,36 +32,3 @@ class RawHeaderMenu extends Component {
   }
 }
 export const HeaderMenu = withRouter(RawHeaderMenu)
-
-
-class RawMeetingMenu extends Component {
-  getSelectedKey() {
-    const { pathname } = this.props.location
-    switch(pathname) {
-      case '/meetings/next': return 'nextMeeting'
-      case '/meetings/announce': return 'announceMeeting'
-      case '/meetings/history': return 'meetingHistory'
-      default: return 'nextMeeting'
-    }
-  }
-
-  render() {
-    return(
-      <Menu
-        selectedKeys={this.getSelectedKey()}
-      >
-        <Menu.Item key="nextMeeting">
-          <Link to='/meetings/next'>Próxima Junta</Link>
-        </Menu.Item>
-        <Menu.Item key="announceMeeting">
-          <Link to='/meetings/announce'>Convocatoria</Link>
-        </Menu.Item>
-        {/* <Menu.Item key="meetingHistory">
-            <Link to='/meetings/history'>Historial de Juntas</Link>
-            </Menu.Item> */}
-      </Menu>
-    )
-  }
-}
-
-export const MeetingMenu = withRouter(RawMeetingMenu)

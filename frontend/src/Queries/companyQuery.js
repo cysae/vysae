@@ -6,6 +6,4 @@ query Company {
     id,
     name
   }
-}`;
-
-
+}`

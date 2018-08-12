@@ -1,36 +1,18 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Divider, Steps } from 'antd'
-// Redux
-import { connect } from 'react-redux'
-import {
-  updateMeetingForm,
-} from '../actions/index'
+import { Steps } from 'antd'
 // components
-import MeetingForm from './meetingForm.js'
-import MeetingStatus from './meetingStatus.js'
-import MeetingConfirmation from '../components/meetingConfirmation.js'
+import MeetingStatus from './meetingStatus'
+import MeetingConfirmation from '../components/meetingConfirmation'
+// style
+import styled from 'styled-components'
+// graphql
+import { graphql, compose } from 'react-apollo'
+import queryMeetingDocx from '../queries/queryMeetingDocx'
 const Step = Steps.Step
 
-function HOCForm(formComponent) {
-  return connect((state) => ({
-    formState: {...state.meetingForm},
-    user: state.signedInUser
-  }))(Form.create({
-    onFieldsChange(props, changedFields) {
-      props.dispatch(updateMeetingForm(changedFields))
-    },
-    mapPropsToFields(props) {
-      const fields = {};
-      for (const key in props.formState) {
-        fields[key] = Form.createFormField(props.formState[key])
-      }
-      return fields;
-    },
-    onValuesChange(_, values) {
-      /* console.log(values); */
-    },
-  })(formComponent))
-}
+const Iframe = styled.iframe`
+  width: 100%;
+`
 
 class AnnounceMeeting extends Component {
   constructor(props) {
@@ -43,7 +25,6 @@ class AnnounceMeeting extends Component {
 
     this.next = this.next.bind(this)
     this.prev = this.prev.bind(this)
-    this.saveMeeting = this.saveMeeting.bind(this)
   }
 
   next() {
@@ -75,12 +56,14 @@ class AnnounceMeeting extends Component {
 
   render() {
     const { current, meeting } = this.state
-    const { form } = this.props
-
+    console.log(this.props.url)
 
     const steps = [{
       title: 'Convocatoria Formulario',
-      content: <MeetingForm form={form} saveMeeting={this.saveMeeting} next={this.next} prev={this.prev} />,
+      content:
+        <Iframe
+          src="https://cysae.a.docxpresso.com/documents/preview/115?uniqid=7bcbdfa2e40a435b80a7cb8d30f44004&timestamp=1534063199&APIKEY=5bce9e199bfbe261a1049bdb472b222ab72c3a2f&options=eyJmb3JtYXQiOiJvZHQiLCJyZXNwb25zZVVSTCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC8iLCJyZXNwb25zZURhdGFVUkkiOiJodHRwczovLzVmbXo0d2R5MTcuZXhlY3V0ZS1hcGkuZXUtd2VzdC0xLmFtYXpvbmF3cy5jb20vZGV2L21lZXRpbmcvY29udmVuZSJ9,,">
+        </Iframe>,
     }, {
       title: 'Comprobar Convocatoria',
       content: <MeetingConfirmation meeting={meeting} next={this.next} prev={this.prev}/>,
@@ -94,16 +77,20 @@ class AnnounceMeeting extends Component {
         <Steps current={current}>
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
-        <Divider />
         <div className="steps-content">{steps[current].content}</div>
-        <pre>
-          {JSON.stringify(this.props.formState, null, 2)}
-        </pre>
       </Fragment>
     )
   }
 }
 
+const AnnounceMeetingWithData = compose(
+  graphql(queryMeetingDocx, {
+    props: ( data ) => {
+      console.log(data)
+      return {
+      }
+    }
+  })
+)(AnnounceMeeting)
 
-
-export default HOCForm(AnnounceMeeting)
+export default AnnounceMeetingWithData

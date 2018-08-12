@@ -76,9 +76,9 @@ custom:
         response: "agreement-votes-response.txt"
       - dataSource: meetingDocx
         type: Query
-        field: getDocx
-        request: "getDocx-request.txt"
-        response: "getDocx-response.txt"
+        field: queryMeetingDocx
+        request: "queryMeetingDocx-request.txt"
+        response: "queryMeetingDocx-response.txt"
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB

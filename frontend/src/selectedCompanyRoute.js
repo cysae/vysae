@@ -14,8 +14,6 @@ const SelectCompanyRoute = ({ component: Component, ...rest }) => {
     && rest.selectedCompany.constructor === Object
   )
 
-  console.log('rest', rest.shareholderId)
-
   return (
     <Route
       {...rest}

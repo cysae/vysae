@@ -80,7 +80,7 @@ const DashboardWithData = compose(
       },
       fetchPolicy: 'cache-and-network'
     },
-    props: ({ data: { loading, getShareholder }}) => ({
+    props: ({ data: { loading, getShareholder } }) => ({
       isShareholderLoading: loading,
       shareholder: getShareholder,
     })
