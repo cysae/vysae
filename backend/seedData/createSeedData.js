@@ -86,18 +86,21 @@ for (let i = 0; i < numShareholders; i++) {
 
 // create Meetings
 for (let i = 0; i < numMeetings; i++) {
-    const id = uuidv4()
-    const PK = `Meeting-${id}`
-    const SK = `Meeting-${id}`
+  const id = uuidv4()
+  const PK = `Meeting-${id}`
+  const SK = `Meeting-${id}`
 
-    const meeting = {
-        PK, SK
-    }
+  const meeting = {
+    PK,
+    SK,
+    votationStart: faker.date.recent(),
+    votationEnd: faker.date.future()
+  }
 
-    vData.push(meeting)
-    meetings.push(meeting)
+  vData.push(meeting)
+  meetings.push(meeting)
 
-    addTo('company', meeting)
+  addTo('company', meeting)
 }
 
 

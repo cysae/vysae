@@ -11,20 +11,18 @@ console.log('Importing data into DynamoDB. Pleas wait.');
 const vysae = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'vysae.json'), 'utf8'));
 
 vysae.forEach(function(row) {
-    const params = {
-        TableName: 'Vysae',
-        Item: {
-            PK: row.PK,
-            SK: row.SK,
-            name: row.name
-        }
-    };
+  console.log(row);
 
-    docClient.put(params, function(err, data) {
-        if (err) {
-            console.error('Unable to add row', row.PK, JSON.stringify(err, null, 2));
-        } else {
-            console.log('PutItem succeeded:', row.PK)
-        }
-    });
+  const params = {
+    TableName: 'Vysae',
+    Item: row
+  };
+
+  docClient.put(params, function(err, data) {
+    if (err) {
+      console.error('Unable to add row', row.PK, JSON.stringify(err, null, 2));
+    } else {
+      console.log('PutItem succeeded:', row.PK)
+    }
+  });
 });
