@@ -15,7 +15,7 @@ import mySagas from './sagas/index.js'
 import createHistory from 'history/createBrowserHistory'
 import { ConnectedRouter, routerMiddleware as createRouterMiddleware} from 'react-router-redux'
 // Components
-import App from './App.js'
+import App from './app.js'
 import './utils/company.js'
 import './App.css'
 

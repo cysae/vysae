@@ -25,7 +25,7 @@ class RawHeaderMenu extends Component {
       >
         <Menu.Item key="dashboard"><Link to="/">Dashboard</Link></Menu.Item>
         <Menu.Item key="info"><Link to="/info/company">Info</Link></Menu.Item>
-        <Menu.Item key="meetings"><Link to="/meetings/announce">Juntas</Link></Menu.Item>
+        <Menu.Item key="meetings"><Link to="/meetings/next">Juntas</Link></Menu.Item>
         <Menu.Item key="addCompany"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
       </Menu>
     )
