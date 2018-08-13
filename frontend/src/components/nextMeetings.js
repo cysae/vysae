@@ -5,44 +5,49 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 function NextMeetings(props) {
-  console.log(this.props)
   const { meetings, selectMeeting } = props
-  const meeting = meetings[0]
 
   const columns = [{
     title: 'Commienza',
+    key: 'start',
     render: (text, record) => {
-      const { votingStart } = record
+      const { start } = record
       return (
-        <span>{moment(votingStart).calendar()}</span>
+        <span>{moment(start).calendar()}</span>
       )
     }
   }, {
     title: 'Termina',
+    key: 'end',
     render: (text, record) => {
-      const { votingEnd } = record
+      const {end } = record
       return (
-        <span>{moment(votingEnd).calendar()}</span>
+        <span>{moment(end).calendar()}</span>
       )
     }
   }, {
     title: 'Tipo',
-    dataIndex: 'meetingType',
-    key: 'meetingType'
+    key: 'type'
   }, {
     title: 'Acciones',
     key: 'action',
-    render: (text, record) => (
+    render: (text, record) => {
+      return (
       <Fragment>
-        <Link to="/meetings/pdf" onClick={() => selectMeeting(meeting)}>Leer orden del día</Link>
+        <Link to="/meetings/pdf" onClick={() => selectMeeting(record)}>Leer orden del día</Link>
         <Divider type="vertical"/>
-        <Link to="/meetings/vote" onClick={() => selectMeeting(meeting)}>Votar</Link>
+        <Link to="/meetings/vote" onClick={() => selectMeeting(record)}>Votar</Link>
       </Fragment>
-    )
+      )
+    }
   }]
 
   return (
-    {/* <Table columns={columns} rowKey='uuid' dataSource={meetings} /> */}
+    <Table
+      columns={columns}
+      rowKey='id'
+      dataSource={meetings}
+    />
   )
 }
 

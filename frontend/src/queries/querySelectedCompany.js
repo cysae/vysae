@@ -4,7 +4,12 @@ export default gql`
   query {
     selectedCompany @client {
       id,
-      name
+      name,
+      meetings {
+        id,
+        start,
+        end
+      }
     }
   }
 `

@@ -75,7 +75,6 @@ class Dashboard extends Component {
 const DashboardWithData = compose(
   graphql(queryShareholder, {
     options: (props) => {
-      console.log(props);
       return {
         variables: {
           id: props.shareholderId

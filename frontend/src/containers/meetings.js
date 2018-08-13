@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
 // antd
-import { Menu } from 'antd'
-import { Row, Col } from 'antd'
+import { Menu, Row, Col, Spin } from 'antd'
 // react-router
 import { withRouter, Route } from 'react-router'
 import { Link } from 'react-router-dom'
 // components
-import NextMeetings from '../containers/nextMeetings'
-import AnnounceMeeting from '../containers/announceMeeting'
-import MeetingHistory from './meetingHistory'
-import MeetingDisplayPDF from '../containers/meetingDisplayPDF'
-import MeetingVote from '../containers/meetingVote'
-import MeetingResult from './meetingResult'
-import AnnouncementSent from './announcementSent'
+import NextMeetings from '../components/nextMeetings'
+import AnnounceMeeting from './announceMeeting'
+import MeetingHistory from '../components/meetingHistory'
+import MeetingDisplayPDF from './meetingDisplayPDF'
+import MeetingVote from './meetingVote'
+import MeetingResult from '../components/meetingResult'
+import AnnouncementSent from '../components/announcementSent'
+// graphql
+import { compose, graphql } from 'react-apollo'
+import querySelectedCompany from '../queries/querySelectedCompany'
 
 class RawMeetingMenu extends Component {
   getSelectedKey() {
@@ -45,19 +47,19 @@ class RawMeetingMenu extends Component {
 }
 const MeetingMenu = withRouter(RawMeetingMenu)
 
-export default class Meetings extends Component {
+class Meetings extends Component {
   render() {
+    const { loading, company: { meetings } } = this.props
+
+    if (loading) return <Spin size="large" />
+
     return (
       <Row type="flex">
         <Col span={4}>
           <MeetingMenu />
         </Col>
         <Col span={20}>
-          <Route path="/meetings/next" component={NextMeetings} />
-          {/* <Route path="/meetings/announce" component={() => {
-              window.location = 'https://google.com'
-              return null
-              }} /> */}
+          <Route path="/meetings/next" render={() => <NextMeetings meetings={meetings} />} />
           <Route path="/meetings/announce" component={AnnounceMeeting} />
           <Route path="/meetings/sent" component={AnnouncementSent} />
           <Route path="/meetings/history" component={MeetingHistory} />
@@ -69,3 +71,14 @@ export default class Meetings extends Component {
     )
   }
 }
+
+const MeetingsWithData = compose(
+  graphql(querySelectedCompany, {
+    props: ({ data: { loading, selectedCompany} }) => ({
+      isLoading: loading,
+      company: selectedCompany
+    })
+  }),
+)(Meetings)
+
+export default MeetingsWithData

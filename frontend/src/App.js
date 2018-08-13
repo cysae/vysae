@@ -14,7 +14,7 @@ import SelectCompanyRoute from './selectedCompanyRoute.js'
 import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
 import Info from './containers/info'
-import Meetings from './components/meetings'
+import Meetings from './containers/meetings'
 // AppSync/Apollo
 import AWSAppSyncClient, { createAppSyncLink, createLinkWithCache} from "aws-appsync";
 import { Rehydrated } from 'aws-appsync-react';
@@ -24,8 +24,8 @@ import AppSync from './AppSync.js';
 import { ApolloLink } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
 import './App.css'
-import { updateUserAttributes } from './utils/amplify'
-updateUserAttributes();
+/* import { updateUserAttributes } from './utils/amplify'
+ * updateUserAttributes(); */
 Amplify.configure(aws_exports)
 const { Content, Footer } = Layout;
 
@@ -39,8 +39,7 @@ const stateLink = createLinkWithCache(cache => withClientState({
         const data = {
           selectedCompany: {
             __typename: 'selectedCompany',
-            id: company.id,
-            name: company.name,
+            ...company
           }
         }
         cache.writeData({ data })

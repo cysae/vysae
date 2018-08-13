@@ -7,7 +7,12 @@ query($id: String!) {
     name,
     companies {
       id,
-      name
+      name,
+      meetings {
+        id,
+        start,
+        end
+      }
     }
   }
 }`
