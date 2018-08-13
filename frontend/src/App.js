@@ -23,8 +23,9 @@ import { ApolloProvider } from 'react-apollo';
 import AppSync from './AppSync.js';
 import { ApolloLink } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
-
 import './App.css'
+import { updateUserAttributes } from './utils/amplify'
+updateUserAttributes();
 Amplify.configure(aws_exports)
 const { Content, Footer } = Layout;
 
@@ -100,7 +101,11 @@ class App extends Component {
             <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item>
           </Breadcrumb>
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-            <Route exact path="/" component={Dashboard}/>
+            <Route
+              exact
+              path="/"
+              render={() => <Dashboard shareholderId={shareholderId} />}
+            />
             <Route path="/añadirSociedad" component={AddCompany}/>
             <SelectCompanyRoute
               path="/info"

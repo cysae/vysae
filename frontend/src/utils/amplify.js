@@ -5,7 +5,7 @@ Amplify.configure(aws_exports)
 export async function updateUserAttributes() {
   const user = await Auth.currentAuthenticatedUser();
   const result = await Auth.updateUserAttributes(user, {
-    'custom:shareholderId': 'Shareholder-e199e636-5cff-4293-94c4-3e2e996a6ea8'
+    'custom:shareholderId': 'Shareholder-106bd47a-325c-46e7-a4a5-66b37d26c5cf'
   })
   console.log(result)
 }

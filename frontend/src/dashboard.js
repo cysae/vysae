@@ -74,11 +74,13 @@ class Dashboard extends Component {
 
 const DashboardWithData = compose(
   graphql(queryShareholder, {
-    options: {
-      variables: {
-        id: 'Shareholder-e199e636-5cff-4293-94c4-3e2e996a6ea8'
-      },
-      fetchPolicy: 'cache-and-network'
+    options: (props) => {
+      console.log(props);
+      return {
+        variables: {
+          id: props.shareholderId
+        }
+      }
     },
     props: ({ data: { loading, getShareholder } }) => ({
       isShareholderLoading: loading,

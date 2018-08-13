@@ -1,13 +1,11 @@
 import React, { Fragment } from 'react'
+// antd
 import { Table, Divider } from 'antd'
-// redux
-import { connect } from 'react-redux'
-import { createSelector } from 'reselect'
-import { selectMeeting } from '../actions/index.js'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 function NextMeetings(props) {
+  console.log(this.props)
   const { meetings, selectMeeting } = props
   const meeting = meetings[0]
 
@@ -44,26 +42,8 @@ function NextMeetings(props) {
   }]
 
   return (
-    <Table columns={columns} rowKey='uuid' dataSource={meetings} />
+    {/* <Table columns={columns} rowKey='uuid' dataSource={meetings} /> */}
   )
 }
 
-const getMeetings = state => state.selectedCompany.meetings
-const getFutureMeetings = createSelector(
-  [getMeetings],
-  (meetings) => {
-    return meetings.filter(meeting => {
-      return moment(meeting.votingEnd).diff(moment()) > 0
-    })
-  }
-)
-
-
-const mapStateToProps = state => ({
-    meetings: getFutureMeetings(state)
-})
-const mapDispatchToProps = dispatch => ({
-  selectMeeting: meeting => dispatch(selectMeeting(meeting))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(NextMeetings)
+export default NextMeetings
