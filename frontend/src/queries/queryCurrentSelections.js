@@ -5,7 +5,8 @@ export default gql`
     currentSelections @client {
       __typename,
       companyId,
-      shareholderId
+      shareholderId,
+      meetingId
     }
   }
 `

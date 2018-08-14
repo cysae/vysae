@@ -38,7 +38,8 @@ const stateLink = createLinkWithCache(cache => withClientState({
     currentSelections: {
       __typename: 'currentSelections',
       companyId: null,
-      shareholderId: null
+      shareholderId: null,
+      meetingId: null
     }
   },
   resolvers: {

@@ -67,7 +67,7 @@ class Meetings extends Component {
           render={() => (
             <NextMeetings
               meetings={meetings}
-                       mutateCurrentSelections={mutateCurrentSelections}
+              mutateCurrentSelections={mutateCurrentSelections}
             />
           )}
         />
@@ -75,14 +75,7 @@ class Meetings extends Component {
         <Route path="/meetings/sent" component={AnnouncementSent} />
         <Route path="/meetings/history" component={MeetingHistory} />
         <Route path="/meetings/pdf" component={MeetingDisplayPDF} />
-        <Route
-          path="/meetings/vote"
-          render={() => (
-            <MeetingVote
-              meeting={}
-            />
-          )}
-        />
+        <Route path="/meetings/vote" component={MeetingVote} />
         <Route path="/meetings/result" component={MeetingResult} />
       </Col>
     </Row>

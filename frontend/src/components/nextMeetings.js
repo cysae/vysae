@@ -36,8 +36,10 @@ function NextMeetings(props) {
         {/* <Link to="/meetings/pdf" onClick={() => selectMeeting(record)}>Leer orden del día</Link> */}
         {/* <Divider type="vertical"/> */}
         <Link to="/meetings/vote" onClick={() => mutateCurrentSelections({
-            field: 'meetingId',
-            id: record.id
+            variables: {
+              field: 'meetingId',
+              id: record.id
+            }
         })}>Votar</Link>
       </Fragment>
     )

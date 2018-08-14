@@ -2,10 +2,9 @@ import gql from 'graphql-tag'
 
 export default gql`
 query($id: String!) {
-  queryShareholder(id: $id) {
+  queryMeeting(id: $id) {
     id,
-    name,
-    companies {
+    agreements {
       id,
       name
     }
