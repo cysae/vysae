@@ -15,6 +15,7 @@ import AnnouncementSent from '../components/announcementSent'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import queryCurrentSelections from '../queries/queryCurrentSelections'
+import queryCompany from '../queries/queryCompany'
 
 class RawMeetingMenu extends Component {
   getSelectedKey() {
@@ -49,7 +50,7 @@ const MeetingMenu = withRouter(RawMeetingMenu)
 
 class Meetings extends Component {
   render() {
-    const { loading, company: { meetings } } = this.props
+    const { loading, meetings } = this.props
     console.log(meetings)
 
     if (loading) return <Spin size="large" />
@@ -59,15 +60,15 @@ class Meetings extends Component {
         <Col span={4}>
           <MeetingMenu />
         </Col>
-        <Col span={20}>
-          <Route path="/meetings/next" render={() => <NextMeetings meetings={meetings} />} />
-          <Route path="/meetings/announce" component={AnnounceMeeting} />
-          <Route path="/meetings/sent" component={AnnouncementSent} />
-          <Route path="/meetings/history" component={MeetingHistory} />
-          <Route path="/meetings/pdf" component={MeetingDisplayPDF} />
-          <Route path="/meetings/vote" component={MeetingVote} />
-          <Route path="/meetings/result" component={MeetingResult} />
-        </Col>
+        {/* <Col span={20}>
+            <Route path="/meetings/next" render={() => <NextMeetings meetings={meetings} />} />
+            <Route path="/meetings/announce" component={AnnounceMeeting} />
+            <Route path="/meetings/sent" component={AnnouncementSent} />
+            <Route path="/meetings/history" component={MeetingHistory} />
+            <Route path="/meetings/pdf" component={MeetingDisplayPDF} />
+            <Route path="/meetings/vote" component={MeetingVote} />
+            <Route path="/meetings/result" component={MeetingResult} />
+            </Col> */}
       </Row>
     )
   }
@@ -80,6 +81,18 @@ const MeetingsWithData = compose(
       currentCompanyId: companyId
     })
   }),
+  graphql(queryCompany, {
+    options: (props) => ({
+      variables: {
+        id: props.currentCompanyId,
+        withMeetings: true,
+      }
+    }),
+    props: ({ data: { loading, queryCompany } }) => ({
+      isCompanyLoading: loading,
+      meetings: queryCompany.meetings
+    })
+  })
 )(Meetings)
 
 export default MeetingsWithData
