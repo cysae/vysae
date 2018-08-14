@@ -37,11 +37,11 @@ custom:
       - dataSource: Vysae
         type: Mutation
         field: createCompany
-        request: "createCompany-request-mapping-template.txt"
-        response: "createCompany-response-mapping-template.txt"
+        request: "createCompany-request.txt"
+        response: "createCompany-response.txt"
       - dataSource: Vysae
         type: Query
-        field: getCompany
+        field: queryCompany
         request: "queryCompany-request.txt"
         response: "queryCompany-response.txt"
       - dataSource: Vysae
@@ -56,9 +56,9 @@ custom:
         response: "company-meetings-response.txt"
       - dataSource: Vysae
         type: Query
-        field: getShareholder
-        request: "getShareholder-request-mapping-template.txt"
-        response: "getShareholder-response-mapping-template.txt"
+        field: queryShareholder
+        request: "queryShareholder-request.txt"
+        response: "queryShareholder-response.txt"
       - dataSource: Vysae
         type: Shareholder
         field: companies

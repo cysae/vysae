@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Row, Col } from 'antd'
+// antd
+import { Row, Col, Spin } from 'antd'
 // router
 import { Route, Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
@@ -12,8 +13,9 @@ import ShareholderRegister from '../components/shareholderRegister'
 import { Menu } from 'antd'
 // apollo
 import { graphql, compose } from 'react-apollo'
+import queryCompany from '../queries/queryCompany'
 import queryShareholder from '../queries/queryShareholder'
-import querySelectedCompany from '../queries/querySelectedCompany'
+import queryCurrentSelections from '../queries/queryCurrentSelections'
 
 class RawInfoMenu extends Component {
   getSelectedKey() {
@@ -52,7 +54,10 @@ const InfoMenu = withRouter(RawInfoMenu)
 
 class Info extends Component {
   render() {
-    const { company, shareholder } = this.props
+    const { company, shareholder, isCompanyLoading, isShareholderLoading } = this.props
+
+    if (isCompanyLoading || isShareholderLoading)
+      return <Spin size="large" />
 
     return (
       <Row type="flex">
@@ -78,22 +83,33 @@ class Info extends Component {
 }
 
 const InfoWithData = compose(
-  graphql(querySelectedCompany, {
-    props: ({ data: { loading, selectedCompany } }) => ({
+  graphql(queryCurrentSelections, {
+    props: ({ data: { loading, currentSelections: { companyId, shareholderId } } }) => ({
       isLoading: loading,
-      company: selectedCompany,
+      currentCompanyId: companyId,
+      currentShareholderId: shareholderId
+    })
+  }),
+  graphql(queryCompany, {
+    options: (props) => ({
+      variables: {
+        id: props.currentCompanyId
+      }
+    }),
+    props: ({ data: { loading, queryCompany } }) => ({
+      isCompanyLoading: loading,
+      company: queryCompany
     })
   }),
   graphql(queryShareholder, {
     options: (props) => ({
       variables: {
-        id: props.shareholderId
+        id: props.currentShareholderId
       },
-      fetchPolicy: 'cache-and-network'
     }),
-    props: ({ data: { loading, getShareholder }}) => ({
+    props: ({ data: { loading, queryShareholder }}) => ({
       isShareholderLoading: loading,
-      shareholder: getShareholder,
+      shareholder: queryShareholder,
     })
   }),
 )(Info)

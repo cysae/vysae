@@ -14,7 +14,7 @@ import MeetingResult from '../components/meetingResult'
 import AnnouncementSent from '../components/announcementSent'
 // graphql
 import { compose, graphql } from 'react-apollo'
-import querySelectedCompany from '../queries/querySelectedCompany'
+import queryCurrentSelections from '../queries/queryCurrentSelections'
 
 class RawMeetingMenu extends Component {
   getSelectedKey() {
@@ -50,6 +50,7 @@ const MeetingMenu = withRouter(RawMeetingMenu)
 class Meetings extends Component {
   render() {
     const { loading, company: { meetings } } = this.props
+    console.log(meetings)
 
     if (loading) return <Spin size="large" />
 
@@ -73,10 +74,10 @@ class Meetings extends Component {
 }
 
 const MeetingsWithData = compose(
-  graphql(querySelectedCompany, {
-    props: ({ data: { loading, selectedCompany} }) => ({
+  graphql(queryCurrentSelections, {
+    props: ({ data: { loading, currentSelections: { companyId }} }) => ({
       isLoading: loading,
-      company: selectedCompany
+      currentCompanyId: companyId
     })
   }),
 )(Meetings)

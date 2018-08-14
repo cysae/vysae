@@ -31,15 +31,13 @@ function NextMeetings(props) {
   }, {
     title: 'Acciones',
     key: 'action',
-    render: (text, record) => {
-      return (
+    render: (text, record) => (
       <Fragment>
         <Link to="/meetings/pdf" onClick={() => selectMeeting(record)}>Leer orden del día</Link>
         <Divider type="vertical"/>
         <Link to="/meetings/vote" onClick={() => selectMeeting(record)}>Votar</Link>
       </Fragment>
-      )
-    }
+    )
   }]
 
   return (

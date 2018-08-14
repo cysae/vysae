@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 // amplify
-import Amplify, { Auth } from 'aws-amplify'
+import { Auth } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
-import aws_exports from './aws-exports.js'
 // Router
 import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router'
@@ -10,7 +9,7 @@ import { withRouter } from 'react-router'
 import { Layout, Breadcrumb } from 'antd'
 // Components
 import MyHeader from './components/header.js'
-import SelectCompanyRoute from './selectedCompanyRoute.js'
+import CurrentCompanyRoute from './currentCompanyRoute.js'
 import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
 import Info from './containers/info'
@@ -23,38 +22,37 @@ import { ApolloProvider } from 'react-apollo';
 import AppSync from './AppSync.js';
 import { ApolloLink } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
+import { compose, graphql } from 'react-apollo'
+import mutateCurrentSelections from './queries/mutateCurrentSelections'
 import './App.css'
-/* import { updateUserAttributes } from './utils/amplify'
- * updateUserAttributes(); */
-Amplify.configure(aws_exports)
+/* import aws_exports from './aws-exports.js' */
+/* import { updateUserAttributes } from './utils/amplify' */
+/* updateUserAttributes();
+ * Amplify.configure(aws_exports) */
 const { Content, Footer } = Layout;
 
 // Apollo
 const stateLink = createLinkWithCache(cache => withClientState({
   cache,
-  defaults: {},
+  defaults: {
+    currentSelections: {
+      __typename: 'currentSelections',
+      companyId: null,
+      shareholderId: null
+    }
+  },
   resolvers: {
     Mutation: {
-      selectCompany: (_, { company }, { cache }) => {
+      mutateCurrentSelections: (_, {field, id }, { cache }) => {
         const data = {
-          selectedCompany: {
-            __typename: 'selectedCompany',
-            ...company
+          currentSelections: {
+            __typename: 'currentSelections',
+            [field]: id
           }
         }
         cache.writeData({ data })
         return null
       },
-      setCurrentShareholder: (_, { id }, { cache }) => {
-        const data = {
-          currentShareholder: {
-            __typename: 'shareholder',
-            id
-          }
-        }
-        cache.writeData({ data })
-        return null
-      }
     }
   }
 }))
@@ -81,9 +79,16 @@ class App extends Component {
 
   async componentDidMount() {
     const user = await Auth.currentAuthenticatedUser()
+    const shareholderId = user.attributes['custom:shareholderId']
+    this.props.mutateCurrentSelections({
+      variables: {
+        field: 'shareholderId',
+        id: shareholderId
+      }
+    })
     this.setState({
       isLoading: false,
-      shareholderId: user.attributes['custom:shareholderId'],
+      shareholderId,
     })
   }
 
@@ -106,12 +111,12 @@ class App extends Component {
               render={() => <Dashboard shareholderId={shareholderId} />}
             />
             <Route path="/añadirSociedad" component={AddCompany}/>
-            <SelectCompanyRoute
+            <CurrentCompanyRoute
               path="/info"
               component={Info}
               shareholderId={shareholderId}
             />
-            <SelectCompanyRoute path="/meetings" component={Meetings}/>
+            <CurrentCompanyRoute path="/meetings" component={Meetings}/>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
@@ -122,12 +127,16 @@ class App extends Component {
   }
 }
 
+const AppWithData = compose(
+  graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' })
+)(App)
+
 const WithApollo = () => (
   <ApolloProvider
     client={client}
   >
     <Rehydrated>
-      <App />
+      <AppWithData />
     </Rehydrated>
   </ApolloProvider>
 );

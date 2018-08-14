@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { Table, Button } from 'antd'
 // AppSync
 import queryShareholder from './queries/queryShareholder'
-import querySelectedCompany from './queries/querySelectedCompany'
-import SelectCompany from './queries/selectCompany'
-import { graphql, compose } from 'react-apollo';
+import queryCurrentSelections from './queries/queryCurrentSelections'
+import mutateCurrentSelections from './queries/mutateCurrentSelections'
+import { graphql, compose } from 'react-apollo'
 
 const MyTable = styled(Table)`
   .selectedRow {
@@ -19,14 +19,8 @@ class Dashboard extends Component {
     this.getSelectedRow = this.getSelectedRow.bind(this)
   }
 
-  componentDidMount() {
-    /* this.props.requestMyCompanies() */
-    /* const companyId = '81291d0e-ac65-44a2-b946-ff83104e4260' */
-    /* this.props.requestCompanySelection(companyId) */
-  }
-
   getSelectedRow(record, index) {
-    if(record.id === this.props.selectedCompany.id) {
+    if(record.id === this.props.currentCompanyId) {
       return 'selectedRow'
     }
     return ''
@@ -34,11 +28,11 @@ class Dashboard extends Component {
 
   render() {
     const {
-      shareholder, isShareholderLoading, isSelectedCompanyLoading,
-      selectCompany
+      shareholder, isShareholderLoading, isCurrentSelectionLoading,
+        mutateCurrentSelections
     } = this.props
 
-    if(isShareholderLoading || isSelectedCompanyLoading) {
+    if(isShareholderLoading || isCurrentSelectionLoading) {
       return <div>Loading...</div>
     }
 
@@ -46,28 +40,29 @@ class Dashboard extends Component {
 
     const columns = [{
       title: 'Nombre de la sociedad',
-      dataIndex: 'name',
+        dataIndex: 'name',
     }, {
       title: 'Acciones',
-      dataIndex: 'id',
-      render: (text, record) =>(
-        <Button onClick={() => selectCompany({
-          variables: {
-            company: record,
-          },
-        })}>
-          Seleccionar
-        </Button>
-      ),
+        dataIndex: 'id',
+        render: (text, record) =>(
+          <Button onClick={() => mutateCurrentSelections({
+              variables: {
+                field: 'companyId',
+                id: record.id
+              },
+          })}>
+            Seleccionar
+          </Button>
+        ),
     }];
 
     return (
-      <MyTable
-        rowClassName={this.getSelectedRow}
-        rowKey="id"
-        columns={columns}
-        dataSource={companies}
-      />
+    <MyTable
+      rowClassName={this.getSelectedRow}
+      rowKey="id"
+      columns={columns}
+      dataSource={companies}
+    />
     )
   }
 }
@@ -81,18 +76,18 @@ const DashboardWithData = compose(
         }
       }
     },
-    props: ({ data: { loading, getShareholder } }) => ({
+    props: ({ data: { loading, queryShareholder } }) => ({
       isShareholderLoading: loading,
-      shareholder: getShareholder,
+      shareholder: queryShareholder,
     })
   }),
-  graphql(querySelectedCompany, {
-    props: ({ data: { loading, selectedCompany } }) => ({
-      isSelectedCompanyLoading: loading,
-      selectedCompany,
+  graphql(queryCurrentSelections, {
+    props: ({ data: { loading, currentSelections: { companyId }} }) => ({
+      isCurrentSelectionLoading: loading,
+      currentCompanyId: companyId
     })
   }),
-  graphql(SelectCompany, { name: 'selectCompany' })
+  graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' })
 )(Dashboard)
 
 export default DashboardWithData
