@@ -72,7 +72,8 @@ const DashboardWithData = compose(
     options: (props) => {
       return {
         variables: {
-          id: props.shareholderId
+          id: props.shareholderId,
+          withCompanies: true
         }
       }
     },
