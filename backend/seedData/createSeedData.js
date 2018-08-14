@@ -2,11 +2,11 @@ const faker = require('faker');
 const jsonfile = require('jsonfile');
 const uuidv4 = require('uuid/v4');
 
-const numCompanies = 4;
-const numShareholders = numCompanies*2;
-const numMeetings = numCompanies*2;
-const numAgreements = numMeetings*3;
-const numVotes = numAgreements*4;
+const numCompanies = 2;
+const numShareholders = numCompanies*3;
+const numMeetings = numCompanies*3;
+const numAgreements = numMeetings*6;
+const numVotes = numAgreements*10;
 
 const vData = [];
 const companies = [];
@@ -109,11 +109,11 @@ for (let i = 0; i < numAgreements; i++) {
     const id = uuidv4()
     const PK = `Agreement-${id}`
     const SK = `Agreement-${id}`
-    const agreementTypeNum = Math.round(Math.random()*(agreementTypes.length-1));
-    const name = agreementTypes[agreementTypeNum]
 
     const agreement = {
-        PK, SK, name
+      PK,
+      SK,
+      name: faker.random.arrayElement(agreementTypes)
     }
     agreements.push(agreement)
     addTo('meeting', agreement)
@@ -121,15 +121,18 @@ for (let i = 0; i < numAgreements; i++) {
 
 // create/attach Votes
 for (let i = 0; i < numVotes; i++) {
-    const id = uuidv4()
-    const PK = `Vote-${id}`
-    const SK = `Vote-${id}`
+  const id = uuidv4()
+  const PK = `Vote-${id}`
+  const SK = `Vote-${id}`
 
-    const vote = {
-        PK, SK
-    }
-    votes.push(vote)
-    addTo('agreement', vote)
+
+  const vote = {
+    PK,
+    SK,
+    result: faker.random.number({ min: -1, max: 10 })
+  }
+  votes.push(vote)
+  addTo('agreement', vote)
 }
 
 const vFile = 'vysae.json';
