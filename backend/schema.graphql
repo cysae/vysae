@@ -6,6 +6,7 @@ type Mutation {
 
 type Query {
   queryCompany(id: String!): Company
+  queryMeeting(id: String!): Meeting
   queryShareholder(id: String!): Shareholder
   queryMeetingDocx: Docx
 }

@@ -5,7 +5,7 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 function NextMeetings(props) {
-  const { meetings, selectMeeting } = props
+  const { meetings, selectMeeting, mutateCurrentSelections } = props
 
   const columns = [{
     title: 'Commienza',
@@ -33,9 +33,12 @@ function NextMeetings(props) {
     key: 'action',
     render: (text, record) => (
       <Fragment>
-        <Link to="/meetings/pdf" onClick={() => selectMeeting(record)}>Leer orden del día</Link>
-        <Divider type="vertical"/>
-        <Link to="/meetings/vote" onClick={() => selectMeeting(record)}>Votar</Link>
+        {/* <Link to="/meetings/pdf" onClick={() => selectMeeting(record)}>Leer orden del día</Link> */}
+        {/* <Divider type="vertical"/> */}
+        <Link to="/meetings/vote" onClick={() => mutateCurrentSelections({
+            field: 'meetingId',
+            id: record.id
+        })}>Votar</Link>
       </Fragment>
     )
   }]

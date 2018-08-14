@@ -1,4 +1,4 @@
 {
   "id": "$context.result.PK",
-  "name": "$context.result.name"
+  "name": "$context.result.name",
 }

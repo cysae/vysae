@@ -16,15 +16,17 @@ import AnnouncementSent from '../components/announcementSent'
 import { compose, graphql } from 'react-apollo'
 import queryCurrentSelections from '../queries/queryCurrentSelections'
 import queryCompany from '../queries/queryCompany'
+import mutateCurrentSelections from '../queries/mutateCurrentSelections'
 
 class RawMeetingMenu extends Component {
   getSelectedKey() {
     const { pathname } = this.props.location
     switch(pathname) {
       case '/meetings/next': return ['nextMeeting']
+      case '/meetings/vote': return ['voteMeeting']
       case '/meetings/announce': return ['announceMeeting']
       case '/meetings/history': return ['meetingHistory']
-      default: return 'nextMeeting'
+      default: return ['nextMeeting']
     }
   }
 
@@ -50,26 +52,40 @@ const MeetingMenu = withRouter(RawMeetingMenu)
 
 class Meetings extends Component {
   render() {
-    const { loading, meetings } = this.props
-    console.log(meetings)
+    const { loading, meetings, mutateCurrentSelections } = this.props
 
     if (loading) return <Spin size="large" />
 
     return (
-      <Row type="flex">
-        <Col span={4}>
-          <MeetingMenu />
-        </Col>
-        {/* <Col span={20}>
-            <Route path="/meetings/next" render={() => <NextMeetings meetings={meetings} />} />
-            <Route path="/meetings/announce" component={AnnounceMeeting} />
-            <Route path="/meetings/sent" component={AnnouncementSent} />
-            <Route path="/meetings/history" component={MeetingHistory} />
-            <Route path="/meetings/pdf" component={MeetingDisplayPDF} />
-            <Route path="/meetings/vote" component={MeetingVote} />
-            <Route path="/meetings/result" component={MeetingResult} />
-            </Col> */}
-      </Row>
+    <Row type="flex">
+      <Col span={4}>
+        <MeetingMenu />
+      </Col>
+      <Col span={20}>
+        <Route
+          path="/meetings/next"
+          render={() => (
+            <NextMeetings
+              meetings={meetings}
+                       mutateCurrentSelections={mutateCurrentSelections}
+            />
+          )}
+        />
+        <Route path="/meetings/announce" component={AnnounceMeeting} />
+        <Route path="/meetings/sent" component={AnnouncementSent} />
+        <Route path="/meetings/history" component={MeetingHistory} />
+        <Route path="/meetings/pdf" component={MeetingDisplayPDF} />
+        <Route
+          path="/meetings/vote"
+          render={() => (
+            <MeetingVote
+              meeting={}
+            />
+          )}
+        />
+        <Route path="/meetings/result" component={MeetingResult} />
+      </Col>
+    </Row>
     )
   }
 }
@@ -92,7 +108,8 @@ const MeetingsWithData = compose(
       isCompanyLoading: loading,
       meetings: queryCompany.meetings
     })
-  })
+  }),
+  graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' })
 )(Meetings)
 
 export default MeetingsWithData
