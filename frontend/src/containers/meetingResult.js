@@ -14,7 +14,7 @@ class MeetingResult extends Component {
     for (const vote of agreement.votes) {
       switch(vote.result) {
         case 1: result.pro++; break
-        case 2: result.contra++; break
+        case -1: result.contra++; break
         default: result.blank++
       }
     }
@@ -42,6 +42,7 @@ class MeetingResult extends Component {
 
     if (isLoading || isMeetingLoading )
       return <Spin size="large" />
+    console.log(meeting)
 
     const meetingResult = this.getMeetingResult(meeting.agreements)
 

@@ -1,13 +1,14 @@
 #set( $arr = [] )
 #foreach($res in $context.result.items)
-  	#set( $map = {} )
+  #set( $map = {} )
 	#set ($hyphen = $res.SK.indexOf('-'))
 	#set ($substring = $res.SK.substring(0, $hyphen))
 	#if($substring == "Vote")
-		$util.qr($map.put("id", $res.SK))
-        $util.qr($map.put("name", $res.name))
+	  $util.qr($map.put("id", $res.SK))
+    $util.qr($map.put("name", $res.name))
+    $util.qr($map.put("result", $res.result))
         
-        $util.qr($arr.add($map))
-    #end
+    $util.qr($arr.add($map))
+  #end
 #end
 $util.toJson($arr)

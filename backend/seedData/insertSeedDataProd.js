@@ -18,11 +18,13 @@ vysae.forEach(function(row) {
     Item: row
   };
 
-  docClient.put(params, function(err, data) {
-    if (err) {
-      console.error('Unable to add row', row.PK, JSON.stringify(err, null, 2));
-    } else {
-      console.log('PutItem succeeded:', row.PK)
-    }
-  });
+  setTimeout(() => {
+    docClient.put(params, function(err, data) {
+      if (err) {
+        console.error('Unable to add row', row.PK, JSON.stringify(err, null, 2));
+      } else {
+        console.log('PutItem succeeded:', row.PK)
+      }
+    })
+  }, 500)
 });

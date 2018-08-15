@@ -8,7 +8,8 @@ query($id: String!, $withAgreements: Boolean = false, $withVotes: Boolean = fals
       id,
       name,
       votes @include(if: $withVotes) {
-        id
+        id,
+        result
       }
     }
   }

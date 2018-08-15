@@ -129,7 +129,7 @@ for (let i = 0; i < numVotes; i++) {
   const vote = {
     PK,
     SK,
-    result: faker.random.number({ min: -1, max: 10 })
+    result: faker.random.number({ min: -1, max: 1 })
   }
   votes.push(vote)
   addTo('agreement', vote)

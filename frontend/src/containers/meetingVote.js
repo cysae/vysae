@@ -57,7 +57,6 @@ class MeetingVote extends Component {
     const { isLoading, isMeetingLoading, meeting, form } = this.props
     if (isLoading || isMeetingLoading)
       return <Spin size="large" />
-    console.log(meeting)
 
     const { agreements } = meeting
     const { getFieldDecorator } = form
