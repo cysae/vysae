@@ -3,8 +3,8 @@ const jsonfile = require('jsonfile');
 const uuidv4 = require('uuid/v4');
 
 const numCompanies = 2;
-const numShareholders = numCompanies*3;
-const numMeetings = numCompanies*3;
+const numShareholders = numCompanies*2;
+const numMeetings = numCompanies*4;
 const numAgreements = numMeetings*6;
 const numVotes = numAgreements*10;
 

@@ -52,9 +52,9 @@ const MeetingMenu = withRouter(RawMeetingMenu)
 
 class Meetings extends Component {
   render() {
-    const { loading, meetings, mutateCurrentSelections } = this.props
+    const { isLoading, isCompanyLoading, meetings, mutateCurrentSelections } = this.props
 
-    if (loading) return <Spin size="large" />
+    if ( isLoading, isCompanyLoading ) return <Spin size="large" />
 
     return (
     <Row type="flex">
@@ -97,9 +97,9 @@ const MeetingsWithData = compose(
         withMeetings: true,
       }
     }),
-    props: ({ data: { loading, queryCompany } }) => ({
+    props: ({ data: { loading, queryCompany: { meetings } }}) => ({
       isCompanyLoading: loading,
-      meetings: queryCompany.meetings
+      meetings
     })
   }),
   graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' })

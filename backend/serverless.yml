@@ -134,8 +134,8 @@ resources:
           - AttributeName: SK
             KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+          ReadCapacityUnits: 3 
+          WriteCapacityUnits: 3 
         GlobalSecondaryIndexes:
           - IndexName: GSI
             KeySchema:
