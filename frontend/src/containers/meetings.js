@@ -10,7 +10,7 @@ import AnnounceMeeting from './announceMeeting'
 import MeetingHistory from '../components/meetingHistory'
 import MeetingDisplayPDF from './meetingDisplayPDF'
 import MeetingVote from './meetingVote'
-import MeetingResult from '../components/meetingResult'
+import MeetingResult from './meetingResult'
 import AnnouncementSent from '../components/announcementSent'
 // graphql
 import { compose, graphql } from 'react-apollo'
