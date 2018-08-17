@@ -25,11 +25,11 @@ import { withClientState } from 'apollo-link-state'
 import { compose, graphql } from 'react-apollo'
 import mutateCurrentSelections from './queries/mutateCurrentSelections'
 import './App.css'
-/* import Amplify from 'aws-amplify'
- * import aws_exports from './aws-exports.js'
- * import { updateUserAttributes } from './utils/amplify'
- * updateUserAttributes();
- * Amplify.configure(aws_exports) */
+import Amplify from 'aws-amplify'
+import aws_exports from './aws-exports.js'
+import { updateUserAttributes } from './utils/amplify'
+updateUserAttributes();
+Amplify.configure(aws_exports)
 const { Content, Footer } = Layout;
 
 // Apollo

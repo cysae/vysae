@@ -79,6 +79,11 @@ custom:
         field: votes
         request: "agreement-votes-request.txt"
         response: "agreement-votes-response.txt"
+      - dataSource: Vysae
+        type: Mutation
+        field: mutateVote
+        request: "mutateVote-request.txt"
+        response: "mutateVote-response.txt"
       - dataSource: meetingDocx
         type: Query
         field: queryMeetingDocx

@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
+// antd
 import { Spin } from 'antd'
-import { connect } from 'react-redux'
-import {
-  requestCompanyUpdate,
-  requestAddMeetingToCompany,
-} from '../actions/index.js'
+// graphql
+import { compose, graphql } from 'react-apollo'
 
 class MeetingStatus extends Component {
   componentDidMount() {
@@ -27,17 +25,8 @@ class MeetingStatus extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    company: state.selectedCompany,
-    meetingForm: state.meetingForm
-  }
-}
-const mapDispatchToProps = dispatch => {
-  return {
-    requestCompanyUpdate: (companyId, body) => { dispatch(requestCompanyUpdate(companyId, body)) },
-    addMeetingToCompany: (companyId, body) => { dispatch(requestAddMeetingToCompany(companyId, body)) },
-  }
-}
+const MeetingStatusWithInfo = compose(
+  graphql(o)
+)(MeetingStatus)
 
-export default connect(mapStateToProps, mapDispatchToProps)(MeetingStatus)
+export default (MeetingStatusWithInfo)

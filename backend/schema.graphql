@@ -1,7 +1,16 @@
+input VoteInput {
+  id: String!
+  result: Int!
+}
+
 type Mutation {
   createCompany(
     name: String
   ): Company!
+  mutateVote(
+    agreementId: String!,
+    vote: VoteInput!
+  ): Vote!
 }
 
 type Query {

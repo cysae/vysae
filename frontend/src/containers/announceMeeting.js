@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react'
 // antd
-import { Steps, Spin } from 'antd'
+import { Form, Steps, Spin } from 'antd'
 // components
 import MeetingStatus from './meetingStatus'
 import MeetingConfirmation from '../components/meetingConfirmation'
+import MeetingForm from '../components/meetingForm'
 // style
 import styled from 'styled-components'
 // graphql
@@ -24,6 +25,8 @@ class AnnounceMeeting extends Component {
       meeting: {}
     }
 
+    this.saveMeeting = this.saveMeeting.bind(this)
+    this.saveMeetingState = this.saveMeetingState.bind(this)
     this.next = this.next.bind(this)
     this.prev = this.prev.bind(this)
   }
@@ -37,13 +40,13 @@ class AnnounceMeeting extends Component {
     this.setState({ current });
   }
 
-  saveMeeting() {
+  saveMeetingState() {
     const { getFieldValue } = this.props.form
     if( getFieldValue('votingPeriod') ) {
       this.setState({
         meeting: {
           companyName: 'CYSAE',
-          dni: this.props.user.dni,
+          /* dni: this.props.user.dni, */
           location: 'Barcelona',
           meetingType: getFieldValue('meetingType'),
           votingStart: getFieldValue('votingPeriod')[0],
@@ -55,21 +58,32 @@ class AnnounceMeeting extends Component {
     }
   }
 
+  saveMeeting() {
+    const { meeting } = this.state
+  }
+
   render() {
-    const { isLoading, docxURL } = this.props
+    const { isLoading, form } = this.props
     const { current, meeting } = this.state
 
     if ( isLoading ) return <Spin size="large"></Spin>
 
     const steps = [{
       title: 'Convocatoria Formulario',
-      content: <Iframe src={docxURL} />
+      content: <MeetingForm saveMeetingState={this.saveMeetingState} form={form} next={this.next} prev={this.prev} />
     }, {
       title: 'Comprobar Convocatoria',
-      content: <MeetingConfirmation meeting={meeting} next={this.next} prev={this.prev}/>,
+        content: (
+          <MeetingConfirmation
+            meeting={meeting}
+            saveMeeting={this.saveMeeting}
+            next={this.next}
+            prev={this.prev}
+          />
+        ),
     }, {
       title: 'Estado',
-      content: <MeetingStatus meeting={meeting} prev={this.prev}/>,
+      content: (<MeetingStatus meeting={meeting} prev={this.prev}/>,
     }];
 
     return (
@@ -83,13 +97,4 @@ class AnnounceMeeting extends Component {
   }
 }
 
-const AnnounceMeetingWithData = compose(
-  graphql(queryMeetingDocx, {
-    props: ( { data: { loading, queryMeetingDocx: { url } } } ) => ({
-      loading,
-      docxURL: url
-    })
-  })
-)(AnnounceMeeting)
-
-export default AnnounceMeetingWithData
+export default  Form.create()(AnnounceMeeting)

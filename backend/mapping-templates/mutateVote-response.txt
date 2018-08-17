@@ -1,0 +1,5 @@
+#set($vote = $context.result.data.Vysae[0])
+{
+  "id": "$vote.PK",
+  "result": "$vote.result"
+}
