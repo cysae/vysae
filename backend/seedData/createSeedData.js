@@ -18,7 +18,6 @@ const votes = []
 const agreementTypes = [
     'Aumento o reducción de capital',
     'Autorización a administradores para que se dediquen a actividad inmersa en el objecto social',
-    'Autorización a administradores para que se dediquen a actividad inmersa en el objeto social',
     'Exclusión y separación de socios',
     'Cambio de domicilio',
     'Supresión o limitación del derecho de prederencia en aumentos de capital',

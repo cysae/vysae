@@ -69,7 +69,7 @@ export function Person(props) {
          )}
       </FormItem>
       <FormItem
-        label="Domiciolio"
+        label="Domicilio"
         {...formItemLayout}
       >
         {getFieldDecorator(`permanentAddress_${id}`, {
@@ -95,7 +95,7 @@ export function Person(props) {
          )}
       </FormItem>
       <FormItem
-        label="Telefon"
+        label="Teléfono"
         {...formItemLayout}
       >
         {getFieldDecorator(`telefon_${id}`, {

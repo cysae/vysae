@@ -83,7 +83,7 @@ class AnnounceMeeting extends Component {
         ),
     }, {
       title: 'Estado',
-      content: (<MeetingStatus meeting={meeting} prev={this.prev}/>,
+      content: (<MeetingStatus meeting={meeting} prev={this.prev} next={this.next} />),
     }];
 
     return (

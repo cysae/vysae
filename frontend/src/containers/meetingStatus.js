@@ -3,30 +3,29 @@ import React, { Component } from 'react'
 import { Spin } from 'antd'
 // graphql
 import { compose, graphql } from 'react-apollo'
+import mutateVote from '../queries/mutateVote'
 
 class MeetingStatus extends Component {
   componentDidMount() {
-    this.updateDynamodb()
-  }
-
-  updateDynamodb() {
-    const { company, meeting} = this.props
-    const companyId = company.uuid
-
-    this.props.addMeetingToCompany(meeting, companyId)
+    const { mutateVote } = this.props
+    mutateVote({
+      agreementId: 'Agreement-1234',
+      vote: {
+        id: '1234',
+        result: '1234'
+      }
+    }).then(res => console.log(res))
+    .catch(err => console.log(err))
   }
 
   render() {
-    if(this.props.meetingForm.isUpdating) {
-      return <Spin />
-    }
 
     return <div>convocado</div>
   }
 }
 
 const MeetingStatusWithInfo = compose(
-  graphql(o)
+  graphql(mutateVote, { name: 'mutateVote' })
 )(MeetingStatus)
 
 export default (MeetingStatusWithInfo)

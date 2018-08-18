@@ -56,24 +56,23 @@ class GoverningBodies extends Component {
   constructor(props) {
     super(props)
     /* this.state = { shareholders: this.getShareholders() } */
-    this.state = { shareholders: [{
-      dni: 'y687', firstName: 'Javier', lastName: 'Pascual'
-    }, {
-      dni: 'y821', firstName: 'Antonio', lastName: 'Vázquez'
-    }, {
-      dni: 'y231', firstName: 'Goncho', lastName: 'García Valdecasas'
-    }]}
+    this.state = {
+      shareholders: [{
+        dni: 'y687', firstName: 'Javier', lastName: 'Pascual'
+      }, {
+        dni: 'y821', firstName: 'Antonio', lastName: 'Vázquez'
+      }, {
+        dni: 'y231', firstName: 'Goncho', lastName: 'García Valdecasas'
+      }],
+      complete: false
+    }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.updateUsersDynamodb()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.updateCompanyDynamodb()
-        this.updateUsersDynamodb()
-
-        console.log('save')
+        this.setState({ complete: true })
       }
     });
   }
@@ -120,9 +119,11 @@ class GoverningBodies extends Component {
   render() {
     const { form } = this.props
     const { getFieldDecorator, getFieldValue } = form
-    const { shareholders } = this.state
+    const { shareholders, complete } = this.state
 
-    return (
+    if ( complete ) return <div>¡Alta de empresa finalizada!</div>
+
+      return (
       <Fragment>
         <h2>Junta General</h2>
         <Form onSubmit={this.handleSubmit}>
@@ -147,40 +148,40 @@ class GoverningBodies extends Component {
 
           <h2>Órgano de Administración</h2>
           <FormItem
-      label="Elige un órgano"
-      {...formItemLayout}
-      >
-      {getFieldDecorator('adminstrationOrganType', {
-        rules: [{
-          required: true,
-          message: 'Este campo es obligatorio.',
-        }]
-      })(
-        <RadioGroup>
-          <RadioButton value="boardOfDirectors">Consejo de Administracíon</RadioButton>
-          <RadioButton value="soleAdministrator">Administrador único</RadioButton>
-          <RadioButton value="jointAdministrators">Administradores mancomunados</RadioButton>
-          <RadioButton value="solidarityAdministrators">Administradores solidarios</RadioButton>
-        </RadioGroup>
-      )}
-      </FormItem>
-      <AdministrationOrgans type={getFieldValue('adminstrationOrganType')} shareholders={shareholders} form={form}/>
+            label="Elige un órgano"
+            {...formItemLayout}
+          >
+            {getFieldDecorator('adminstrationOrganType', {
+               rules: [{
+                 required: true,
+                 message: 'Este campo es obligatorio.',
+               }]
+            })(
+               <RadioGroup>
+                 <RadioButton value="boardOfDirectors">Consejo de Administracíon</RadioButton>
+                 <RadioButton value="soleAdministrator">Administrador único</RadioButton>
+                 <RadioButton value="jointAdministrators">Administradores mancomunados</RadioButton>
+                 <RadioButton value="solidarityAdministrators">Administradores solidarios</RadioButton>
+               </RadioGroup>
+             )}
+          </FormItem>
+          <AdministrationOrgans type={getFieldValue('adminstrationOrganType')} shareholders={shareholders} form={form}/>
 
-      <Divider/>
-      <FormItem>
-        <Button type="primary" onClick={this.props.prev}>
-          Atrás
-        </Button>
-        <Button type="primary" htmlType="submit">
-          Guardar
-        </Button>
-      </FormItem>
+          <Divider/>
+          <FormItem>
+            <Button type="primary" onClick={this.props.prev}>
+              Atrás
+            </Button>
+            <Button type="primary" htmlType="submit">
+              Guardar
+            </Button>
+          </FormItem>
         </Form>
         <pre>
           {JSON.stringify(this.props.formState, null, 2)}
         </pre>
       </Fragment>
-    );
+      );
   }
 }
 

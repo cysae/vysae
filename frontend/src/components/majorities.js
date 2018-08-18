@@ -268,7 +268,7 @@ class DefineAgreementRules extends Component {
         <Fragment key={id}>
           <Majority
             id={id}
-            title={`${id+1}. Mayoría`}
+            title={id == 0 ? 'Mayoría reforzada' : `${id+1}. Mayoría`}
             form={form}
             isUsualMajority={false}
             removeMajorityType={this.removeMajorityType}

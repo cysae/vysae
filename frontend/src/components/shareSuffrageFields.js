@@ -40,7 +40,7 @@ class ShareSuffrageFields extends Component {
         <Divider dashed />
 
         <FormItem
-          label="¿Hay participaciones con derecho de voto differente?"
+          label="¿Hay participaciones con derecho de voto diferente?"
           labelCol={{span: 12}}
         >
           {getFieldDecorator('hasSharesWithUnequalSuffrage', {
