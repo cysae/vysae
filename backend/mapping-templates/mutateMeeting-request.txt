@@ -1,0 +1,32 @@
+#set($uuid = $util.autoId())
+#set($batchData = [])
+#set( $meeting = ${context.arguments.meeting} )
+
+## define Meeting
+#set( $meetingMap = {
+  "PK" : "Meeting-$uuid",
+  "SK" : "Meeting-$uuid",
+  "start" : $meeting.start,
+  "end" : $meeting.end
+} )
+
+$util.qr($batchData.add($util.dynamodb.toMapValues($meetingMap)))
+
+#foreach($agreement in $meeting.agreements)
+  #set( $agreementId = $util.autoId())
+  #set( $agreementMap = {
+    "PK" : $meetingMap.PK,
+    "SK" : "Agreement-$agreementId",
+    "name" : $agreement.name
+  } )
+
+  $util.qr($batchData.add($util.dynamodb.toMapValues($agreementMap)))
+#end
+
+{
+  "version" : "2018-05-29",
+  "operation" : "BatchPutItem",
+  "tables": {
+    "Vysae": $utils.toJson($batchData)
+  }
+}

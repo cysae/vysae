@@ -1,0 +1,4 @@
+#set( $meeting = $context.result.data.Vysae[0] )
+{
+  "id": "$meeting.PK"
+}

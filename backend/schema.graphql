@@ -1,3 +1,9 @@
+input MeetingInput {
+  id: String,
+  start: String!,
+  end: String!,
+  agreements: [AgreementInput]!
+}
 input AgreementInput {
   id: String,
   name: String!,
@@ -12,6 +18,10 @@ type Mutation {
   createCompany(
     name: String
   ): Company!
+  mutateMeeting(
+    companyId: String!,
+    meeting: MeetingInput!
+  ): Meeting!
   mutateAgreement(
     meetingId: String!,
     agreement: AgreementInput!
