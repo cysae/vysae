@@ -1,0 +1,12 @@
+#set($uuid = $util.autoId())
+#set($batchData = [])
+#set($agreement = ${context.arguments.agreement})
+$util.qr($batchData.add($util.dynamodb.toMapValues({ "PK": "Agreement-$uuid", "SK": "Agreement-$uuid", "name": "${agreement.name}" })))
+$util.qr($batchData.add($util.dynamodb.toMapValues({ "PK": "${context.arguments.meetingId}", "SK": "Agreement-$uuid", "name": "${agreement.name}" })))
+{
+  "version" : "2018-05-29",
+  "operation" : "BatchPutItem",
+  "tables": {
+    "Vysae": $utils.toJson($batchData)
+  }
+}

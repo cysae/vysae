@@ -1,3 +1,8 @@
+input AgreementInput {
+  id: String,
+  name: String!,
+  votes: [VoteInput]
+}
 input VoteInput {
   id: String!
   result: Int!
@@ -7,6 +12,10 @@ type Mutation {
   createCompany(
     name: String
   ): Company!
+  mutateAgreement(
+    meetingId: String!,
+    agreement: AgreementInput!
+  ): Agreement!
   mutateVote(
     agreementId: String!,
     vote: VoteInput!

@@ -1,0 +1,5 @@
+#set($agreement = $context.result.data.Vysae[0])
+{
+  "id": "$agreement.PK",
+  "name": "$agreement.name",
+}
