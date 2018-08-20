@@ -3,16 +3,18 @@ import React, { Component } from 'react'
 import { Spin } from 'antd'
 // graphql
 import { compose, graphql } from 'react-apollo'
-import mutateAgreement from '../queries/mutateAgreement'
+import mutateMeeting from '../queries/mutateMeeting'
 
 class MeetingStatus extends Component {
   componentDidMount() {
-    const { mutateAgreement } = this.props
-    mutateAgreement({
+    const { mutateMeeting, meeting } = this.props
+    mutateMeeting({
       variables: {
-        meetingId: 'Meeting-1234',
-        agreement: {
-          name: '1234'
+        companyId: 'Company-1234',
+        meeting: {
+          start: meeting.start,
+          end: meeting.end,
+          agreements: meeting.agreements,
         }
       }
     }).then(res => console.log(res))
@@ -20,13 +22,12 @@ class MeetingStatus extends Component {
   }
 
   render() {
-
     return <div>convocado</div>
   }
 }
 
 const MeetingStatusWithInfo = compose(
-  graphql(mutateAgreement, { name: 'mutateAgreement' })
+  graphql(mutateMeeting, { name: 'mutateMeeting' })
 )(MeetingStatus)
 
 export default (MeetingStatusWithInfo)

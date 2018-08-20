@@ -16,7 +16,7 @@ const Iframe = styled.iframe`
   width: 100%;
 `
 
-class AnnounceMeeting extends Component {
+class MeetingConvene extends Component {
   constructor(props) {
     super(props)
 
@@ -49,9 +49,13 @@ class AnnounceMeeting extends Component {
           /* dni: this.props.user.dni, */
           location: 'Barcelona',
           meetingType: getFieldValue('meetingType'),
-          votingStart: getFieldValue('votingPeriod')[0],
-          votingEnd: getFieldValue('votingPeriod')[1],
-          agreementTypes: getFieldValue('agreementTypes'),
+          start: getFieldValue('votingPeriod')[0],
+          end: getFieldValue('votingPeriod')[1],
+          agreementTypes: getFieldValue('agreementTypes').map(
+            agreementName => ({
+              name: agreementName
+            })
+          ),
           additionalInfo: getFieldValue('additionalInfo')
         }
       })
@@ -83,7 +87,12 @@ class AnnounceMeeting extends Component {
         ),
     }, {
       title: 'Estado',
-      content: (<MeetingStatus meeting={meeting} prev={this.prev} next={this.next} />),
+        content: (
+          <MeetingStatus
+            meeting={meeting}
+            prev={this.prev}
+            next={this.next} />
+        ),
     }];
 
     return (
@@ -97,4 +106,4 @@ class AnnounceMeeting extends Component {
   }
 }
 
-export default  Form.create()(AnnounceMeeting)
+export default  Form.create()(MeetingConvene)

@@ -6,7 +6,7 @@ import { withRouter, Route } from 'react-router'
 import { Link } from 'react-router-dom'
 // components
 import NextMeetings from '../components/nextMeetings'
-import AnnounceMeeting from './announceMeeting'
+import MeetingConvene from './meetingConvene'
 import MeetingHistory from '../components/meetingHistory'
 import MeetingDisplayPDF from './meetingDisplayPDF'
 import MeetingVote from './meetingVote'
@@ -38,8 +38,8 @@ class RawMeetingMenu extends Component {
         <Menu.Item key="nextMeeting">
           <Link to='/meetings/next'>Próxima Junta</Link>
         </Menu.Item>
-        <Menu.Item key="announceMeeting">
-          <Link to='/meetings/announce'>Convocatoria</Link>
+        <Menu.Item key="conveneMeeting">
+          <Link to='/meetings/convene'>Convocatoria</Link>
         </Menu.Item>
         {/* <Menu.Item key="meetingHistory">
             <Link to='/meetings/history'>Historial de Juntas</Link>
@@ -71,7 +71,7 @@ class Meetings extends Component {
             />
           )}
         />
-        <Route path="/meetings/announce" component={AnnounceMeeting} />
+        <Route path="/meetings/convene" component={MeetingConvene} />
         <Route path="/meetings/sent" component={AnnouncementSent} />
         <Route path="/meetings/history" component={MeetingHistory} />
         <Route path="/meetings/pdf" component={MeetingDisplayPDF} />

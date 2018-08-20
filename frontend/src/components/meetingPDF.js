@@ -46,7 +46,7 @@ class MeetingPDF extends Component {
       return (
         <View key={index}>
           <Text>
-            {index+1}. Acuerdo: {agreement}
+            {index+1}. Acuerdo: {agreement.name}
           </Text>
         </View>
       )
@@ -58,13 +58,13 @@ class MeetingPDF extends Component {
       companyName,
       meetingType,
       person,
-      votingStart,
+      start,
       agreementTypes,
       location,
       additionalInfo
     } = this.props.meeting
-    const startDate = moment(votingStart).format('DD-MM-YYYY')
-    const startHour = moment(votingStart).format('HH:mm')
+    const startDate = moment(start).format('DD-MM-YYYY')
+    const startHour = moment(start).format('HH:mm')
     /* const endDate = moment(votingEnd).format('DD-MM-YYYY') */
     /* const endHour = moment(votingEnd).format('HH:mm') */
 

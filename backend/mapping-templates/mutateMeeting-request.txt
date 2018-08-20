@@ -2,20 +2,24 @@
 #set($batchData = [])
 #set( $meeting = ${context.arguments.meeting} )
 
-## define Meeting
+## Company
 #set( $meetingMap = {
-  "PK" : "Meeting-$uuid",
+  "PK" : $context.arguments.companyId,
   "SK" : "Meeting-$uuid",
   "start" : $meeting.start,
   "end" : $meeting.end
 } )
-
 $util.qr($batchData.add($util.dynamodb.toMapValues($meetingMap)))
 
+## Meeting
+$util.qr($meetingMap.put("PK", $meetingMap.SK))
+$util.qr($batchData.add($util.dynamodb.toMapValues($meetingMap)))
+
+## Agreements
 #foreach($agreement in $meeting.agreements)
   #set( $agreementId = $util.autoId())
   #set( $agreementMap = {
-    "PK" : $meetingMap.PK,
+    "PK" : $meetingMap.SK,
     "SK" : "Agreement-$agreementId",
     "name" : $agreement.name
   } )
