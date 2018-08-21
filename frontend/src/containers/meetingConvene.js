@@ -5,16 +5,8 @@ import { Form, Steps, Spin } from 'antd'
 import MeetingStatus from './meetingStatus'
 import MeetingConfirmation from '../components/meetingConfirmation'
 import MeetingForm from '../components/meetingForm'
-// style
-import styled from 'styled-components'
 // graphql
-import { graphql, compose } from 'react-apollo'
-import queryMeetingDocx from '../queries/queryMeetingDocx'
 const Step = Steps.Step
-
-const Iframe = styled.iframe`
-  width: 100%;
-`
 
 class MeetingConvene extends Component {
   constructor(props) {
@@ -41,19 +33,21 @@ class MeetingConvene extends Component {
   }
 
   saveMeetingState() {
-    const { getFieldValue } = this.props.form
+    const { form, company } = this.props
+    const { getFieldValue } = form
     if( getFieldValue('votingPeriod') ) {
       this.setState({
         meeting: {
           companyName: 'CYSAE',
+          company,
           /* dni: this.props.user.dni, */
           location: 'Barcelona',
           meetingType: getFieldValue('meetingType'),
           start: getFieldValue('votingPeriod')[0],
           end: getFieldValue('votingPeriod')[1],
-          agreementTypes: getFieldValue('agreementTypes').map(
+          agreements: getFieldValue('agreementTypes').map(
             agreementName => ({
-              name: agreementName
+              nameeee: agreementName
             })
           ),
           additionalInfo: getFieldValue('additionalInfo')
@@ -62,9 +56,7 @@ class MeetingConvene extends Component {
     }
   }
 
-  saveMeeting() {
-    const { meeting } = this.state
-  }
+  saveMeeting() {}
 
   render() {
     const { isLoading, form } = this.props

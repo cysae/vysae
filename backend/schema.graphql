@@ -10,7 +10,7 @@ input AgreementInput {
   votes: [VoteInput]
 }
 input VoteInput {
-  id: String!
+  id: String
   result: Int!
 }
 
@@ -68,7 +68,6 @@ type Agreement {
 type Vote {
   id: String!
   result: Int!
-  shareholder: Shareholder
 }
 
 type Docx {

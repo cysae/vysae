@@ -1,4 +1,6 @@
-#set( $meeting = $context.result.data.Vysae[0] )
+#set( $meeting = $context.result.data.Vysae[1] )
 {
-  "id": "$meeting.PK"
+  "id": "$meeting.PK",
+  "start": "$meeting.start",
+  "end": "$meeting.end"
 }

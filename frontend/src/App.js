@@ -15,11 +15,9 @@ import AddCompany from './containers/addCompany'
 import Info from './containers/info'
 import Meetings from './containers/meetings'
 // AppSync/Apollo
-import AWSAppSyncClient, { createAppSyncLink, createLinkWithCache} from "aws-appsync";
+import AWSAppSyncClient, { createLinkWithCache} from "aws-appsync";
 import { Rehydrated } from 'aws-appsync-react';
-import { AUTH_TYPE } from "aws-appsync/lib/link/auth-link";
 import { ApolloProvider } from 'react-apollo';
-import AppSync from './AppSync.js';
 import { ApolloLink } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
 import { compose, graphql } from 'react-apollo'
@@ -59,18 +57,18 @@ const stateLink = createLinkWithCache(cache => withClientState({
   }
 }))
 
-const appSyncLink = createAppSyncLink({
-  url: AppSync.graphqlEndpoint,
-  region: AppSync.region,
+
+const link = ApolloLink.from([stateLink])
+
+const client = new AWSAppSyncClient({
+  url: aws_exports.graphqlEndpoint,
+  region: aws_exports.region,
   auth: {
-    type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
+    type: aws_exports.authenticationType,
+    apiKey: aws_exports.apiKey,
     jwtToken: async () => (await Auth.currentSession()).getIdToken().getJwtToken(),
-  },
-})
-
-const link = ApolloLink.from([stateLink, appSyncLink])
-
-const client = new AWSAppSyncClient({}, { link })
+  }
+}, { link })
 
 
 class App extends Component {
@@ -134,9 +132,7 @@ const AppWithData = compose(
 )(App)
 
 const WithApollo = () => (
-  <ApolloProvider
-    client={client}
-  >
+  <ApolloProvider client={client}>
     <Rehydrated>
       <AppWithData />
     </Rehydrated>

@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react'
 // antd
-import { Table, Divider } from 'antd'
+import { Table } from 'antd'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 function NextMeetings(props) {
-  const { meetings, selectMeeting, mutateCurrentSelections } = props
+  const { meetings, mutateCurrentSelections } = props
 
   const columns = [{
     title: 'Commienza',

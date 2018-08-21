@@ -59,7 +59,7 @@ class MeetingPDF extends Component {
       meetingType,
       person,
       start,
-      agreementTypes,
+      agreements,
       location,
       additionalInfo
     } = this.props.meeting
@@ -85,7 +85,7 @@ class MeetingPDF extends Component {
                 </View>
                 <View style={styles.section}>
                   <Text style={styles.h3}>ORDEN DEL DÍA</Text>
-                  {this.renderAgreementList(agreementTypes)}
+                  {this.renderAgreementList(agreements)}
                 </View>
 
                 <View style={styles.section}>

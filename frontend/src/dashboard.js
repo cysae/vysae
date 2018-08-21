@@ -5,6 +5,7 @@ import { Table, Button } from 'antd'
 import queryShareholder from './queries/queryShareholder'
 import queryCurrentSelections from './queries/queryCurrentSelections'
 import mutateCurrentSelections from './queries/mutateCurrentSelections'
+import mutateVote from './queries/mutateVote'
 import { graphql, compose } from 'react-apollo'
 
 const MyTable = styled(Table)`
@@ -17,6 +18,20 @@ class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.getSelectedRow = this.getSelectedRow.bind(this)
+  }
+
+  componentDidMount() {
+    const { mutateVote } = this.props
+    mutateVote({
+      variables: {
+        agreementId: 'Agreement-Fuck',
+        vote: {
+          id: 'Vote-1234',
+          result: 1
+        }
+      }
+    }).then(res => console.log(res))
+    .catch(err => console.error(err))
   }
 
   getSelectedRow(record, index) {
@@ -69,14 +84,12 @@ class Dashboard extends Component {
 
 const DashboardWithData = compose(
   graphql(queryShareholder, {
-    options: (props) => {
-      return {
-        variables: {
-          id: props.shareholderId,
-          withCompanies: true
-        }
+    options: (props) => ({
+      variables: {
+        id: props.shareholderId,
+        withCompanies: true
       }
-    },
+    }),
     props: ({ data: { loading, queryShareholder } }) => ({
       isShareholderLoading: loading,
       shareholder: queryShareholder,
@@ -88,7 +101,11 @@ const DashboardWithData = compose(
       currentCompanyId: companyId
     })
   }),
-  graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' })
+  graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' }),
+  graphql(mutateVote, {
+    name: 'mutateVote',
+    fetchPolicy: 'network-only'
+  })
 )(Dashboard)
 
 export default DashboardWithData
