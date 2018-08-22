@@ -22,7 +22,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const { createMeeting } = this.props
-    const companyId = 'Company-ablack'
+    const companyId = 'Company-yiha'
     const meeting = {
       "start": "starttt",
       "end": "enddd",

@@ -17,7 +17,7 @@ import Meetings from './containers/meetings'
 import Test from './containers/test'
 // AppSync/Apollo
 import appSyncConfig from './AppSync'
-import AWSAppSyncClient, { createLinkWithCache } from "aws-appsync";
+import AWSAppSyncClient, { createAppSyncLink, createLinkWithCache } from "aws-appsync";
 import { Rehydrated } from 'aws-appsync-react';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloLink } from 'apollo-link'
@@ -59,10 +59,7 @@ const stateLink = createLinkWithCache(cache => withClientState({
   }
 }))
 
-
-const link = ApolloLink.from([stateLink])
-
-const client = new AWSAppSyncClient({
+const appSyncLink = createAppSyncLink({
   url: appSyncConfig.graphqlEndpoint,
   region: appSyncConfig.region,
   auth: {
@@ -71,6 +68,10 @@ const client = new AWSAppSyncClient({
     jwtToken: async () => (await Auth.currentSession()).getIdToken().getJwtToken(),
   },
 })
+
+const link = ApolloLink.from([stateLink, appSyncLink])
+
+const client = new AWSAppSyncClient({}, { link })
 
 
 class App extends Component {
