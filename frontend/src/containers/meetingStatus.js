@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 // graphql
 import { compose, graphql } from 'react-apollo'
-import mutateMeeting from '../queries/mutateMeeting'
 
 class MeetingStatus extends Component {
   componentDidMount() {
@@ -29,8 +28,5 @@ class MeetingStatus extends Component {
   }
 }
 
-const MeetingStatusWithInfo = compose(
-  graphql(mutateMeeting, { name: 'mutateMeeting' })
-)(MeetingStatus)
 
-export default (MeetingStatusWithInfo)
+export default (MeetingStatus)

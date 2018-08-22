@@ -14,8 +14,10 @@ import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
 import Info from './containers/info'
 import Meetings from './containers/meetings'
+import Test from './containers/test'
 // AppSync/Apollo
-import AWSAppSyncClient, { createLinkWithCache} from "aws-appsync";
+import appSyncConfig from './AppSync'
+import AWSAppSyncClient, { createLinkWithCache } from "aws-appsync";
 import { Rehydrated } from 'aws-appsync-react';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloLink } from 'apollo-link'
@@ -61,14 +63,14 @@ const stateLink = createLinkWithCache(cache => withClientState({
 const link = ApolloLink.from([stateLink])
 
 const client = new AWSAppSyncClient({
-  url: aws_exports.graphqlEndpoint,
-  region: aws_exports.region,
+  url: appSyncConfig.graphqlEndpoint,
+  region: appSyncConfig.region,
   auth: {
-    type: aws_exports.authenticationType,
-    apiKey: aws_exports.apiKey,
+    type: appSyncConfig.authenticationType,
+    apiKey:  appSyncConfig.apiKey,
     jwtToken: async () => (await Auth.currentSession()).getIdToken().getJwtToken(),
-  }
-}, { link })
+  },
+})
 
 
 class App extends Component {
@@ -107,6 +109,11 @@ class App extends Component {
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
             <Route
               exact
+              path="/test"
+              component={Test}
+            />
+            <Route
+              exact
               path="/"
               render={() => <Dashboard shareholderId={shareholderId} />}
             />
@@ -116,7 +123,7 @@ class App extends Component {
               component={Info}
               shareholderId={shareholderId}
             />
-            <CurrentCompanyRoute path="/meetings" component={Meetings}/>
+            <CurrentCompanyRoute path="/meetings" component={Meetings} />
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>

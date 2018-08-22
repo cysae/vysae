@@ -81,9 +81,9 @@ custom:
         response: "queryMeeting-response.txt"
       - dataSource: Vysae
         type: Mutation
-        field: mutateMeeting
-        request: "mutateMeeting-request.txt"
-        response: "mutateMeeting-response.txt"
+        field: createMeeting
+        request: "createMeetingMutation-request.txt"
+        response: "createMeetingMutation-response.txt"
       - dataSource: Vysae
         type: Agreement
         field: votes

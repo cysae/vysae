@@ -1,16 +1,16 @@
 input MeetingInput {
-  id: String,
+  id: ID,
   start: String!,
   end: String!,
   agreements: [AgreementInput]!
 }
 input AgreementInput {
-  id: String,
+  id: ID,
   name: String!,
   votes: [VoteInput]
 }
 input VoteInput {
-  id: String
+  id: ID
   result: Int!
 }
 
@@ -18,29 +18,25 @@ type Mutation {
   createCompany(
     name: String
   ): Company!
-  mutateMeeting(
-    companyId: String!,
+  createMeeting(
+    companyId: ID!,
     meeting: MeetingInput!
   ): Meeting!
-  mutateAgreement(
-    meetingId: String!,
-    agreement: AgreementInput!
-  ): Agreement!
   mutateVote(
-    agreementId: String!,
+    agreementId: ID!,
     vote: VoteInput!
   ): Vote!
 }
 
 type Query {
   queryCompany(id: String!): Company
-  queryMeeting(id: String!): Meeting
+  queryMeeting(id: ID!): Meeting
   queryShareholder(id: String!): Shareholder
   queryMeetingDocx: Docx
 }
 
 type Company {
-  id: String!
+  id: ID!
   name: String
   shareholders: [Shareholder]
   meetings: [Meeting]
@@ -53,20 +49,20 @@ type Shareholder {
 }
 
 type Meeting {
-  id: String!
+  id: ID!
   start: String!
   end: String!
   agreements: [Agreement]
 }
 
 type Agreement {
-  id: String!
+  id: ID!
   name: String!
   votes: [Vote]
 }
 
 type Vote {
-  id: String!
+  id: ID!
   result: Int!
 }
 

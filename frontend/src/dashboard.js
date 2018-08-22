@@ -5,7 +5,7 @@ import { Table, Button } from 'antd'
 import queryShareholder from './queries/queryShareholder'
 import queryCurrentSelections from './queries/queryCurrentSelections'
 import mutateCurrentSelections from './queries/mutateCurrentSelections'
-import mutateVote from './queries/mutateVote'
+import MutationCreateMeeting from './queries/MutationCreateMeeting'
 import { graphql, compose } from 'react-apollo'
 
 const MyTable = styled(Table)`
@@ -21,17 +21,20 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    const { mutateVote } = this.props
-    mutateVote({
-      variables: {
-        agreementId: 'Agreement-Fuck',
-        vote: {
-          id: 'Vote-1234',
-          result: 1
-        }
-      }
-    }).then(res => console.log(res))
-    .catch(err => console.error(err))
+    const { createMeeting } = this.props
+    const companyId = 'Company-ablack'
+    const meeting = {
+      "start": "starttt",
+      "end": "enddd",
+    	"agreements": [{
+      	"name": "agreement 1"
+      }, {
+        "name": "agreement 2"
+      }]
+    }
+    createMeeting(companyId, meeting)
+      .then(res => console.log(res))
+      .catch(err => console.error(err))
   }
 
   getSelectedRow(record, index) {
@@ -102,10 +105,19 @@ const DashboardWithData = compose(
     })
   }),
   graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' }),
-  graphql(mutateVote, {
-    name: 'mutateVote',
-    fetchPolicy: 'network-only'
-  })
+  graphql(
+    MutationCreateMeeting,
+    {
+      props: (props) => ({
+        createMeeting: (companyId, meeting) => props.mutate({
+          variables: {
+            companyId,
+            meeting
+          }
+        })
+      })
+    }
+  )
 )(Dashboard)
 
 export default DashboardWithData

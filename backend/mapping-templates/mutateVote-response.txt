@@ -2,5 +2,5 @@
 {
   "__typename": "Vote",
   "id": "$vote.PK",
-  "result": "$vote.result"
+  "result": $vote.result 
 }
