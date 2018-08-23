@@ -2,7 +2,7 @@ input MeetingInput {
   id: ID,
   start: String!,
   end: String!,
-  agreements: [AgreementInput]!
+  agreements: [AgreementInput]
 }
 input AgreementInput {
   id: ID,

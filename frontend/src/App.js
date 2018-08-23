@@ -14,7 +14,6 @@ import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
 import Info from './containers/info'
 import Meetings from './containers/meetings'
-import Test from './containers/test'
 // AppSync/Apollo
 import appSyncConfig from './AppSync'
 import AWSAppSyncClient, { createAppSyncLink, createLinkWithCache } from "aws-appsync";
@@ -74,6 +73,7 @@ const link = ApolloLink.from([stateLink, appSyncLink])
 const client = new AWSAppSyncClient({}, { link })
 
 
+
 class App extends Component {
   state = {
     isLoading: true,
@@ -108,11 +108,6 @@ class App extends Component {
             <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item>
           </Breadcrumb>
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-            <Route
-              exact
-              path="/test"
-              component={Test}
-            />
             <Route
               exact
               path="/"

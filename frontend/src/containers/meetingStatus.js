@@ -1,32 +1,48 @@
 import React, { Component } from 'react'
 // graphql
-import { compose, graphql } from 'react-apollo'
+import MutationCreateMeeting from '../queries/MutationCreateMeeting'
+import queryCompany from '../queries/queryCompany'
+import { graphql } from 'react-apollo'
 
 class MeetingStatus extends Component {
   componentDidMount() {
-    const { mutateMeeting, meeting } = this.props
-    console.log(meeting)
-    const variables = {
-      companyId: meeting.company.id,
-      meeting: {
-        start: meeting.start.toISOString(),
-        end: meeting.end.toISOString(),
-        agreements: meeting.agreements,
-      }
+    const { createMeeting, meeting } = this.props
+    const companyId = meeting.company.id
+    const meetingVar = {
+      "start": meeting.start.toISOString(),
+      "end": meeting.end.toISOString(),
+    	"agreements": meeting.agreements
     }
-    console.log(variables)
-
-    mutateMeeting({
-      variables
-    }).then(({data}) => console.log('got data', data))
-    .catch(err => console.log(err))
+    createMeeting(companyId, meetingVar)
+      .then(res => console.log(res))
+      .catch(err => console.error(err))
   }
 
   render() {
-    console.log(this.props)
     return <div>convocado</div>
   }
 }
 
+export default graphql(
+  MutationCreateMeeting,
+  {
+    options: props => ({
+      update: (proxy, { data: { createMeeting } }) => {
+        const query = queryCompany
+        const variables = { id: props.meeting.company.id, withMeetings: true, withAgreements: true }
+        const data = proxy.readQuery({ query, variables })
+        data.queryCompany.meetings.push({...createMeeting, agreements: []})
 
-export default (MeetingStatus)
+        proxy.writeQuery({ query, data, variables })
+      }
+    }),
+    props: (props) => ({
+      createMeeting: (companyId, meeting) => props.mutate({
+        variables: {
+          companyId,
+          meeting
+        }
+      })
+    })
+  }
+)(MeetingStatus)

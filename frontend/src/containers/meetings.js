@@ -54,9 +54,9 @@ class Meetings extends Component {
   render() {
     const { isLoading, isCompanyLoading, mutateCurrentSelections,
     company } = this.props
-    const { meetings } = company
 
-    if ( isLoading || isCompanyLoading ) return <Spin size="large" />
+    if ( isLoading || isCompanyLoading || typeof company === 'undefined' ) return <Spin size="large" />
+    const { meetings } = company
 
     return (
     <Row type="flex">

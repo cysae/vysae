@@ -47,7 +47,7 @@ class MeetingConvene extends Component {
           end: getFieldValue('votingPeriod')[1],
           agreements: getFieldValue('agreementTypes').map(
             agreementName => ({
-              nameeee: agreementName
+              name: agreementName
             })
           ),
           additionalInfo: getFieldValue('additionalInfo')

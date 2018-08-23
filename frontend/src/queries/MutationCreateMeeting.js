@@ -6,7 +6,9 @@ export default gql(`
       companyId: $companyId
       meeting: $meeting
     ) {
-      id
+      id,
+      start,
+      end
     }
   }
 `)
