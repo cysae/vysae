@@ -23,7 +23,7 @@ class RawMeetingMenu extends Component {
     const { pathname } = this.props.location
     switch(pathname) {
       case '/meetings/next': return ['nextMeeting']
-      case '/meetings/vote': return ['voteMeeting']
+      case '/meetings/convene': return ['conveneMeeting']
       case '/meetings/announce': return ['announceMeeting']
       case '/meetings/history': return ['meetingHistory']
       default: return ['nextMeeting']

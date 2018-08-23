@@ -8,7 +8,6 @@ class MeetingStatus extends Component {
   componentDidMount() {
     const { createMeeting, meeting } = this.props
     const companyId = meeting.company.id
-    console.log(companyId)
     const meetingVar = {
       "start": meeting.start.toISOString(),
       "end": meeting.end.toISOString(),
