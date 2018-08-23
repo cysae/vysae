@@ -119,7 +119,10 @@ class App extends Component {
               component={Info}
               shareholderId={shareholderId}
             />
-            <CurrentCompanyRoute path="/meetings" component={Meetings} />
+            <CurrentCompanyRoute
+              path="/meetings"
+              component={Meetings}
+            />
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>

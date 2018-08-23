@@ -34,16 +34,16 @@ class MeetingForm extends Component {
 
     return(
       <Form onSubmit={this.handleSubmit} >
-        <FormItem label="Tipo" {...formItemLayout} >
-          {getFieldDecorator('meetingType', {
-             rules: [{ required: true, message: 'Es obligatorio.' }],
-          })(
-             <RadioGroup>
-               <RadioButton value="ordinaryMeeting">Junta General Ordiniaria</RadioButton>
-               <RadioButton value="extraordinaryMeeting">Junta General Extraordinaria</RadioButton>
-             </RadioGroup>
-           )}
-        </FormItem>
+        {/* <FormItem label="Tipo" {...formItemLayout} >
+            {getFieldDecorator('meetingType', {
+            rules: [{ required: true, message: 'Es obligatorio.' }],
+            })(
+            <RadioGroup>
+            <RadioButton value="ordinaryMeeting">Junta General Ordiniaria</RadioButton>
+            <RadioButton value="extraordinaryMeeting">Junta General Extraordinaria</RadioButton>
+            </RadioGroup>
+            )}
+            </FormItem> */}
         <FormItem
           label="Duracion:"
           {...formItemLayout}
@@ -65,14 +65,14 @@ class MeetingForm extends Component {
           fieldId="agreementTypes"
         />
 
-        <FormItem
-          label="Informacion Addicional"
-          {...formItemLayout}
-        >
-          {getFieldDecorator('additionalInfo', {
-             rules: [{ required: true, message: 'Es obligatorio.' }],
-          })(<TextArea autosize={{ minRows: 4}}  />)}
-        </FormItem>
+        {/* <FormItem
+            label="Informacion Addicional"
+            {...formItemLayout}
+            >
+            {getFieldDecorator('additionalInfo', {
+            rules: [{ required: true, message: 'Es obligatorio.' }],
+            })(<TextArea autosize={{ minRows: 4}}  />)}
+            </FormItem> */}
 
         <FormItem {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit" style={{width: '100%'}}>

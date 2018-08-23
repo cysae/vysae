@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom'
 import { graphql } from 'react-apollo'
 import queryCompany from '../queries/queryCompany'
 
-function NextMeetings(props) {
-  const { meetings, mutateCurrentSelections } = props
+function MeetingNext(props) {
+  const { meetings, selectMeeting } = props
 
   const columns = [{
     title: 'Commienza',
@@ -29,21 +29,13 @@ function NextMeetings(props) {
       )
     }
   }, {
-    title: 'Tipo',
-    key: 'type'
-  }, {
     title: 'Acciones',
     key: 'action',
     render: (text, record) => (
       <Fragment>
         {/* <Link to="/meetings/pdf" onClick={() => selectMeeting(record)}>Leer orden del día</Link> */}
         {/* <Divider type="vertical"/> */}
-        <Link to="/meetings/vote" onClick={() => mutateCurrentSelections({
-            variables: {
-              field: 'meetingId',
-              id: record.id
-            }
-        })}>Votar</Link>
+        <Link to="/meetings/vote" onClick={() => selectMeeting(record)}>Votar</Link>
       </Fragment>
     )
   }]
@@ -57,4 +49,4 @@ function NextMeetings(props) {
   )
 }
 
-export default NextMeetings
+export default MeetingNext

@@ -5,7 +5,7 @@ import { Menu, Row, Col, Spin } from 'antd'
 import { withRouter, Route } from 'react-router'
 import { Link } from 'react-router-dom'
 // components
-import NextMeetings from '../components/nextMeetings'
+import MeetingNext from '../components/meetingNext'
 import MeetingConvene from './meetingConvene'
 import MeetingHistory from '../components/meetingHistory'
 import MeetingDisplayPDF from './meetingDisplayPDF'
@@ -51,9 +51,20 @@ class RawMeetingMenu extends Component {
 const MeetingMenu = withRouter(RawMeetingMenu)
 
 class Meetings extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      meeting: {}
+    }
+    this.selectMeeting = this.selectMeeting.bind(this)
+  }
+
+  selectMeeting(meeting) {
+    this.setState({ meeting })
+  }
+
   render() {
-    const { isLoading, isCompanyLoading, mutateCurrentSelections,
-    company } = this.props
+    const { isLoading, isCompanyLoading, company } = this.props
 
     if ( isLoading || isCompanyLoading || typeof company === 'undefined' ) return <Spin size="large" />
     const { meetings } = company
@@ -67,9 +78,9 @@ class Meetings extends Component {
         <Route
           path="/meetings/next"
           render={() => (
-            <NextMeetings
+            <MeetingNext
               meetings={meetings}
-              mutateCurrentSelections={mutateCurrentSelections}
+              selectMeeting={this.selectMeeting}
             />
           )}
         />
@@ -84,7 +95,12 @@ class Meetings extends Component {
         <Route path="/meetings/sent" component={AnnouncementSent} />
         <Route path="/meetings/history" component={MeetingHistory} />
         <Route path="/meetings/pdf" component={MeetingDisplayPDF} />
-        <Route path="/meetings/vote" component={MeetingVote} />
+        <Route
+          path="/meetings/vote"
+          render={() => (
+            <MeetingVote meeting={this.state.meeting} />
+          )}
+        />
         <Route path="/meetings/result" component={MeetingResult} />
       </Col>
     </Row>
@@ -104,14 +120,14 @@ const MeetingsWithData = compose(
       variables: {
         id: props.currentCompanyId,
         withMeetings: true,
+        withAgreements: true,
       }
     }),
     props: ({ data: { loading, queryCompany }}) => ({
       isCompanyLoading: loading,
       company: queryCompany,
     })
-  }),
-  graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' })
+  })
 )(Meetings)
 
 export default MeetingsWithData
