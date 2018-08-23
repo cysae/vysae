@@ -82,8 +82,8 @@ custom:
       - dataSource: Vysae
         type: Mutation
         field: createMeeting
-        request: "createMeetingMutation-request.txt"
-        response: "createMeetingMutation-response.txt"
+        request: "MutationCreateMeeting-request.txt"
+        response: "MutationCreateMeeting-response.txt"
       - dataSource: Vysae
         type: Agreement
         field: votes

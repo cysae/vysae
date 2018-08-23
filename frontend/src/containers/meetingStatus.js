@@ -8,6 +8,7 @@ class MeetingStatus extends Component {
   componentDidMount() {
     const { createMeeting, meeting } = this.props
     const companyId = meeting.company.id
+    console.log(companyId)
     const meetingVar = {
       "start": meeting.start.toISOString(),
       "end": meeting.end.toISOString(),
@@ -31,7 +32,7 @@ export default graphql(
         const query = queryCompany
         const variables = { id: props.meeting.company.id, withMeetings: true, withAgreements: true }
         const data = proxy.readQuery({ query, variables })
-        data.queryCompany.meetings.push({...createMeeting, agreements: []})
+        data.queryCompany.meetings.push(createMeeting)
 
         proxy.writeQuery({ query, data, variables })
       }
