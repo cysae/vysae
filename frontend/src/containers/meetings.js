@@ -101,7 +101,15 @@ class Meetings extends Component {
             <MeetingVote meeting={this.state.meeting} />
           )}
         />
-        <Route path="/meetings/result" component={MeetingResult} />
+      <Route
+        path="/meetings/result"
+        render={() => (
+          <MeetingResult
+            companyId={company.id}
+            meeting={this.state.meeting}
+          />
+        )}
+      />
       </Col>
     </Row>
     )

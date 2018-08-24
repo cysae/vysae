@@ -1,0 +1,26 @@
+#set( $votes = $context.arguments.votes )
+#set( $agreementId = $context.arguments.agreementId )
+#set( $batchData = [] )
+
+#foreach( $vote in $votes )
+	#set( $uuid = $util.autoId() )
+    #set( $voteDB = {
+    	"PK": "Vote-$uuid",
+        "SK": "Vote-$uuid",
+        "result": "$vote.result"
+    })
+	$util.qr($batchData.add($util.dynamodb.toMapValues($voteDB)))
+    
+    #set( $agreementDB = $voteDB )
+    #set( $agreementDB.PK = $agreementId )
+	$util.qr($batchData.add($util.dynamodb.toMapValues($agreementDB)))
+#end
+
+
+{
+  "version" : "2018-05-29",
+  "operation" : "BatchPutItem",
+  "tables": {
+    "Vysae": $utils.toJson($batchData)
+  }
+}

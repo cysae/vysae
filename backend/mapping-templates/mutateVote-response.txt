@@ -1,6 +1,0 @@
-#set($vote = $context.result.data.Vysae[0])
-{
-  "__typename": "Vote",
-  "id": "$vote.PK",
-  "result": $vote.result 
-}

@@ -1,0 +1,17 @@
+#set( $votes = [] )
+#set( $results = $context.result.data.Vysae)
+
+#foreach($res in $results)
+    #set( $vote = {} )
+	#set ($hyphen = $res.PK.indexOf('-'))
+	#set ($substring = $res.PK.substring(0, $hyphen))
+	#if($substring == "Vote")
+	  $util.qr($vote.put("id", $res.PK))
+      $util.qr($vote.put("name", $res.name))
+      $util.qr($vote.put("result", $res.result))
+        
+      $util.qr($votes.add($vote))
+    #end
+#end
+
+$util.toJson($votes)

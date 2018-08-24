@@ -3,10 +3,6 @@ import React, { Component, Fragment } from 'react'
 import { Row, Col, Table, Spin } from 'antd'
 // recharts
 //import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
-// graphql
-import { compose, graphql } from 'react-apollo'
-import queryCurrentSelections from '../queries/queryCurrentSelections'
-import queryMeeting from '../queries/queryMeeting'
 
 class MeetingResult extends Component {
   getAgreementResult(agreement) {
@@ -102,26 +98,4 @@ class MeetingResult extends Component {
   }
 }
 
-const MeetingResultWithData = compose(
-  graphql(queryCurrentSelections, {
-    props: ({ data: { loading, currentSelections: { meetingId }}}) => ({
-      isLoading: loading,
-      currentMeetingId: meetingId
-    })
-  }),
-  graphql(queryMeeting, {
-    options: (props) =>  ({
-      variables: {
-        id: props.currentMeetingId,
-        withAgreements: true,
-        withVotes: true
-      }
-    }),
-    props: ({ data: { loading, queryMeeting }}) => ({
-      isMeetingLoading: loading,
-      meeting: queryMeeting
-    })
-  })
-)(MeetingResult)
-
-export default MeetingResultWithData
+export default MeetingResult

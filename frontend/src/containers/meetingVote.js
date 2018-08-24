@@ -1,36 +1,47 @@
 import React, { Component, Fragment } from 'react'
+// antd
 import { Form, List, Radio, Button, Divider, Spin } from 'antd'
-// redux
-import { connect } from 'react-redux'
-import {
-  updateVoteForm,
-  requestVote
-} from '../actions/index.js'
 import { Link } from 'react-router-dom'
 // graphql
 import { compose, graphql } from 'react-apollo'
-import queryCurrentSelections from '../queries/queryCurrentSelections'
-import queryMeeting from '../queries/queryMeeting'
+import MutationCreateVote from '../queries/MutationCreateVote'
+import queryCompany from '../queries/queryCompany'
+// router
+import { withRouter } from 'react-router'
 
 const FormItem = Form.Item
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 class MeetingVote extends Component {
-  handleSubmit = (e) => {
+  state = {
+    isLoading: false
+  }
+
+  handleSubmit = async (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const { requestVote, form, meeting, company } = this.props
-        requestVote(form.getFieldsValue(), meeting.uuid, company.uuid)
+        const { createVote, form, history } = this.props
+
+        this.setState({ isLoading: true })
+        for (const agreementId in form.getFieldsValue()) {
+          const vote = {
+            result: form.getFieldsValue()[agreementId]
+          }
+          createVote(agreementId, vote)
+        }
+        /* history.push('/meetings/result') */
       }
     });
   }
 
   render() {
-    const {  meeting, form } = this.props
+    const { meeting, form } = this.props
     const { agreements } = meeting
     const { getFieldDecorator } = form
+
+    if (this.state.isLoading) return <Spin size="large" />
 
     return (
       <Form layout="vertical" onSubmit={this.handleSubmit}>
@@ -46,9 +57,9 @@ class MeetingVote extends Component {
                 </Button>
                 <Divider type="vertical" />
                 <Button type="primary" htmlType="submit">
-                  <Link to="/meetings/result">
+                  {/* <Link to="/meetings/result"> */}
                     Continuar
-                  </Link>
+                  {/* </Link> */}
                 </Button>
               </FormItem>
             </Fragment>
@@ -58,13 +69,13 @@ class MeetingVote extends Component {
           renderItem={item => (
             <List.Item actions={[
               <FormItem>
-                {getFieldDecorator(item.name, {
+                {getFieldDecorator(item.id, {
                    rules: [{ required: true, message: 'Es obligatorio.' }],
                 })(
                    <RadioGroup>
-                     <RadioButton value="yes">Sí</RadioButton>
-                     <RadioButton value="blank">En blanco</RadioButton>
-                     <RadioButton value="no">No</RadioButton>
+                     <RadioButton value={1}>Sí</RadioButton>
+                     <RadioButton value={0}>En blanco</RadioButton>
+                     <RadioButton value={-1}>No</RadioButton>
                    </RadioGroup>
                  )}
               </FormItem>
@@ -77,4 +88,25 @@ class MeetingVote extends Component {
   }
 }
 
-export default Form.create()(MeetingVote)
+
+export default graphql(
+  MutationCreateVote,
+  {
+    options: props => ({
+      update: (proxy, { data }) => {
+        const { companyId } = props
+        console.log(data, props)
+        const query = queryCompany
+        /* const variables = { id: } */
+      }
+    }),
+    props: (props) => ({
+      createVote: async (agreementId, vote) => await props.mutate({
+        variables: {
+          agreementId,
+          vote
+        }
+      })
+    })
+  }
+)(Form.create()(withRouter(MeetingVote)))

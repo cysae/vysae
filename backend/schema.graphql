@@ -22,10 +22,10 @@ type Mutation {
     companyId: ID!,
     meeting: MeetingInput!
   ): Meeting!
-  mutateVote(
+  createVotes(
     agreementId: ID!,
-    vote: VoteInput!
-  ): Vote!
+    votes: [VoteInput]!
+  ): [Vote!]
 }
 
 type Query {
