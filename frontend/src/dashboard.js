@@ -85,23 +85,6 @@ const DashboardWithData = compose(
     })
   }),
   graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' }),
-  graphql(
-    MutationCreateCompany,
-    {
-      options: props => ({
-        update: (proxy, { data }) => {
-          console.log(data)
-        }
-      }),
-      props: (props) => ({
-        createCompany: (name) => props.mutate({
-          variables: {
-            name
-          }
-        })
-      })
-    }
-  )
 )(Dashboard)
 
 export default DashboardWithData

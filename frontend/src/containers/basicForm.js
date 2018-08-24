@@ -6,8 +6,12 @@ import {
   requestCompanyUpdate,
   requestUsersToCompanyAdmin,
 } from '../actions/index.js'
+// graphql
+import { graphql } from 'react-apollo'
+import MutationCreateCompany from '../queries/MutationCreateCompany'
 // components
 const FormItem = Form.Item
+
 
 class BasicForm extends Component {
   handleSubmit = (e) => {
@@ -26,7 +30,7 @@ class BasicForm extends Component {
   }
 
   createCompany() {
-    const { form, signedInUser } = this.props
+    const { form, signedInUser, createCompany } = this.props
     const { getFieldValue } = form
     const companyId = getFieldValue('companyId')
     const name = getFieldValue('name')
@@ -40,8 +44,7 @@ class BasicForm extends Component {
       nif,
     }
 
-    this.props.requestCompanyUpdate( companyId, body)
-    this.props.requestUsersToCompanyAdmin([signedInUser], companyId)
+    createCompany(name)
   }
 
   render() {
@@ -93,11 +96,21 @@ const mapStateToProps = state => {
     signedInUser: state.signedInUser
   }
 }
-const mapDispatchToProps = dispatch => {
-  return {
-    requestCompanyUpdate: (companyId, body) => { dispatch(requestCompanyUpdate(companyId, body)) },
-    requestUsersToCompanyAdmin: (users, companyId) => { dispatch(requestUsersToCompanyAdmin(users, companyId)) },
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(BasicForm)
+export default graphql(
+  MutationCreateCompany,
+  {
+    options: props => ({
+      update: (proxy, { data }) => {
+        console.log(data)
+      }
+    }),
+    props: (props) => ({
+      createCompany: (name) => props.mutate({
+        variables: {
+          name
+        }
+      })
+    })
+  }
+)(connect(mapStateToProps)(BasicForm))
