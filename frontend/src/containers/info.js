@@ -102,14 +102,9 @@ const InfoWithData = compose(
     })
   }),
   graphql(QueryGetShareholder, {
-    options: (props) => ({
-      variables: {
-        id: props.currentShareholderId
-      },
-    }),
-    props: ({ data: { loading, queryShareholder }}) => ({
+    props: ({ data: { loading, getShareholder }}) => ({
       isShareholderLoading: loading,
-      shareholder: queryShareholder,
+      shareholder: getShareholder,
     })
   }),
 )(Info)
