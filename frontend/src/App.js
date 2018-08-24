@@ -22,13 +22,7 @@ import { ApolloProvider } from 'react-apollo';
 import { ApolloLink } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
 import { compose, graphql } from 'react-apollo'
-import mutateCurrentSelections from './queries/mutateCurrentSelections'
 import './App.css'
-import Amplify from 'aws-amplify'
-import aws_exports from './aws-exports.js'
-import { updateUserAttributes } from './utils/amplify'
-updateUserAttributes();
-Amplify.configure(aws_exports)
 const { Content, Footer } = Layout;
 
 // Apollo
@@ -73,35 +67,8 @@ const link = ApolloLink.from([stateLink, appSyncLink])
 const client = new AWSAppSyncClient({}, { link })
 
 
-
 class App extends Component {
-  state = {
-    isLoading: true,
-    shareholderId: null,
-  }
-
-  async componentDidMount() {
-    const user = await Auth.currentAuthenticatedUser()
-    console.log(await Auth.currentUserPoolUser())
-    console.log(user)
-    const shareholderId = user.attributes['custom:shareholderId']
-    this.props.mutateCurrentSelections({
-      variables: {
-        field: 'shareholderId',
-        id: shareholderId
-      }
-    })
-    this.setState({
-      isLoading: false,
-      shareholderId,
-    })
-  }
-
   render() {
-    const { isLoading, shareholderId } = this.state
-
-    if(isLoading) return <div>loading...</div>
-
     return (
       <Layout>
         <MyHeader />
@@ -113,13 +80,12 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={() => <Dashboard shareholderId={shareholderId} />}
+              component={Dashboard}
             />
             <Route path="/añadirSociedad" component={AddCompany}/>
             <CurrentCompanyRoute
               path="/info"
               component={Info}
-              shareholderId={shareholderId}
             />
             <CurrentCompanyRoute
               path="/meetings"
@@ -135,14 +101,10 @@ class App extends Component {
   }
 }
 
-const AppWithData = compose(
-  graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' })
-)(App)
-
 const WithApollo = () => (
   <ApolloProvider client={client}>
     <Rehydrated>
-      <AppWithData />
+      <App />
     </Rehydrated>
   </ApolloProvider>
 );
