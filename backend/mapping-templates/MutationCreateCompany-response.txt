@@ -1,0 +1,10 @@
+## Company
+#set( $result = $context.result.data.Vysae[0] )
+
+#set( $company = {
+  "id": "$result.PK",
+  "name": "$result.name"
+  }
+)
+
+$util.toJson($company)

@@ -82,6 +82,8 @@ class App extends Component {
 
   async componentDidMount() {
     const user = await Auth.currentAuthenticatedUser()
+    console.log(await Auth.currentUserPoolUser())
+    console.log(user)
     const shareholderId = user.attributes['custom:shareholderId']
     this.props.mutateCurrentSelections({
       variables: {

@@ -20,7 +20,7 @@ input VoteWithAgreementId {
 
 type Mutation {
   createCompany(
-    name: String
+    name: String!
   ): Company!
   createMeeting(
     companyId: ID!,
@@ -34,7 +34,7 @@ type Mutation {
 type Query {
   queryCompany(id: String!): Company
   queryMeeting(id: ID!): Meeting
-  queryShareholder(id: String!): Shareholder
+  getShareholder: Shareholder
   queryMeetingDocx: Docx
 }
 

@@ -1,0 +1,4 @@
+{
+  "id": "Shareholder-$context.result.PK",
+  "name": "$context.result.name"
+}

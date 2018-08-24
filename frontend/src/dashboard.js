@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Table, Button } from 'antd'
 // AppSync
-import queryShareholder from './queries/queryShareholder'
+import QueryGetShareholder from './queries/QueryGetShareholder'
 import queryCurrentSelections from './queries/queryCurrentSelections'
 import mutateCurrentSelections from './queries/mutateCurrentSelections'
+import MutationCreateCompany from './queries/MutationCreateCompany'
 import { graphql, compose } from 'react-apollo'
 
 const MyTable = styled(Table)`
@@ -18,7 +19,6 @@ class Dashboard extends Component {
     super(props)
     this.getSelectedRow = this.getSelectedRow.bind(this)
   }
-
 
   getSelectedRow(record, index) {
     if(record.id === this.props.currentCompanyId) {
@@ -69,16 +69,13 @@ class Dashboard extends Component {
 }
 
 const DashboardWithData = compose(
-  graphql(queryShareholder, {
-    options: (props) => ({
-      variables: {
-        id: props.shareholderId,
-        withCompanies: true
-      }
-    }),
-    props: ({ data: { loading, queryShareholder } }) => ({
+  graphql(QueryGetShareholder, {
+    options: {
+      fetchPolicy: 'network-only',
+    },
+    props: ({ data: { loading, getShareholder} }) => ({
       isShareholderLoading: loading,
-      shareholder: queryShareholder,
+      shareholder: getShareholder,
     })
   }),
   graphql(queryCurrentSelections, {
@@ -88,6 +85,23 @@ const DashboardWithData = compose(
     })
   }),
   graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' }),
+  graphql(
+    MutationCreateCompany,
+    {
+      options: props => ({
+        update: (proxy, { data }) => {
+          console.log(data)
+        }
+      }),
+      props: (props) => ({
+        createCompany: (name) => props.mutate({
+          variables: {
+            name
+          }
+        })
+      })
+    }
+  )
 )(Dashboard)
 
 export default DashboardWithData

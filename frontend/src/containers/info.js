@@ -14,7 +14,7 @@ import { Menu } from 'antd'
 // apollo
 import { graphql, compose } from 'react-apollo'
 import queryCompany from '../queries/queryCompany'
-import queryShareholder from '../queries/queryShareholder'
+import QueryGetShareholder from '../queries/QueryGetShareholder'
 import queryCurrentSelections from '../queries/queryCurrentSelections'
 
 class RawInfoMenu extends Component {
@@ -101,7 +101,7 @@ const InfoWithData = compose(
       company: queryCompany
     })
   }),
-  graphql(queryShareholder, {
+  graphql(QueryGetShareholder, {
     options: (props) => ({
       variables: {
         id: props.currentShareholderId

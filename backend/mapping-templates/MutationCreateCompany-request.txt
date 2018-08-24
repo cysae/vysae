@@ -1,0 +1,25 @@
+#set( $uuid = $util.autoId() )
+#set( $shareholderId = $context.identity.sub )
+
+#set( $batchData = [] )
+
+## Company
+#set( $company = {
+    "PK": "Company-$uuid",
+    "SK": "Company-$uuid",
+    "name": "$context.arguments.name"
+  }
+)
+$util.qr($batchData.add($util.dynamodb.toMapValues($company)))
+
+## Shareholder relation
+#set( $company.SK = "Shareholder-$shareholderId" )
+$util.qr($batchData.add($util.dynamodb.toMapValues($company)))
+
+{
+  "version" : "2018-05-29",
+  "operation" : "BatchPutItem",
+  "tables": {
+    "Vysae": $utils.toJson($batchData)
+  }
+}
