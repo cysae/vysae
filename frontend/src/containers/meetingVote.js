@@ -93,45 +93,44 @@ class MeetingVote extends Component {
 }
 
 
-export default graphql(
+export default withRouter(graphql(
   MutationCreateVotesWithAgreementId,
   {
     options: props => ({
       update: (proxy, { data: { createVotesForAgreements } }) => {
-        const query = queryCompany
-        const variables = { id: props.companyId, withMeetings: true, withAgreements: true, withVotes: true }
-        const data = proxy.readQuery({ query, variables })
-        console.log(createVotesForAgreements)
+        if ( createVotesForAgreements !== null ) {
+          const query = queryCompany
+          const variables = { id: props.companyId, withMeetings: true, withAgreements: true, withVotes: true }
+          const data = proxy.readQuery({ query, variables })
 
-        const meetingId = props.meeting.id
+          const meetingId = props.meeting.id
 
-        console.log(data.queryCompany)
-        let meetingIndex
-        const meetings = data.queryCompany.meetings
-        for (meetingIndex in meetings) {
-          if (meetings[meetingIndex].id === meetingId) {
-            break;
+          let meetingIndex
+          const meetings = data.queryCompany.meetings
+          for (meetingIndex in meetings) {
+            if (meetings[meetingIndex].id === meetingId) {
+              break;
+            }
           }
-        }
 
+          for (const agreement of createVotesForAgreements) {
+            const agreementId = agreement.id
+            const vote = agreement.votes[0]
 
-
-        for (const agreement of createVotesForAgreements) {
-          const agreementId = agreement.id
-          const vote = agreement.votes[0]
-
-          let agreementIndex
-          const agreements = data.queryCompany.meetings[meetingIndex].agreements
-          for (agreementIndex in agreements) {
-            if (agreements[agreementIndex].id === agreementId)
-              break
+            let agreementIndex
+            const agreements = data.queryCompany.meetings[meetingIndex].agreements
+            for (agreementIndex in agreements) {
+              if (agreements[agreementIndex].id === agreementId)
+                break
+            }
+            if ( typeof data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes === 'undefined' )
+              data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes = []
+            data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes.push(vote)
           }
-          console.log(data.queryCompany.meetings[meetingIndex].agreements, agreementIndex)
-          data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes.push(vote)
-        }
 
-        proxy.writeQuery({ query, data, variables })
-        props.history.push('/meetings/result')
+          proxy.writeQuery({ query, data, variables })
+          props.history.push('/meetings/result')
+        }
       }
     }),
     props: (props) => ({
@@ -142,4 +141,4 @@ export default graphql(
       })
     })
   }
-)(Form.create()(withRouter(MeetingVote)))
+)(Form.create()(MeetingVote)))

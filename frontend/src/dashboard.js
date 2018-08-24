@@ -38,7 +38,6 @@ class Dashboard extends Component {
     }
 
     const { companies } = shareholder
-    console.log(companies)
 
     const columns = [{
       title: 'Nombre de la sociedad',

@@ -38,7 +38,6 @@ class MeetingResult extends Component {
 
     if (isLoading || isMeetingLoading )
       return <Spin size="large" />
-    console.log(meeting)
 
     const meetingResult = this.getMeetingResult(meeting.agreements)
 

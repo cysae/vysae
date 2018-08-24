@@ -125,10 +125,12 @@ const MeetingsWithData = compose(
   }),
   graphql(queryCompany, {
     options: (props) => ({
+      fetchPolicy: 'network-only',
       variables: {
         id: props.currentCompanyId,
         withMeetings: true,
         withAgreements: true,
+        withVotes: true
       }
     }),
     props: ({ data: { loading, queryCompany }}) => ({
