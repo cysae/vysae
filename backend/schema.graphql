@@ -13,6 +13,10 @@ input VoteInput {
   id: ID
   result: Int!
 }
+input VoteWithAgreementId {
+	agreementId: ID!
+	vote: VoteInput!
+}
 
 type Mutation {
   createCompany(
@@ -22,10 +26,9 @@ type Mutation {
     companyId: ID!,
     meeting: MeetingInput!
   ): Meeting!
-  createVotes(
-    agreementId: ID!,
-    votes: [VoteInput]!
-  ): [Vote!]
+	createVotesForAgreements(
+    votesWithAgreementId: [VoteWithAgreementId!]!
+  ): [Vote!]!
 }
 
 type Query {

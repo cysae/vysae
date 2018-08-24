@@ -4,7 +4,7 @@ import { Form, List, Radio, Button, Divider, Spin } from 'antd'
 import { Link } from 'react-router-dom'
 // graphql
 import { compose, graphql } from 'react-apollo'
-import MutationCreateVote from '../queries/MutationCreateVote'
+import MutationCreateVotes from '../queries/MutationCreateVotes'
 import queryCompany from '../queries/queryCompany'
 // router
 import { withRouter } from 'react-router'
@@ -23,15 +23,16 @@ class MeetingVote extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { createVote, form, history } = this.props
+        const votes = []
 
         this.setState({ isLoading: true })
         for (const agreementId in form.getFieldsValue()) {
           const vote = {
             result: form.getFieldsValue()[agreementId]
           }
-          createVote(agreementId, vote)
+          votes.push(vote)
         }
-        /* history.push('/meetings/result') */
+        createVotes(agreementId, votes)
       }
     });
   }
@@ -90,7 +91,7 @@ class MeetingVote extends Component {
 
 
 export default graphql(
-  MutationCreateVote,
+  MutationCreateVotes,
   {
     options: props => ({
       update: (proxy, { data }) => {
@@ -98,13 +99,14 @@ export default graphql(
         console.log(data, props)
         const query = queryCompany
         /* const variables = { id: } */
+        /* history.push('/meetings/result') */
       }
     }),
     props: (props) => ({
-      createVote: async (agreementId, vote) => await props.mutate({
+      createVotes: (agreementId, votes) => props.mutate({
         variables: {
           agreementId,
-          vote
+          votes
         }
       })
     })

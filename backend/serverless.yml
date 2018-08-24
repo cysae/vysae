@@ -91,9 +91,9 @@ custom:
         response: "agreement-votes-response.txt"
       - dataSource: Vysae
         type: Mutation
-        field: createVotes
-        request: "MutationCreateVotes-request.txt"
-        response: "MutationCreateVotes-response.txt"
+        field: createVotesForAgreements
+        request: "MutationCreateVotesForAgreements-request.txt"
+        response: "MutationCreateVotesForAgreements-response.txt"
       - dataSource: meetingDocx
         type: Query
         field: queryMeetingDocx

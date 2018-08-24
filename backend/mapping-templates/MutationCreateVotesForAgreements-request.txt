@@ -1,9 +1,10 @@
-#set( $votes = $context.arguments.votes )
-#set( $agreementId = $context.arguments.agreementId )
+#set( $votesWithAgreementId = $context.arguments.votesWithAgreementId )
 #set( $batchData = [] )
 
-#foreach( $vote in $votes )
+#foreach( $voteWithAgreementId in $votesWithAgreementId )
 	#set( $uuid = $util.autoId() )
+    
+    #set( $vote = $voteWithAgreementId.vote )
     #set( $voteDB = {
     	"PK": "Vote-$uuid",
         "SK": "Vote-$uuid",
@@ -11,6 +12,7 @@
     })
 	$util.qr($batchData.add($util.dynamodb.toMapValues($voteDB)))
     
+    #set( $agreementId = $voteWithAgreementId.agreementId )
     #set( $agreementDB = $voteDB )
     #set( $agreementDB.PK = $agreementId )
 	$util.qr($batchData.add($util.dynamodb.toMapValues($agreementDB)))
