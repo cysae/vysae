@@ -22,7 +22,7 @@ class MeetingVote extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const { createVotesWithAgreementId, form, history } = this.props
+        const { createVotesWithAgreementId, form } = this.props
         const votesWithAgreementId = []
 
         this.setState({ isLoading: true })
@@ -97,12 +97,41 @@ export default graphql(
   MutationCreateVotesWithAgreementId,
   {
     options: props => ({
-      update: (proxy, { data }) => {
-        const { companyId } = props
-        console.log(data)
+      update: (proxy, { data: { createVotesForAgreements } }) => {
         const query = queryCompany
-        /* const variables = { id: } */
-        /* history.push('/meetings/result') */
+        const variables = { id: props.companyId, withMeetings: true, withAgreements: true, withVotes: true }
+        const data = proxy.readQuery({ query, variables })
+        console.log(createVotesForAgreements)
+
+        const meetingId = props.meeting.id
+
+        console.log(data.queryCompany)
+        let meetingIndex
+        const meetings = data.queryCompany.meetings
+        for (meetingIndex in meetings) {
+          if (meetings[meetingIndex].id === meetingId) {
+            break;
+          }
+        }
+
+
+
+        for (const agreement of createVotesForAgreements) {
+          const agreementId = agreement.id
+          const vote = agreement.votes[0]
+
+          let agreementIndex
+          const agreements = data.queryCompany.meetings[meetingIndex].agreements
+          for (agreementIndex in agreements) {
+            if (agreements[agreementIndex].id === agreementId)
+              break
+          }
+          console.log(data.queryCompany.meetings[meetingIndex].agreements, agreementIndex)
+          data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes.push(vote)
+        }
+
+        proxy.writeQuery({ query, data, variables })
+        props.history.push('/meetings/result')
       }
     }),
     props: (props) => ({

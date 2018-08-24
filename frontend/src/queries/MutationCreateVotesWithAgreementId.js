@@ -6,7 +6,10 @@ mutation createVotesForAgreements($votesWithAgreementId: [VoteWithAgreementId!]!
     votesWithAgreementId: $votesWithAgreementId
   ) {
     id,
-    result
+    votes {
+      id,
+      result
+    }
   }
 }
 `)

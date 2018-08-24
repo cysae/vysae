@@ -85,11 +85,6 @@ custom:
         request: "MutationCreateMeeting-request.txt"
         response: "MutationCreateMeeting-response.txt"
       - dataSource: Vysae
-        type: Agreement
-        field: votes
-        request: "agreement-votes-request.txt"
-        response: "agreement-votes-response.txt"
-      - dataSource: Vysae
         type: Mutation
         field: createVotesForAgreements
         request: "MutationCreateVotesForAgreements-request.txt"
@@ -99,6 +94,11 @@ custom:
         field: queryMeetingDocx
         request: "queryMeetingDocx-request.txt"
         response: "queryMeetingDocx-response.txt"
+      - dataSource: Vysae
+        type: Agreement
+        field: votes
+        request: "Agreement-votes-request.txt"
+        response: "Agreement-votes-response.txt"
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
