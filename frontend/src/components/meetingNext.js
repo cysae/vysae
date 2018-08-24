@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 // antd
-import { Table } from 'antd'
+import { Table, Divider } from 'antd'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 // GraphQL
@@ -34,8 +34,9 @@ function MeetingNext(props) {
     render: (text, record) => (
       <Fragment>
         {/* <Link to="/meetings/pdf" onClick={() => selectMeeting(record)}>Leer orden del día</Link> */}
-        {/* <Divider type="vertical"/> */}
         <Link to="/meetings/vote" onClick={() => selectMeeting(record)}>Votar</Link>
+        <Divider type="vertical"/>
+        <Link to="/meetings/result" onClick={() => selectMeeting(record)}>Resultado</Link>
       </Fragment>
     )
   }]

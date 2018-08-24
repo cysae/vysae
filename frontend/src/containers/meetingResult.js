@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 // antd
 import { Row, Col, Table, Spin } from 'antd'
 // recharts
-//import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 
 class MeetingResult extends Component {
   getAgreementResult(agreement) {
@@ -68,8 +68,8 @@ class MeetingResult extends Component {
       <h1 style={{textAlign: 'center'}}>Voto pendiente</h1>
       <Row type="flex">
         <Col span={24}>
-          {/* <ResponsiveContainer width='100%' aspect={4}>
-              <BarChart data={meetingResult}
+          <ResponsiveContainer width='100%' aspect={4}>
+            <BarChart data={meetingResult}
               margin={{top: 20, right: 30, left: 20, bottom: 5}}>
               <CartesianGrid strokeDasharray="3 3"/>
               <XAxis dataKey="id"/>
@@ -79,8 +79,8 @@ class MeetingResult extends Component {
               <Bar dataKey="pro" stackId="a" fill="#8884d8" />
               <Bar dataKey="contra" stackId="a" fill="#82ca9d" />
               <Bar dataKey="blank" stackId="a" fill="#84449d" />
-              </BarChart>
-              </ResponsiveContainer> */}
+            </BarChart>
+          </ResponsiveContainer>
         </Col>
       </Row>
       <Row>
