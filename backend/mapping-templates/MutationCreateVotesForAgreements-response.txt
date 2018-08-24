@@ -1,17 +1,20 @@
-#set( $votes = [] )
+#set( $agreements = [] )
 #set( $results = $context.result.data.Vysae)
 
 #foreach($res in $results)
-    #set( $vote = {} )
 	#set ($hyphen = $res.PK.indexOf('-'))
 	#set ($substring = $res.PK.substring(0, $hyphen))
-	#if($substring == "Vote")
-	  $util.qr($vote.put("id", $res.PK))
-      $util.qr($vote.put("name", $res.name))
-      $util.qr($vote.put("result", $res.result))
+	#if($substring == "Agreement")
+        #set( $agreement = {
+        	"id": "$res.PK",
+            "votes": [{
+            	"id": "$res.SK",
+                "result": "$res.result"
+            }]
+        })
         
-      $util.qr($votes.add($vote))
+      $util.qr($agreements.add($agreement))
     #end
 #end
 
-$util.toJson($votes)
+$util.toJson($agreements)
