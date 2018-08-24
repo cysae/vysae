@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import { Form, List, Radio, Button, Divider, Spin } from 'antd'
 import { Link } from 'react-router-dom'
 // graphql
-import { compose, graphql } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import MutationCreateVotesWithAgreementId from '../queries/MutationCreateVotesWithAgreementId'
 import queryCompany from '../queries/queryCompany'
 // router

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import {Form, Radio, Button, DatePicker, Input } from 'antd'
+import { Form, Button, DatePicker } from 'antd'
 import AgreementSelector from '../components/agreementSelector.js'
 const FormItem = Form.Item
-const { TextArea } = Input
-const RadioButton = Radio.Button
-const RadioGroup = Radio.Group
+/* const { TextArea } = Input
+ * const RadioButton = Radio.Button
+ * const RadioGroup = Radio.Group */
 const { RangePicker } = DatePicker;
 
 class MeetingForm extends Component {

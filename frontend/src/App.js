@@ -21,7 +21,6 @@ import { Rehydrated } from 'aws-appsync-react';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloLink } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
-import { compose, graphql } from 'react-apollo'
 import './App.css'
 const { Content, Footer } = Layout;
 

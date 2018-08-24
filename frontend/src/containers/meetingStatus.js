@@ -34,6 +34,7 @@ export default graphql(
         data.queryCompany.meetings.push(createMeeting)
 
         proxy.writeQuery({ query, data, variables })
+        console.log('jo')
       }
     }),
     props: (props) => ({

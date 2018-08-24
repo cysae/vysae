@@ -4,7 +4,6 @@ import MeetingPDF from './meetingPDF.js'
 
 export default class MeetingConfirmation extends Component {
   render() {
-    console.log(this.props)
     return (
       <Fragment>
         <Row type="flex">

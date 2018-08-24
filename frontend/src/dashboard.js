@@ -5,7 +5,6 @@ import { Table, Button } from 'antd'
 import QueryGetShareholder from './queries/QueryGetShareholder'
 import queryCurrentSelections from './queries/queryCurrentSelections'
 import mutateCurrentSelections from './queries/mutateCurrentSelections'
-import MutationCreateCompany from './queries/MutationCreateCompany'
 import { graphql, compose } from 'react-apollo'
 
 const MyTable = styled(Table)`
@@ -70,9 +69,6 @@ class Dashboard extends Component {
 
 const DashboardWithData = compose(
   graphql(QueryGetShareholder, {
-    options: {
-      fetchPolicy: 'network-only',
-    },
     props: ({ data: { loading, getShareholder} }) => ({
       isShareholderLoading: loading,
       shareholder: getShareholder,

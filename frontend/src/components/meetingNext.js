@@ -3,9 +3,6 @@ import React, { Fragment } from 'react'
 import { Table, Divider } from 'antd'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
-// GraphQL
-import { graphql } from 'react-apollo'
-import queryCompany from '../queries/queryCompany'
 
 function MeetingNext(props) {
   const { meetings, selectMeeting } = props
