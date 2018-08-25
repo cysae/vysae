@@ -14,8 +14,6 @@ class MeetingStatus extends Component {
     	"agreements": meeting.agreements
     }
     createMeeting(companyId, meetingVar)
-      .then(res => console.log(res))
-      .catch(err => console.error(err))
   }
 
   render() {
@@ -29,12 +27,11 @@ export default graphql(
     options: props => ({
       update: (proxy, { data: { createMeeting } }) => {
         const query = queryCompany
-        const variables = { id: props.meeting.company.id, withMeetings: true, withAgreements: true }
+        const variables = { id: props.meeting.company.id, withMeetings: true, withAgreements: true, withVotes: true }
         const data = proxy.readQuery({ query, variables })
         data.queryCompany.meetings.push(createMeeting)
 
         proxy.writeQuery({ query, data, variables })
-        console.log('jo')
       }
     }),
     props: (props) => ({

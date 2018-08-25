@@ -124,6 +124,7 @@ const MeetingsWithData = compose(
   }),
   graphql(queryCompany, {
     options: (props) => ({
+      fetchPolicy: 'network-only',
       variables: {
         id: props.currentCompanyId,
         withMeetings: true,

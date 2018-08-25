@@ -67,10 +67,13 @@ const client = new AWSAppSyncClient({}, { link })
 
 
 class App extends Component {
+  /* async componentDidMount() {
+   *   await console.log(await Auth.currentAuthenticatedUser())
+   * } */
   render() {
     return (
       <Layout>
-        <MyHeader />
+        <MyHeader client={client} />
         <Content style={{ padding: '0 50px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item>

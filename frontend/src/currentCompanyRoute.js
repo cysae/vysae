@@ -10,8 +10,7 @@ const CurrentCompanyRoute = ({ component: Component, ...rest }) => {
   const { isLoading, currentCompanyId } = rest
   if( isLoading ) return <div>is loading</div>
   const needsCurrentCompanyId = ( currentCompanyId === null )
-
-
+  console.log(needsCurrentCompanyId)
 
   return (
     <Route

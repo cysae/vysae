@@ -19,6 +19,32 @@ class MeetingResult extends Component {
 
   getMeetingResult(agreements) {
     // { id:, name:, pro:, contra:, blank: }
+    return [{
+      id: 1,
+      name: 'Aumento o reducción de capital',
+      pro: 12,
+      contra: 23,
+      blank: 7
+    }, {
+      id: 2,
+      name: 'Autorización a administradores para que se dediquen a actividad inmersa en el objecto social',
+      pro: 33,
+      contra: 10,
+      blank: 12
+    }, {
+      id: 3,
+      name: 'Exclusión y separación de socios',
+      pro: 43,
+      contra: 0,
+      blank: 1
+    }, {
+      id: 2,
+      name: 'Cambio de domicilio',
+      pro: 2,
+      contra: 47,
+      blank: 0
+    }]
+
     const result = []
     let id = 1;
     for (const agreement of agreements) {
@@ -31,12 +57,15 @@ class MeetingResult extends Component {
       result.push(aResult)
       id++;
     }
+
+
     return result
   }
+
   render() {
     const { meeting, isLoading, isMeetingLoading } = this.props
 
-    if (isLoading || isMeetingLoading )
+    if (isLoading || isMeetingLoading || typeof meeting === 'undefined')
       return <Spin size="large" />
 
     const meetingResult = this.getMeetingResult(meeting.agreements)

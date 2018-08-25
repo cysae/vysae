@@ -3,8 +3,8 @@
     "version" : "2017-02-28",
     "operation" : "GetItem",
     "key" : {
-        "PK" : { "S" : "$shareholderId" },
-        "SK" : { "S" : "$shareholderId" }
+        "PK" : { "S" : "Shareholder-$shareholderId" },
+        "SK" : { "S" : "Shareholder-$shareholderId" }
     },
     "consistentRead" : true
 }

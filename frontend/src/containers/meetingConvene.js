@@ -83,7 +83,8 @@ class MeetingConvene extends Component {
           <MeetingStatus
             meeting={meeting}
             prev={this.prev}
-            next={this.next} />
+            next={this.next}
+          />
         ),
     }];
 

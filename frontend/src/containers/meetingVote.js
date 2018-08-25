@@ -35,6 +35,7 @@ class MeetingVote extends Component {
             vote
           })
         }
+
         createVotesWithAgreementId(votesWithAgreementId)
       }
     });
@@ -98,6 +99,7 @@ export default withRouter(graphql(
   {
     options: props => ({
       update: (proxy, { data: { createVotesForAgreements } }) => {
+        console.log(createVotesForAgreements)
         if ( createVotesForAgreements !== null ) {
           const query = queryCompany
           const variables = { id: props.companyId, withMeetings: true, withAgreements: true, withVotes: true }

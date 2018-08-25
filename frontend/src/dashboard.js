@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Table, Button } from 'antd'
+import { Table, Button, Spin } from 'antd'
 // AppSync
 import QueryGetShareholder from './queries/QueryGetShareholder'
 import queryCurrentSelections from './queries/queryCurrentSelections'
@@ -33,8 +33,11 @@ class Dashboard extends Component {
     } = this.props
 
     if(isShareholderLoading || isCurrentSelectionLoading) {
-      return <div>Loading...</div>
+      return <Spin size="large" />
     }
+
+    if( !shareholder )
+      return <div>Unknown Shareholder</div>
 
     const { companies } = shareholder
 
@@ -69,6 +72,9 @@ class Dashboard extends Component {
 
 const DashboardWithData = compose(
   graphql(QueryGetShareholder, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
     props: ({ data: { loading, getShareholder} }) => ({
       isShareholderLoading: loading,
       shareholder: getShareholder,
