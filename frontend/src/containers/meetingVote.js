@@ -43,11 +43,12 @@ class MeetingVote extends Component {
   }
 
   render() {
-    const { meeting, form, match:{params:{ id }} } = this.props
-    const { agreements } = meeting
-    const { getFieldDecorator } = form
+    const { form: { getFieldDecorator }, isLoading } = this.props
 
-    if (this.state.isLoading) return <Spin size="large" />
+    if (this.state.isLoading || isLoading)
+      return (<Spin size="large" />)
+
+    const { meeting: { agreements } } = this.props
 
     return (
       <Form layout="vertical" onSubmit={this.handleSubmit}>
@@ -97,7 +98,20 @@ class MeetingVote extends Component {
 
 export default withRouter(compose(
   graphql(
-    QueryGetMeeting
+    QueryGetMeeting,
+    {
+      options: props => ({
+        variables: {
+          id: props.match.params.id,
+          withAgreements: true,
+          withVotes: true
+        }
+      }),
+      props: ({ data: { loading, getMeeting } }) => ({
+        isLoading: loading,
+        meeting: getMeeting
+      })
+    }
   ),
   graphql(
     MutationCreateVotesWithAgreementId,
