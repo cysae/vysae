@@ -13,7 +13,7 @@ import ShareholderRegister from '../components/shareholderRegister'
 import { Menu } from 'antd'
 // apollo
 import { graphql, compose } from 'react-apollo'
-import queryCompany from '../queries/queryCompany'
+import QueryGetCompany from '../queries/QueryGetCompany'
 import QueryGetShareholder from '../queries/QueryGetShareholder'
 import queryCurrentSelections from '../queries/queryCurrentSelections'
 
@@ -90,15 +90,15 @@ const InfoWithData = compose(
       currentShareholderId: shareholderId
     })
   }),
-  graphql(queryCompany, {
+  graphql(QueryGetCompany, {
     options: (props) => ({
       variables: {
         id: props.currentCompanyId
       }
     }),
-    props: ({ data: { loading, queryCompany } }) => ({
+    props: ({ data: { loading, getCompany } }) => ({
       isCompanyLoading: loading,
-      company: queryCompany
+      company: getCompany,
     })
   }),
   graphql(QueryGetShareholder, {

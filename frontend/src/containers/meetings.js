@@ -15,7 +15,7 @@ import AnnouncementSent from '../components/announcementSent'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import queryCurrentSelections from '../queries/queryCurrentSelections'
-import queryCompany from '../queries/queryCompany'
+import QueryGetCompany from '../queries/QueryGetCompany'
 
 class RawMeetingMenu extends Component {
   getSelectedKey() {
@@ -99,7 +99,7 @@ const MeetingsWithData = compose(
       currentCompanyId: companyId
     })
   }),
-  graphql(queryCompany, {
+  graphql(QueryGetCompany, {
     options: (props) => ({
       fetchPolicy: 'network-only',
       variables: {
@@ -109,9 +109,9 @@ const MeetingsWithData = compose(
         withVotes: true
       }
     }),
-    props: ({ data: { loading, queryCompany }}) => ({
+    props: ({ data: { loading, getCompany }}) => ({
       isCompanyLoading: loading,
-      company: queryCompany,
+      company: getCompany,
     })
   })
 )(Meetings)

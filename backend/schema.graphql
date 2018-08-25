@@ -32,7 +32,7 @@ type Mutation {
 }
 
 type Query {
-  queryCompany(id: String!): Company
+  getCompany(id: ID!): Company
   getMeeting(id: ID!): Meeting
   getShareholder: Shareholder
   queryMeetingDocx: Docx

@@ -1,27 +1,31 @@
 import gql from 'graphql-tag'
 
 export default gql`
-query (
-  $id: String!
+query QueryGetCompany (
+  $id: ID!
   $withMeetings: Boolean = false
   $withAgreements: Boolean = false
   $withVotes: Boolean = false
-  ) {
-  queryCompany(id: $id) {
-    id,
-    name,
+  $withShareholders: Boolean = false
+) {
+  getCompany(id: $id) {
+    id
+    name
     meetings @include(if: $withMeetings) {
-      id,
-      start,
+      id
+      start
       end
       agreements @include(if: $withAgreements) {
         id,
         name,
         votes @include(if: $withVotes) {
-          id,
+          id
           result
         }
       }
+    }
+    shareholders @include(if: $withShareholders) {
+      id
     }
   }
 }`

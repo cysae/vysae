@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // graphql
 import MutationCreateMeeting from '../queries/MutationCreateMeeting'
-import queryCompany from '../queries/queryCompany'
+import QueryGetCompany from '../queries/QueryGetCompany'
 import { graphql } from 'react-apollo'
 
 class MeetingStatus extends Component {
@@ -27,7 +27,7 @@ export default graphql(
     options: props => ({
       update: (proxy, { data: { loading, createMeeting } }) => {
         if (createMeeting !== null) {
-          const query = queryCompany
+          const query = QueryGetCompany
           const variables = { id: props.meeting.company.id, withMeetings: true, withAgreements: true, withVotes: true }
           const data = proxy.readQuery({ query, variables })
           for (const agreementIndex in createMeeting.agreements) {

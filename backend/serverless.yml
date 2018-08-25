@@ -41,9 +41,9 @@ custom:
         response: "MutationCreateCompany-response.txt"
       - dataSource: Vysae
         type: Query
-        field: queryCompany
-        request: "queryCompany-request.txt"
-        response: "queryCompany-response.txt"
+        field: getCompany
+        request: "QueryGetCompany-request.txt"
+        response: "QueryGetCompany-response.txt"
       - dataSource: Vysae
         type: Company
         field: shareholders
