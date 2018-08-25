@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import MutationCreateVotesWithAgreementId from '../queries/MutationCreateVotesWithAgreementId'
 import QueryGetMeeting from '../queries/QueryGetMeeting'
-import queryCompany from '../queries/queryCompany'
 // router
 import { withRouter } from 'react-router'
 
@@ -118,35 +117,27 @@ export default withRouter(compose(
     {
       options: props => ({
         update: (proxy, { data: { createVotesForAgreements } }) => {
-          console.log(createVotesForAgreements)
+
           if ( createVotesForAgreements !== null ) {
-            const query = queryCompany
-            const variables = { id: props.companyId, withMeetings: true, withAgreements: true, withVotes: true }
+            const query = QueryGetMeeting
+            const variables = { id: props.match.params.id, withAgreements: true, withVotes: true }
             const data = proxy.readQuery({ query, variables })
-
-            const meetingId = props.meeting.id
-
-            let meetingIndex
-            const meetings = data.queryCompany.meetings
-            for (meetingIndex in meetings) {
-              if (meetings[meetingIndex].id === meetingId) {
-                break;
-              }
-            }
 
             for (const agreement of createVotesForAgreements) {
               const agreementId = agreement.id
               const vote = agreement.votes[0]
 
               let agreementIndex
-              const agreements = data.queryCompany.meetings[meetingIndex].agreements
+              const agreements = data.getMeeting.agreements
               for (agreementIndex in agreements) {
                 if (agreements[agreementIndex].id === agreementId)
                   break
               }
-              if ( typeof data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes === 'undefined' )
-                data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes = []
-              data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes.push(vote)
+
+              if ( typeof agreements[agreementIndex].votes === 'undefined' )
+                data.getMeeting.agreements[agreementIndex].votes = []
+
+              data.getMeeting.agreements[agreementIndex].votes.push(vote)
             }
 
             proxy.writeQuery({ query, data, variables })
