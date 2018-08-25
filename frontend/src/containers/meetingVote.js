@@ -3,8 +3,9 @@ import React, { Component, Fragment } from 'react'
 import { Form, List, Radio, Button, Divider, Spin } from 'antd'
 import { Link } from 'react-router-dom'
 // graphql
-import { graphql } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import MutationCreateVotesWithAgreementId from '../queries/MutationCreateVotesWithAgreementId'
+import QueryGetMeeting from '../queries/QueryGetMeeting'
 import queryCompany from '../queries/queryCompany'
 // router
 import { withRouter } from 'react-router'
@@ -42,7 +43,7 @@ class MeetingVote extends Component {
   }
 
   render() {
-    const { meeting, form } = this.props
+    const { meeting, form, match:{params:{ id }} } = this.props
     const { agreements } = meeting
     const { getFieldDecorator } = form
 
@@ -94,52 +95,58 @@ class MeetingVote extends Component {
 }
 
 
-export default withRouter(graphql(
-  MutationCreateVotesWithAgreementId,
-  {
-    options: props => ({
-      update: (proxy, { data: { createVotesForAgreements } }) => {
-        if ( createVotesForAgreements !== null ) {
-          const query = queryCompany
-          const variables = { id: props.companyId, withMeetings: true, withAgreements: true, withVotes: true }
-          const data = proxy.readQuery({ query, variables })
+export default withRouter(compose(
+  graphql(
+    QueryGetMeeting
+  ),
+  graphql(
+    MutationCreateVotesWithAgreementId,
+    {
+      options: props => ({
+        update: (proxy, { data: { createVotesForAgreements } }) => {
+          console.log(createVotesForAgreements)
+          if ( createVotesForAgreements !== null ) {
+            const query = queryCompany
+            const variables = { id: props.companyId, withMeetings: true, withAgreements: true, withVotes: true }
+            const data = proxy.readQuery({ query, variables })
 
-          const meetingId = props.meeting.id
+            const meetingId = props.meeting.id
 
-          let meetingIndex
-          const meetings = data.queryCompany.meetings
-          for (meetingIndex in meetings) {
-            if (meetings[meetingIndex].id === meetingId) {
-              break;
+            let meetingIndex
+            const meetings = data.queryCompany.meetings
+            for (meetingIndex in meetings) {
+              if (meetings[meetingIndex].id === meetingId) {
+                break;
+              }
             }
-          }
 
-          for (const agreement of createVotesForAgreements) {
-            const agreementId = agreement.id
-            const vote = agreement.votes[0]
+            for (const agreement of createVotesForAgreements) {
+              const agreementId = agreement.id
+              const vote = agreement.votes[0]
 
-            let agreementIndex
-            const agreements = data.queryCompany.meetings[meetingIndex].agreements
-            for (agreementIndex in agreements) {
-              if (agreements[agreementIndex].id === agreementId)
-                break
+              let agreementIndex
+              const agreements = data.queryCompany.meetings[meetingIndex].agreements
+              for (agreementIndex in agreements) {
+                if (agreements[agreementIndex].id === agreementId)
+                  break
+              }
+              if ( typeof data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes === 'undefined' )
+                data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes = []
+              data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes.push(vote)
             }
-            if ( typeof data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes === 'undefined' )
-              data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes = []
-            data.queryCompany.meetings[meetingIndex].agreements[agreementIndex].votes.push(vote)
-          }
 
-          proxy.writeQuery({ query, data, variables })
-          props.history.push('/meetings/result')
+            proxy.writeQuery({ query, data, variables })
+            props.history.push('/meetings/result')
+          }
         }
-      }
-    }),
-    props: (props) => ({
-      createVotesWithAgreementId: (votesWithAgreementId) => props.mutate({
-        variables: {
-          votesWithAgreementId
-        }
+      }),
+      props: (props) => ({
+        createVotesWithAgreementId: (votesWithAgreementId) => props.mutate({
+          variables: {
+            votesWithAgreementId
+          }
+        })
       })
-    })
-  }
+    }
+  )
 )(Form.create()(MeetingVote)))

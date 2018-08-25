@@ -1,8 +1,12 @@
 import gql from 'graphql-tag'
 
 export default gql`
-query($id: String!, $withAgreements: Boolean = false, $withVotes: Boolean = false) {
-  queryMeeting(id: $id) {
+query QueryGetMeeting(
+  $id: ID!
+  $withAgreements: Boolean = false
+  $withVotes: Boolean = false
+) {
+  getMeeting(id: $id) {
     id,
     agreements @include(if: $withAgreements) {
       id,

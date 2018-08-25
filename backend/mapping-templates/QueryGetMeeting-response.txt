@@ -1,0 +1,5 @@
+{
+  "id": "$context.result.PK",
+  "start": "$context.result.start",
+  "end": "$context.result.end"
+}

@@ -95,7 +95,7 @@ class Meetings extends Component {
         <Route path="/meetings/history" component={MeetingHistory} />
         <Route path="/meetings/pdf" component={MeetingDisplayPDF} />
         <Route
-          path="/meetings/vote"
+          path="/meetings/vote/:id"
           render={() => (
             <MeetingVote meeting={this.state.meeting} />
           )}
