@@ -53,39 +53,41 @@ class Meetings extends Component {
   render() {
     const { isLoading, isCompanyLoading, company } = this.props
 
-    if ( isLoading || isCompanyLoading || typeof company === 'undefined' ) return <Spin size="large" />
+    if ( isLoading || isCompanyLoading || typeof company === 'undefined' )
+      return (<Spin size="large" />)
+
     const { meetings } = company
 
     return (
-    <Row type="flex">
-      <Col span={4}>
-        <MeetingMenu />
-      </Col>
-      <Col span={20}>
-        <Route
-          path="/meetings/next"
-          render={() => (
-            <MeetingNext
-              meetings={meetings}
-              selectMeeting={this.selectMeeting}
-            />
-          )}
-        />
-        <Route
-          path="/meetings/convene"
-          render={() => (
-            <MeetingConvene
-              company={company}
-            />
-          )}
-        />
-        <Route path="/meetings/sent" component={AnnouncementSent} />
-        <Route path="/meetings/history" component={MeetingHistory} />
-        <Route path="/meetings/pdf" component={MeetingDisplayPDF} />
-        <Route path="/meetings/vote/:id" component={MeetingVote} />
-        <Route path="/meetings/result/:id" component={MeetingResult} />
-      </Col>
-    </Row>
+      <Row type="flex">
+        <Col span={4}>
+          <MeetingMenu />
+        </Col>
+        <Col span={20}>
+          <Route
+            path="/meetings/next"
+            render={() => (
+              <MeetingNext
+                meetings={meetings}
+                         selectMeeting={this.selectMeeting}
+              />
+            )}
+          />
+          <Route
+            path="/meetings/convene"
+            render={() => (
+              <MeetingConvene
+                company={company}
+              />
+            )}
+          />
+          <Route path="/meetings/sent" component={AnnouncementSent} />
+          <Route path="/meetings/history" component={MeetingHistory} />
+          <Route path="/meetings/pdf" component={MeetingDisplayPDF} />
+          <Route path="/meetings/vote/:id" component={MeetingVote} />
+          <Route path="/meetings/result/:id" component={MeetingResult} />
+        </Col>
+      </Row>
     )
   }
 }

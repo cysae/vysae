@@ -14,6 +14,7 @@ import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
 import Info from './containers/info'
 import Meetings from './containers/meetings'
+import Company from './scenes/Company'
 // AppSync/Apollo
 import appSyncConfig from './AppSync'
 import AWSAppSyncClient, { createAppSyncLink, createLinkWithCache } from "aws-appsync";
@@ -76,7 +77,7 @@ class App extends Component {
         <MyHeader client={client} />
         <Content style={{ padding: '0 50px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item>
+            {/* <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item> */}
           </Breadcrumb>
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
             <Route
@@ -89,6 +90,7 @@ class App extends Component {
               path="/info"
               component={Info}
             />
+            <CurrentCompanyRoute path="/company" component={Company} />
             <CurrentCompanyRoute
               path="/meetings"
               component={Meetings}
