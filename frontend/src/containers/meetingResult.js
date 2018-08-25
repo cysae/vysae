@@ -45,21 +45,21 @@ class MeetingResult extends Component {
       blank: 0
     }]
 
-    const result = []
-    let id = 1;
-    for (const agreement of agreements) {
-      const aResult = {
-        id,
-        meetingId: agreement.id,
-        name: agreement.name,
-        ...this.getAgreementResult(agreement)
-      }
-      result.push(aResult)
-      id++;
-    }
+    /* const result = []
+     * let id = 1;
+     * for (const agreement of agreements) {
+     *   const aResult = {
+     *     id,
+     *     meetingId: agreement.id,
+     *     name: agreement.name,
+     *     ...this.getAgreementResult(agreement)
+     *   }
+     *   result.push(aResult)
+     *   id++;
+     * }
 
 
-    return result
+     * return result */
   }
 
   render() {

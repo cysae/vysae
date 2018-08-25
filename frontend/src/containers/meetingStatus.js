@@ -25,13 +25,18 @@ export default graphql(
   MutationCreateMeeting,
   {
     options: props => ({
-      update: (proxy, { data: { createMeeting } }) => {
-        const query = queryCompany
-        const variables = { id: props.meeting.company.id, withMeetings: true, withAgreements: true, withVotes: true }
-        const data = proxy.readQuery({ query, variables })
-        data.queryCompany.meetings.push(createMeeting)
+      update: (proxy, { data: { loading, createMeeting } }) => {
+        if (createMeeting !== null) {
+          const query = queryCompany
+          const variables = { id: props.meeting.company.id, withMeetings: true, withAgreements: true, withVotes: true }
+          const data = proxy.readQuery({ query, variables })
+          for (const agreementIndex in createMeeting.agreements) {
+            createMeeting.agreements[agreementIndex].votes = []
+          }
+          data.queryCompany.meetings.push(createMeeting)
 
-        proxy.writeQuery({ query, data, variables })
+          proxy.writeQuery({ query, data, variables })
+        }
       }
     }),
     props: (props) => ({

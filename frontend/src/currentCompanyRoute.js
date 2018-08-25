@@ -9,7 +9,7 @@ import queryCurrentSelections from './queries/queryCurrentSelections'
 
 
 const CurrentCompanyRoute = ({ component: Component, ...rest }) => {
-  const { isLoading, currentCompanyId, match } = rest
+  const { isLoading, currentCompanyId } = rest
 
   if( isLoading )
     return (<div>is loading</div>)
