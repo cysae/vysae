@@ -28,7 +28,7 @@ type Mutation {
   ): Meeting!
 	createVotesForAgreements(
     votesWithAgreementId: [VoteWithAgreementId!]!
-  ): [Vote!]!
+  ): [Agreement!]!
 }
 
 type Query {
