@@ -1,14 +1,57 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+// antd
+import { Spin, Button, Table, Divider, Tag } from 'antd'
 // graphql
-import { graphql } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
+import QueryGetCompany from '../../../../queries/QueryGetCompany'
+import queryCurrentSelections from '../../../../queries/queryCurrentSelections'
 
+const columns = [{
+  title: 'ID',
+  dataIndex: 'id',
+  key: 'id',
+}, {
+  title: 'Name',
+  dataIndex: 'name',
+  key: 'name',
+}, {
+  title: 'Email',
+  dataIndex: 'email',
+  key: 'email',
+}];
 
-const Shareholders = (props) => {
+const Shareholders = ({ isLoading, company }) => {
+  if (isLoading)
+    return (<Spin size="large" />)
+
+  const { shareholders } = company
+
   return (
-    <div>Shareholders</div>
+    <Fragment>
+      <Button type="primary">Añadir Socio</Button>
+      <Table columns={columns} dataSource={shareholders} />
+    </Fragment>
   )
 }
 
-export default graphql(
-  
+export default compose(
+  graphql(queryCurrentSelections, {
+    props: ({ data: { loading, currentSelections: { companyId, shareholderId } } }) => ({
+      isLoading: loading,
+      currentCompanyId: companyId,
+      currentShareholderId: shareholderId
+    })
+  }),
+  graphql(QueryGetCompany, {
+    options: (props) => ({
+      variables: {
+        id: props.currentCompanyId,
+        withShareholders: true
+      }
+    }),
+    props: ({ data: { loading, getCompany } }) => ({
+      isCompanyLoading: loading,
+      company: getCompany,
+    })
+  }),
 )(Shareholders)

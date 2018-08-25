@@ -26,6 +26,7 @@ query QueryGetCompany (
     }
     shareholders @include(if: $withShareholders) {
       id
+      name
     }
   }
 }`
