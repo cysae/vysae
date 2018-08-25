@@ -33,7 +33,7 @@ function MeetingNext(props) {
         {/* <Link to="/meetings/pdf" onClick={() => selectMeeting(record)}>Leer orden del día</Link> */}
         <Link to={`/meetings/vote/${record.id}`}>Votar</Link>
         <Divider type="vertical"/>
-        <Link to={`/meetings/result/${record.id}`} onClick={() => selectMeeting(record)}>Resultado</Link>
+        <Link to={`/meetings/result/${record.id}`}>Resultado</Link>
       </Fragment>
     )
   }]

@@ -50,18 +50,6 @@ class RawMeetingMenu extends Component {
 const MeetingMenu = withRouter(RawMeetingMenu)
 
 class Meetings extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      meeting: {}
-    }
-    this.selectMeeting = this.selectMeeting.bind(this)
-  }
-
-  selectMeeting(meeting) {
-    this.setState({ meeting })
-  }
-
   render() {
     const { isLoading, isCompanyLoading, company } = this.props
 
