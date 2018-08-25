@@ -141,7 +141,7 @@ export default withRouter(compose(
             }
 
             proxy.writeQuery({ query, data, variables })
-            props.history.push('/meetings/result')
+            props.history.push(`/meetings/result/${data.getMeeting.id}`)
           }
         }
       }),
