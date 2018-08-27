@@ -1,6 +1,11 @@
 import docx from 'docxpresso'
 import Amplify, { Auth } from 'aws-amplify'
 import generator from 'generate-password'
+import AWS from 'aws-sdk';
+AWS.config.update({ region: 'eu-west-1' })
+
+const docClient = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' })
+
 
 Amplify.configure({
   Auth: {
@@ -37,6 +42,8 @@ module.exports.conveneMeeting = (event, context, callback) => {
 // create user
 module.exports.createUser = async (event, context, callback) => {
   const { username, email, phone_number } = event.arguments
+
+  // create user in UserPool
   const { userSub } = await Auth.signUp({
     username: username,
     password: generator.generate({ length: 8, numbers: true, symbols: true, strict: true }),
@@ -45,6 +52,21 @@ module.exports.createUser = async (event, context, callback) => {
       phone_number: phone_number,
     }
   })
+
+  // create user in DynamoDB
+  docClient.put({
+    TableName: 'VysaeUser',
+    Item: {
+      'userId': userSub
+    }
+  }, function(err, data) {
+    if(err) console.error(err)
+    if(data) console.log(data)
+  })
+
+
+
+
   callback(null, {
     userId: userSub,
     username,
