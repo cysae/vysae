@@ -28,7 +28,8 @@ custom:
             sources: [seedData/vysae.json]
   webpack:
     webpackConfig: 'webpack.config.js'
-    includeModules: false
+    includeModules:
+      packagePath: './package.json'
     packager: 'npm'
   appSync:
     name: Vysae
@@ -295,6 +296,12 @@ resources:
                   Resource:
                     - "arn:aws:dynamodb:eu-west-1:*:table/Vysae"
                     - "arn:aws:dynamodb:eu-west-1:*:table/Vysae/*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUser"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUser/*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeCompany"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeCompany/*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUserCompanyConnection"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUserCompanyConnection/*"
     AppSyncLambdaServiceRole:
       Type: "AWS::IAM::Role"
       Properties:
@@ -321,3 +328,9 @@ resources:
                     - "lambda:InvokeFunction"
                   Resource:
                     - "arn:aws:lambda:eu-west-1:*:*"
+                -
+                  Effect: "Allow"
+                  Action:
+                    - "dynamodb:PutItem"
+                  Resource:
+                    - "arn:aws:dynamodb:eu-west-1:*:*"

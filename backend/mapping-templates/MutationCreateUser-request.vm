@@ -3,6 +3,6 @@
   "operation": "Invoke",
   "payload": {
     "field": "createUser",
-    "agruments": $utils.toJson($context.arguments)
+    "arguments": $utils.toJson($context.arguments)
   }
 }

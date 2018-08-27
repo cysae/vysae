@@ -1,8 +1,12 @@
 import docx from 'docxpresso'
 import Amplify, { Auth } from 'aws-amplify'
 import generator from 'generate-password'
+// node 6... has no fetch
+import fetch from 'node-fetch'
+global.fetch = require('node-fetch')
 import AWS from 'aws-sdk';
 AWS.config.update({ region: 'eu-west-1' })
+AWS.config.setPromisesDependency(require('bluebird'));
 
 const docClient = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' })
 
@@ -41,36 +45,44 @@ module.exports.conveneMeeting = (event, context, callback) => {
 
 // create user
 module.exports.createUser = async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
   const { username, email, phone_number } = event.arguments
 
   // create user in UserPool
-  const { userSub } = await Auth.signUp({
-    username: username,
-    password: generator.generate({ length: 8, numbers: true, symbols: true, strict: true }),
-    attributes: {
-      email: email,
-      phone_number: phone_number,
-    }
-  })
+  try {
+    const authResult = await Auth.signUp({
+      username: username,
+      password: generator.generate({ length: 8, numbers: true, symbols: true, strict: true }),
+      attributes: {
+        email: email,
+        phone_number: phone_number,
+      }
+    })
+    const { userSub } = authResult
 
-  // create user in DynamoDB
-  docClient.put({
-    TableName: 'VysaeUser',
-    Item: {
-      'userId': userSub
-    }
-  }, function(err, data) {
-    if(err) console.error(err)
-    if(data) console.log(data)
-  })
+    // create user in DynamoDB
+    await docClient.put({
+      TableName: 'VysaeUser',
+      Item: {
+        'userId': userSub
+      }
+    }).promise()
 
-
-
-
-  callback(null, {
-    userId: userSub,
-    username,
-    email,
-    phone_number
-  })
+    callback(null, {
+      userId: userSub,
+      username,
+      email,
+      phone_number
+    })
+  }
+  catch (err) {
+    console.error('Error \n', err, '\n')
+    callback(null, {
+      userId: null,
+      username: null,
+      email: null,
+      phone_number: null
+    })
+  }
 }
