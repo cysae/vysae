@@ -4,30 +4,32 @@ const nodeExternals = require('webpack-node-externals');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const slsw = require('serverless-webpack');
 
+console.log('juhu', slsw.lib.entries)
+
 module.exports = {
-    entry: slsw.lib.entries,
-    target: 'node',
-    externals: [nodeExternals()],
-    mode: 'development',
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                use: [
-                    'imports-loader?graphql',
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [['env', { targets: { node: '6.10' } }]],
-                        },
-                    },
-                ],
+  entry: slsw.lib.entries,
+  target: 'node',
+  externals: [nodeExternals()],
+  mode: 'development',
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          'imports-loader?graphql',
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [['env', { targets: { node: '6.10' } }]],
             },
+          },
         ],
-    },
-    output: {
-        libraryTarget: 'commonjs',
-        path: path.join(__dirname, '.webpack'),
-        filename: '[name].js',
-    },
+      },
+    ],
+  },
+  output: {
+    libraryTarget: 'commonjs',
+    path: path.join(__dirname, '.webpack'),
+    filename: '[name].js',
+  },
 };

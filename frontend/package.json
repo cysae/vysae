@@ -13,6 +13,7 @@
     "aws-sdk": "^2.297.0",
     "babel-plugin-import": "^1.8.0",
     "core-js": "2",
+    "generate-password": "^1.4.0",
     "graphql-tag": "^2.9.2",
     "history": "^4.7.2",
     "lodash": "^4.17.10",

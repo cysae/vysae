@@ -1,54 +1,23 @@
-input MeetingInput {
-  id: ID,
-  start: String!,
-  end: String!,
-  agreements: [AgreementInput]
+type Agreement {
+  id: ID!
+  name: String!
+  votes: [Vote]
 }
 input AgreementInput {
   id: ID,
   name: String!,
   votes: [VoteInput]
 }
-input VoteInput {
-  id: ID
-  result: Int!
-}
-input VoteWithAgreementId {
-	agreementId: ID!
-	vote: VoteInput!
-}
-
-type Mutation {
-  createCompany(
-    name: String!
-  ): Company!
-  createMeeting(
-    companyId: ID!,
-    meeting: MeetingInput!
-  ): Meeting!
-	createVotesForAgreements(
-    votesWithAgreementId: [VoteWithAgreementId!]!
-  ): [Agreement!]!
-}
-
-type Query {
-  getCompany(id: ID!): Company
-  getMeeting(id: ID!): Meeting
-  getShareholder: Shareholder
-  queryMeetingDocx: Docx
-}
 
 type Company {
-  id: ID!
+  companyId: ID!
   name: String
   shareholders: [Shareholder]
   meetings: [Meeting]
 }
 
-type Shareholder {
-  id: String!
-  name: String
-  companies: [Company]
+type Docx {
+  url: String!
 }
 
 type Meeting {
@@ -58,10 +27,56 @@ type Meeting {
   agreements: [Agreement]
 }
 
-type Agreement {
+input MeetingInput {
+  id: ID,
+  start: String!,
+  end: String!,
+  agreements: [AgreementInput]
+}
+
+type Mutation {
+  createCompany(
+    name: String!
+  ): Company!
+  createUser(
+    username: String!
+    email: String!
+    phone_number: String!
+  ): User!
+  createMeeting(
+    companyId: ID!
+    meeting: MeetingInput!
+  ): Meeting!
+	createVotesForAgreements(
+    votesWithAgreementId: [VoteWithAgreementId!]!
+  ): [Agreement!]!
+}
+
+type Shareholder {
   id: ID!
-  name: String!
-  votes: [Vote]
+  name: String
+  companies: [Company]
+}
+
+type Query {
+  getCompany(id: ID!): Company
+  getMeeting(id: ID!): Meeting
+  getUser: User!
+  queryMeetingDocx: Docx
+}
+
+type User {
+  userId: ID!
+  email: String!
+  password: String!
+  phone_number: String!
+  username: String!
+  companies: [UserCompanyConnection]
+}
+
+type UserCompanyConnection {
+  items: [Company]
+  nextToken: String
 }
 
 type Vote {
@@ -69,8 +84,13 @@ type Vote {
   result: Int!
 }
 
-type Docx {
-  url: String!
+input VoteInput {
+  id: ID
+  result: Int!
+}
+input VoteWithAgreementId {
+	agreementId: ID!
+	vote: VoteInput!
 }
 
 schema {

@@ -1,0 +1,9 @@
+#set( $userId = $context.identity.sub )
+{
+    "version" : "2017-02-28",
+    "operation" : "GetItem",
+    "key" : {
+        "userId" : { "S" : "$userId" },
+    },
+    "consistentRead" : true
+}

@@ -7,6 +7,7 @@ provider:
   region: eu-west-1
 
 plugins:
+  - serverless-webpack
   - serverless-offline
   - serverless-dynamodb-local
   - serverless-appsync-plugin
@@ -25,6 +26,10 @@ custom:
         sources:
           - table: Vysae
             sources: [seedData/vysae.json]
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: false
+    packager: 'npm'
   appSync:
     name: Vysae
     authenticationType: AMAZON_COGNITO_USER_POOLS
@@ -56,9 +61,9 @@ custom:
         response: "company-meetings-response.txt"
       - dataSource: Vysae
         type: Query
-        field: getShareholder
-        request: "QueryGetShareholder-request.txt"
-        response: "QueryGetShareholder-response.txt"
+        field: getUser
+        request: "QueryGetUser-request.vm"
+        response: "QueryGetUser-response.vm"
       - dataSource: Vysae
         type: Meeting
         field: agreements
@@ -99,8 +104,31 @@ custom:
         field: companies
         request: "shareholder-companies-request.txt"
         response: "shareholder-companies-response.txt"
+      - dataSource: createUser 
+        type: Mutation
+        field: createUser
+        request: "MutationCreateUser-request.vm"
+        response: "MutationCreateUser-response.vm"
     serviceRole: "AppSyncServiceRole"
     dataSources:
+      - type: AMAZON_DYNAMODB
+        name: User
+        description: "User table"
+        config:
+          tableName: { Ref: "VysaeUserTable" }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
+      - type: AMAZON_DYNAMODB
+        name: Company
+        description: "Company table"
+        config:
+          tableName: { Ref: "VysaeCompanyTable" }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
+      - type: AMAZON_DYNAMODB
+        name: UserCompanyConnection
+        description: "UserCompanyConnection table"
+        config:
+          tableName: { Ref: "VysaeUserCompanyConnectionTable" }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AMAZON_DYNAMODB
         name: Vysae
         description: "Vysae table"
@@ -112,6 +140,12 @@ custom:
         description: "get Docxpresso URL for convening a meeting"
         config:
           lambdaFunctionArn: { Fn::GetAtt: [MeetingDocxLambdaFunction, Arn] }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Lambda-${self:custom.appSync.serviceRole}"
+      - type: AWS_LAMBDA
+        name: createUser
+        description: "get Docxpresso URL for convening a meeting"
+        config:
+          lambdaFunctionArn: { Fn::GetAtt: [CreateUserLambdaFunction, Arn] }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Lambda-${self:custom.appSync.serviceRole}"
 
 functions:
@@ -131,9 +165,73 @@ functions:
       - http:
           path: meeting/convene
           method: post
+  createUser:
+    handler: handler.createUser
 
 resources:
   Resources:
+    VysaeUserTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: VysaeUser
+        AttributeDefinitions:
+          - AttributeName: userId 
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 3
+          WriteCapacityUnits: 3
+    VysaeCompanyTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: VysaeCompany
+        AttributeDefinitions:
+          - AttributeName: companyId 
+            AttributeType: S
+        KeySchema:
+          - AttributeName: companyId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 3
+          WriteCapacityUnits: 3
+    VysaeUserCompanyConnectionTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: VysaeUserCompanyConnection
+        AttributeDefinitions:
+          - AttributeName: id 
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: companyId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 3
+          WriteCapacityUnits: 3
+        GlobalSecondaryIndexes:
+          - IndexName: User
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 3 
+              WriteCapacityUnits: 3 
+          - IndexName: Company
+            KeySchema:
+              - AttributeName: companyId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 3 
+              WriteCapacityUnits: 3 
     Vysae:
       Type: 'AWS::DynamoDB::Table'
       Properties:

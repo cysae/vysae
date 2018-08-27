@@ -1,5 +1,5 @@
 #set( $uuid = $util.autoId() )
-#set( $shareholderId = $context.identity.sub )
+#set( $userId = $context.identity.sub )
 
 #set( $batchData = [] )
 
@@ -12,8 +12,8 @@
 )
 $util.qr($batchData.add($util.dynamodb.toMapValues($company)))
 
-## Shareholder relation
-#set( $company.SK = "Shareholder-$shareholderId" )
+## User relation
+#set( $company.SK = "User-$userId" )
 $util.qr($batchData.add($util.dynamodb.toMapValues($company)))
 
 {

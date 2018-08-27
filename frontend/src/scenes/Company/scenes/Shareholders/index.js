@@ -1,10 +1,12 @@
 import React, { Fragment } from 'react'
 // antd
-import { Spin, Button, Table, Divider, Tag } from 'antd'
+import { Spin, Table, Divider, Tag } from 'antd'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
 import queryCurrentSelections from '../../../../queries/queryCurrentSelections'
+// components
+import CreateShareholderForm from './components/CreateShareholderForm'
 
 const columns = [{
   title: 'ID',
@@ -20,6 +22,8 @@ const columns = [{
   key: 'email',
 }];
 
+
+
 const Shareholders = ({ isLoading, company }) => {
   if (isLoading)
     return (<Spin size="large" />)
@@ -28,7 +32,7 @@ const Shareholders = ({ isLoading, company }) => {
 
   return (
     <Fragment>
-      <Button type="primary">Añadir Socio</Button>
+      <CreateShareholderForm />
       <Table columns={columns} dataSource={shareholders} />
     </Fragment>
   )
