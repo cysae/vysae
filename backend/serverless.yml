@@ -40,11 +40,11 @@ custom:
       userPoolId: eu-west-1_MUEHMQ2R2
     mappingTemplatesLocation: "./mapping-templates"
     mappingTemplates:
-      - dataSource: Vysae
+      - dataSource: CompanyTable
         type: Mutation
         field: createCompany
-        request: "MutationCreateCompany-request.txt"
-        response: "MutationCreateCompany-response.txt"
+        request: "MutationCreateCompany-request.vm"
+        response: "MutationCreateCompany-response.vm"
       - dataSource: Vysae
         type: Query
         field: getCompany
@@ -70,11 +70,6 @@ custom:
         field: agreements
         request: "meeting-agreements-request.txt"
         response: "meeting-agreements-response.txt"
-      - dataSource: Vysae
-        type: Mutation
-        field: mutateAgreement
-        request: "mutateAgreement-request.txt"
-        response: "mutateAgreement-response.txt"
       - dataSource: Vysae
         type: Query
         field: getMeeting
@@ -113,19 +108,19 @@ custom:
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
-        name: User
+        name: UserTable
         description: "User table"
         config:
           tableName: { Ref: "VysaeUserTable" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AMAZON_DYNAMODB
-        name: Company
+        name: CompanyTable
         description: "Company table"
         config:
           tableName: { Ref: "VysaeCompanyTable" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AMAZON_DYNAMODB
-        name: UserCompanyConnection
+        name: UserCompanyConnectionTable
         description: "UserCompanyConnection table"
         config:
           tableName: { Ref: "VysaeUserCompanyConnectionTable" }
@@ -144,10 +139,10 @@ custom:
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Lambda-${self:custom.appSync.serviceRole}"
       - type: AWS_LAMBDA
         name: createUser
-        description: "get Docxpresso URL for convening a meeting"
+        description: "create User ( Cognito & DynamoDB )"
         config:
           lambdaFunctionArn: { Fn::GetAtt: [CreateUserLambdaFunction, Arn] }
-          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Lambda-${self:custom.appSync.serviceRole}"
+          serviceRoleArn: { Fn::GetAtt: [AppSyncLambdaServiceRole, Arn] }
 
 functions:
   meetingDocx:
@@ -168,6 +163,7 @@ functions:
           method: post
   createUser:
     handler: handler.createUser
+    role: DynamoDBServiceRole
 
 resources:
   Resources:
@@ -202,14 +198,14 @@ resources:
       Properties:
         TableName: VysaeUserCompanyConnection
         AttributeDefinitions:
-          - AttributeName: id 
+          - AttributeName: userCompanyConnectionId 
             AttributeType: S
           - AttributeName: userId
             AttributeType: S
           - AttributeName: companyId
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: userCompanyConnectionId
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 3
@@ -269,16 +265,14 @@ resources:
         AssumeRolePolicyDocument:
           Version: "2012-10-17"
           Statement:
-            -
-              Effect: "Allow"
+            - Effect: "Allow"
               Principal:
                 Service:
                   - "appsync.amazonaws.com"
               Action:
                 - "sts:AssumeRole"
         Policies:
-          -
-            PolicyName: "Dynamo-AppSyncServiceRole-Policy"
+          - PolicyName: "Dynamo-AppSyncServiceRole-Policy"
             PolicyDocument:
               Version: "2012-10-17"
               Statement:
@@ -305,32 +299,66 @@ resources:
     AppSyncLambdaServiceRole:
       Type: "AWS::IAM::Role"
       Properties:
-        RoleName: "Lambda-AppSyncServiceRole"
+        RoleName: "Vysae-AppSync-Lambda-ServiceRole"
         AssumeRolePolicyDocument:
           Version: "2012-10-17"
           Statement:
-            -
-              Effect: "Allow"
+            - Effect: "Allow"
               Principal:
                 Service:
                   - "appsync.amazonaws.com"
               Action:
                 - "sts:AssumeRole"
         Policies:
-          -
-            PolicyName: "Lambda-AppSyncServiceRole-Policy"
+          - PolicyName: "Vysae-AppSync-Lambda-ServiceRole-Policy"
             PolicyDocument:
               Version: "2012-10-17"
               Statement:
-                -
-                  Effect: "Allow"
+                - Effect: "Allow"
                   Action:
                     - "lambda:InvokeFunction"
                   Resource:
-                    - "arn:aws:lambda:eu-west-1:*:*"
-                -
-                  Effect: "Allow"
+                    - "arn:aws:lambda:eu-west-1:037641059503:function:backend-dev-createUser"
+    DynamoDBServiceRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+        RoleName: "Vysae-Lambda-ServiceRole"
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service: "lambda.amazonaws.com"
+              Action: "sts:AssumeRole"
+        Policies:
+          - PolicyName: "Vysae-DynamoDB-ServiceRole-Policy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: "Allow"
                   Action:
+                    - "dynamodb:Query"
+                    - "dynamodb:BatchWriteItem"
+                    - "dynamodb:GetItem"
+                    - "dynamodb:BatchGetItem"
+                    - "dynamodb:DeleteItem"
                     - "dynamodb:PutItem"
+                    - "dynamodb:Scan"
+                    - "dynamodb:UpdateItem"
                   Resource:
-                    - "arn:aws:dynamodb:eu-west-1:*:*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUser"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUser/*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeCompany"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeCompany/*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUserCompanyConnection"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUserCompanyConnection/*"
+          - PolicyName: "Vysae-Logs-ServiceRole-Policy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: "Allow"
+                  Action:
+                    - "logs:CreateLogStream"
+                    - "logs:PutLogEvents"
+                  Resource:
+                    "arn:aws:logs:eu-west-1:037641059503:log-group:/aws/lambda/backend-dev-createUser:*"

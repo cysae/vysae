@@ -3,4 +3,7 @@
     $utils.appendError($ctx.error.message, $ctx.error.message)
 #end
 
-$utils.toJson($context.result)
+## Company
+#set( $company = $context.result.data.VysaeCompany[0] )
+
+$util.toJson($company)

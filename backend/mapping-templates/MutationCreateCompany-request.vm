@@ -1,0 +1,29 @@
+#set( $companyUuid = $util.autoId() )
+#set( $userId = $context.identity.sub )
+
+## Company
+#set( $companies = [] )
+#set( $company = {
+    "companyId": "$util.autoId()",
+    "name": "$context.arguments.name"
+  }
+)
+$util.qr($companies.add($util.dynamodb.toMapValues($company)))
+
+## User relation
+#set( $userCompanyConnections = [] )
+#set( $userCompanyConnection = {
+  "userCompanyConnectionId": "$util.autoId()",
+  "userId": "$userId",
+  "companyId": "$company.companyId"
+})
+$util.qr($userCompanyConnections.add($util.dynamodb.toMapValues($userCompanyConnection)))
+
+{
+  "version" : "2018-05-29",
+  "operation" : "BatchPutItem",
+  "tables": {
+    "VysaeCompany": $util.toJson($companies),
+    "VysaeUserCompanyConnection": $util.toJson($userCompanyConnections)
+  }
+}
