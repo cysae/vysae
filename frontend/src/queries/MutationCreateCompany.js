@@ -5,7 +5,7 @@ mutation MutationCreateCompany($name: String!) {
   createCompany(
     name: $name
   ) {
-    id
+    companyId
     name
   }
 }

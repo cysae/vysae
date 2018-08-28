@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Table, Button, Spin } from 'antd'
 // AppSync
-import QueryGetShareholder from './queries/QueryGetShareholder'
+import QueryGetUser from './queries/QueryGetUser'
 import queryCurrentSelections from './queries/queryCurrentSelections'
 import mutateCurrentSelections from './queries/mutateCurrentSelections'
 import { graphql, compose } from 'react-apollo'
@@ -26,20 +26,28 @@ class Dashboard extends Component {
     return ''
   }
 
+  handleTableChange = async (pagination, filters, sorter) => {
+    if ( this.props.user.companies.nextToken !== null )
+      this.props.fetchMore()
+  }
+
   render() {
     const {
-      shareholder, isShareholderLoading, isCurrentSelectionLoading,
+      user, isUserLoading, error, isCurrentSelectionLoading,
         mutateCurrentSelections
     } = this.props
 
-    if(isShareholderLoading || isCurrentSelectionLoading) {
+    if(isUserLoading || isCurrentSelectionLoading) {
       return <Spin size="large" />
     }
 
-    if( !shareholder )
-      return <div>Unknown Shareholder</div>
 
-    const { companies } = shareholder
+    if( error ) {
+      console.log('Error', error)
+      return (<div>Error</div>)
+    }
+
+    const companies = user.companies.items
 
     const columns = [{
       title: 'Nombre de la sociedad',
@@ -60,24 +68,48 @@ class Dashboard extends Component {
     }];
 
     return (
-    <MyTable
-      rowClassName={this.getSelectedRow}
-      rowKey="id"
-      columns={columns}
-      dataSource={companies}
-    />
+      <MyTable
+        rowClassName={this.getSelectedRow}
+        rowKey="companyId"
+        columns={columns}
+        dataSource={companies}
+        onChange={this.handleTableChange}
+      />
     )
   }
 }
 
 const DashboardWithData = compose(
-  graphql(QueryGetShareholder, {
+  graphql(QueryGetUser, {
     options: {
       fetchPolicy: 'network-only'
     },
-    props: ({ data: { loading, getShareholder} }) => ({
-      isShareholderLoading: loading,
-      shareholder: getShareholder,
+    props: ({ data: { error, loading, getUser, fetchMore } }) => ({
+      isUserLoading: loading,
+      error,
+      user: getUser,
+      fetchMore: () => fetchMore({
+        variables: {
+          nextToken: getUser ? getUser.companies.nextToken : null
+        },
+        updateQuery: (previousResult, { fetchMoreResult, variables }) => {
+          // concat companies
+          const items = previousResult.getUser.companies.items.concat(
+            fetchMoreResult.getUser.companies.items
+          )
+
+          fetchMoreResult.getUser.companies.nextToken
+          return {
+            getUser: {
+              ...fetchMoreResult.getUser,
+              companies: {
+                ...fetchMoreResult.getUser.companies,
+                items,
+              }
+            },
+          }
+        }
+      })
     })
   }),
   graphql(queryCurrentSelections, {
