@@ -71,7 +71,10 @@ type User {
   password: String!
   phone_number: String!
   username: String!
-  companies: UserCompanyConnection
+  companies(
+    limit: Int
+    nextToken: String
+  ): UserCompanyConnection
 }
 
 type UserCompanyConnection {
