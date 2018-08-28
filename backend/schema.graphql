@@ -71,7 +71,7 @@ type User {
   password: String!
   phone_number: String!
   username: String!
-  companies: [UserCompanyConnection]
+  companies: UserCompanyConnection
 }
 
 type UserCompanyConnection {

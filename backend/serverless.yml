@@ -60,11 +60,21 @@ custom:
         field: meetings
         request: "company-meetings-request.txt"
         response: "company-meetings-response.txt"
-      - dataSource: Vysae
+      - dataSource: UserTable
         type: Query
         field: getUser
         request: "QueryGetUser-request.vm"
         response: "QueryGetUser-response.vm"
+      - dataSource: UserCompanyConnectionTable
+        type: User
+        field: companies
+        request: "User-companies-request.vm"
+        response: "User-companies-response.vm"
+      - dataSource: CompanyTable
+        type: UserCompanyConnection
+        field: items
+        request: "UserCompanyConnection-items-request.vm"
+        response: "UserCompanyConnection-items-response.vm"
       - dataSource: Vysae
         type: Meeting
         field: agreements
