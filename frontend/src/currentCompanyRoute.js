@@ -39,11 +39,11 @@ const CurrentCompanyRoute = ({ component: Component, ...rest }) => {
   )
 }
 
-export default withRouter(compose(
-  graphql(queryCurrentSelections, {
+export default withRouter(graphql(
+  queryCurrentSelections, {
     props: ({ data: { loading, currentSelections: { companyId } } }) => ({
       isLoading: loading,
       currentCompanyId: companyId,
     })
-  })
+  }
 )(CurrentCompanyRoute))

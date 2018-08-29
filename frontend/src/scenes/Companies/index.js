@@ -3,29 +3,13 @@ import styled from 'styled-components'
 import { Table, Button, Spin, message } from 'antd'
 // AppSync
 import QueryGetUser from '../../queries/QueryGetUser'
-import queryCurrentSelections from '../../queries/queryCurrentSelections'
-import mutateCurrentSelections from '../../queries/mutateCurrentSelections'
 import { graphql, compose } from 'react-apollo'
 // Components
 import CreateCompanyDrawer from './components/CreateCompanyDrawer'
 
-const MyTable = styled(Table)`
-  .selectedRow {
-    background-color: #e7f7ff;
-  }
-`
-
 class Companies extends Component {
   constructor(props) {
     super(props)
-    this.getSelectedRow = this.getSelectedRow.bind(this)
-  }
-
-  getSelectedRow(record, index) {
-    if(record.id === this.props.currentCompanyId) {
-      return 'selectedRow'
-    }
-    return ''
   }
 
   handleTableChange = async (pagination, filters, sorter) => {
@@ -39,7 +23,7 @@ class Companies extends Component {
   render() {
     const {
       user, isUserLoading, error, isCurrentSelectionLoading,
-        mutateCurrentSelections
+      onSelectCompanyId
     } = this.props
 
     if(isUserLoading || isCurrentSelectionLoading) {
@@ -61,12 +45,9 @@ class Companies extends Component {
       title: 'Acciones',
         dataIndex: 'id',
         render: (text, record) =>(
-          <Button onClick={() => mutateCurrentSelections({
-              variables: {
-                field: 'companyId',
-                id: record.id
-              },
-          })}>
+          <Button onClick={
+            () => onSelectCompanyId( record.companyId )
+          }>
             Seleccionar
           </Button>
         ),
@@ -75,8 +56,7 @@ class Companies extends Component {
     return (
       <Fragment>
         <CreateCompanyDrawer />
-        <MyTable
-          rowClassName={this.getSelectedRow}
+        <Table
           rowKey="companyId"
           columns={columns}
           dataSource={companies}
@@ -120,13 +100,6 @@ const CompaniesWithData = compose(
       })
     })
   }),
-  graphql(queryCurrentSelections, {
-    props: ({ data: { loading, currentSelections: { companyId }} }) => ({
-      isCurrentSelectionLoading: loading,
-      currentCompanyId: companyId
-    })
-  }),
-  graphql(mutateCurrentSelections, { name: 'mutateCurrentSelections' }),
 )(Companies)
 
 export default CompaniesWithData

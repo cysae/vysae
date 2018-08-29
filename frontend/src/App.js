@@ -6,7 +6,7 @@ import { withAuthenticator } from 'aws-amplify-react'
 import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router'
 // Antd
-import { Layout, Breadcrumb } from 'antd'
+import { Layout, Breadcrumb, Modal } from 'antd'
 // Components
 import MyHeader from './components/header.js'
 import CurrentCompanyRoute from './currentCompanyRoute.js'
@@ -47,7 +47,7 @@ const stateLink = createLinkWithCache(cache => withClientState({
           }
         }
         cache.writeData({ data })
-        return null
+        return data
       },
     }
   }
@@ -69,20 +69,50 @@ const client = new AWSAppSyncClient({}, { link })
 
 
 class App extends Component {
-  /* async componentDidMount() {
-   *   await console.log(await Auth.currentAuthenticatedUser())
-   * } */
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      companyId: null
+    }
+
+    this.onSelectCompanyId = this.onSelectCompanyId.bind(this)
+  }
+
+  onSelectCompanyId(companyId) {
+    this.setState({ companyId })
+    this.props.history.push(`/${companyId}/dashboard`)
+  }
+
   render() {
+    const { companyId } = this.state
+    if (companyId === null) {
+      return (
+        <Modal
+          title="Seleccionar Sociedad"
+          visible={(companyId === null)}
+          width="90vw"
+          closable={false}
+          footer={null}
+        >
+          <Companies
+            onSelectCompanyId={this.onSelectCompanyId}
+          />
+        </Modal>
+      )
+    }
+
+
     return (
       <Layout>
-        <MyHeader client={client} />
+        <MyHeader client={client} companyId={companyId} />
         <Content style={{ padding: '0 50px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             {/* <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item> */}
           </Breadcrumb>
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
             <Route exact path="/" component={Companies} />
-            <Route path="/company/:companyId/dashboard" component={Dashboard} />
+            <Route path="/:companyId/dashboard" component={Dashboard} />
             <Route path="/añadirSociedad" component={AddCompany}/>
             <CurrentCompanyRoute
               path="/info"
@@ -103,10 +133,10 @@ class App extends Component {
   }
 }
 
-const WithApollo = () => (
+const WithApollo = (props) => (
   <ApolloProvider client={client}>
     <Rehydrated>
-      <App />
+      <App history={props.history} />
     </Rehydrated>
   </ApolloProvider>
 );

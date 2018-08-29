@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import Amplify, { Auth } from 'aws-amplify'
 // antd
-import { Layout, Row, Col, Button, Menu } from 'antd'
+import { Layout, Row, Col, Button, Menu, Spin } from 'antd'
 // Router
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
+// graphql
+import { graphql } from 'react-apollo'
+import QueryCurrentSelections from '../queries/queryCurrentSelections'
 // Components
 import aws_exports from '../aws-exports';
 Amplify.configure(aws_exports);
@@ -51,19 +54,25 @@ class MyHeader extends Component {
   }
 
   async signOut() {
-    console.log('test')
     await Auth.signOut()
     this.props.client.resetStore()
     window.location.href = '/'
   }
 
   render() {
+    const { isLoading, currentCompanyId} = this.props
+
+    if (isLoading)
+      return (<Spin size="large" />)
+
+    console.log(currentCompanyId)
+
     return(
       <Header>
         <Row type="flex" justify="space-between">
           <Col>
             <div className="logo" />
-            <HeaderMenu />
+            <HeaderMenu companyId={currentCompanyId} />
           </Col>
           <Col>
             <Button onClick={this.signOut}>Log out</Button>
@@ -74,4 +83,11 @@ class MyHeader extends Component {
   }
 }
 
-export default withRouter(MyHeader)
+export default withRouter(graphql(
+  QueryCurrentSelections, {
+    props: ({ data: { loading, currentSelections: { companyId } } }) => ({
+      isLoading: loading,
+      currentCompanyId: companyId,
+    })
+  }
+)(MyHeader))
