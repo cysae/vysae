@@ -16,6 +16,11 @@ type Company {
   meetings: [Meeting]
 }
 
+type CompanyShareholderConnection {
+  items: [Shareholder]
+  nextToken: String
+}
+
 type Docx {
   url: String!
 }
@@ -43,6 +48,10 @@ type Mutation {
     email: String!
     phone_number: String!
   ): User!
+  createShareholder(
+    companyId: ID!
+    name: String!
+  ): Shareholder!
   createMeeting(
     companyId: ID!
     meeting: MeetingInput!
@@ -53,10 +62,11 @@ type Mutation {
 }
 
 type Shareholder {
-  id: ID!
+  shareholderId: ID!
   name: String
   companies: [Company]
 }
+
 
 type Query {
   getCompany(companyId: ID!): Company
@@ -79,6 +89,11 @@ type User {
 
 type UserCompanyConnection {
   items: [Company]
+  nextToken: String
+}
+
+type UserShareholderConnection {
+  items: [Shareholder]
   nextToken: String
 }
 

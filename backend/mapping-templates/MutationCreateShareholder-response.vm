@@ -1,0 +1,9 @@
+#if($ctx.error)
+    ## Append a GraphQL error for that field in the GraphQL response
+    $utils.appendError($ctx.error.message, $ctx.error.message)
+#end
+
+## Shareholder
+#set( $shareholder = $ctx.result.data.VysaeShareholder[0] )
+
+$utils.toJson($shareholder)

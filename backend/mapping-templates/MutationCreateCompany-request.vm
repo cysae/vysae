@@ -1,11 +1,11 @@
-#set( $companyUuid = $util.autoId() )
+#set( $companyId = $util.autoId() )
 #set( $userId = $context.identity.sub )
 
 ## Company
 #set( $companies = [] )
 #set( $company = {
-    "companyId": "$util.autoId()",
-    "name": "$context.arguments.name"
+    "companyId": "$companyId",
+    "name": "$ctx.args.name"
   }
 )
 $util.qr($companies.add($util.dynamodb.toMapValues($company)))
@@ -15,7 +15,7 @@ $util.qr($companies.add($util.dynamodb.toMapValues($company)))
 #set( $userCompanyConnection = {
   "userCompanyConnectionId": "$util.autoId()",
   "userId": "$userId",
-  "companyId": "$company.companyId"
+  "companyId": "$companyId"
 })
 $util.qr($userCompanyConnections.add($util.dynamodb.toMapValues($userCompanyConnection)))
 
