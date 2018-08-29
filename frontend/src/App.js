@@ -10,6 +10,7 @@ import { Layout, Breadcrumb } from 'antd'
 // Components
 import MyHeader from './components/header.js'
 import CurrentCompanyRoute from './currentCompanyRoute.js'
+import Companies from './scenes/Companies'
 import Dashboard from './dashboard'
 import AddCompany from './containers/addCompany'
 import Info from './containers/info'
@@ -80,11 +81,8 @@ class App extends Component {
             {/* <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item> */}
           </Breadcrumb>
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-            <Route
-              exact
-              path="/"
-              component={Dashboard}
-            />
+            <Route exact path="/" component={Companies} />
+            <Route path="/company/:companyId/dashboard" component={Dashboard} />
             <Route path="/añadirSociedad" component={AddCompany}/>
             <CurrentCompanyRoute
               path="/info"

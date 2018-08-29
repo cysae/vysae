@@ -6,7 +6,7 @@ import { compose, graphql } from 'react-apollo'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
 import queryCurrentSelections from '../../../../queries/queryCurrentSelections'
 // components
-import CreateShareholderForm from './components/CreateShareholderForm'
+import CreateShareholderForm from './components/CreateShareholderDrawer'
 
 const columns = [{
   title: 'ID',

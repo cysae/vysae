@@ -14,7 +14,8 @@ class RawHeaderMenu extends Component {
   getSelectedKey() {
     const { pathname } = this.props.location
     switch(pathname.substr(0, 5)) {
-      case '/': return ['dashboard']
+      case '/': return ['companies']
+      case '/dash': return ['dashboard']
       case '/comp': return ['company']
       case '/info': return ['info']
       case '/meet': return ['meetings']
@@ -31,6 +32,7 @@ class RawHeaderMenu extends Component {
         selectedKeys={this.getSelectedKey()}
         style={{ lineHeight: '64px' }}
       >
+        <Menu.Item key="companies"><Link to="/">Companies</Link></Menu.Item>
         <Menu.Item key="dashboard"><Link to="/">Dashboard</Link></Menu.Item>
         <Menu.Item key="company"><Link to="/company">Company</Link></Menu.Item>
         <Menu.Item key="info"><Link to="/info/company">Info</Link></Menu.Item>
