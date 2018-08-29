@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 // amplify
-import { Auth } from 'aws-amplify'
+import Amplify, { Auth } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
+import aws_exports from './aws-exports';
 // Router
 import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router'
 // Antd
-import { Layout, Breadcrumb, Modal } from 'antd'
+import { Layout, Breadcrumb, Modal, message } from 'antd'
 // Components
 import MyHeader from './components/header.js'
 import CurrentCompanyRoute from './currentCompanyRoute.js'
@@ -20,10 +21,11 @@ import Company from './scenes/Company'
 import appSyncConfig from './AppSync'
 import AWSAppSyncClient, { createAppSyncLink, createLinkWithCache } from "aws-appsync";
 import { Rehydrated } from 'aws-appsync-react';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider, withApollo, compose } from 'react-apollo';
 import { ApolloLink } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
 import './App.css'
+Amplify.configure(aws_exports);
 const { Content, Footer } = Layout;
 
 // Apollo
@@ -76,15 +78,27 @@ class App extends Component {
       companyId: null
     }
 
-    this.onSelectCompanyId = this.onSelectCompanyId.bind(this)
+    this.handleSelectCompanyId = this.handleSelectCompanyId.bind(this)
+    this.handleSignOut = this.handleSignOut.bind(this)
   }
 
-  onSelectCompanyId(companyId) {
+  handleSignOut = async () => {
+    const hide = message.loading('Sign Out')
+    await Auth.signOut()
+    await this.props.client.resetStore()
+    hide()
+    window.location.href = '/'
+    /* this.setState({ companyId: null }) */
+    /* this.props.history.push('/') */
+  }
+
+  handleSelectCompanyId(companyId) {
     this.setState({ companyId })
     this.props.history.push(`/${companyId}/dashboard`)
   }
 
   render() {
+    console.log(this.props)
     const { companyId } = this.state
     if (companyId === null) {
       return (
@@ -96,7 +110,7 @@ class App extends Component {
           footer={null}
         >
           <Companies
-            onSelectCompanyId={this.onSelectCompanyId}
+            handleSelectCompanyId={this.handleSelectCompanyId}
           />
         </Modal>
       )
@@ -105,7 +119,7 @@ class App extends Component {
 
     return (
       <Layout>
-        <MyHeader client={client} companyId={companyId} />
+        <MyHeader companyId={companyId} handleSignOut={this.handleSignOut} />
         <Content style={{ padding: '0 50px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             {/* <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item> */}
@@ -133,14 +147,20 @@ class App extends Component {
   }
 }
 
-const WithApollo = (props) => (
+const AppWithData = compose(
+  withRouter,
+  withApollo,
+  withAuthenticator
+)(App)
+
+const WithApollo = () => (
   <ApolloProvider client={client}>
     <Rehydrated>
-      <App history={props.history} />
+      <AppWithData />
     </Rehydrated>
   </ApolloProvider>
 );
 
 
-export default withAuthenticator(withRouter(WithApollo))
+export default WithApollo
 

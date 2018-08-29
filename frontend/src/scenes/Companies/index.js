@@ -23,7 +23,7 @@ class Companies extends Component {
   render() {
     const {
       user, isUserLoading, error, isCurrentSelectionLoading,
-      onSelectCompanyId
+      handleSelectCompanyId
     } = this.props
 
     if(isUserLoading || isCurrentSelectionLoading) {
@@ -46,7 +46,7 @@ class Companies extends Component {
         dataIndex: 'id',
         render: (text, record) =>(
           <Button onClick={
-            () => onSelectCompanyId( record.companyId )
+            () => handleSelectCompanyId( record.companyId )
           }>
             Seleccionar
           </Button>
