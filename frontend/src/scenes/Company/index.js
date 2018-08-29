@@ -11,7 +11,9 @@ import Basics from './scenes/Basics'
 class RawCompanyMenu extends Component {
   getSelectedKey() {
     const { pathname } = this.props.location
-    switch(pathname) {
+    const companyIndex = pathname.indexOf('/', 1)
+
+    switch(pathname.substr(companyIndex, pathname.length)) {
       case '/company/basics': return ['basics']
       case '/company/shareholders': return ['shareholders']
       default: return ['basics']
@@ -19,15 +21,17 @@ class RawCompanyMenu extends Component {
   }
 
   render() {
+    const { match: { params: { companyId }}} = this.props
+
     return(
       <Menu
         selectedKeys={this.getSelectedKey()}
       >
         <Menu.Item key="basics">
-          <Link to='/company/basics'>Basicos</Link>
+          <Link to={`/${companyId}/company/basics`}>Basicos</Link>
         </Menu.Item>
         <Menu.Item key="shareholders">
-          <Link to='/company/shareholders'>Socios</Link>
+          <Link to={`/${companyId}/company/shareholders`}>Socios</Link>
         </Menu.Item>
       </Menu>
     )
@@ -41,8 +45,8 @@ export default (props) => (
       <CompanyMenu />
     </Col>
     <Col span={20}>
-      <Route path="/company/basics" component={Basics} />
-      <Route path="/company/shareholders" component={Shareholders} />
+      <Route path="/:companyId/company/basics" component={Basics} />
+      <Route path="/:companyId/company/shareholders" component={Shareholders} />
     </Col>
   </Row>
 )

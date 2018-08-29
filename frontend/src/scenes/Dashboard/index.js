@@ -8,8 +8,11 @@ import renderWhileLoading from '../../services/renderWhileLoading'
 import Loading from '../../components/Loading'
 
 const Dashboard = (props) => {
+  const { company: { name } } = props
   return (
-    <div> Dashboard </div>
+    <div>
+      {name}
+    </div>
   )
 }
 
@@ -21,6 +24,11 @@ export default compose(
         variables: {
           companyId: props.match.params.companyId
         },
+      }),
+      props: ({ data: { error, loading, getCompany } }) => ({
+        loading,
+        error,
+        company: getCompany
       })
     }
   ),

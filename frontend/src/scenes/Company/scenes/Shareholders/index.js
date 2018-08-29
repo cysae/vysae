@@ -25,15 +25,16 @@ const columns = [{
 
 
 const Shareholders = ({ isLoading, company }) => {
-  if (isLoading)
-    return (<Spin size="large" />)
+  /* if (isLoading)
+   *   return (<Spin size="large" />) */
 
-  const { shareholders } = company
+  /* const { shareholders } = company */
 
   return (
     <Fragment>
-      <CreateShareholderForm />
-      <Table columns={columns} dataSource={shareholders} />
+      test
+      {/* <CreateShareholderForm /> */}
+      {/* <Table columns={columns} dataSource={shareholders} /> */}
     </Fragment>
   )
 }

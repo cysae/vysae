@@ -126,12 +126,12 @@ class App extends Component {
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
             <Route exact path="/" component={Companies} />
             <Route path="/:companyId/dashboard" component={Dashboard} />
+            <Route path="/:companyId/company" component={Company} />
             <Route path="/añadirSociedad" component={AddCompany}/>
             <CurrentCompanyRoute
               path="/info"
               component={Info}
             />
-            <CurrentCompanyRoute path="/company" component={Company} />
             <CurrentCompanyRoute
               path="/meetings"
               component={Meetings}

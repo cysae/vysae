@@ -10,10 +10,12 @@ const { Header } = Layout
 class RawHeaderMenu extends Component {
   getSelectedKey() {
     const { pathname } = this.props.location
-    switch(pathname.substr(0, 5)) {
+    const companyIndex = pathname.indexOf('/', 1)
+
+    switch(pathname.substr(companyIndex, pathname.length)) {
       case '/': return ['companies']
-      case '/dash': return ['dashboard']
-      case '/comp': return ['company']
+      case '/dashboard': return ['dashboard']
+      case '/company': return ['company']
       case '/info': return ['info']
       case '/meet': return ['meetings']
       case '/añad': return ['addCompany']
@@ -22,6 +24,8 @@ class RawHeaderMenu extends Component {
   }
 
   render() {
+    const { companyId } = this.props
+
     return (
       <Menu
         theme="dark"
@@ -29,9 +33,8 @@ class RawHeaderMenu extends Component {
         selectedKeys={this.getSelectedKey()}
         style={{ lineHeight: '64px' }}
       >
-        <Menu.Item key="companies"><Link to="/">Companies</Link></Menu.Item>
-        <Menu.Item key="dashboard"><Link to="/">Dashboard</Link></Menu.Item>
-        <Menu.Item key="company"><Link to="/company">Company</Link></Menu.Item>
+        <Menu.Item key="dashboard"><Link to={`/${companyId}/dashboard`}>Dashboard</Link></Menu.Item>
+        <Menu.Item key="company"><Link to={`/${companyId}/company`}>Company</Link></Menu.Item>
         <Menu.Item key="info"><Link to="/info/company">Info</Link></Menu.Item>
         <Menu.Item key="meetings"><Link to="/meetings/next">Juntas</Link></Menu.Item>
         <Menu.Item key="addCompany"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
