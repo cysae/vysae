@@ -45,7 +45,7 @@ custom:
         field: createCompany
         request: "MutationCreateCompany-request.vm"
         response: "MutationCreateCompany-response.vm"
-      - dataSource: Vysae
+      - dataSource: CompanyTable
         type: Query
         field: getCompany
         request: "QueryGetCompany-request.txt"

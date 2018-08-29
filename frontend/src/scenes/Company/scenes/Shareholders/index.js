@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 // antd
-import { Spin, Table, Divider, Tag } from 'antd'
+import { Spin, Table } from 'antd'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'

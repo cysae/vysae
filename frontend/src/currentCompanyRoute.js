@@ -4,7 +4,7 @@ import { message } from 'antd'
 import { withRouter } from 'react-router'
 import { Redirect, Route } from 'react-router-dom'
 // Apollo
-import { compose, graphql } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import queryCurrentSelections from './queries/queryCurrentSelections'
 
 

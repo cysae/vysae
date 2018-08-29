@@ -5,7 +5,7 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 function MeetingNext(props) {
-  const { meetings, selectMeeting } = props
+  const { meetings } = props
 
   const columns = [{
     title: 'Commienza',

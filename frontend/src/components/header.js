@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 // antd
-import { Layout, Row, Col, Button, Menu, Spin } from 'antd'
+import { Layout, Row, Col, Button, Menu } from 'antd'
 // Router
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-// graphql
-import { graphql } from 'react-apollo'
-import QueryCurrentSelections from '../queries/queryCurrentSelections'
 // Components
 const { Header } = Layout
 
@@ -47,7 +44,7 @@ const HeaderMenu = withRouter(RawHeaderMenu)
 
 class MyHeader extends Component {
   render() {
-    const { isLoading, companyId, handleSignOut } = this.props
+    const { companyId, handleSignOut } = this.props
 
     return(
       <Header>

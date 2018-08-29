@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import styled from 'styled-components'
 import { Table, Button, Spin, message } from 'antd'
 // AppSync
 import QueryGetUser from '../../queries/QueryGetUser'
@@ -8,10 +7,6 @@ import { graphql, compose } from 'react-apollo'
 import CreateCompanyDrawer from './components/CreateCompanyDrawer'
 
 class Companies extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   handleTableChange = async (pagination, filters, sorter) => {
     if ( this.props.user.companies.nextToken !== null ) {
       const hide = message.loading('Cargando datos', 0)
@@ -86,7 +81,6 @@ const CompaniesWithData = compose(
             fetchMoreResult.getUser.companies.items
           )
 
-          fetchMoreResult.getUser.companies.nextToken
           return {
             getUser: {
               ...fetchMoreResult.getUser,

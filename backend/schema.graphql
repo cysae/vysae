@@ -59,7 +59,7 @@ type Shareholder {
 }
 
 type Query {
-  getCompany(id: ID!): Company
+  getCompany(companyId: ID!): Company
   getMeeting(id: ID!): Meeting
   getUser: User!
   queryMeetingDocx: Docx

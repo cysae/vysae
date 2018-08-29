@@ -1,12 +1,9 @@
 import React from 'react'
 // antd
-import { Drawer, Form, Button, Col, Row, Input, Select, DatePicker } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input } from 'antd';
 // amplify
 import { Auth } from 'aws-amplify'
 import generator from 'generate-password'
-
-
-const { Option } = Select;
 
 class DrawerForm extends React.Component {
   state = { visible: false };

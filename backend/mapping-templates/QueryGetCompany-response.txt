@@ -1,4 +1,1 @@
-{
-  "id": "$context.result.PK",
-  "name": "$context.result.name"
-}
+$util.toJson($ctx.result)

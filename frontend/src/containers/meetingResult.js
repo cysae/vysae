@@ -39,7 +39,7 @@ class MeetingResult extends Component {
   }
 
   render() {
-    const { meeting, isLoading, isMeetingLoading } = this.props
+    const { meeting, isLoading } = this.props
 
     if (isLoading)
       return (<Spin size="large" />)

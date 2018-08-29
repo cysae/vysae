@@ -12,7 +12,7 @@ import { Layout, Breadcrumb, Modal, message } from 'antd'
 import MyHeader from './components/header.js'
 import CurrentCompanyRoute from './currentCompanyRoute.js'
 import Companies from './scenes/Companies'
-import Dashboard from './dashboard'
+import Dashboard from './scenes/Dashboard'
 import AddCompany from './containers/addCompany'
 import Info from './containers/info'
 import Meetings from './containers/meetings'
@@ -98,7 +98,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props)
     const { companyId } = this.state
     if (companyId === null) {
       return (

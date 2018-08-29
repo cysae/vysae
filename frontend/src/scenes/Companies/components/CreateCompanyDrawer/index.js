@@ -1,16 +1,12 @@
 import React from 'react'
 // antd
 import {
-  Drawer, Form, Button, Col, Row, Input, Select, DatePicker,
+  Drawer, Form, Button, Col, Row, Input,
   message, notification
 } from 'antd';
 // graphql
 import { graphql } from 'react-apollo'
 import MutationCreateCompany from '../../../../queries/MutationCreateCompany'
-import QueryGetCompany from '../../../../queries/QueryGetCompany'
-
-
-const { Option } = Select;
 
 class CreateCompanyDrawer extends React.Component {
   state = { visible: false };
