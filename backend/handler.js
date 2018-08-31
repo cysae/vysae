@@ -5,6 +5,7 @@ import generator from 'generate-password'
 import fetch from 'node-fetch'
 global.fetch = require('node-fetch')
 import AWS from 'aws-sdk';
+import sendMail from './services/sendMail'
 AWS.config.update({ region: 'eu-west-1' })
 AWS.config.setPromisesDependency(require('bluebird'));
 
@@ -88,83 +89,11 @@ module.exports.createuser = async (event, context, callback) => {
 }
 
 // link user
-module.exports.linkUser = async (event, context, callback) => {
+module.exports.linkShareholderWithUser = async (event, context, callback) => {
   context.callbackwaitsforemptyeventloop = false;
 
   // const { shareholderId, userInput: { username, email, phone_number } } = event.arguments
 
-  // Create sendEmail params 
-  var params = {
-    Destination: {
-      ToAddresses: [
-        'dirkhornung91@gmail.com',
-      ]
-    },
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: "HTML_FORMAT_BODY"
-        },
-        Text: {
-          Charset: "UTF-8",
-          Data: "TEXT_FORMAT_BODY"
-        }
-      },
-      Subject: {
-        Charset: 'UTF-8',
-        Data: 'Test email'
-      }
-    },
-    Source: 'bot@cysae.com',
-    ReplyToAddresses: [
-      'info@cysae.com',
-    ],
-  };
-
-  const awsSES = new AWS.SES({ apiVersion: '2010-12-01' })
-  awsSES.sendEmail(params).promise()
-    .then( data => console.log(data) )
-    .catch( err => console.error(err) )
-
-
-
-
-
-  // // create user in userpool
-  // try {
-  //   const authresult = await auth.signup({
-  //     username: username,
-  //     password: generator.generate({ length: 8, numbers: true, symbols: true, strict: true }),
-  //     attributes: {
-  //       email: email,
-  //       phone_number: phone_number,
-  //     }
-  //   })
-  //   const { usersub } = authresult
-
-  //   // create user in dynamodb
-  //   await docclient.put({
-  //     tablename: 'vysaeuser',
-  //     item: {
-  //       'userid': usersub
-  //     }
-  //   }).promise()
-
-  //   callback(null, {
-  //     userid: usersub,
-  //     username,
-  //     email,
-  //     phone_number
-  //   })
-  // }
-  // catch (err) {
-  //   console.error('error \n', err, '\n')
-  //   callback(null, {
-  //     userid: null,
-  //     username: null,
-  //     email: null,
-  //     phone_number: null
-  //   })
-  // }
+  // Create sendEmail params
+  await sendMail('dirkhornung91@gmail.com', 'subject', 'body')
 }

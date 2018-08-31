@@ -214,7 +214,7 @@ functions:
     handler: handler.createUser
     role: DynamoDBServiceRole
   linkShareholderWithUser:
-    handler: handler.linkUser
+    handler: handler.linkShareholderWithUser
     role: DynamoDBServiceRole
 
 resources:
