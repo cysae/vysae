@@ -12,10 +12,9 @@ class RawHeaderMenu extends Component {
     const { pathname } = this.props.location
     const companyIndex = pathname.indexOf('/', 1)
 
-    switch(pathname.substr(companyIndex, pathname.length)) {
-      case '/': return ['companies']
-      case '/dashboard': return ['dashboard']
-      case '/company': return ['company']
+    switch(pathname.substr(companyIndex, 5)) {
+      case '/dash': return ['dashboard']
+      case '/comp': return ['company']
       case '/info': return ['info']
       case '/meet': return ['meetings']
       case '/añad': return ['addCompany']
