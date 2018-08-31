@@ -48,13 +48,13 @@ custom:
       - dataSource: CompanyTable
         type: Query
         field: getCompany
-        request: "QueryGetCompany-request.txt"
-        response: "QueryGetCompany-response.txt"
-      - dataSource: Vysae
+        request: "QueryGetCompany-request.vm"
+        response: "QueryGetCompany-response.vm"
+      - dataSource: CompanyShareholderConnectionTable
         type: Company
         field: shareholders
-        request: "company-shareholders-request.txt"
-        response: "company-shareholders-response.txt"
+        request: "Company-shareholders-request.vm"
+        response: "Company-shareholders-response.vm"
       - dataSource: Vysae
         type: Company
         field: meetings
@@ -80,6 +80,11 @@ custom:
         field: createShareholder
         request: "MutationCreateShareholder-request.vm"
         response: "MutationCreateShareholder-response.vm"
+      - dataSource: CompanyShareholderConnectionTable
+        type: CompanyShareholderConnection
+        field: items
+        request: "CompanyShareholderConnection-items-request.vm"
+        response: "CompanyShareholderConnection-items-response.vm"
       - dataSource: Vysae
         type: Meeting
         field: agreements

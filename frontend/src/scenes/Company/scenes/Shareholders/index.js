@@ -4,14 +4,16 @@ import { Spin, Table } from 'antd'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
-import queryCurrentSelections from '../../../../queries/queryCurrentSelections'
+// services
+import renderWhileLoading from '../../../../services/renderWhileLoading'
 // components
+import Loading from '../../../../components/Loading'
 import CreateShareholderForm from './components/CreateShareholderDrawer'
 
 const columns = [{
   title: 'ID',
-  dataIndex: 'id',
-  key: 'id',
+  dataIndex: 'shareholderId',
+  key: 'shareholderId',
 }, {
   title: 'Name',
   dataIndex: 'name',
@@ -22,41 +24,36 @@ const columns = [{
   key: 'email',
 }];
 
-
-
 const Shareholders = ({ isLoading, company }) => {
-  /* if (isLoading)
-   *   return (<Spin size="large" />) */
+  if (isLoading)
+    return (<Spin size="large" />)
 
-  /* const { shareholders } = company */
+  const { shareholders: { items } } = company
 
   return (
     <Fragment>
-      test
-      {/* <CreateShareholderForm /> */}
-      {/* <Table columns={columns} dataSource={shareholders} /> */}
+      <CreateShareholderForm />
+      <Table columns={columns} dataSource={items} rowKey='shareholderId' />
     </Fragment>
   )
 }
 
 export default compose(
-  graphql(queryCurrentSelections, {
-    props: ({ data: { loading, currentSelections: { companyId, shareholderId } } }) => ({
-      isLoading: loading,
-      currentCompanyId: companyId,
-      currentShareholderId: shareholderId
-    })
-  }),
-  graphql(QueryGetCompany, {
-    options: (props) => ({
-      variables: {
-        id: props.currentCompanyId,
-        withShareholders: true
-      }
-    }),
-    props: ({ data: { loading, getCompany } }) => ({
-      isCompanyLoading: loading,
-      company: getCompany,
-    })
-  }),
+  graphql(
+    QueryGetCompany, {
+      options: (props) => ({
+        fetchPolicy: 'network-only',
+        variables: {
+          companyId: props.match.params.companyId,
+          withShareholders: true
+        },
+      }),
+      props: ({ data: { error, loading, getCompany } }) => ({
+        loading,
+        error,
+        company: getCompany
+      })
+    },
+    renderWhileLoading(Loading)
+  ),
 )(Shareholders)

@@ -1,2 +1,2 @@
-#set( $companies = $context.result.data.VysaeCompany )
+#set( $companies = $ctx.result.data.VysaeCompany )
 $utils.toJson($companies)

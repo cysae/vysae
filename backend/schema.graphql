@@ -12,7 +12,10 @@ input AgreementInput {
 type Company {
   companyId: ID!
   name: String
-  shareholders: [Shareholder]
+  shareholders(
+    limit: Int
+    nextToken: String
+  ): CompanyShareholderConnection
   meetings: [Meeting]
 }
 

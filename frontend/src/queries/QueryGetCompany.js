@@ -3,17 +3,31 @@ import gql from 'graphql-tag'
 export default gql`
 query QueryGetCompany (
   $companyId: ID!
+  $withShareholders: Boolean = false
+  $shareholdersLimit: Int
+  $shareholdersNextToken: String
 ) {
-  getCompany(companyId: $companyId) {
+  getCompany(
+    companyId: $companyId
+  ) {
     companyId
-    name
+    name,
+    shareholders(
+      limit: $shareholdersLimit
+      nextToken: $shareholdersNextToken
+    ) @include(if: $withShareholders) {
+      items {
+        shareholderId
+        name
+      }
+      nextToken
+    }
   }
 }`
 
 // $withMeetings: Boolean = false
 // $withAgreements: Boolean = false
 // $withVotes: Boolean = false
-// $withShareholders: Boolean = false
 
 // meetings @include(if: $withMeetings) {
 //   id
@@ -27,8 +41,4 @@ query QueryGetCompany (
 //       result
 //     }
 //   }
-// }
-// shareholders @include(if: $withShareholders) {
-//   id
-//   name
 // }

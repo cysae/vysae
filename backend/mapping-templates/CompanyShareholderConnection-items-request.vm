@@ -1,0 +1,17 @@
+#set($ids = [])
+#foreach($shareholder in ${ctx.source.items})
+  #set($map = {})
+  $util.qr($map.put("shareholderId", $util.dynamodb.toString($shareholder.get("shareholderId"))))
+  $util.qr($ids.add($map))
+#end
+ 
+{
+  "version" : "2018-05-29",
+  "operation" : "BatchGetItem",
+  "tables" : {
+    "VysaeShareholder": {
+      "keys": $util.toJson($ids),
+      "consistentRead": true
+    }
+  }
+}

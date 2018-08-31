@@ -1,0 +1,2 @@
+#set( $shareholders = $ctx.result.data.VysaeShareholder )
+$utils.toJson($shareholders)

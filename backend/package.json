@@ -17,6 +17,7 @@
     "docxpresso": "^0.1.2",
     "generate-password": "^1.4.0",
     "node-fetch": "^2.2.0",
+    "serverless": "^1.30.3",
     "serverless-appsync-plugin": "^1.0.1",
     "serverless-dynamodb-client": "^0.0.2"
   },

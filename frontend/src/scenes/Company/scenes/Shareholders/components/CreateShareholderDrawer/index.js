@@ -1,11 +1,15 @@
 import React from 'react'
 // antd
 import { Drawer, Form, Button, Col, Row, Input } from 'antd';
-// amplify
-import { Auth } from 'aws-amplify'
+// router
+import { withRouter } from 'react-router'
+// graphql
+import { graphql, compose } from 'react-apollo'
+import MutationCreateShareholder from '../../../../../../queries/MutationCreateShareholder'
+// helpers
 import generator from 'generate-password'
 
-class DrawerForm extends React.Component {
+class CreateShareholderDrawer extends React.Component {
   state = { visible: false };
 
   showDrawer = () => {
@@ -14,24 +18,6 @@ class DrawerForm extends React.Component {
     });
   };
 
-  addShareholder = async () => {
-    const { form: { getFieldValue } } = this.props
-    try {
-      await Auth.signUp({
-        username: getFieldValue('dni'),
-        password: generator.generate({ numbers: true, symbols: true, strict: true }),
-        attributes: {
-          email: getFieldValue('email'),
-          phone_number: `+34${getFieldValue('phone')}`
-        }
-      })
-    }
-    catch (err) {
-      console.error(err)
-    }
-    this.onClose()
-  }
-
   onClose = () => {
     this.setState({
       visible: false,
@@ -39,7 +25,8 @@ class DrawerForm extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+   const { createShareholder, form: { getFieldDecorator, getFieldValue } } = this.props;
+
     return (
       <div>
         <Button type="primary" onClick={this.showDrawer}>
@@ -138,7 +125,7 @@ class DrawerForm extends React.Component {
             >
               Cancelar
             </Button>
-            <Button onClick={this.addShareholder} type="primary">Submit</Button>
+            <Button onClick={createShareholder} type="primary">Submit</Button>
           </div>
         </Drawer>
       </div>
@@ -146,4 +133,33 @@ class DrawerForm extends React.Component {
   }
 }
 
-export default Form.create()(DrawerForm);
+export default compose(
+  withRouter,
+  Form.create(),
+  graphql(
+    MutationCreateShareholder,
+    {
+      options: props => ({
+        update: (proxy, { data }) => {
+          /* const query = QueryGetCompany
+           * const newData = proxy.readQuery( query )
+
+           * console.log('old', newData)
+           * console.log('new', data) */
+        }
+      }),
+      props: props => ({
+        createShareholder: () => {
+          const { getFieldValue } = props.ownProps.form
+
+          return props.mutate({
+            variables: {
+              companyId: props.ownProps.match.params.companyId,
+              name: getFieldValue('name'),
+            }
+          })
+        }
+      })
+    }
+  )
+)(CreateShareholderDrawer)
