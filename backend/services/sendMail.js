@@ -6,28 +6,28 @@ export default (toAddress, subject, body) => {
   var params = {
     Destination: {
       ToAddresses: [
-        'dirkhornung91@gmail.com',
+        toAddress,
       ]
     },
     Message: {
       Body: {
         Html: {
           Charset: "UTF-8",
-          Data: "HTML_FORMAT_BODY"
+          Data: body
         },
         Text: {
           Charset: "UTF-8",
-          Data: "TEXT_FORMAT_BODY"
+          Data: body
         }
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: 'Test email'
+        Data: subject
       }
     },
     Source: 'bot@cysae.com',
     ReplyToAddresses: [
-      'info@cysae.com',
+      'dirk.hornung@cysae.com',
     ],
   };
 

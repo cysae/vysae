@@ -4,6 +4,7 @@ import generator from 'generate-password'
 import fetch from 'node-fetch'
 global.fetch = fetch
 import AWS from 'aws-sdk';
+import sendMail from './sendMail'
 
 AWS.config.update({ region: 'eu-west-1' })
 AWS.config.setPromisesDependency(require('bluebird'));
@@ -43,6 +44,10 @@ export default (userInput) => {
           'userId': userSub
         }
       }).promise()
+
+
+      const body = `Username: ${username}, Password: ${password}`
+      await sendMail(email, 'Welcome to CYSAE', body)
 
       resolve({
         userId: userSub,
