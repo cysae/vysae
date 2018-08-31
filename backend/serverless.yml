@@ -85,6 +85,11 @@ custom:
         field: items
         request: "CompanyShareholderConnection-items-request.vm"
         response: "CompanyShareholderConnection-items-response.vm"
+      - dataSource: CompanyShareholderConnectionTable
+        type: LinkShareholderWithUser
+        field: linkShareholderWithUser
+        request: "MutationLinkUser-request.vm"
+        response: "MutationLinkUser-response.vm"
       - dataSource: Vysae
         type: Meeting
         field: agreements
@@ -181,6 +186,12 @@ custom:
         config:
           lambdaFunctionArn: { Fn::GetAtt: [CreateUserLambdaFunction, Arn] }
           serviceRoleArn: { Fn::GetAtt: [AppSyncLambdaServiceRole, Arn] }
+      - type: AWS_LAMBDA
+        name: linkShareholderWithUser
+        description: "create User ( Cognito & DynamoDB )"
+        config:
+          lambdaFunctionArn: { Fn::GetAtt: [LinkShareholderWithUserLambdaFunction, Arn] }
+          serviceRoleArn: { Fn::GetAtt: [AppSyncLambdaServiceRole, Arn] }
 
 functions:
   meetingDocx:
@@ -201,6 +212,9 @@ functions:
           method: post
   createUser:
     handler: handler.createUser
+    role: DynamoDBServiceRole
+  linkShareholderWithUser:
+    handler: handler.linkUser
     role: DynamoDBServiceRole
 
 resources:

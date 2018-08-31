@@ -55,6 +55,10 @@ type Mutation {
     companyId: ID!
     name: String!
   ): Shareholder!
+  linkShareholderWithUser(
+    shareholderId: ID!
+    user: UserInput!
+  ): User!
   createMeeting(
     companyId: ID!
     meeting: MeetingInput!
@@ -88,6 +92,12 @@ type User {
     limit: Int
     nextToken: String
   ): UserCompanyConnection
+}
+
+input UserInput {
+  username: String!
+  email: String!
+  phone_number: String!
 }
 
 type UserCompanyConnection {

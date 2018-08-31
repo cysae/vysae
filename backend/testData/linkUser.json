@@ -1,0 +1,11 @@
+{
+  "field": "createUser",
+  "arguments": {
+    "shareholderId": "1234",
+    "userInput": {
+      "username": "heilmiutjisiij",
+      "email": "heidi@yay.de",
+      "phone_number": "+34987654312"
+    }
+  }
+}

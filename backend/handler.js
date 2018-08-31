@@ -44,14 +44,14 @@ module.exports.conveneMeeting = (event, context, callback) => {
 };
 
 // create user
-module.exports.createUser = async (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
+module.exports.createuser = async (event, context, callback) => {
+  context.callbackwaitsforemptyeventloop = false;
 
   const { username, email, phone_number } = event.arguments
 
-  // create user in UserPool
+  // create user in userpool
   try {
-    const authResult = await Auth.signUp({
+    const authresult = await auth.signup({
       username: username,
       password: generator.generate({ length: 8, numbers: true, symbols: true, strict: true }),
       attributes: {
@@ -59,30 +59,112 @@ module.exports.createUser = async (event, context, callback) => {
         phone_number: phone_number,
       }
     })
-    const { userSub } = authResult
+    const { usersub } = authresult
 
-    // create user in DynamoDB
-    await docClient.put({
-      TableName: 'VysaeUser',
-      Item: {
-        'userId': userSub
+    // create user in dynamodb
+    await docclient.put({
+      tablename: 'vysaeuser',
+      item: {
+        'userid': usersub
       }
     }).promise()
 
     callback(null, {
-      userId: userSub,
+      userid: usersub,
       username,
       email,
       phone_number
     })
   }
   catch (err) {
-    console.error('Error \n', err, '\n')
+    console.error('error \n', err, '\n')
     callback(null, {
-      userId: null,
+      userid: null,
       username: null,
       email: null,
       phone_number: null
     })
   }
+}
+
+// link user
+module.exports.linkUser = async (event, context, callback) => {
+  context.callbackwaitsforemptyeventloop = false;
+
+  // const { shareholderId, userInput: { username, email, phone_number } } = event.arguments
+
+  // Create sendEmail params 
+  var params = {
+    Destination: {
+      ToAddresses: [
+        'dirkhornung91@gmail.com',
+      ]
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: "HTML_FORMAT_BODY"
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: "TEXT_FORMAT_BODY"
+        }
+      },
+      Subject: {
+        Charset: 'UTF-8',
+        Data: 'Test email'
+      }
+    },
+    Source: 'bot@cysae.com',
+    ReplyToAddresses: [
+      'info@cysae.com',
+    ],
+  };
+
+  const awsSES = new AWS.SES({ apiVersion: '2010-12-01' })
+  awsSES.sendEmail(params).promise()
+    .then( data => console.log(data) )
+    .catch( err => console.error(err) )
+
+
+
+
+
+  // // create user in userpool
+  // try {
+  //   const authresult = await auth.signup({
+  //     username: username,
+  //     password: generator.generate({ length: 8, numbers: true, symbols: true, strict: true }),
+  //     attributes: {
+  //       email: email,
+  //       phone_number: phone_number,
+  //     }
+  //   })
+  //   const { usersub } = authresult
+
+  //   // create user in dynamodb
+  //   await docclient.put({
+  //     tablename: 'vysaeuser',
+  //     item: {
+  //       'userid': usersub
+  //     }
+  //   }).promise()
+
+  //   callback(null, {
+  //     userid: usersub,
+  //     username,
+  //     email,
+  //     phone_number
+  //   })
+  // }
+  // catch (err) {
+  //   console.error('error \n', err, '\n')
+  //   callback(null, {
+  //     userid: null,
+  //     username: null,
+  //     email: null,
+  //     phone_number: null
+  //   })
+  // }
 }
