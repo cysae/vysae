@@ -1,6 +1,6 @@
 import { branch, renderComponent } from 'recompose'
-export default (component, propName = 'data') =>
+export default (component) =>
   branch(
-    props => props[propName] && props[propName].loading,
+    props => props.loading,
     renderComponent(component),
   )

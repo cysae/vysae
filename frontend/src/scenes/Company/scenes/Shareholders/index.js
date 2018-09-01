@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 // antd
-import { Spin, Table } from 'antd'
+import { Table } from 'antd'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
@@ -24,16 +24,14 @@ const columns = [{
   key: 'email',
 }];
 
-const Shareholders = ({ isLoading, company }) => {
-  if (isLoading)
-    return (<Spin size="large" />)
-
-  const { shareholders: { items } } = company
+const Shareholders = ({ data, company, error, loading }) => {
+  console.log(company, error, data, loading)
+  const shareholders = company && company.shareholders && company.shareholders.items
 
   return (
     <Fragment>
       <CreateShareholderForm />
-      <Table columns={columns} dataSource={items} rowKey='shareholderId' />
+      <Table columns={columns} dataSource={shareholders} rowKey='shareholderId' />
     </Fragment>
   )
 }
@@ -48,12 +46,12 @@ export default compose(
           withShareholders: true
         },
       }),
-      props: ({ data: { error, loading, getCompany } }) => ({
+      props: ({ data: { loading, error, getCompany } }) => ({
         loading,
         error,
-        company: getCompany
+        company: getCompany,
       })
     },
-    renderWhileLoading(Loading)
   ),
+  renderWhileLoading(Loading)
 )(Shareholders)
