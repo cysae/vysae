@@ -85,7 +85,7 @@ custom:
         field: items
         request: "CompanyShareholderConnection-items-request.vm"
         response: "CompanyShareholderConnection-items-response.vm"
-      - dataSource: CompanyShareholderConnectionTable
+      - dataSource: linkShareholderWithUser
         type: Mutation
         field: linkShareholderWithUser
         request: "MutationLinkUser-request.vm"
@@ -462,6 +462,7 @@ resources:
                     - "lambda:InvokeFunction"
                   Resource:
                     - "arn:aws:lambda:eu-west-1:037641059503:function:backend-dev-createUser"
+                    - "arn:aws:lambda:eu-west-1:037641059503:function:backend-dev-linkShareholderWithUser"
     DynamoDBServiceRole:
       Type: "AWS::IAM::Role"
       Properties:
@@ -489,12 +490,8 @@ resources:
                     - "dynamodb:Scan"
                     - "dynamodb:UpdateItem"
                   Resource:
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUser"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUser/*"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeCompany"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeCompany/*"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUserCompanyConnection"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUserCompanyConnection/*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/Vysae*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/Vysae*/*"
           - PolicyName: "Vysae-Logs-ServiceRole-Policy"
             PolicyDocument:
               Version: "2012-10-17"
@@ -504,4 +501,14 @@ resources:
                     - "logs:CreateLogStream"
                     - "logs:PutLogEvents"
                   Resource:
-                    "arn:aws:logs:eu-west-1:037641059503:log-group:/aws/lambda/backend-dev-createUser:*"
+                    - "arn:aws:logs:eu-west-1:037641059503:log-group:/aws/lambda/backend-dev-createUser:*"
+                    - "arn:aws:logs:eu-west-1:037641059503:log-group:/aws/lambda/backend-dev-linkShareholderWithUser:*"
+          - PolicyName: "Vysae-SES-ServiceRole-Policy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: "Allow"
+                  Action:
+                    - "ses:SendEmail"
+                  Resource:
+                    - "arn:aws:ses:eu-west-1:037641059503:identity/*"

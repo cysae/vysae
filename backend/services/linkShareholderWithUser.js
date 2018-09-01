@@ -39,7 +39,5 @@ const linkUserWithShareholderCompany = async (userId, shareholderId) => {
       companyId,
     }
   }).promise()
-
-  console.log(companyId, userId)
 }
 

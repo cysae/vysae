@@ -44,22 +44,19 @@ module.exports.createUser = async (event, context, callback) => {
 
 // create and link user to shareholder
 module.exports.linkShareholderWithUser = async (event, context, callback) => {
-  context.callbackwaitsforemptyeventloop = false;
+  context.callbackWaitsForEmptyEventLoop = false;
 
-  const { shareholderId, userInput } = event.arguments
-
+  const { shareholderId, user } = event.arguments
 
   try {
-    const user = await createUser(userInput)
-    linkShareholderWithUser(user.userId, shareholderId)
-    console.log(user)
+    const userId = (await createUser(user)).userId
+    linkShareholderWithUser(userId, shareholderId)
+    user.userId = userId
+
+    callback(null, user);
   }
   catch(err) {
     console.error(err)
+    callback(null, err);
   }
-
-  // const { shareholderId, userInput: { username, email, phone_number } } = event.arguments
-
-  // Create sendEmail params
-  // await sendMail('dirkhornung91@gmail.com', 'subject', 'body')
 }

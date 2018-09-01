@@ -52,7 +52,6 @@ export default (userInput) => {
       resolve({
         userId: userSub,
         username,
-        password,
         email,
         phone_number
       })
