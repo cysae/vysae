@@ -86,7 +86,7 @@ custom:
         request: "CompanyShareholderConnection-items-request.vm"
         response: "CompanyShareholderConnection-items-response.vm"
       - dataSource: CompanyShareholderConnectionTable
-        type: LinkShareholderWithUser
+        type: Mutation
         field: linkShareholderWithUser
         request: "MutationLinkUser-request.vm"
         response: "MutationLinkUser-response.vm"

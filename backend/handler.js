@@ -1,6 +1,7 @@
 import docx from 'docxpresso'
 import sendMail from './services/sendMail'
 import createUser from './services/createUser'
+import linkShareholderWithUser from './services/linkShareholderWithUser'
 
 module.exports.meetingDocx = (event, context, callback) => {
   const url = docx.previewDocument(
@@ -41,12 +42,24 @@ module.exports.createUser = async (event, context, callback) => {
   }
 }
 
-// link user
+// create and link user to shareholder
 module.exports.linkShareholderWithUser = async (event, context, callback) => {
   context.callbackwaitsforemptyeventloop = false;
+
+  const { shareholderId, userInput } = event.arguments
+
+
+  try {
+    const user = await createUser(userInput)
+    linkShareholderWithUser(user.userId, shareholderId)
+    console.log(user)
+  }
+  catch(err) {
+    console.error(err)
+  }
 
   // const { shareholderId, userInput: { username, email, phone_number } } = event.arguments
 
   // Create sendEmail params
-  await sendMail('dirkhornung91@gmail.com', 'subject', 'body')
+  // await sendMail('dirkhornung91@gmail.com', 'subject', 'body')
 }
