@@ -8,7 +8,7 @@ import renderWhileLoading from '../../services/renderWhileLoading'
 import Loading from '../../components/Loading'
 
 const Dashboard = (props) => {
-  const { company: { name } } = props
+  const { data: { getCompany: { name } } } = props
   return (
     <div>
       {name}
@@ -25,11 +25,6 @@ export default compose(
           companyId: props.match.params.companyId
         },
       }),
-      props: ({ data: { error, loading, getCompany } }) => ({
-        loading,
-        error,
-        company: getCompany
-      })
     }
   ),
   renderWhileLoading(Loading)
