@@ -41,11 +41,6 @@ custom:
     mappingTemplatesLocation: "./mapping-templates"
     mappingTemplates:
       - dataSource: CompanyTable
-        type: Mutation
-        field: createCompany
-        request: "MutationCreateCompany-request.vm"
-        response: "MutationCreateCompany-response.vm"
-      - dataSource: CompanyTable
         type: Query
         field: getCompany
         request: "QueryGetCompany-request.vm"
@@ -60,6 +55,11 @@ custom:
         field: meetings
         request: "company-meetings-request.txt"
         response: "company-meetings-response.txt"
+      - dataSource: UserShareholderConnectionTable
+        type: ShareholderUserConnection
+        field: items
+        request: "ShareholderUserConnection-items-request.vm"
+        response: "ShareholderUserConnection-items-response.vm"
       - dataSource: UserTable
         type: Query
         field: getUser
@@ -75,6 +75,11 @@ custom:
         field: items
         request: "UserCompanyConnection-items-request.vm"
         response: "UserCompanyConnection-items-response.vm"
+      - dataSource: CompanyTable
+        type: Mutation
+        field: createCompany
+        request: "MutationCreateCompany-request.vm"
+        response: "MutationCreateCompany-response.vm"
       - dataSource: ShareholderTable
         type: Mutation
         field: createShareholder
@@ -90,6 +95,11 @@ custom:
         field: linkShareholderWithUser
         request: "MutationLinkUser-request.vm"
         response: "MutationLinkUser-response.vm"
+      - dataSource: UserShareholderConnectionTable
+        type: Shareholder
+        field: users
+        request: "Shareholder-users-request.vm"
+        response: "Shareholder-users-response.vm"
       - dataSource: Vysae
         type: Meeting
         field: agreements

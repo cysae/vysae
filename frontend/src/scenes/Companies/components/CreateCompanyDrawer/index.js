@@ -19,12 +19,10 @@ class CreateCompanyDrawer extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log('handle submit')
     const { form: { validateFields, getFieldValue }, createCompany } = this.props
     validateFields((err, values) => {
       if (!err) {
         const name = getFieldValue('name')
-        console.log('hide')
         const hide = message.loading('Loading', 0)
         createCompany(getFieldValue('name'))
           .then(res => {

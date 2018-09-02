@@ -1,0 +1,17 @@
+#set($ids = [])
+#foreach($user in ${ctx.source.items})
+  #set($map = {})
+  $util.qr($map.put("userId", $util.dynamodb.toString($user.get("userId"))))
+  $util.qr($ids.add($map))
+#end
+ 
+{
+  "version" : "2018-05-29",
+  "operation" : "BatchGetItem",
+  "tables" : {
+    "VysaeUser": {
+      "keys": $util.toJson($ids),
+      "consistentRead": true
+    }
+  }
+}

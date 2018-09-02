@@ -1,0 +1,6 @@
+{
+  "items": $util.toJson($context.result.items)
+  #if( ${context.result.nextToken} )
+    ,"nextToken": "${ctx.result.nextToken}"
+  #end
+}

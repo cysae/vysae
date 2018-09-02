@@ -4,11 +4,13 @@ import { Table } from 'antd'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
+import MutationLinkShareholderWithUser from '../../../../queries/MutationLinkShareholderWithUser'
 // services
 import renderWhileLoading from '../../../../services/renderWhileLoading'
 // components
 import Loading from '../../../../components/Loading'
-import CreateShareholderForm from './components/CreateShareholderDrawer'
+import CreateShareholderDrawer from './components/CreateShareholderDrawer'
+import LinkShareholderWithUserDrawer from './components/LinkShareholderWithUserDrawer'
 
 const columns = [{
   title: 'ID',
@@ -22,15 +24,22 @@ const columns = [{
   title: 'Email',
   dataIndex: 'email',
   key: 'email',
+}, {
+  title: 'Action',
+  key: 'action',
+  render: (text, record) => (
+    <span>
+      <LinkShareholderWithUserDrawer shareholderId={record.shareholderId} />
+    </span>
+  )
 }];
 
 const Shareholders = ({ data, company, error, loading }) => {
-  console.log(company, error, data, loading)
   const shareholders = company && company.shareholders && company.shareholders.items
 
   return (
     <Fragment>
-      <CreateShareholderForm />
+      <CreateShareholderDrawer />
       <Table columns={columns} dataSource={shareholders} rowKey='shareholderId' />
     </Fragment>
   )

@@ -72,6 +72,14 @@ type Shareholder {
   shareholderId: ID!
   name: String
   companies: [Company]
+  users(
+    limit: Int
+    nextToken: String
+  ): ShareholderUserConnection
+}
+type ShareholderUserConnection {
+  items: [User]
+  nextToken: String
 }
 
 
