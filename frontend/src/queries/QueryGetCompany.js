@@ -26,6 +26,9 @@ query QueryGetCompany (
           limit: $shareholdersUsersLimit
           nextToken: $shareholdersUsersNextToken
         ) @include(if: $withShareholdersUsers) {
+          items {
+            userId
+          }
           nextToken
         }
       }
