@@ -4,11 +4,12 @@ import { Table } from 'antd'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
-import MutationLinkShareholderWithUser from '../../../../queries/MutationLinkShareholderWithUser'
 // services
 import renderWhileLoading from '../../../../services/renderWhileLoading'
+import renderIfError from '../../../../services/renderIfError'
 // components
 import Loading from '../../../../components/Loading'
+import Error from '../../../../components/Error'
 import CreateShareholderDrawer from './components/CreateShareholderDrawer'
 import LinkShareholderWithUserDrawer from './components/LinkShareholderWithUserDrawer'
 
@@ -34,8 +35,9 @@ const columns = [{
   )
 }];
 
-const Shareholders = ({ data, company, error, loading }) => {
+const Shareholders = ({ errors, company }) => {
   const shareholders = company && company.shareholders && company.shareholders.items
+  console.log(shareholders)
 
   return (
     <Fragment>
@@ -52,15 +54,17 @@ export default compose(
         fetchPolicy: 'network-only',
         variables: {
           companyId: props.match.params.companyId,
-          withShareholders: true
+          withShareholders: true,
+          withShareholdersUsers: true,
         },
       }),
-      props: ({ data: { loading, error, getCompany } }) => ({
+      props: ( { data: { error, loading, getCompany} } ) => ({
         loading,
         error,
         company: getCompany,
       })
     },
   ),
-  renderWhileLoading(Loading)
+  renderWhileLoading(Loading),
+  renderIfError(Error),
 )(Shareholders)
