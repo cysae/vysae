@@ -1,6 +1,0 @@
-#if($ctx.error)
-    ## Append a GraphQL error for that field in the GraphQL response
-    $utils.appendError($ctx.error.message, $ctx.error.message)
-#end
-
-$utils.toJson($context.result)

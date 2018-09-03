@@ -93,8 +93,8 @@ custom:
       - dataSource: linkShareholderWithUser
         type: Mutation
         field: linkShareholderWithUser
-        request: "MutationLinkUser-request.vm"
-        response: "MutationLinkUser-response.vm"
+        request: "MutationLinkShareholderWithUser-request.vm"
+        response: "MutationLinkShareholderWithUser-response.vm"
       - dataSource: UserShareholderConnectionTable
         type: Shareholder
         field: users

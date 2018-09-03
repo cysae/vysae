@@ -18,7 +18,8 @@ export default async (userId, shareholderId) => {
     }
   }).promise()
 
-  linkUserWithShareholderCompany(userId, shareholderId)
+  console.log('plz link')
+  await linkUserWithShareholderCompany(userId, shareholderId)
   console.log('linked')
 }
 

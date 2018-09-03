@@ -50,7 +50,7 @@ module.exports.linkShareholderWithUser = async (event, context, callback) => {
 
   try {
     const userId = (await createUser(user)).userId
-    linkShareholderWithUser(userId, shareholderId)
+    await linkShareholderWithUser(userId, shareholderId)
     user.userId = userId
 
     callback(null, user);
