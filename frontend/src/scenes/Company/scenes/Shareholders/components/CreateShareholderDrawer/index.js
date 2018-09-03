@@ -1,6 +1,9 @@
 import React from 'react'
 // antd
-import { Drawer, Form, Button, Col, Row, Input } from 'antd';
+import {
+  Drawer, Form, Button, Col, Row, Input,
+  message, notification
+} from 'antd';
 // router
 import { withRouter } from 'react-router'
 // graphql
@@ -24,8 +27,39 @@ class CreateShareholderDrawer extends React.Component {
     });
   };
 
+  handleSubmit = (e) => {
+    e.preventDefault()
+
+    const {
+      createShareholder,
+      match: { params: { companyId }},
+      form: {
+        getFieldValue,
+        validateFields
+      }
+    } = this.props
+
+    validateFields((err, values) => {
+      if (!err) {
+        const hide = message.loading('Loading', 0)
+
+        const name = getFieldValue('name')
+
+        createShareholder(companyId, name)
+          .then(res => {
+            notification.success({
+              message: `Shareholder creado!`,
+              description: `Has creado un shareholder con un usario.`
+            })
+            hide()
+            this.onClose()
+          })
+      }
+    })
+  }
+
   render() {
-   const { createShareholder, form: { getFieldDecorator, getFieldValue } } = this.props;
+    const { form: { getFieldDecorator, getFieldValue } } = this.props;
 
     return (
       <div>
@@ -45,12 +79,12 @@ class CreateShareholderDrawer extends React.Component {
             paddingBottom: 53,
           }}
         >
-          <Form layout="vertical" hideRequiredMark>
+          <Form layout="vertical" hideRequiredMark onSubmit={this.handleSubmit} >
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item label="Name">
                   {getFieldDecorator('name', {
-                    rules: [{ required: true, message: 'please enter user name' }],
+                     rules: [{ required: true, message: 'please enter user name' }],
                   })(<Input placeholder="please enter user name" />)}
                 </Form.Item>
               </Col>
@@ -103,30 +137,30 @@ class CreateShareholderDrawer extends React.Component {
                 </Form.Item>
                 </Col>
                 </Row> */}
-          </Form>
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              width: '100%',
-              borderTop: '1px solid #e8e8e8',
-              padding: '10px 16px',
-              textAlign: 'right',
-              left: 0,
-              background: '#fff',
-              borderRadius: '0 0 4px 4px',
-            }}
-          >
-            <Button
+            <div
               style={{
-                marginRight: 8,
+                position: 'absolute',
+                bottom: 0,
+                width: '100%',
+                borderTop: '1px solid #e8e8e8',
+                padding: '10px 16px',
+                textAlign: 'right',
+                left: 0,
+                background: '#fff',
+                borderRadius: '0 0 4px 4px',
               }}
-              onClick={this.onClose}
             >
-              Cancelar
-            </Button>
-            <Button onClick={createShareholder} type="primary">Submit</Button>
-          </div>
+              <Button
+                style={{
+                  marginRight: 8,
+                }}
+                onClick={this.onClose}
+              >
+                Cancelar
+              </Button>
+              <Button htmlType="submit" type="primary">Submit</Button>
+            </div>
+          </Form>
         </Drawer>
       </div>
     );
@@ -149,13 +183,13 @@ export default compose(
         }
       }),
       props: props => ({
-        createShareholder: () => {
+        createShareholder: (companyId, name) => {
           const { getFieldValue } = props.ownProps.form
 
           return props.mutate({
             variables: {
-              companyId: props.ownProps.match.params.companyId,
-              name: getFieldValue('name'),
+              companyId,
+              name,
             }
           })
         }

@@ -19,6 +19,7 @@ export default async (userId, shareholderId) => {
   }).promise()
 
   linkUserWithShareholderCompany(userId, shareholderId)
+  console.log('linked')
 }
 
 const linkUserWithShareholderCompany = async (userId, shareholderId) => {
@@ -30,6 +31,8 @@ const linkUserWithShareholderCompany = async (userId, shareholderId) => {
       ':shareholderId': shareholderId
     }
   }).promise()).Items[0].companyId
+
+  console.log(companyId)
 
   await docClient.put({
     TableName: 'VysaeUserCompanyConnection',

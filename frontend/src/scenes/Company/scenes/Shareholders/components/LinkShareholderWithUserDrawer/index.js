@@ -38,7 +38,6 @@ class CreateShareholderDrawer extends React.Component {
         validateFields
       }
     } = this.props
-    console.log('submit')
 
     validateFields((err, values) => {
       if (!err) {

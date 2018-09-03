@@ -13,6 +13,10 @@ import Error from '../../../../components/Error'
 import CreateShareholderDrawer from './components/CreateShareholderDrawer'
 import LinkShareholderWithUserDrawer from './components/LinkShareholderWithUserDrawer'
 
+function hasUsers(shareholder) {
+  return shareholder.users.items[0] !== null
+}
+
 const columns = [{
   title: 'ID',
   dataIndex: 'shareholderId',
@@ -28,11 +32,18 @@ const columns = [{
 }, {
   title: 'Action',
   key: 'action',
-  render: (text, record) => (
-    <span>
-      <LinkShareholderWithUserDrawer shareholderId={record.shareholderId} />
-    </span>
-  )
+  render: (text, record) => {
+    if (hasUsers(record))
+      return (
+        <span>is linked</span>
+      )
+
+    return (
+      <span>
+        <LinkShareholderWithUserDrawer shareholderId={record.shareholderId} />
+      </span>
+    )
+  }
 }];
 
 const Shareholders = ({ errors, company }) => {
@@ -42,7 +53,9 @@ const Shareholders = ({ errors, company }) => {
   return (
     <Fragment>
       <CreateShareholderDrawer />
-      <Table columns={columns} dataSource={shareholders} rowKey='shareholderId' />
+      {shareholders[0] !== null && (
+         <Table columns={columns} dataSource={shareholders} rowKey='shareholderId' />
+      )}
     </Fragment>
   )
 }

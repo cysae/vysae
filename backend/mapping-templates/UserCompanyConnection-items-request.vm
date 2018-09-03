@@ -5,6 +5,12 @@
   $util.qr($ids.add($map))
 #end
  
+#if ($ids.size() == 0)
+  #set($map = {})
+  $util.qr($map.put("companyId", $util.dynamodb.toString("nothingToSeeHere")))
+  $util.qr($ids.add($map))
+#end
+
 {
   "version" : "2018-05-29",
   "operation" : "BatchGetItem",
