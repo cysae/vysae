@@ -51,12 +51,14 @@ class Companies extends Component {
     return (
       <Fragment>
         <CreateCompanyDrawer />
-        <Table
-          rowKey="companyId"
-          columns={columns}
-          dataSource={companies}
-          onChange={this.handleTableChange}
-        />
+        { companies[0] !== null && (
+            <Table
+              rowKey="companyId"
+              columns={columns}
+              dataSource={companies}
+              onChange={this.handleTableChange}
+            />
+        )}
       </Fragment>
     )
   }
