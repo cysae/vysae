@@ -84,8 +84,8 @@ class App extends Component {
 
   handleSignOut = async () => {
     const hide = message.loading('Sign Out')
-    await Auth.signOut()
     await this.props.client.resetStore()
+    await Auth.signOut()
     hide()
     window.location.href = '/'
     /* this.setState({ companyId: null }) */

@@ -66,9 +66,9 @@ class Companies extends Component {
 
 const CompaniesWithData = compose(
   graphql(QueryGetUser, {
-    options: {
-      fetchPolicy: 'network-only'
-    },
+    /* options: {
+     *   fetchPolicy: 'network-only'
+     * }, */
     props: ({ data: { error, loading, getUser, fetchMore } }) => ({
       isUserLoading: loading,
       error,
