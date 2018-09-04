@@ -24,14 +24,12 @@ class CreateCompanyDrawer extends React.Component {
     validateFields((err, values) => {
       if (!err) {
         const name = getFieldValue('name')
-        const hide = message.loading('Loading', 0)
         createCompany(getFieldValue('name'))
           .then(res => {
             notification.success({
               message: `Sociedad añadida!`,
               description: `Has guardado la sociedad: ${name}.`
             })
-            hide()
             this.onClose()
           })
       }
