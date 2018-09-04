@@ -107,27 +107,30 @@ class CreateCompanyDrawer extends React.Component {
 export default Form.create()(graphql(
   MutationCreateCompany,
   {
-    options: props => ({
-      update: (proxy, { data }) => {
-        if (data.createCompany) {
-          const query = QueryGetUser
-          const newData = proxy.readQuery({ query, variables: { limit: null, nextToken: null } })
-
-          console.log('what', data)
-          newData.getUser.companies.items.push(data.createCompany)
-
-          proxy.writeQuery({
-            query,
-            data: newData
-          })
-        }
-      }
-    }),
     props: props => ({
       createCompany: (name) => {
         return props.mutate({
           variables: {
             name
+          },
+          optimisticResponse: {
+            __typename: "Mutation",
+            createCompany: {
+              __typename: "Company",
+              companyId: 'id',
+              name
+            }
+          },
+          update: (proxy, { data }) => {
+            const query = QueryGetUser
+            const newData = proxy.readQuery({ query, variables: { limit: null, nextToken: null } })
+
+            newData.getUser.companies.items.push(data.createCompany)
+
+            proxy.writeQuery({
+              query,
+              data: newData
+            })
           }
         })
       }
