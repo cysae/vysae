@@ -65,14 +65,15 @@ const appSyncLink = createAppSyncLink({
     jwtToken: async () => (await Auth.currentSession()).getIdToken().getJwtToken(),
   },
   cacheOptions: {
-    dataIdFromObject: object => {
-      console.log('jo ', object.__typename)
-      switch (object.__typename) {
-        case 'Company': return `Company:${object.companyId}`
-        default: return defaultDataIdFromObject(object)
+    dataIdFromObject: obj => {
+      switch (obj.__typename) {
+        case 'Company': return `Company:${obj.companyId}`
+        case 'Shareholder': return `Shareholder:${obj.userId}`
+        case 'User': return `User:${obj.userId}`
+        default: return defaultDataIdFromObject(obj)
       }
     }
-  }
+  },
 })
 
 const link = ApolloLink.from([stateLink, appSyncLink])
