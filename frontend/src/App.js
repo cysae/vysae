@@ -21,9 +21,10 @@ import Company from './scenes/Company'
 import appSyncConfig from './AppSync'
 import AWSAppSyncClient, { createAppSyncLink, createLinkWithCache } from "aws-appsync";
 import { Rehydrated } from 'aws-appsync-react';
-import { ApolloProvider, withApollo, compose } from 'react-apollo';
+import { ApolloProvider, withApollo, compose } from 'react-apollo'
 import { ApolloLink } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
+import { defaultDataIdFromObject } from 'apollo-cache-inmemory'
 import './App.css'
 Amplify.configure(aws_exports);
 const { Content, Footer } = Layout;
@@ -63,6 +64,15 @@ const appSyncLink = createAppSyncLink({
     apiKey:  appSyncConfig.apiKey,
     jwtToken: async () => (await Auth.currentSession()).getIdToken().getJwtToken(),
   },
+  /* cacheOptions: {
+   *   dataIdFromObject: object => {
+   *     console.log('jo ', object.__typename)
+   *     switch (object.__typename) {
+   *       case 'company': return `company:${object.companyId}`
+   *       default: return defaultDataIdFromObject(object)
+   *     }
+   *   }
+   * } */
 })
 
 const link = ApolloLink.from([stateLink, appSyncLink])

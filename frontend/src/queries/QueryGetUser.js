@@ -10,6 +10,8 @@ query QueryGetUser(
     companies(
       limit: $limit
       nextToken: $nextToken
+    ) @connection (
+      key: ["companies"]
     ) {
       items {
         companyId,

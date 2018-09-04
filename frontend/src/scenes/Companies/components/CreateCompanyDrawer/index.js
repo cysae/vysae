@@ -7,6 +7,7 @@ import {
 // graphql
 import { graphql } from 'react-apollo'
 import MutationCreateCompany from '../../../../queries/MutationCreateCompany'
+import QueryGetUser from '../../../../queries/QueryGetUser'
 
 class CreateCompanyDrawer extends React.Component {
   state = { visible: false };
@@ -108,11 +109,18 @@ export default Form.create()(graphql(
   {
     options: props => ({
       update: (proxy, { data }) => {
-        /* const query = QueryGetCompany
-         * const newData = proxy.readQuery( query )
+        if (data.createCompany) {
+          const query = QueryGetUser
+          const newData = proxy.readQuery({ query, variables: { limit: null, nextToken: null } })
 
-         * console.log('old', newData)
-         * console.log('new', data) */
+          console.log('what', data)
+          newData.getUser.companies.items.push(data.createCompany)
+
+          proxy.writeQuery({
+            query,
+            data: newData
+          })
+        }
       }
     }),
     props: props => ({

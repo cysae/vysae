@@ -14,7 +14,8 @@ import {
     UPDATE_VOTE_FORM,
     SELECT_MEETING,
 } from '../actions/index'
-import { companies } from '../companies.js'
+
+const companies = {}
 
 function companyForm(state = {}, action) {
     switch(action.type) {
@@ -124,8 +125,6 @@ const reducers = combineReducers({
     companyForm,
     meetingForm,
     voteForm,
-    myCompanies,
-    selectedCompany,
     selectedMeeting,
     signedInUser,
     router: routerReducer

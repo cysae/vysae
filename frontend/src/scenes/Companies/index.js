@@ -3,8 +3,13 @@ import { Table, Button, Spin, message } from 'antd'
 // AppSync
 import QueryGetUser from '../../queries/QueryGetUser'
 import { graphql, compose } from 'react-apollo'
+// services
+import renderWhileLoading from '../../services/renderWhileLoading'
+import renderIfError from '../../services/renderIfError'
 // Components
 import CreateCompanyDrawer from './components/CreateCompanyDrawer'
+import Loading from '../../components/Loading'
+import Error from '../../components/Error'
 
 class Companies extends Component {
   handleTableChange = async (pagination, filters, sorter) => {
@@ -21,17 +26,8 @@ class Companies extends Component {
       handleSelectCompanyId
     } = this.props
 
-    if(isUserLoading || isCurrentSelectionLoading) {
-      return <Spin size="large" />
-    }
-
-
-    if( error ) {
-      console.log('Error', error)
-      return (<div>Error</div>)
-    }
-
     const companies = user.companies.items
+    console.log(companies)
 
     const columns = [{
       title: 'Nombre de la sociedad',
@@ -67,10 +63,10 @@ class Companies extends Component {
 const CompaniesWithData = compose(
   graphql(QueryGetUser, {
     /* options: {
-     *   fetchPolicy: 'network-only'
+     *   fetchPolicy: 'cache-and-network',
      * }, */
     props: ({ data: { error, loading, getUser, fetchMore } }) => ({
-      isUserLoading: loading,
+      loading,
       error,
       user: getUser,
       fetchMore: () => fetchMore({
@@ -96,6 +92,8 @@ const CompaniesWithData = compose(
       })
     })
   }),
+  renderWhileLoading(Loading),
+  renderIfError(Error)
 )(Companies)
 
 export default CompaniesWithData
