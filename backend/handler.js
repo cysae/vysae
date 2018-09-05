@@ -57,6 +57,7 @@ module.exports.linkShareholderWithUser = async (event, context, callback) => {
   }
   catch(err) {
     console.error(err)
-    callback(null, err);
+    err.code && callback(err.code)
+    callback(JSON.stringify(err))
   }
 }
