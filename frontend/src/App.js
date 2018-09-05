@@ -68,7 +68,7 @@ const appSyncLink = createAppSyncLink({
     dataIdFromObject: obj => {
       switch (obj.__typename) {
         case 'Company': return `Company:${obj.companyId}`
-        case 'Shareholder': return `Shareholder:${obj.userId}`
+        case 'Shareholder': return `Shareholder:${obj.shareholderId}`
         case 'User': return `User:${obj.userId}`
         default: return defaultDataIdFromObject(obj)
       }

@@ -46,16 +46,14 @@ const columns = [{
   }
 }];
 
-const Shareholders = ({ errors, company }) => {
+const Shareholders = ({ company }) => {
+  console.log(company)
   const shareholders = company && company.shareholders && company.shareholders.items
-  console.log(shareholders)
 
   return (
     <Fragment>
       <CreateShareholderDrawer />
-      {shareholders[0] !== null && (
-         <Table columns={columns} dataSource={shareholders} rowKey='shareholderId' />
-      )}
+      <Table columns={columns} dataSource={shareholders} rowKey='shareholderId' />
     </Fragment>
   )
 }
@@ -64,7 +62,6 @@ export default compose(
   graphql(
     QueryGetCompany, {
       options: (props) => ({
-        fetchPolicy: 'network-only',
         variables: {
           companyId: props.match.params.companyId,
           withShareholders: true,

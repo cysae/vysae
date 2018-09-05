@@ -9,7 +9,7 @@ import { withRouter } from 'react-router'
 // graphql
 import { graphql, compose } from 'react-apollo'
 import MutationCreateShareholder from '../../../../../../queries/MutationCreateShareholder'
-// helpers
+import QueryGetCompany from '../../../../../../queries/QueryGetCompany'
 
 class CreateShareholderDrawer extends React.Component {
   state = { visible: false };
@@ -87,41 +87,41 @@ class CreateShareholderDrawer extends React.Component {
                   })(<Input placeholder="please enter user name" />)}
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item label="DNI">
+              {/* <Col span={12}>
+                  <Form.Item label="DNI">
                   {getFieldDecorator('dni', {
-                     rules: [{ required: true, message: 'please enter user DNI' }],
+                  rules: [{ required: true, message: 'please enter user DNI' }],
                   })(<Input placeholder="please enter user name" />)}
-                </Form.Item>
-              </Col>
+                  </Form.Item>
+                  </Col> */}
             </Row>
-            <Row gutter={16}>
-              <Col span={12}>
+            {/* <Row gutter={16}>
+                <Col span={12}>
                 <Form.Item label="Email">
-                  {getFieldDecorator('email', {
-                     rules: [{ required: true, message: 'please enter email' }],
-                  })(
-                     <Input
-                       style={{ width: '100%' }}
-                       placeholder="please enter email"
-                     />
-                   )}
+                {getFieldDecorator('email', {
+                rules: [{ required: true, message: 'please enter email' }],
+                })(
+                <Input
+                style={{ width: '100%' }}
+                placeholder="please enter email"
+                />
+                )}
                 </Form.Item>
-              </Col>
-              <Col span={12}>
+                </Col>
+                <Col span={12}>
                 <Form.Item label="Número de Teléfono">
-                  {getFieldDecorator('phone', {
-                     rules: [{ required: true, message: 'please enter phone' }],
-                  })(
-                     <Input
-                       style={{ width: '100%' }}
-                       addonBefore="+34"
-                       placeholder="please enter phone"
-                     />
-                   )}
+                {getFieldDecorator('phone', {
+                rules: [{ required: true, message: 'please enter phone' }],
+                })(
+                <Input
+                style={{ width: '100%' }}
+                addonBefore="+34"
+                placeholder="please enter phone"
+                />
+                )}
                 </Form.Item>
-              </Col>
-            </Row>
+                </Col>
+                </Row> */}
             {/* <Row gutter={16}>
                 <Col span={24}>
                 <Form.Item label="Description">
@@ -173,13 +173,6 @@ export default compose(
     MutationCreateShareholder,
     {
       options: props => ({
-        update: (proxy, { data }) => {
-          /* const query = QueryGetCompany
-           * const newData = proxy.readQuery( query )
-
-           * console.log('old', newData)
-           * console.log('new', data) */
-        }
       }),
       props: props => ({
         createShareholder: (companyId, name) => {
@@ -187,6 +180,35 @@ export default compose(
             variables: {
               companyId,
               name,
+            },
+            optimisticResponse: {
+              __typename: 'Mutation',
+              createShareholder: {
+                __typename: 'Shareholder',
+                shareholderId: 'id',
+                name,
+              }
+            },
+            update: (proxy, { data }) => {
+              const query = QueryGetCompany
+              const oldData = proxy.readQuery({
+                query,
+                variables: {
+                  companyId: props.ownProps.match.params.companyId,
+                  withShareholders: true
+                }
+              })
+
+              oldData.getCompany.shareholders.items.push(data.createShareholder)
+
+              proxy.writeQuery({
+                query,
+                variables: {
+                  companyId: props.ownProps.match.params.companyId,
+                  withShareholders: true
+                },
+                data: oldData
+              })
             }
           })
         }
