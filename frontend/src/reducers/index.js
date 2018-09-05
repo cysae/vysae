@@ -3,19 +3,13 @@ import { routerReducer } from 'react-router-redux'
 import {
     SAVE_COMPANY_FORM,
     UPDATE_MEETING_FORM,
-    COMPANY_SELECTION_REQUESTED,
-    COMPANY_SELECTION_SUCCEEDED,
     GET_SIGNED_IN_USER_REQUESTED,
     GET_SIGNED_IN_USER_SUCCEEDED,
-    GET_MY_COMPANIES_REQUESTED,
-    GET_MY_COMPANIES_SUCCEEDED,
     ADD_MEETING_TO_COMPANY_REQUESTED,
     ADD_MEETING_TO_COMPANY_SUCCEEDED,
     UPDATE_VOTE_FORM,
     SELECT_MEETING,
 } from '../actions/index'
-
-const companies = {}
 
 function companyForm(state = {}, action) {
     switch(action.type) {
@@ -55,42 +49,6 @@ function voteForm(state = {}, action) {
     switch(action.type) {
     case UPDATE_VOTE_FORM:
         return { ...state, ...action.payload }
-    default:
-        return state
-    }
-}
-
-function myCompanies(state = {
-    isLoading: false,
-    companies,
-}, action) {
-    switch(action.type) {
-    case GET_MY_COMPANIES_REQUESTED:
-        return {
-            isLoading: true,
-        }
-    case GET_MY_COMPANIES_SUCCEEDED:
-        return {
-            isLoading: false,
-            companies: action.companies
-        }
-    default:
-        return state
-    }
-}
-
-
-function selectedCompany(state = companies[0], action) {
-    switch(action.type) {
-    case COMPANY_SELECTION_REQUESTED:
-        return {
-            isLoading: true,
-        }
-    case COMPANY_SELECTION_SUCCEEDED:
-        return {
-            isloading: false,
-            ...action.company
-        }
     default:
         return state
     }

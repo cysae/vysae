@@ -2,7 +2,7 @@ import React from 'react'
 // antd
 import {
   Drawer, Form, Button, Col, Row, Input,
-  message, notification
+  notification
 } from 'antd';
 // graphql
 import { graphql } from 'react-apollo'

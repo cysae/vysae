@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Table, Button, Spin, message } from 'antd'
+import { Table, Button, message } from 'antd'
 // AppSync
 import QueryGetUser from '../../queries/QueryGetUser'
 import { graphql, compose } from 'react-apollo'
@@ -22,12 +22,10 @@ class Companies extends Component {
 
   render() {
     const {
-      user, isUserLoading, error, isCurrentSelectionLoading,
-      handleSelectCompanyId
+      user, handleSelectCompanyId
     } = this.props
 
     const companies = user.companies.items
-    console.log(companies)
 
     const columns = [{
       title: 'Nombre de la sociedad',

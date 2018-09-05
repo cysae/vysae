@@ -9,8 +9,6 @@ import { withRouter } from 'react-router'
 // graphql
 import { graphql, compose } from 'react-apollo'
 import MutationLinkShareholderWithUser from '../../../../../../queries/MutationLinkShareholderWithUser'
-// helpers
-import generator from 'generate-password'
 
 class CreateShareholderDrawer extends React.Component {
   state = { visible: false };
@@ -62,12 +60,12 @@ class CreateShareholderDrawer extends React.Component {
   }
 
   render() {
-    const {  form: { getFieldDecorator, getFieldValue } } = this.props;
+    const {  form: { getFieldDecorator } } = this.props;
 
 
     return (
       <div>
-        <a href="javascript:;" onClick={this.showDrawer}>Link User</a>
+        <Button onClick={this.showDrawer}>Link User</Button>
         <Drawer
           title="Create"
           width={720}

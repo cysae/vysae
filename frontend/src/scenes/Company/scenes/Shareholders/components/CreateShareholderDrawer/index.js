@@ -10,7 +10,6 @@ import { withRouter } from 'react-router'
 import { graphql, compose } from 'react-apollo'
 import MutationCreateShareholder from '../../../../../../queries/MutationCreateShareholder'
 // helpers
-import generator from 'generate-password'
 
 class CreateShareholderDrawer extends React.Component {
   state = { visible: false };
@@ -59,7 +58,7 @@ class CreateShareholderDrawer extends React.Component {
   }
 
   render() {
-    const { form: { getFieldDecorator, getFieldValue } } = this.props;
+    const { form: { getFieldDecorator } } = this.props;
 
     return (
       <div>
@@ -184,8 +183,6 @@ export default compose(
       }),
       props: props => ({
         createShareholder: (companyId, name) => {
-          const { getFieldValue } = props.ownProps.form
-
           return props.mutate({
             variables: {
               companyId,
