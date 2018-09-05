@@ -18,6 +18,8 @@ query QueryGetCompany (
     shareholders(
       limit: $shareholdersLimit
       nextToken: $shareholdersNextToken
+    ) @connection (
+      key: ["shareholders"]
     ) @include(if: $withShareholders) {
       items {
         shareholderId
