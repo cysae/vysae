@@ -5,7 +5,7 @@
     "expression": "companyId = :companyId",
     "expressionValues": {
       ":companyId": {
-        "S": "$ctx.src.companyId"
+        "S": "$ctx.source.companyId"
       }
     }
   },

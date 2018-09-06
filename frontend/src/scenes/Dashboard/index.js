@@ -21,7 +21,6 @@ export default compose(
   graphql(
     QueryGetCompany, {
       options: props => ({
-        fetchPolicy: 'network-only',
         variables: {
           companyId: props.match.params.companyId
         },

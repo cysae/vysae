@@ -1,28 +1,12 @@
-#set ( $shareholderId = $util.autoId() )
-#set ( $companyId = $ctx.args.companyId )
-
-## Shareholder
-#set( $shareholders = [] )
-#set( $shareholder = {
-  "shareholderId": "$shareholderId",
-  "name": "$ctx.args.name"
-} )
-$util.qr($shareholders.add($util.dynamodb.toMapValues($shareholder)))
-
-## Company relation
-#set( $companyShareholderConnections = [] )
-#set( $companyShareholderConnection = {
-  "companyShareholderConnectionId": "$util.autoId()",
-  "companyId": "$companyId",
-  "shareholderId": "$shareholderId"
-})
-$util.qr($companyShareholderConnections.add($util.dynamodb.toMapValues($companyShareholderConnection)))
-
 {
-  "version" : "2018-05-29",
-  "operation" : "BatchPutItem",
-  "tables": {
-    "VysaeShareholder": $util.toJson($shareholders),
-    "VysaeCompanyShareholderConnection": $util.toJson($companyShareholderConnections)
-  }
+    "version": "2017-02-28",
+    "operation": "PutItem",
+    "key": {
+        "eventId": { "S": "$context.arguments.eventId" },
+        "commentId": { "S": "$util.autoId()" }
+    },
+    "attributeValues": {
+        "content": { "S": "$context.arguments.content" },
+        "createdAt": { "S": "$context.arguments.createdAt" }
+    }
 }

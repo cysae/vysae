@@ -2,7 +2,7 @@ import React from 'react'
 // antd
 import {
   Drawer, Form, Button, Col, Row, Input,
-  message, notification
+  notification
 } from 'antd';
 // router
 import { withRouter } from 'react-router'
@@ -40,8 +40,6 @@ class CreateShareholderDrawer extends React.Component {
 
     validateFields((err, values) => {
       if (!err) {
-        const hide = message.loading('Loading', 0)
-
         const name = getFieldValue('name')
 
         createShareholder(companyId, name)
@@ -50,7 +48,6 @@ class CreateShareholderDrawer extends React.Component {
               message: `Shareholder creado!`,
               description: `Has creado un shareholder con un usario.`
             })
-            hide()
             this.onClose()
           })
       }
@@ -175,45 +172,44 @@ export default compose(
       options: props => ({
       }),
       props: props => ({
-        createShareholder: (companyId, name) => {
-          return props.mutate({
-            variables: {
-              companyId,
+        createShareholder: (companyId, name) => props.mutate({
+          variables: {
+            companyId,
+            name,
+          },
+          optimisticResponse: {
+            createShareholder: {
+              __typename: 'Shareholder',
+              shareholderId: 'id',
               name,
-            },
-            optimisticResponse: {
-              __typename: 'Mutation',
-              createShareholder: {
-                __typename: 'Shareholder',
-                shareholderId: 'id',
-                name,
-              }
-            },
-            update: (proxy, { data }) => {
-              const query = QueryGetCompany
-              const oldData = proxy.readQuery({
-                query,
-                variables: {
-                  companyId: props.ownProps.match.params.companyId,
-                  withShareholders: true
-                }
-              })
-
-              oldData.getCompany.shareholders.items[0] === null && oldData.getCompany.shareholders.items.pop()
-              oldData.getCompany.shareholders.items.push(data.createShareholder)
-              console.log(oldData)
-
-              proxy.writeQuery({
-                query,
-                variables: {
-                  companyId: props.ownProps.match.params.companyId,
-                  withShareholders: true
-                },
-                data: oldData
-              })
             }
-          })
-        }
+          },
+          update: (proxy, { data }) => {
+            const query = QueryGetCompany
+            const newData = proxy.readQuery({
+              query,
+              variables: {
+                companyId: props.ownProps.match.params.companyId,
+                withShareholders: true,
+                withShareholdersUsers: true,
+              }
+            })
+
+            const lol = newData
+            console.log('oldData', lol, data.createShareholder)
+            newData.getCompany.shareholders.items.push(data.createShareholder)
+            console.log('newData', newData)
+
+            /* proxy.writeQuery({
+             *   query,
+             *   variables: {
+             *     companyId: props.ownProps.match.params.companyId,
+             *     withShareholders: true,
+             *   },
+             *   data: oldData
+             * }) */
+          }
+        })
       })
     }
   )

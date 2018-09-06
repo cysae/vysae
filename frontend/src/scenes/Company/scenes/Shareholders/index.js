@@ -63,8 +63,7 @@ export default compose(
       options: (props) => ({
         variables: {
           companyId: props.match.params.companyId,
-          withShareholders: true,
-          /* withShareholdersUsers: true, */
+          withShareholdersUsers: true,
         },
       }),
       props: ( { data: { error, loading, getCompany} } ) => ({
