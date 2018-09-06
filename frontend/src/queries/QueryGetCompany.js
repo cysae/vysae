@@ -5,9 +5,6 @@ query QueryGetCompany (
   $companyId: ID!
   $shareholdersLimit: Int
   $shareholdersNextToken: String
-  $withShareholdersUsers: Boolean = false
-  $shareholdersUsersLimit: Int
-  $shareholdersUsersNextToken: String
 ) {
   getCompany(
     companyId: $companyId
@@ -23,16 +20,8 @@ query QueryGetCompany (
       items {
         shareholderId
         companyId
+        userId
         name
-        users (
-          limit: $shareholdersUsersLimit
-          nextToken: $shareholdersUsersNextToken
-        ) @include(if: $withShareholdersUsers) {
-          items {
-            userId
-          }
-          nextToken
-        }
       }
       nextToken
     }

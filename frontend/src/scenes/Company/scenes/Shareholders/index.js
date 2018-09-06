@@ -19,17 +19,9 @@ function hasUsers(shareholder) {
 }
 
 const columns = [{
-  title: 'ID',
-  dataIndex: 'shareholderId',
-  key: 'shareholderId',
-}, {
   title: 'Name',
   dataIndex: 'name',
   key: 'name',
-}, {
-  title: 'Email',
-  dataIndex: 'email',
-  key: 'email',
 }, {
   title: 'Action',
   key: 'action',

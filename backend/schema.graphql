@@ -70,13 +70,11 @@ type Mutation {
 
 type Shareholder {
   shareholderId: ID!
+  companyId: String!
+  userId: String
   name: String
-  companies: [Company]
-  users(
-    limit: Int
-    nextToken: String
-  ): ShareholderUserConnection
 }
+
 type ShareholderUserConnection {
   items: [User]
   nextToken: String

@@ -50,11 +50,6 @@ custom:
         field: shareholders
         request: "Company-shareholders-request.vm"
         response: "Company-shareholders-response.vm"
-      - dataSource: UserShareholderConnectionTable
-        type: ShareholderUserConnection
-        field: items
-        request: "ShareholderUserConnection-items-request.vm"
-        response: "ShareholderUserConnection-items-response.vm"
       - dataSource: UserTable
         type: Query
         field: getUser
@@ -85,11 +80,6 @@ custom:
         field: linkShareholderWithUser
         request: "MutationLinkShareholderWithUser-request.vm"
         response: "MutationLinkShareholderWithUser-response.vm"
-      - dataSource: UserShareholderConnectionTable
-        type: Shareholder
-        field: users
-        request: "Shareholder-users-request.vm"
-        response: "Shareholder-users-response.vm"
       - dataSource: meetingDocx
         type: Query
         field: queryMeetingDocx
@@ -125,12 +115,6 @@ custom:
         description: "Shareholder table"
         config:
           tableName: { Ref: "VysaeShareholderTable" }
-          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
-      - type: AMAZON_DYNAMODB
-        name: UserShareholderConnectionTable
-        description: "UserShareholderConnection table"
-        config:
-          tableName: { Ref: "VysaeUserShareholderConnectionTable" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AWS_LAMBDA
         name: meetingDocx
@@ -212,6 +196,8 @@ resources:
             AttributeType: S
           - AttributeName: shareholderId
             AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
         KeySchema:
           - AttributeName: companyId
             KeyType: HASH
@@ -220,6 +206,18 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 3
           WriteCapacityUnits: 3
+        GlobalSecondaryIndexes:
+          - IndexName: User
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: companyId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 3 
+              WriteCapacityUnits: 3 
     VysaeUserCompanyConnectionTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
@@ -250,42 +248,6 @@ resources:
           - IndexName: Company
             KeySchema:
               - AttributeName: companyId
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 3 
-              WriteCapacityUnits: 3 
-    VysaeUserShareholderConnectionTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        TableName: VysaeUserShareholderConnection
-        AttributeDefinitions:
-          - AttributeName: userShareholderConnectionId 
-            AttributeType: S
-          - AttributeName: userId
-            AttributeType: S
-          - AttributeName: shareholderId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: userShareholderConnectionId
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 3
-          WriteCapacityUnits: 3
-        GlobalSecondaryIndexes:
-          - IndexName: User
-            KeySchema:
-              - AttributeName: userId
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 3 
-              WriteCapacityUnits: 3 
-          - IndexName: Shareholder
-            KeySchema:
-              - AttributeName: shareholderId
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
