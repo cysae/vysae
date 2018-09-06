@@ -13,11 +13,6 @@ import Error from '../../../../components/Error'
 import CreateShareholderDrawer from './components/CreateShareholderDrawer'
 import LinkShareholderWithUserDrawer from './components/LinkShareholderWithUserDrawer'
 
-function hasUsers(shareholder) {
-  return false
-  /* return shareholder.users.items[0] !== null */
-}
-
 const columns = [{
   title: 'Name',
   dataIndex: 'name',
@@ -26,7 +21,7 @@ const columns = [{
   title: 'Action',
   key: 'action',
   render: (text, record) => {
-    if (hasUsers(record))
+    if (record.userId !== null)
       return (
         <span>is linked</span>
       )
