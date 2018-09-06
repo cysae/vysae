@@ -10,6 +10,7 @@ mutation MutationCreateShareholder(
     name: $name
   ) {
     shareholderId
+    companyId
     name
   }
 }

@@ -14,7 +14,8 @@ import CreateShareholderDrawer from './components/CreateShareholderDrawer'
 import LinkShareholderWithUserDrawer from './components/LinkShareholderWithUserDrawer'
 
 function hasUsers(shareholder) {
-  return shareholder.users.items[0] !== null
+  return false
+  /* return shareholder.users.items[0] !== null */
 }
 
 const columns = [{
@@ -61,10 +62,8 @@ export default compose(
   graphql(
     QueryGetCompany, {
       options: (props) => ({
-        fetchPolicy: 'cache-and-network',
         variables: {
           companyId: props.match.params.companyId,
-          withShareholdersUsers: true,
         },
       }),
       props: ( { data: { error, loading, getCompany} } ) => ({

@@ -182,7 +182,7 @@ export default compose(
               createShareholder: {
                 __typename: 'Shareholder',
                 shareholderId: 'id',
-                companyId,
+                companyId: 'id',
                 name,
               }
             },
@@ -195,14 +195,8 @@ export default compose(
                 }
               })
 
-              newData.getCompany.shareholders.items.push({
-                __typename: "Shareholder",
-                shareholderId: "id",
-                companyId: "id",
-                name: "name"
-              })
+              newData.getCompany.shareholders.items.push(data.createShareholder)
 
-              console.log(newData.getCompany)
               proxy.writeQuery({
                 query,
                 variables: {
