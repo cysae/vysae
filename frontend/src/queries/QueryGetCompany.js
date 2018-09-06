@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 export default gql`
 query QueryGetCompany (
   $companyId: ID!
+  $withShareholders: Boolean = false
   $shareholdersLimit: Int
   $shareholdersNextToken: String
   $withShareholdersUsers: Boolean = false
@@ -19,7 +20,7 @@ query QueryGetCompany (
       nextToken: $shareholdersNextToken
     ) @connection (
       key: ["shareholders"]
-    ) {
+    ) @include(if: $withShareholders) {
       items {
         shareholderId
         name
