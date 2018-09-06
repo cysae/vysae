@@ -11,9 +11,12 @@ const docClient = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' })
 export default async (userId, shareholderId) => {
   await docClient.update({
     TableName: 'VysaeShareholder',
-    Item: {
-      shareholderId,
-      userId,
+    Key: {
+      shareholderId
+    },
+    UpdateExpression: 'set userId = :userId',
+    ExpressionAttributeValues: {
+      ':userId' : userId,
     }
   }).promise()
 
