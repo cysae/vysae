@@ -11,6 +11,7 @@ mutation MutationCreateShareholder(
   ) {
     shareholderId
     companyId
+    userId
     name
   }
 }

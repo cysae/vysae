@@ -182,7 +182,8 @@ export default compose(
               createShareholder: {
                 __typename: 'Shareholder',
                 shareholderId: 'id',
-                companyId: 'id',
+                companyId,
+                userId: null,
                 name,
               }
             },
