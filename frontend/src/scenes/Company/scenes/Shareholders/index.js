@@ -46,17 +46,15 @@ const columns = [{
   }
 }];
 
-const Shareholders = ({ company }) => {
-  console.log(company)
-  return ( <div>mhm</div>)
-  /* const shareholders = items[0] !== null ? items : null
+const Shareholders = ({ company: { shareholders: { items }}}) => {
+  const shareholders = items
 
-   * return (
-   *   <Fragment>
-   *     <CreateShareholderDrawer />
-   *     <Table columns={columns} dataSource={shareholders} rowKey='shareholderId' />
-   *   </Fragment>
-   * ) */
+  return (
+    <Fragment>
+      <CreateShareholderDrawer />
+      <Table columns={columns} dataSource={shareholders} rowKey='shareholderId' />
+    </Fragment>
+  )
 }
 
 export default compose(
