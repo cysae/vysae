@@ -4,8 +4,10 @@ import { graphql, compose } from 'react-apollo'
 import QueryGetCompany from '../../queries/QueryGetCompany'
 // services
 import renderWhileLoading from '../../services/renderWhileLoading'
+import renderIfError from '../../services/renderIfError.js'
 // components
 import Loading from '../../components/Loading'
+import Error from '../../components/Error'
 
 const Dashboard = ({ company: { name }}) => {
   return (
@@ -31,5 +33,6 @@ export default compose(
       })
     }
   ),
-  renderWhileLoading(Loading)
+  renderWhileLoading(Loading),
+  renderIfError(Error)
 )(Dashboard)

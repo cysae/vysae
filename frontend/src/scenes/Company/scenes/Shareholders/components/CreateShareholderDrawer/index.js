@@ -199,7 +199,9 @@ export default compose(
                 }
               })
 
+              oldData.getCompany.shareholders.items[0] === null && oldData.getCompany.shareholders.items.pop()
               oldData.getCompany.shareholders.items.push(data.createShareholder)
+              console.log(oldData)
 
               proxy.writeQuery({
                 query,

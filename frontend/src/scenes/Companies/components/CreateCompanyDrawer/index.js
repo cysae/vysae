@@ -123,6 +123,9 @@ export default Form.create()(graphql(
             const query = QueryGetUser
             const newData = proxy.readQuery({ query, variables: { limit: null, nextToken: null } })
 
+            // AppSync fix
+            newData.getUser.companies.items[0] === null && newData.getUser.companies.items.splice(0, 1)
+
             newData.getUser.companies.items.push(data.createCompany)
 
             proxy.writeQuery({

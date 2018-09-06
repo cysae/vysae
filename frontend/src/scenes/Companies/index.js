@@ -60,9 +60,6 @@ class Companies extends Component {
 
 const CompaniesWithData = compose(
   graphql(QueryGetUser, {
-    options: {
-      fetchPolicy: 'cache-and-network',
-    },
     props: ({ data: { error, loading, getUser, fetchMore } }) => ({
       loading,
       error,

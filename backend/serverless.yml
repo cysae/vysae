@@ -15,17 +15,17 @@ plugins:
 custom:
   serverless-offline:
     port: 4000
-  dynamodb:
-    start:
-      port: 8000
-      inMemory: true
-      migrate: true
-      seed: true
-    seed:
-      test:
-        sources:
-          - table: Vysae
-            sources: [seedData/vysae.json]
+  # dynamodb:
+  #   start:
+  #     port: 8000
+  #     inMemory: true
+  #     migrate: true
+  #     seed: true
+  #   seed:
+  #     test:
+  #       sources:
+  #         - table: Vysae
+  #           sources: [seedData/vysae.json]
   webpack:
     webpackConfig: 'webpack.config.js'
     includeModules:
@@ -45,16 +45,11 @@ custom:
         field: getCompany
         request: "QueryGetCompany-request.vm"
         response: "QueryGetCompany-response.vm"
-      - dataSource: CompanyShareholderConnectionTable
+      - dataSource: ShareholderTable
         type: Company
         field: shareholders
         request: "Company-shareholders-request.vm"
         response: "Company-shareholders-response.vm"
-      - dataSource: Vysae
-        type: Company
-        field: meetings
-        request: "company-meetings-request.txt"
-        response: "company-meetings-response.txt"
       - dataSource: UserShareholderConnectionTable
         type: ShareholderUserConnection
         field: items
@@ -85,11 +80,6 @@ custom:
         field: createShareholder
         request: "MutationCreateShareholder-request.vm"
         response: "MutationCreateShareholder-response.vm"
-      - dataSource: CompanyShareholderConnectionTable
-        type: CompanyShareholderConnection
-        field: items
-        request: "CompanyShareholderConnection-items-request.vm"
-        response: "CompanyShareholderConnection-items-response.vm"
       - dataSource: linkShareholderWithUser
         type: Mutation
         field: linkShareholderWithUser
@@ -100,41 +90,11 @@ custom:
         field: users
         request: "Shareholder-users-request.vm"
         response: "Shareholder-users-response.vm"
-      - dataSource: Vysae
-        type: Meeting
-        field: agreements
-        request: "meeting-agreements-request.txt"
-        response: "meeting-agreements-response.txt"
-      - dataSource: Vysae
-        type: Query
-        field: getMeeting
-        request: "QueryGetMeeting-request.txt"
-        response: "QueryGetMeeting-response.txt"
-      - dataSource: Vysae
-        type: Mutation
-        field: createMeeting
-        request: "MutationCreateMeeting-request.txt"
-        response: "MutationCreateMeeting-response.txt"
-      - dataSource: Vysae
-        type: Mutation
-        field: createVotesForAgreements
-        request: "MutationCreateVotesForAgreements-request.txt"
-        response: "MutationCreateVotesForAgreements-response.txt"
       - dataSource: meetingDocx
         type: Query
         field: queryMeetingDocx
         request: "queryMeetingDocx-request.txt"
         response: "queryMeetingDocx-response.txt"
-      - dataSource: Vysae
-        type: Agreement
-        field: votes
-        request: "Agreement-votes-request.txt"
-        response: "Agreement-votes-response.txt"
-      - dataSource: Vysae
-        type: Shareholder
-        field: companies
-        request: "shareholder-companies-request.txt"
-        response: "shareholder-companies-response.txt"
       - dataSource: createUser 
         type: Mutation
         field: createUser
@@ -171,18 +131,6 @@ custom:
         description: "UserShareholderConnection table"
         config:
           tableName: { Ref: "VysaeUserShareholderConnectionTable" }
-          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
-      - type: AMAZON_DYNAMODB
-        name: CompanyShareholderConnectionTable
-        description: "CompanyShareholderConnection table"
-        config:
-          tableName: { Ref: "VysaeCompanyShareholderConnectionTable" }
-          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
-      - type: AMAZON_DYNAMODB
-        name: Vysae
-        description: "Vysae table"
-        config:
-          tableName: { Ref: "Vysae" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AWS_LAMBDA
         name: meetingDocx
@@ -260,11 +208,15 @@ resources:
       Properties:
         TableName: VysaeShareholder
         AttributeDefinitions:
-          - AttributeName: shareholderId 
+          - AttributeName: companyId 
+            AttributeType: S
+          - AttributeName: shareholderId
             AttributeType: S
         KeySchema:
-          - AttributeName: shareholderId
+          - AttributeName: companyId
             KeyType: HASH
+          - AttributeName: shareholderId
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 3
           WriteCapacityUnits: 3
@@ -340,71 +292,6 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 3 
               WriteCapacityUnits: 3 
-    VysaeCompanyShareholderConnectionTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        TableName: VysaeCompanyShareholderConnection
-        AttributeDefinitions:
-          - AttributeName: companyShareholderConnectionId 
-            AttributeType: S
-          - AttributeName: companyId
-            AttributeType: S
-          - AttributeName: shareholderId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: companyShareholderConnectionId
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 3
-          WriteCapacityUnits: 3
-        GlobalSecondaryIndexes:
-          - IndexName: Company
-            KeySchema:
-              - AttributeName: companyId
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 3 
-              WriteCapacityUnits: 3 
-          - IndexName: Shareholder
-            KeySchema:
-              - AttributeName: shareholderId
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 3 
-              WriteCapacityUnits: 3 
-    Vysae:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        TableName: Vysae
-        AttributeDefinitions:
-          - AttributeName: PK
-            AttributeType: S
-          - AttributeName: SK
-            AttributeType: S
-        KeySchema:
-          - AttributeName: PK
-            KeyType: HASH
-          - AttributeName: SK
-            KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 3 
-          WriteCapacityUnits: 3 
-        GlobalSecondaryIndexes:
-          - IndexName: GSI
-            KeySchema:
-              - AttributeName: SK
-                KeyType: HASH
-              - AttributeName: PK
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 3 
-              WriteCapacityUnits: 3 
     AppSyncServiceRole:
       Type: "AWS::IAM::Role"
       Properties:
@@ -435,20 +322,8 @@ resources:
                     - "dynamodb:Scan"
                     - "dynamodb:UpdateItem"
                   Resource:
-                    - "arn:aws:dynamodb:eu-west-1:*:table/Vysae"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/Vysae/*"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUser"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUser/*"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeCompany"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeCompany/*"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeShareholder"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeShareholder/*"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUserCompanyConnection"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUserCompanyConnection/*"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUserShareholderConnection"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeUserShareholderConnection/*"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeCompanyShareholderConnection"
-                    - "arn:aws:dynamodb:eu-west-1:*:table/VysaeCompanyShareholderConnection/*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/Vysae*"
+                    - "arn:aws:dynamodb:eu-west-1:*:table/Vysae*/*"
     AppSyncLambdaServiceRole:
       Type: "AWS::IAM::Role"
       Properties:

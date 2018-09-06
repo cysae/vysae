@@ -48,14 +48,15 @@ const columns = [{
 
 const Shareholders = ({ company }) => {
   console.log(company)
-  const shareholders = company && company.shareholders && company.shareholders.items
+  return ( <div>mhm</div>)
+  /* const shareholders = items[0] !== null ? items : null
 
-  return (
-    <Fragment>
-      <CreateShareholderDrawer />
-      <Table columns={columns} dataSource={shareholders} rowKey='shareholderId' />
-    </Fragment>
-  )
+   * return (
+   *   <Fragment>
+   *     <CreateShareholderDrawer />
+   *     <Table columns={columns} dataSource={shareholders} rowKey='shareholderId' />
+   *   </Fragment>
+   * ) */
 }
 
 export default compose(
@@ -65,7 +66,7 @@ export default compose(
         variables: {
           companyId: props.match.params.companyId,
           withShareholders: true,
-          withShareholdersUsers: true,
+          /* withShareholdersUsers: true, */
         },
       }),
       props: ( { data: { error, loading, getCompany} } ) => ({
