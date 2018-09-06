@@ -9,12 +9,11 @@ const docClient = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' })
 // 2. link company with user
 
 export default async (userId, shareholderId) => {
-  await docClient.put({
-    TableName: 'VysaeUserShareholderConnection',
+  await docClient.update({
+    TableName: 'VysaeShareholder',
     Item: {
-      userShareholderConnectionId: uuid(),
-      userId,
       shareholderId,
+      userId,
     }
   }).promise()
 
@@ -23,8 +22,7 @@ export default async (userId, shareholderId) => {
 
 const linkUserWithShareholderCompany = async (userId, shareholderId) => {
   const companyId = (await docClient.query({
-    TableName: 'VysaeCompanyShareholderConnection',
-    IndexName: 'Shareholder',
+    TableName: 'VysaeShareholder',
     KeyConditionExpression: 'shareholderId = :shareholderId',
     ExpressionAttributeValues: {
       ':shareholderId': shareholderId

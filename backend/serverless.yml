@@ -199,14 +199,23 @@ resources:
           - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: companyId
-            KeyType: HASH
           - AttributeName: shareholderId
-            KeyType: RANGE
+            KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 3
           WriteCapacityUnits: 3
         GlobalSecondaryIndexes:
+          - IndexName: Company
+            KeySchema:
+              - AttributeName: companyId
+                KeyType: HASH
+              - AttributeName: shareholderId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 3 
+              WriteCapacityUnits: 3 
           - IndexName: User
             KeySchema:
               - AttributeName: userId
