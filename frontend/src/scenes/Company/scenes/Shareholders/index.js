@@ -61,6 +61,7 @@ export default compose(
   graphql(
     QueryGetCompany, {
       options: (props) => ({
+        fetchPolicy: 'cache-and-network',
         variables: {
           companyId: props.match.params.companyId,
           withShareholdersUsers: true,

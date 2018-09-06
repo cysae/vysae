@@ -172,44 +172,46 @@ export default compose(
       options: props => ({
       }),
       props: props => ({
-        createShareholder: (companyId, name) => props.mutate({
-          variables: {
-            companyId,
-            name,
-          },
-          optimisticResponse: {
-            createShareholder: {
-              __typename: 'Shareholder',
-              shareholderId: 'id',
+        createShareholder: (companyId, name) =>
+          props.mutate({
+            variables: {
+              companyId,
               name,
-            }
-          },
-          update: (proxy, { data }) => {
-            const query = QueryGetCompany
-            const newData = proxy.readQuery({
-              query,
-              variables: {
-                companyId: props.ownProps.match.params.companyId,
-                withShareholders: true,
-                withShareholdersUsers: true,
+            },
+            optimisticResponse: {
+              createShareholder: {
+                __typename: 'Shareholder',
+                shareholderId: 'id',
+                companyId,
+                name,
               }
-            })
+            },
+            update: (proxy, { data }) => {
+              const query = QueryGetCompany
+              const newData = proxy.readQuery({
+                query,
+                variables: {
+                  companyId,
+                }
+              })
 
-            const lol = newData
-            console.log('oldData', lol, data.createShareholder)
-            newData.getCompany.shareholders.items.push(data.createShareholder)
-            console.log('newData', newData)
+              newData.getCompany.shareholders.items.push({
+                __typename: "Shareholder",
+                shareholderId: "id",
+                companyId: "id",
+                name: "name"
+              })
 
-            /* proxy.writeQuery({
-             *   query,
-             *   variables: {
-             *     companyId: props.ownProps.match.params.companyId,
-             *     withShareholders: true,
-             *   },
-             *   data: oldData
-             * }) */
-          }
-        })
+              console.log(newData.getCompany)
+              proxy.writeQuery({
+                query,
+                variables: {
+                  companyId
+                },
+                data: newData
+              })
+            }
+          })
       })
     }
   )

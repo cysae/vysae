@@ -128,6 +128,8 @@ export default Form.create()(graphql(
 
             newData.getUser.companies.items.push(data.createCompany)
 
+            console.log('createCompnay update', newData)
+
             proxy.writeQuery({
               query,
               data: newData
