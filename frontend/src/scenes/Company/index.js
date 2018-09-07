@@ -39,14 +39,17 @@ class RawCompanyMenu extends Component {
 }
 const CompanyMenu = withRouter(RawCompanyMenu)
 
-export default (props) => (
-  <Row type="flex">
-    <Col span={4}>
-      <CompanyMenu />
-    </Col>
-    <Col span={20}>
-      <Route path="/:companyId/company/basics" component={Basics} />
-      <Route path="/:companyId/company/shareholders" component={Shareholders} />
-    </Col>
-  </Row>
-)
+export default (props) => {
+  return (
+    <Row type="flex">
+      <Col span={4}>
+        <CompanyMenu />
+      </Col>
+      <Col span={20}>
+        <Route path="/:companyId/company/basics" component={Basics} />
+        <Route path="/:companyId/company/shareholders" component={Shareholders} />
+      </Col>
+    </Row>
+  )
+}
+
