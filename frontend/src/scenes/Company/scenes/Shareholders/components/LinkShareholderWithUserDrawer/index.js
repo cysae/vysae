@@ -9,6 +9,7 @@ import { withRouter } from 'react-router'
 // graphql
 import { graphql, compose } from 'react-apollo'
 import MutationLinkShareholderWithUser from '../../../../../../queries/MutationLinkShareholderWithUser'
+import QueryGetCompany from '../../../../../../queries/QueryGetCompany'
 
 class CreateShareholderDrawer extends React.Component {
   state = { visible: false };
@@ -173,17 +174,46 @@ export default compose(
   graphql(
     MutationLinkShareholderWithUser,
     {
-      options: props => ({
-        update: (proxy, { data }) => {
-          console.log(data)
-        }
-      }),
       props: props => ({
         linkShareholderWithUser: (shareholderId, user) => {
           return props.mutate({
             variables: {
               shareholderId,
               user
+            },
+            optimisticResponse: {
+              linkShareholderWithUser: {
+                ...user,
+                userId: 'id',
+                __typename: "User"
+              }
+            },
+            update: (proxy, { data }) => {
+              const companyId = props.ownProps.match.params.companyId
+
+              const query = QueryGetCompany
+              const newData = proxy.readQuery({
+                query,
+                variables: {
+                  companyId
+                },
+              })
+
+              for (const shareholder of newData.getCompany.shareholders.items) {
+                if (shareholder.shareholderId === props.ownProps.shareholderId)
+                  shareholder.userId = data.linkShareholderWithUser.userId
+              }
+
+              console.log('new', newData)
+
+              proxy.writeQuery({
+                query,
+                variables: {
+                  companyId
+                },
+                data: newData
+              })
+
             }
           })
         }
