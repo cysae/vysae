@@ -1,11 +1,9 @@
-import React, { Component } from 'react'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import QueryGetCompany from '../../../queries/QueryGetCompany'
 // services
 import renderWhileLoading from '../../../services/renderWhileLoading'
 import renderIfError from '../../../services/renderIfError'
-import { renderComponent } from 'recompose'
 // components
 import Loading from '../../../components/Loading'
 import Error from '../../../components/Error'

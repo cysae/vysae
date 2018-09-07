@@ -36,7 +36,6 @@ const columns = [{
 
 const Shareholders = ({ company: { shareholders: { items }}}) => {
   const shareholders = items
-  console.log(shareholders)
 
   return (
     <Fragment>

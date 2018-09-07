@@ -2,7 +2,7 @@ import React from 'react'
 // antd
 import {
   Drawer, Form, Button, Col, Row, Input,
-  message, notification
+  notification
 } from 'antd';
 // router
 import { withRouter } from 'react-router'
@@ -40,29 +40,33 @@ class CreateShareholderDrawer extends React.Component {
 
     validateFields((err, values) => {
       if (!err) {
-        const hide = message.loading('Loading', 0)
-
         const user = {
           username: getFieldValue('dni'),
           email: getFieldValue('email'),
           phone_number: `+34${getFieldValue('phone_number')}`
         }
 
-        linkShareholderWithUser(shareholderId, user).then(res => {
-          notification.success({
-            message: `Shareholder linked!`,
-            description: `Has linked un shareholder con un usario.`
+        linkShareholderWithUser(shareholderId, user)
+          .then(res => {
+            console.log('res', res)
+            notification.success({
+              message: `Shareholder linked!`,
+              description: `Has linked un shareholder con un usario.`
+            })
+            this.onClose()
           })
-          hide()
-          this.onClose()
-        })
+          .catch(err => {
+            notification.error({
+              message: `DNI ya existe!`,
+              description: `No puedo crear un nuevo usario.`
+            })
+          })
       }
     })
   }
 
   render() {
     const {  form: { getFieldDecorator } } = this.props;
-
 
     return (
       <div>
@@ -177,6 +181,7 @@ export default compose(
       props: props => ({
         linkShareholderWithUser: (shareholderId, user) => {
           return props.mutate({
+            errorPolicy: 'all',
             variables: {
               shareholderId,
               user
@@ -188,8 +193,10 @@ export default compose(
                 __typename: "User"
               }
             },
-            update: (proxy, { data }) => {
+            update: (proxy, { data, ...rest }) => {
               const companyId = props.ownProps.match.params.companyId
+
+              console.log(data, rest)
 
               const query = QueryGetCompany
               const newData = proxy.readQuery({
@@ -203,8 +210,6 @@ export default compose(
                 if (shareholder.shareholderId === props.ownProps.shareholderId)
                   shareholder.userId = data.linkShareholderWithUser.userId
               }
-
-              console.log('new', newData)
 
               proxy.writeQuery({
                 query,

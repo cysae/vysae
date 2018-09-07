@@ -699,6 +699,24 @@ aws-appsync@^1.3.4:
     url "^0.11.0"
     uuid "3.x"
 
+aws-appsync@^1.3.5-link-effect.0:
+  version "1.3.5-link-effect.0"
+  resolved "https://registry.yarnpkg.com/aws-appsync/-/aws-appsync-1.3.5-link-effect.0.tgz#69ee3e176c51b2bf0c9bc4b3052ea36ea824b116"
+  dependencies:
+    "@redux-offline/redux-offline" "^2.2.1"
+    apollo-cache-inmemory "^1.0.0"
+    apollo-client "2.3.7"
+    apollo-link "^1.0.0"
+    apollo-link-context "^1.0.0"
+    apollo-link-http "^1.0.0"
+    aws-sdk "^2.139.0"
+    graphql "^0.11.7"
+    redux "^3.7.2"
+    redux-thunk "^2.2.0"
+    setimmediate "^1.0.5"
+    url "^0.11.0"
+    uuid "3.x"
+
 aws-sdk@2.198.0:
   version "2.198.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.198.0.tgz#2245311337ddc844cc34c13f3fcf3b7ea843f434"
