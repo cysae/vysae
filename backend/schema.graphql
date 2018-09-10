@@ -12,6 +12,8 @@ input AgreementInput {
 type Company {
   companyId: ID!
   name: String
+  placeOfBusiness: String
+  nif: String
   shareholders(
     limit: Int
     nextToken: String

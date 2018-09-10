@@ -6,6 +6,7 @@ import getCompany from '../../services/getCompany'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import MutationUpdateCompany from '../../../../queries/MutationUpdateCompany'
+import QueryGetCompany from '../../../../queries/QueryGetCompany'
 
 const FormItem = Form.Item
 
@@ -26,7 +27,7 @@ class Basics extends Component {
     const { form : { validateFields }, updateCompany } = this.props
     validateFields((err, values) => {
       if (!err) {
-        console.log(values)
+        updateCompany(values.name, values.placeOfBusiness, values.nif)
       }
     })
   }
@@ -72,13 +73,40 @@ class Basics extends Component {
 export default compose(
   graphql(MutationUpdateCompany, {
     props: props => ({
-      updateCompany: (name, placeOfBusiness, nif) => ({
-        variables: {
-          name,
-          placeOfBusiness,
-          nif,
-        }
-      })
+      updateCompany: (name, placeOfBusiness, nif) => {
+        const companyId = props.ownProps.match.params.companyId
+        console.log('mut', companyId)
+        return props.mutate({
+          variables: {
+            companyId,
+            name,
+            placeOfBusiness,
+            nif,
+          },
+          optimisticResponse: {
+            updateCompany: {
+              __typename: "Company",
+              companyId: 'id',
+              name,
+              placeOfBusiness,
+              nif,
+            }
+          },
+          update: (proxy, { data }) => {
+            const query = QueryGetCompany
+            const newData = proxy.readQuery({
+              query,
+              variables: {
+                companyId
+              }
+            })
+
+            console.log('update', data)
+
+
+          }
+        })
+      }
     })
   }),
   Form.create(),
