@@ -15,7 +15,7 @@ import Companies from './scenes/Companies'
 import Dashboard from './scenes/Dashboard'
 import AddCompany from './containers/addCompany'
 import Info from './containers/info'
-import Meetings from './containers/meetings'
+import Meetings from './scenes/Meetings'
 import Company from './scenes/Company'
 // AppSync/Apollo
 import appSyncConfig from './AppSync'
@@ -143,10 +143,7 @@ class App extends Component {
               path="/info"
               component={Info}
             />
-            <CurrentCompanyRoute
-              path="/meetings"
-              component={Meetings}
-            />
+            <Route path="/meetings" component={Meetings}/>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>

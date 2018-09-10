@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // antd
 import { Form, Button, Input, message } from 'antd'
 // services
-import getCompany from '../../services/getCompany'
+import getCompany from '../../../../services/getCompany'
 // graphql
 import { compose, graphql } from 'react-apollo'
 import MutationUpdateCompany from '../../../../queries/MutationUpdateCompany'
