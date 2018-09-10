@@ -11,6 +11,8 @@ query QueryGetCompany (
   ) {
     companyId
     name,
+    placeOfBusiness,
+    nif,
     shareholders(
       limit: $shareholdersLimit
       nextToken: $shareholdersNextToken

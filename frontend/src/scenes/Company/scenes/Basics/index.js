@@ -7,6 +7,7 @@ import getCompany from '../../services/getCompany'
 import { compose, graphql } from 'react-apollo'
 import MutationUpdateCompany from '../../../../queries/MutationUpdateCompany'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
+import QueryGetUser from '../../../../queries/QueryGetUser'
 
 const FormItem = Form.Item
 
@@ -14,11 +15,13 @@ class Basics extends Component {
   componentDidMount() {
     const {
       form: { setFieldsValue },
-      company: { name }
+      company: { name, placeOfBusiness, nif }
     } = this.props
 
     setFieldsValue({
-      name
+      name,
+      placeOfBusiness,
+      nif
     })
   }
 
@@ -98,17 +101,40 @@ export default compose(
             }
           },
           update: (proxy, { data }) => {
-            const query = QueryGetCompany
+            // getCompany Query
             const newData = proxy.readQuery({
-              query,
+              query: QueryGetCompany,
               variables: {
                 companyId
               }
             })
 
-            console.log('update', data)
+            newData.getCompany = {
+              ...newData.getCompany,
+              ...data.updateCompany
+            }
 
+            proxy.writeQuery({
+              query: QueryGetCompany,
+              variables: { companyId },
+              data: newData
+            })
 
+            // getUser Query
+            const getUserData = proxy.readQuery({
+              query: QueryGetUser
+            })
+
+            for( const company of getUserData.getUser.companies.items ) {
+              if( company.companyId === companyId ) {
+                console.log('si')
+                company.name = data.updateCompany.name
+              }
+            }
+            proxy.writeQuery({
+              query: QueryGetUser,
+              data: getUserData
+            })
           }
         })
       }
