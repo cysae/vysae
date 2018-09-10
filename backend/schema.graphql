@@ -46,6 +46,12 @@ type Mutation {
   createCompany(
     name: String!
   ): Company!
+  updateCompany(
+    companyId: ID!
+    name: String!
+    placeOfBusiness: String!
+    nif: String!
+  ): Company!
   createUser(
     username: String!
     email: String!

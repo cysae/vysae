@@ -1,0 +1,20 @@
+{
+  "version" : "2017-02-28",
+  "operation" : "UpdateItem",
+  "key": {
+    "companyId" : { "S": "$ctx.args.companyId" },
+  },
+  "update" : {
+    "expression" : "SET #name = :name, #placeOfBusiness = :place, #nif = :nif",
+    "expressionNames" : {
+      "#name" : "name",
+      "#placeOfBusiness": "placeOfBusiness",
+      "#nif": "nif"
+    },
+    "expressionValues": {
+      ":name": { "S": "$ctx.args.name" },
+      ":place": { "S": "$ctx.args.placeOfBusiness" },
+      ":nif": { "S": "$ctx.args.nif" }
+    }
+  }
+}

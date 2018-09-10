@@ -4,7 +4,8 @@ import { Form, Button, Input } from 'antd'
 // services
 import getCompany from '../../services/getCompany'
 // graphql
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
+import MutationUpdateCompany from '../../../../queries/MutationUpdateCompany'
 
 const FormItem = Form.Item
 
@@ -22,7 +23,12 @@ class Basics extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('submit')
+    const { form : { validateFields }, updateCompany } = this.props
+    validateFields((err, values) => {
+      if (!err) {
+        console.log(values)
+      }
+    })
   }
 
   render() {
@@ -64,6 +70,17 @@ class Basics extends Component {
 }
 
 export default compose(
+  graphql(MutationUpdateCompany, {
+    props: props => ({
+      updateCompany: (name, placeOfBusiness, nif) => ({
+        variables: {
+          name,
+          placeOfBusiness,
+          nif,
+        }
+      })
+    })
+  }),
   Form.create(),
   getCompany,
 )(Basics)

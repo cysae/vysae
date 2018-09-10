@@ -23,12 +23,11 @@ class CreateCompanyDrawer extends React.Component {
     const { form: { validateFields, getFieldValue }, createCompany } = this.props
     validateFields((err, values) => {
       if (!err) {
-        const name = getFieldValue('name')
-        createCompany(getFieldValue('name'))
+        createCompany(values.name)
           .then(res => {
             notification.success({
               message: `Sociedad añadida!`,
-              description: `Has guardado la sociedad: ${name}.`
+              description: `Has guardado la sociedad: ${values.name}.`
             })
             this.onClose()
           })
@@ -127,8 +126,6 @@ export default Form.create()(graphql(
             newData.getUser.companies.items[0] === null && newData.getUser.companies.items.splice(0, 1)
 
             newData.getUser.companies.items.push(data.createCompany)
-
-            console.log('createCompnay update', newData)
 
             proxy.writeQuery({
               query,
