@@ -45,6 +45,11 @@ custom:
         field: getCompany
         request: "QueryGetCompany-request.vm"
         response: "QueryGetCompany-response.vm"
+      - dataSource: MeetingTable
+        type: Company
+        field: meetings
+        request: "Company-meetings-request.vm"
+        response: "Company-meetings-response.vm"
       - dataSource: ShareholderTable
         type: Company
         field: shareholders
@@ -70,6 +75,11 @@ custom:
         field: createCompany
         request: "MutationCreateCompany-request.vm"
         response: "MutationCreateCompany-response.vm"
+      - dataSource: MeetingTable
+        type: Mutation
+        field: createMeeting
+        request: "MutationCreateMeeting-request.vm"
+        response: "MutationCreateMeeting-response.vm"
       - dataSource: CompanyTable
         type: Mutation
         field: updateCompany
@@ -98,16 +108,22 @@ custom:
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
-        name: UserTable
-        description: "User table"
-        config:
-          tableName: { Ref: "VysaeUserTable" }
-          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
-      - type: AMAZON_DYNAMODB
         name: CompanyTable
         description: "Company table"
         config:
           tableName: { Ref: "VysaeCompanyTable" }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
+      - type: AMAZON_DYNAMODB
+        name: MeetingTable
+        description: "Meeting table"
+        config:
+          tableName: { Ref: "VysaeMeetingTable" }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
+      - type: AMAZON_DYNAMODB
+        name: UserTable
+        description: "User table"
+        config:
+          tableName: { Ref: "VysaeUserTable" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AMAZON_DYNAMODB
         name: UserCompanyConnectionTable
@@ -192,6 +208,31 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 3
           WriteCapacityUnits: 3
+    VysaeMeetingTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: VysaeMeeting
+        AttributeDefinitions:
+          - AttributeName: meetingId 
+            AttributeType: S
+          - AttributeName: companyId 
+            AttributeType: S
+        KeySchema:
+          - AttributeName: meetingId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 3
+          WriteCapacityUnits: 3
+        GlobalSecondaryIndexes:
+          - IndexName: Company
+            KeySchema:
+              - AttributeName: companyId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 3 
+              WriteCapacityUnits: 3 
     VysaeShareholderTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
@@ -214,8 +255,6 @@ resources:
             KeySchema:
               - AttributeName: companyId
                 KeyType: HASH
-              - AttributeName: shareholderId
-                KeyType: RANGE
             Projection:
               ProjectionType: ALL
             ProvisionedThroughput:
@@ -349,7 +388,7 @@ resources:
                     - "dynamodb:DeleteItem"
                     - "dynamodb:PutItem"
                     - "dynamodb:Scan"
-                    - "dynamodb:UpdateItem"
+
                   Resource:
                     - "arn:aws:dynamodb:eu-west-1:*:table/Vysae*"
                     - "arn:aws:dynamodb:eu-west-1:*:table/Vysae*/*"

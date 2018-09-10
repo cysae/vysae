@@ -31,14 +31,14 @@ type Docx {
 }
 
 type Meeting {
-  id: ID!
+  meetingId: ID!
   start: String!
   end: String!
   agreements: [Agreement]
 }
 
 input MeetingInput {
-  id: ID,
+  meetingId: ID,
   start: String!,
   end: String!,
   agreements: [AgreementInput]

@@ -5,7 +5,7 @@ import { Menu, Row, Col, Spin } from 'antd'
 import { withRouter, Route } from 'react-router'
 import { Link } from 'react-router-dom'
 // components
-import Next from './Next'
+import Next from './scenes/Next'
 // services
 import getCompany from '../../services/getCompany'
 
@@ -14,9 +14,6 @@ class RawMeetingMenu extends Component {
     const { pathname } = this.props.location
     switch(pathname) {
       case '/meeting/next': return ['nextMeeting']
-      case '/meeting/convene': return ['conveneMeeting']
-      case '/meeting/announce': return ['announceMeeting']
-      case '/meeting/history': return ['meetingHistory']
       default: return ['nextMeeting']
     }
   }
@@ -30,9 +27,6 @@ class RawMeetingMenu extends Component {
         <Menu.Item key="nextMeeting">
           <Link to={`/${companyId}/meeting/next`}>Próxima Junta</Link>
         </Menu.Item>
-        {/* <Menu.Item key="meetingHistory">
-            <Link to='/meetings/history'>Historial de Juntas</Link>
-            </Menu.Item> */}
       </Menu>
     )
   }
@@ -41,7 +35,6 @@ const MeetingMenu = withRouter(RawMeetingMenu)
 
 class Meetings extends Component {
   render() {
-    console.log(company)
     const { company } = this.props
     const { meetings } = company
 
