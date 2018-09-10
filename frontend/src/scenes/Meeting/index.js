@@ -5,13 +5,7 @@ import { Menu, Row, Col, Spin } from 'antd'
 import { withRouter, Route } from 'react-router'
 import { Link } from 'react-router-dom'
 // components
-/* import MeetingNext from '../components/meetingNext'
- * import MeetingConvene from './meetingConvene'
- * import MeetingHistory from '../components/meetingHistory'
- * import MeetingDisplayPDF from './meetingDisplayPDF'
- * import MeetingVote from './meetingVote'
- * import MeetingResult from './meetingResult'
- * import AnnouncementSent from '../components/announcementSent' */
+import Next from './Next'
 // services
 import getCompany from '../../services/getCompany'
 
@@ -19,24 +13,22 @@ class RawMeetingMenu extends Component {
   getSelectedKey() {
     const { pathname } = this.props.location
     switch(pathname) {
-      case '/meetings/next': return ['nextMeeting']
-      case '/meetings/convene': return ['conveneMeeting']
-      case '/meetings/announce': return ['announceMeeting']
-      case '/meetings/history': return ['meetingHistory']
+      case '/meeting/next': return ['nextMeeting']
+      case '/meeting/convene': return ['conveneMeeting']
+      case '/meeting/announce': return ['announceMeeting']
+      case '/meeting/history': return ['meetingHistory']
       default: return ['nextMeeting']
     }
   }
 
   render() {
+    const { match: { params: { companyId}}} = this.props
     return(
       <Menu
         selectedKeys={this.getSelectedKey()}
       >
         <Menu.Item key="nextMeeting">
-          <Link to='/meetings/next'>Próxima Junta</Link>
-        </Menu.Item>
-        <Menu.Item key="conveneMeeting">
-          <Link to='/meetings/convene'>Convocatoria</Link>
+          <Link to={`/${companyId}/meeting/next`}>Próxima Junta</Link>
         </Menu.Item>
         {/* <Menu.Item key="meetingHistory">
             <Link to='/meetings/history'>Historial de Juntas</Link>
@@ -49,6 +41,7 @@ const MeetingMenu = withRouter(RawMeetingMenu)
 
 class Meetings extends Component {
   render() {
+    console.log(company)
     const { company } = this.props
     const { meetings } = company
 
@@ -58,15 +51,15 @@ class Meetings extends Component {
           <MeetingMenu />
         </Col>
         <Col span={20}>
-          {/* <Route
-              path="/meetings/next"
-              render={() => (
-              <MeetingNext
-              meetings={meetings}
-              selectMeeting={this.selectMeeting}
+          <Route
+            path="/:companyId/meeting/next"
+            render={() => (
+              <Next
+                meetings={meetings}
+                selectMeeting={this.selectMeeting}
               />
-              )}
-              /> */}
+            )}
+          />
           {/* <Route
               path="/meetings/convene"
               render={() => (
