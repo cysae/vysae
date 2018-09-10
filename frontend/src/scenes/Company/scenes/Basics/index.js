@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // antd
-import { Form, Button, Input } from 'antd'
+import { Form, Button, Input, message } from 'antd'
 // services
 import getCompany from '../../services/getCompany'
 // graphql
@@ -27,7 +27,12 @@ class Basics extends Component {
     const { form : { validateFields }, updateCompany } = this.props
     validateFields((err, values) => {
       if (!err) {
+        const hide = message.loading('Updating Company')
         updateCompany(values.name, values.placeOfBusiness, values.nif)
+          .then(() => {
+            hide()
+            message.success('Saved', 2.5)
+          })
       }
     })
   }
