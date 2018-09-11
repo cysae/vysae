@@ -3,7 +3,7 @@
   "operation": "Query",
   "index": "Company",
   "query" : {
-    "expression" : "PK = :companyId",
+    "expression" : "companyId = :companyId",
     "expressionValues" : {
       ":companyId" : { "S" : "$ctx.source.companyId" }
     }

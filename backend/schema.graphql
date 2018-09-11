@@ -18,9 +18,12 @@ type Company {
     limit: Int
     nextToken: String
   ): CompanyShareholderConnection
-  meetings: [Meeting]
+  meetings: CompanyMeetingConnection
 }
-
+type CompanyMeetingConnection {
+  items: [Meeting]
+  nextToken: String
+}
 type CompanyShareholderConnection {
   items: [Shareholder]
   nextToken: String
