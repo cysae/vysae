@@ -3,9 +3,12 @@ import React, { Fragment } from 'react'
 import { Table, Divider } from 'antd'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+// services
+import getCompany from '../../../../services/getCompany'
 
 function MeetingNext(props) {
-  const { meetings } = props
+  const { company: { meetings: { items }}} = props
+  const meetings = items
 
   const columns = [{
     title: 'Commienza',
@@ -41,10 +44,10 @@ function MeetingNext(props) {
   return (
     <Table
       columns={columns}
-      rowKey='id'
+      rowKey='meetingId'
       dataSource={meetings}
     />
   )
 }
 
-export default MeetingNext
+export default getCompany(MeetingNext)
