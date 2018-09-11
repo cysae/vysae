@@ -32,6 +32,10 @@ query QueryGetCompany (
       }
       nextToken
     }
+    myShareholders {
+      shareholderId
+      name
+    }
     shareholders(
       limit: $shareholdersLimit
       nextToken: $shareholdersNextToken
