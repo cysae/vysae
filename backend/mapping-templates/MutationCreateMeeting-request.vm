@@ -1,12 +1,25 @@
+## meeting
+#set( $meetings = [] )
+#set( $meeting = {
+  "meetingId": "$utils.autoId()",
+  "companyId": "$ctx.args.companyId",
+  "start": "$ctx.args.meeting.start",
+  "end": "$ctx.args.meeting.end"
+})
+$util.qr($meetings.add($util.dynamodb.toMapValues($meeting)))
+
+## Agreements
+#set( $agreements = [] )
+#foreach($agreement in $ctx.args.meeting.agreements)
+  $utils.qr($agreement.put("agreementId", "$utils.autoId()"))
+  $utils.qr($agreements.add($util.dynamodb.toMapValues($agreement)))
+#end
+
 {
-    "version": "2017-02-28",
-    "operation": "PutItem",
-    "key": {
-        "companyId": { "S": "$ctx.args.companyId" },
-        "meetingId": { "S": "$util.autoId()" }
-    },
-    "attributeValues": {
-        "start": { "S": "$ctx.args.meeting.start" },
-        "end": { "S": "$ctx.args.meeting.end" }
-    }
+  "version" : "2018-05-29",
+  "operation" : "BatchPutItem",
+  "tables": {
+    "VysaeMeeting": $util.toJson($meetings),
+    "VysaeAgreement": $util.toJson($agreements)
+  }
 }

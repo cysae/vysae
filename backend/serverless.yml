@@ -108,6 +108,12 @@ custom:
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
+        name: AgreementTable
+        description: "Agreement table"
+        config:
+          tableName: { Ref: "VysaeAgreementTable" }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
+      - type: AMAZON_DYNAMODB
         name: CompanyTable
         description: "Company table"
         config:
@@ -182,19 +188,31 @@ functions:
 
 resources:
   Resources:
-    VysaeUserTable:
+    VysaeAgreementTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
-        TableName: VysaeUser
+        TableName: VysaeAgreement
         AttributeDefinitions:
-          - AttributeName: userId 
+          - AttributeName: agreementId 
+            AttributeType: S
+          - AttributeName: meetingId 
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: agreementId
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 3
           WriteCapacityUnits: 3
+        GlobalSecondaryIndexes:
+          - IndexName: Meeting
+            KeySchema:
+              - AttributeName: meetingId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 3 
+              WriteCapacityUnits: 3 
     VysaeCompanyTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
@@ -271,6 +289,19 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 3 
               WriteCapacityUnits: 3 
+    VysaeUserTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: VysaeUser
+        AttributeDefinitions:
+          - AttributeName: userId 
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 3
+          WriteCapacityUnits: 3
     VysaeUserCompanyConnectionTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:

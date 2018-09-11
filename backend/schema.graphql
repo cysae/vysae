@@ -1,10 +1,10 @@
 type Agreement {
-  id: ID!
+  agreementId: ID!
   name: String!
   votes: [Vote]
 }
 input AgreementInput {
-  id: ID,
+  agreementId: ID,
   name: String!,
   votes: [VoteInput]
 }

@@ -8,6 +8,8 @@ import {
 import { compose, graphql } from 'react-apollo'
 import MutationCreateMeeting from '../../../../../../queries/MutationCreateMeeting'
 import QueryGetCompany from '../../../../../../queries/QueryGetCompany'
+// components
+import AgreementSelector from '../../../../../../components/agreementSelector'
 
 const { RangePicker } = DatePicker
 
@@ -26,8 +28,9 @@ class CreateMeetingDrawer extends React.Component {
     validateFields((err, values) => {
       if (!err) {
         const meeting = {
-          start: values.dateRange[0].toISOString(),
-          end: values.dateRange[1].toISOString(),
+          start: values.votingPeriod[0].toISOString(),
+          end: values.votingPeriod[1].toISOString(),
+          agreements: values.agreementTypes.map((name) => ({ name }))
         }
 
         createMeeting(companyId, meeting)
@@ -49,7 +52,7 @@ class CreateMeetingDrawer extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form, form: { getFieldDecorator }} = this.props;
     return (
       <div>
         <Button type="primary" onClick={this.showDrawer}>
@@ -71,17 +74,26 @@ class CreateMeetingDrawer extends React.Component {
           <Form layout="vertical" hideRequiredMark onSubmit={this.handleSubmit}>
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item label="Start - End">
-                  {getFieldDecorator('dateRange', {
+                <Form.Item label="Duracion">
+                  {getFieldDecorator('votingPeriod', {
                      rules: [{ required: true, message: 'please enter company name' }],
                   })(
                      <RangePicker
                        showTime={{ format: 'HH:mm' }}
                        format='YYYY-MM-DD HH:mm'
-                       placeholder={['Start Time', 'End Time']}
+                       placeholder={['Inicio', 'Final']}
                      />
                    )}
                 </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                <AgreementSelector
+                  form={form}
+                  label="Selecciona tipos de acuerdos"
+                  fieldId="agreementTypes"
+                />
               </Col>
             </Row>
             <div
@@ -132,7 +144,6 @@ export default compose(
               }
             },
             update: (proxy, { data }) => {
-              console.log(data)
               const query = QueryGetCompany
               const companyData = proxy.readQuery({ query, variables: { companyId }})
 
