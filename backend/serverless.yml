@@ -40,11 +40,6 @@ custom:
       userPoolId: eu-west-1_MUEHMQ2R2
     mappingTemplatesLocation: "./mapping-templates"
     mappingTemplates:
-      - dataSource: CompanyTable
-        type: Query
-        field: getCompany
-        request: "QueryGetCompany-request.vm"
-        response: "QueryGetCompany-response.vm"
       - dataSource: MeetingTable
         type: Company
         field: meetings
@@ -55,6 +50,16 @@ custom:
         field: shareholders
         request: "Company-shareholders-request.vm"
         response: "Company-shareholders-response.vm"
+      - dataSource: AgreementTable
+        type: Meeting
+        field: agreements
+        request: "Meeting-agreements-request.vm"
+        response: "Meeting-agreements-response.vm"
+      - dataSource: CompanyTable
+        type: Query
+        field: getCompany
+        request: "QueryGetCompany-request.vm"
+        response: "QueryGetCompany-response.vm"
       - dataSource: UserTable
         type: Query
         field: getUser
