@@ -3,7 +3,7 @@
     "operation": "PutItem",
     "key": {
         "companyId": { "S": "$ctx.args.companyId" },
-        "shareholderId": { "S": "$util.autoId()" }
+        "shareholderId": { "S": "$util.autoId()" },
     },
     "attributeValues": {
         "name": { "S": "$ctx.args.name" }

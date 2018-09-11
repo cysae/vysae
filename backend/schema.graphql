@@ -18,6 +18,7 @@ type Company {
     limit: Int
     nextToken: String
   ): CompanyShareholderConnection
+  myShareholders: [Shareholder]
   meetings(
     limit: Int
     nextToken: String
@@ -77,9 +78,9 @@ type Mutation {
     companyId: ID!
     meeting: MeetingInput!
   ): Meeting!
-	createVotesForAgreements(
-    votesWithAgreementId: [VoteWithAgreementId!]!
-  ): [Agreement!]!
+	createVote(
+    vote: VoteInput!
+  ): Vote!
 }
 
 type Shareholder {
@@ -93,7 +94,6 @@ type ShareholderUserConnection {
   items: [User]
   nextToken: String
 }
-
 
 type Query {
   getCompany(companyId: ID!): Company
@@ -131,17 +131,14 @@ type UserShareholderConnection {
 }
 
 type Vote {
-  id: ID!
+  agreementId: String!
+  shareholderId: String!
   result: Int!
 }
-
 input VoteInput {
-  id: ID
+  agreementId: String!
+  shareholderId: String!
   result: Int!
-}
-input VoteWithAgreementId {
-	agreementId: ID!
-	vote: VoteInput!
 }
 
 schema {

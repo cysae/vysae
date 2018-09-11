@@ -1,0 +1,11 @@
+{
+  "version": "2017-02-28",
+  "operation": "PutItem",
+  "key": {
+    "agreementId": { "S": "$ctx.args.vote.agreementId" },
+    "shareholderId": { "S": "$ctx.args.vote.shareholderId" }
+  },
+  "attributeValues": {
+    "result": { "N": $ctx.args.vote.result }
+  }
+}

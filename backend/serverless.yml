@@ -40,11 +40,21 @@ custom:
       userPoolId: eu-west-1_MUEHMQ2R2
     mappingTemplatesLocation: "./mapping-templates"
     mappingTemplates:
+      - dataSource: VoteTable 
+        type: Agreement
+        field: votes
+        request: "Agreement-votes-request.vm"
+        response: "Agreement-votes-response.vm"
       - dataSource: MeetingTable
         type: Company
         field: meetings
         request: "Company-meetings-request.vm"
         response: "Company-meetings-response.vm"
+      - dataSource: ShareholderTable
+        type: Company
+        field: myShareholders
+        request: "Company-myShareholders-request.vm"
+        response: "Company-myShareholders-response.vm"
       - dataSource: ShareholderTable
         type: Company
         field: shareholders
@@ -100,16 +110,21 @@ custom:
         field: createShareholder
         request: "MutationCreateShareholder-request.vm"
         response: "MutationCreateShareholder-response.vm"
-      - dataSource: linkShareholderWithUser
-        type: Mutation
-        field: linkShareholderWithUser
-        request: "MutationLinkShareholderWithUser-request.vm"
-        response: "MutationLinkShareholderWithUser-response.vm"
       - dataSource: createUser 
         type: Mutation
         field: createUser
         request: "MutationCreateUser-request.vm"
         response: "MutationCreateUser-response.vm"
+      - dataSource: linkShareholderWithUser
+        type: Mutation
+        field: linkShareholderWithUser
+        request: "MutationLinkShareholderWithUser-request.vm"
+        response: "MutationLinkShareholderWithUser-response.vm"
+      - dataSource: VoteTable 
+        type: Mutation
+        field: createVote
+        request: "MutationCreateVote-request.vm"
+        response: "MutationCreateVote-response.vm"
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
@@ -131,6 +146,18 @@ custom:
           tableName: { Ref: "VysaeMeetingTable" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AMAZON_DYNAMODB
+        name: ShareholderTable
+        description: "Shareholder table"
+        config:
+          tableName: { Ref: "VysaeShareholderTable" }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
+      - type: AMAZON_DYNAMODB
+        name: VoteTable
+        description: "Vote table"
+        config:
+          tableName: { Ref: "VysaeVoteTable" }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
+      - type: AMAZON_DYNAMODB
         name: UserTable
         description: "User table"
         config:
@@ -141,12 +168,6 @@ custom:
         description: "UserCompanyConnection table"
         config:
           tableName: { Ref: "VysaeUserCompanyConnectionTable" }
-          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
-      - type: AMAZON_DYNAMODB
-        name: ShareholderTable
-        description: "Shareholder table"
-        config:
-          tableName: { Ref: "VysaeShareholderTable" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AWS_LAMBDA
         name: meetingDocx
@@ -343,6 +364,23 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 3 
               WriteCapacityUnits: 3 
+    VysaeVoteTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: VysaeVote
+        AttributeDefinitions:
+          - AttributeName: agreementId
+            AttributeType: S
+          - AttributeName: shareholderId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: agreementId
+            KeyType: HASH
+          - AttributeName: shareholderId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 3
+          WriteCapacityUnits: 3
     AppSyncServiceRole:
       Type: "AWS::IAM::Role"
       Properties:
@@ -423,6 +461,7 @@ resources:
                     - "dynamodb:BatchGetItem"
                     - "dynamodb:DeleteItem"
                     - "dynamodb:PutItem"
+                    - "dynamodb:UpdateItem"
                     - "dynamodb:Scan"
 
                   Resource:

@@ -1,0 +1,10 @@
+{
+  "version" : "2017-02-28",
+  "operation" : "Query",
+  "query" : {
+    "expression" : "agreementId = :agreementId",
+    "expressionValues" : {
+      ":agreementId" : { "S" : "$ctx.source.agreementId" }
+    }
+  }
+}

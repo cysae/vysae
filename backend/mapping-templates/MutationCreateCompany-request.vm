@@ -1,5 +1,5 @@
 #set( $companyId = $util.autoId() )
-#set( $userId = $context.identity.sub )
+#set( $userId = $ctx.identity.sub )
 
 ## Company
 #set( $companies = [] )

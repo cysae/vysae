@@ -1,0 +1,12 @@
+{
+  "version" : "2017-02-28",
+  "operation" : "Query",
+  "index": "User",
+  "query" : {
+    "expression" : "userId = :userId and companyId = :companyId",
+    "expressionValues" : {
+      ":userId" : { "S" : "$ctx.identity.sub" },
+      ":companyId" : { "S" : "$ctx.source.companyId" }
+    }
+  }
+}
