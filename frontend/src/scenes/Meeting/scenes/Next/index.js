@@ -5,9 +5,14 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 // services
 import getCompany from '../../../../services/getCompany'
+// components
+import CreateMeetingDrawer from './components/CreateMeetingDrawer'
 
-function MeetingNext(props) {
-  const { company: { meetings: { items }}} = props
+function Next(props) {
+  const {
+    company: { meetings: { items }},
+    match: { params: { companyId }},
+  } = props
   const meetings = items
 
   const columns = [{
@@ -42,12 +47,15 @@ function MeetingNext(props) {
   }]
 
   return (
-    <Table
-      columns={columns}
-      rowKey='meetingId'
-      dataSource={meetings}
-    />
+    <Fragment>
+      <CreateMeetingDrawer companyId={companyId} />
+      <Table
+        columns={columns}
+        rowKey='meetingId'
+        dataSource={meetings}
+      />
+    </Fragment>
   )
 }
 
-export default getCompany(MeetingNext)
+export default getCompany(Next)

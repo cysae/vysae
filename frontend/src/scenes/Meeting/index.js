@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // antd
-import { Menu, Row, Col, Spin } from 'antd'
+import { Menu, Row, Col} from 'antd'
 // react-router
 import { withRouter, Route } from 'react-router'
 import { Link } from 'react-router-dom'

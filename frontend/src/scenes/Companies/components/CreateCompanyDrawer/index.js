@@ -20,7 +20,7 @@ class CreateCompanyDrawer extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { form: { validateFields, getFieldValue }, createCompany } = this.props
+    const { form: { validateFields }, createCompany } = this.props
     validateFields((err, values) => {
       if (!err) {
         createCompany(values.name)
