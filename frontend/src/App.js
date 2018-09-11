@@ -67,6 +67,7 @@ const appSyncLink = createAppSyncLink({
   cacheOptions: {
     dataIdFromObject: obj => {
       switch (obj.__typename) {
+        case 'Agreement': return `Agreement:${obj.agreementId}`
         case 'Company': return `Company:${obj.companyId}`
         case 'Shareholder': return `Shareholder:${obj.shareholderId}`
         case 'User': return `User:${obj.userId}`

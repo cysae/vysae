@@ -12,6 +12,10 @@ export default gql(`
       meetingId
       start
       end
+      agreements {
+        agreementId
+        name
+      }
     }
   }
 `)

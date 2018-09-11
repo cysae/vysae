@@ -140,7 +140,12 @@ export default compose(
               createMeeting: {
                 __typename: "Meeting",
                 meetingId: 'id',
-                ...meeting
+                ...meeting,
+                agreements: meeting.agreements.map((agreement) => ({
+                  __typename: 'Agreement',
+                  agreementId: 'id',
+                  ...agreement
+                }))
               }
             },
             update: (proxy, { data }) => {

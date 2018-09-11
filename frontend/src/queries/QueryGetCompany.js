@@ -25,6 +25,10 @@ query QueryGetCompany (
         meetingId
         start
         end
+        agreements {
+          agreementId
+          name
+        }
       }
       nextToken
     }
