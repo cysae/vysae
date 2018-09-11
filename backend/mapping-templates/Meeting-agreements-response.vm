@@ -1,13 +1,1 @@
-#set( $arr = [] )
-#foreach($res in $context.result.items)
-	#set( $map = {} )
-	#set ($hyphen = $res.SK.indexOf('-'))
-	#set ($substring = $res.SK.substring(0, $hyphen))
-	#if($substring == "Agreement")
-		$util.qr($map.put("id", $res.SK))
-        $util.qr($map.put("name", $res.name))
-        
-        $util.qr($arr.add($map))
-    #end
-#end
-$util.toJson($arr)
+$util.toJson($ctx.result.items)

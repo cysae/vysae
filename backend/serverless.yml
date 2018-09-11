@@ -60,6 +60,11 @@ custom:
         field: getCompany
         request: "QueryGetCompany-request.vm"
         response: "QueryGetCompany-response.vm"
+      - dataSource: meetingDocx
+        type: Query
+        field: queryMeetingDocx
+        request: "queryMeetingDocx-request.txt"
+        response: "queryMeetingDocx-response.txt"
       - dataSource: UserTable
         type: Query
         field: getUser
@@ -100,11 +105,6 @@ custom:
         field: linkShareholderWithUser
         request: "MutationLinkShareholderWithUser-request.vm"
         response: "MutationLinkShareholderWithUser-response.vm"
-      - dataSource: meetingDocx
-        type: Query
-        field: queryMeetingDocx
-        request: "queryMeetingDocx-request.txt"
-        response: "queryMeetingDocx-response.txt"
       - dataSource: createUser 
         type: Mutation
         field: createUser

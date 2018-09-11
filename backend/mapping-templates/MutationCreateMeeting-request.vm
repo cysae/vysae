@@ -12,6 +12,7 @@ $util.qr($meetings.add($util.dynamodb.toMapValues($meeting)))
 #set( $agreements = [] )
 #foreach($agreement in $ctx.args.meeting.agreements)
   $utils.qr($agreement.put("agreementId", "$utils.autoId()"))
+  $utils.qr($agreement.put("meetingId", "$meeting.meetingId"))
   $utils.qr($agreements.add($util.dynamodb.toMapValues($agreement)))
 #end
 
