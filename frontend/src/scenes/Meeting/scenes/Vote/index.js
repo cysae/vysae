@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { Steps, Button, message, Select, Icon } from 'antd';
 // services
 import getCompany from '../../../../services/getCompany'
+// router
+import { Link } from 'react-router-dom'
 // components
 import AgreementVotingList from './components/AgreementVotingList'
 
@@ -102,7 +104,11 @@ class App extends Component {
           }
           {
             current === steps.length - 1
-            && <Button type="primary" onClick={() => message.success('Has votado!')}>Done</Button>
+            && (
+              <Link to={`/${companyId}/meeting/next`}>
+                <Button type="primary" onClick={() => message.success('Has votado!')}>Done</Button>
+              </Link>
+            )
           }
           {
             current > 0
