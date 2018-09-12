@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react'
 // antd
 import { Table } from 'antd'
-// graphql
-import { compose } from 'react-apollo'
 // services
 import getCompany from '../../../../services/getCompany'
 // components

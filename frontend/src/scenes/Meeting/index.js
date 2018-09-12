@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 // components
 import Next from './scenes/Next'
 import Vote from './scenes/Vote'
+import Result from './scenes/Result'
 
 class RawMeetingMenu extends Component {
   getSelectedKey() {
@@ -40,6 +41,7 @@ export default () => (
     <Col span={20}>
       <Route path="/:companyId/meeting/next" component={Next} />
       <Route path="/:companyId/meeting/:meetingId/vote" component={Vote} />
+      <Route path="/:companyId/meeting/:meetingId/result" component={Result} />
     </Col>
   </Row>
 )

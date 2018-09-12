@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 // antd
-import { Form, List, Radio, Button, Divider, Spin } from 'antd'
-import { Link } from 'react-router-dom'
+import { Form, List, Radio } from 'antd'
 // graphql
 import { graphql, compose } from 'react-apollo'
 import MutationCreateVote from '../../../../../../queries/MutationCreateVote'
@@ -34,7 +33,7 @@ class MeetingVote extends Component {
   myVoteResult = (agreement, isValue) => {
     const { shareholderId } = this.props
     for(const vote of agreement.votes) {
-      if(vote.shareholderId == shareholderId) {
+      if(vote.shareholderId === shareholderId) {
         return vote.result === isValue
       }
     }
@@ -43,7 +42,6 @@ class MeetingVote extends Component {
 
   render() {
     const {
-      form: { getFieldDecorator },
       company: { meetings },
       match: { params: { meetingId }},
     } = this.props
@@ -147,7 +145,6 @@ export default compose(
       }),
     }
   ),
-  Form.create(),
   withRouter,
   getCompany,
   )(MeetingVote)
