@@ -31,6 +31,16 @@ class MeetingVote extends Component {
     createVote(vote)
   }
 
+  myVoteResult = (agreement, isValue) => {
+    const { shareholderId } = this.props
+    for(const vote of agreement.votes) {
+      if(vote.shareholderId == shareholderId) {
+        return vote.result === isValue
+      }
+    }
+    return null
+  }
+
   render() {
     const {
       form: { getFieldDecorator },
@@ -56,9 +66,9 @@ class MeetingVote extends Component {
             <List.Item actions={[
               <FormItem>
                 <RadioGroup onChange={({ target: { value}}) => this.handleChange(value, item.agreementId)}>
-                  <RadioButton value={1}>Sí</RadioButton>
-                  <RadioButton value={0}>En blanco</RadioButton>
-                  <RadioButton value={-1}>No</RadioButton>
+                  <RadioButton value={1} checked={this.myVoteResult(item, 1)}>Sí</RadioButton>
+                  <RadioButton value={0} checked={this.myVoteResult(item, 0)}>En blanco</RadioButton>
+                  <RadioButton value={-1} checked={this.myVoteResult(item, -1)}>No</RadioButton>
                 </RadioGroup>
               </FormItem>
             ]}>
@@ -104,7 +114,19 @@ export default compose(
                       if(agreement.votes === undefined) {
                         agreement.votes = []
                       }
-                      agreement.votes.push(data.createVote)
+                      let voteExists = false
+                      for(const vote of agreement.votes) {
+                        if(
+                          vote.shareholderId === data.createVote.shareholderId &&
+                          vote.agreementId === data.createVote.agreementId
+                        ) {
+                          vote.result = data.createVote.result
+                          voteExists = true
+                          break;
+                        }
+                      }
+                      if(!voteExists)
+                        agreement.votes.push(data.createVote)
                       break;
                     }
                   }

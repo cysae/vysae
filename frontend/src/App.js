@@ -71,6 +71,7 @@ const appSyncLink = createAppSyncLink({
         case 'Company': return `Company:${obj.companyId}`
         case 'Shareholder': return `Shareholder:${obj.shareholderId}`
         case 'User': return `User:${obj.userId}`
+        case 'Vote': return `Vote:${obj.agreementId}-${obj.shareholderId}`
         default: return defaultDataIdFromObject(obj)
       }
     }

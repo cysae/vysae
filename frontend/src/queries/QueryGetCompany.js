@@ -28,6 +28,11 @@ query QueryGetCompany (
         agreements {
           agreementId
           name
+          votes {
+            agreementId
+            shareholderId
+            result
+          }
         }
       }
       nextToken
