@@ -3,7 +3,9 @@ import React, { Component, Fragment } from 'react'
 import { Form, List, Radio, Button, Divider, Spin } from 'antd'
 import { Link } from 'react-router-dom'
 // graphql
-import { compose } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
+import MutationCreateVote from '../../../../../../queries/MutationCreateVote'
+import QueryGetCompany from '../../../../../../queries/QueryGetCompany'
 // services
 import getCompany from '../../../../../../services/getCompany'
 // router
@@ -18,27 +20,15 @@ class MeetingVote extends Component {
     isLoading: false
   }
 
-  handleSubmit = async (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        const { createVotesWithAgreementId, form } = this.props
-        const votesWithAgreementId = []
+  handleChange = (result, agreementId) => {
+    const { shareholderId, createVote } = this.props
+    const vote = {
+      agreementId,
+      result,
+      shareholderId
+    }
 
-        this.setState({ isLoading: true })
-        for (const agreementId in form.getFieldsValue()) {
-          const vote = {
-            result: form.getFieldsValue()[agreementId]
-          }
-          votesWithAgreementId.push({
-            agreementId,
-            vote
-          })
-        }
-
-        createVotesWithAgreementId(votesWithAgreementId)
-      }
-    });
+    createVote(vote)
   }
 
   render() {
@@ -50,7 +40,6 @@ class MeetingVote extends Component {
 
     let agreements = {}
     for (const meeting of meetings.items) {
-      console.log(meeting)
       if(meeting.meetingId === meetingId) {
         agreements = meeting.agreements
         break;
@@ -66,15 +55,11 @@ class MeetingVote extends Component {
           renderItem={item => (
             <List.Item actions={[
               <FormItem>
-                {getFieldDecorator(item.agreementId, {
-                   rules: [{ required: true, message: 'Es obligatorio.' }],
-                })(
-                   <RadioGroup>
-                     <RadioButton value={1}>Sí</RadioButton>
-                     <RadioButton value={0}>En blanco</RadioButton>
-                     <RadioButton value={-1}>No</RadioButton>
-                   </RadioGroup>
-                 )}
+                <RadioGroup onChange={({ target: { value}}) => this.handleChange(value, item.agreementId)}>
+                  <RadioButton value={1}>Sí</RadioButton>
+                  <RadioButton value={0}>En blanco</RadioButton>
+                  <RadioButton value={-1}>No</RadioButton>
+                </RadioGroup>
               </FormItem>
             ]}>
               {item.name}
@@ -87,49 +72,60 @@ class MeetingVote extends Component {
 
 
 export default compose(
+  graphql(
+    MutationCreateVote,
+    {
+      props: props => ({
+        createVote: (vote) => {
+          const { companyId, meetingId } = props.ownProps
+          return props.mutate({
+            variables: {
+              vote,
+            },
+            optimisticResponse: {
+              createVote: {
+                __typename: 'Vote',
+                ...vote,
+              }
+            },
+            update: (proxy, { data, ...rest }) => {
+              const query = QueryGetCompany
+              const newData = proxy.readQuery({
+                query,
+                variables: {
+                  companyId,
+                }
+              })
+
+              for(const meeting of newData.getCompany.meetings.items) {
+                if(meeting.meetingId === meetingId) {
+                  for( const agreement of meeting.agreements ) {
+                    if (agreement.agreementId === data.createVote.agreementId) {
+                      if(agreement.votes === undefined) {
+                        agreement.votes = []
+                      }
+                      agreement.votes.push(data.createVote)
+                      break;
+                    }
+                  }
+                  break;
+                }
+              }
+
+              proxy.writeQuery({
+                query,
+                variables: {
+                  companyId
+                },
+                data: newData
+              })
+            }
+          })
+        }
+      }),
+    }
+  ),
   Form.create(),
   withRouter,
   getCompany,
-  /* graphql(
-   *   MutationCreateVotesWithAgreementId,
-   *   {
-   *     options: props => ({
-   *       update: (proxy, { data: { createVotesForAgreements } }) => {
-
-   *         if ( createVotesForAgreements !== null ) {
-   *           const query = QueryGetMeeting
-   *           const variables = { id: props.match.params.id, withAgreements: true, withVotes: true }
-   *           const data = proxy.readQuery({ query, variables })
-
-   *           for (const agreement of createVotesForAgreements) {
-   *             const agreementId = agreement.id
-   *             const vote = agreement.votes[0]
-
-   *             let agreementIndex
-   *             const agreements = data.getMeeting.agreements
-   *             for (agreementIndex in agreements) {
-   *               if (agreements[agreementIndex].id === agreementId)
-   *                 break
-   *             }
-
-   *             if ( typeof agreements[agreementIndex].votes === 'undefined' )
-   *               data.getMeeting.agreements[agreementIndex].votes = []
-
-   *             data.getMeeting.agreements[agreementIndex].votes.push(vote)
-   *           }
-
-   *           proxy.writeQuery({ query, data, variables })
-   *           props.history.push(`/meetings/result/${data.getMeeting.id}`)
-   *         }
-   *       }
-   *     }),
-   *     props: (props) => ({
-   *       createVotesWithAgreementId: (votesWithAgreementId) => props.mutate({
-   *         variables: {
-   *           votesWithAgreementId
-   *         }
-   *       })
-   *     })
-   *   }
-   * ) */
-)(MeetingVote)
+  )(MeetingVote)

@@ -52,12 +52,15 @@ class App extends Component {
   }
 
   handleSelectShareholder = (value) => {
-    console.log(value)
     this.setState({ shareholderId: value })
   }
 
   render() {
-    const { company: { myShareholders }} = this.props
+    const {
+      company: { myShareholders },
+      company: { companyId },
+      match: { params: { meetingId }},
+    } = this.props
     const { current, shareholderId } = this.state;
 
     if( shareholderId === null )
@@ -77,7 +80,13 @@ class App extends Component {
     }, {
       title: '2. Votar',
       icon: <Icon type="solution" />,
-      content: <AgreementVotingList />,
+      content: (
+        <AgreementVotingList
+          shareholderId={shareholderId}
+          companyId={companyId}
+          meetingId={meetingId}
+        />
+      )
     }];
 
     return (

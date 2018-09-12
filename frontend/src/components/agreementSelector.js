@@ -57,7 +57,6 @@ export default class AgreementSelector extends Component {
         // add to select options
         const selectedDict = { }
         selectedDict[fieldId] = selectedAgreements.concat([agreementType])
-        console.log(selectedDict)
         this.props.form.setFieldsValue(selectedDict)
 
         agreementTypeOptions.push(agreementType)

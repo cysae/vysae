@@ -169,8 +169,6 @@ export default compose(
   graphql(
     MutationCreateShareholder,
     {
-      options: props => ({
-      }),
       props: props => ({
         createShareholder: (companyId, name) =>
           props.mutate({
@@ -196,7 +194,6 @@ export default compose(
                 }
               })
 
-              console.log('createShareholder', data, rest)
               newData.getCompany.shareholders.items.push(data.createShareholder)
 
               proxy.writeQuery({
