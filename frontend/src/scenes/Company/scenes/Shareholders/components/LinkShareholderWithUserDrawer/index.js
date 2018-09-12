@@ -46,21 +46,20 @@ class CreateShareholderDrawer extends React.Component {
           phone_number: `+34${getFieldValue('phone_number')}`
         }
 
-        console.log(shareholderId, user)
-        /* linkShareholderWithUser(shareholderId, user)
-         *   .then(res => {
-         *     notification.success({
-         *       message: `Shareholder linked!`,
-         *       description: `Has linked un shareholder con un usario.`
-         *     })
-         *     this.onClose()
-         *   })
-         *   .catch(err => {
-         *     notification.error({
-         *       message: `DNI ya existe!`,
-         *       description: `No puedo crear un nuevo usario.`
-         *     })
-         *   }) */
+        linkShareholderWithUser(shareholderId, user)
+          .then(res => {
+            notification.success({
+              message: `Shareholder linked!`,
+              description: `Has linked un shareholder con un usario.`
+            })
+            this.onClose()
+          })
+          .catch(err => {
+            notification.error({
+              message: `DNI ya existe!`,
+              description: `No puedo crear un nuevo usario.`
+            })
+          })
       }
     })
   }
