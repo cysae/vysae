@@ -144,11 +144,13 @@ export default compose(
                 agreements: meeting.agreements.map((agreement) => ({
                   __typename: 'Agreement',
                   agreementId: 'id',
-                  ...agreement
+                  ...agreement,
+                  votes: null
                 }))
               }
             },
             update: (proxy, { data }) => {
+              console.log(data)
               const query = QueryGetCompany
               const companyData = proxy.readQuery({ query, variables: { companyId }})
 

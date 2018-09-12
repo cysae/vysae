@@ -15,6 +15,11 @@ export default gql(`
       agreements {
         agreementId
         name
+        votes {
+          agreementId
+          shareholderId
+          result
+        }
       }
     }
   }
