@@ -187,7 +187,7 @@ export default compose(
                 name,
               }
             },
-            update: (proxy, { data }) => {
+            update: (proxy, { data, ...rest }) => {
               const query = QueryGetCompany
               const newData = proxy.readQuery({
                 query,
@@ -196,6 +196,7 @@ export default compose(
                 }
               })
 
+              console.log('createShareholder', data, rest)
               newData.getCompany.shareholders.items.push(data.createShareholder)
 
               proxy.writeQuery({
