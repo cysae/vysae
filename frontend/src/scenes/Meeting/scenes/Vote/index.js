@@ -58,7 +58,12 @@ class App extends Component {
 
   render() {
     const { company: { myShareholders }} = this.props
-    const { current } = this.state;
+    const { current, shareholderId } = this.state;
+
+    if( shareholderId === null )
+      return (
+        <div>No tiene Socio dentro de la empresa</div>
+      )
 
     const steps = [{
       title: '1. Seleccionar Socio',
