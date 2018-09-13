@@ -24,7 +24,6 @@ function sortBy(field1, field2) {
     }
 }
 
-
 function disjunctiveUnionOf(obj1, obj2) {
     Object.keys(obj1)
         .filter(key => Object.keys(obj2).includes(key))

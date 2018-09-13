@@ -1,20 +1,17 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Button, Radio, Divider, Row, Col, Alert} from 'antd'
-// redux
-import { connect } from 'react-redux'
-import { requestCompanyUpdate } from '../actions/index.js'
 // utils
-import { mergeTriplets } from '../utils/mergeIntervalTiplets.js'
+import { mergeTriplets } from './services/mergeIntervalTriplets'
 // components
-import ShareIntervalFields from '../components/shareIntervalFields'
-import IntervalTypeField from '../components/intervalTypeField.js'
-import ShareSuffrageFields from '../components/shareSuffrageFields'
-import { MyInputNumber } from './addCompanyForms.js'
+import ShareIntervalFields from '../../../../components/shareIntervalFields'
+import IntervalTypeField from '../../../../components/intervalTypeField'
+import ShareSuffrageFields from '../../../../components/shareSuffrageFields'
+import { MyInputNumber } from '../../../../containers/addCompanyForms'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
-class SharesForm extends Component {
+class Shares extends Component {
   state = {
     error: null
   }
@@ -24,7 +21,6 @@ class SharesForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err && this.isExtraValid()) {
         this.update()
-        this.props.next()
       }
     });
   }
@@ -77,9 +73,9 @@ class SharesForm extends Component {
       shareIntervals: triplets,
     }
 
+    console.log(triplets)
 
     const companyId = this.props.form.getFieldValue('companyId')
-    this.props.requestCompanyUpdate(companyId, body)
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {
@@ -140,36 +136,38 @@ class SharesForm extends Component {
     }
 
     // social capital has to coincide with shares and their corresponding values
-    let totalShareValue = 0
-    const sharesHaveSameValue = getFieldValue('sharesHaveSameValue')
-    if(sharesHaveSameValue === 'no') {
-      const shareValueTypeIds = getFieldValue('shareValueType_ids')
-      for(const valueTypeId of shareValueTypeIds) {
-        const shareValue = getFieldValue(`shareValue_${valueTypeId}`)
-        const shareIntervalIds = getFieldValue(`shareValueType_${valueTypeId}_ids`)
-        for(const id of shareIntervalIds) {
-          const shareCountOfInterval = Math.abs(
-            getFieldValue(`shareValueType_${valueTypeId}_begin_${id}`)-getFieldValue(`shareValueType_${valueTypeId}_end_${id}`)
-          )+1
-          totalShareValue += shareCountOfInterval*shareValue
-        }
-      }
+    /* let totalShareValue = 0
+     * const sharesHaveSameValue = getFieldValue('sharesHaveSameValue')
+     * if(sharesHaveSameValue === 'no') {
+     *   const shareValueTypeIds = getFieldValue('shareValueType_ids')
+     *   for(const valueTypeId of shareValueTypeIds) {
+     *     const shareValue = getFieldValue(`shareValue_${valueTypeId}`)
+     *     const shareIntervalIds = getFieldValue(`shareValueType_${valueTypeId}_ids`)
+     *     for(const id of shareIntervalIds) {
+     *       const shareCountOfInterval = Math.abs(
+     *         getFieldValue(`shareValueType_${valueTypeId}_begin_${id}`)-getFieldValue(`shareValueType_${valueTypeId}_end_${id}`)
+     *       )+1
+     *       totalShareValue += shareCountOfInterval*shareValue
+     *     }
+     *   }
 
-      if(capital !== totalShareValue) {
-        this.setState({
-          error: `La suma del valor de las participaciones (${totalShareValue}€) no coincide con el capital social.`
-        })
-        return false
-      }
-    }
+     *   if(capital !== totalShareValue) {
+     *     this.setState({
+     *       error: `La suma del valor de las participaciones (${totalShareValue}€) no coincide con el capital social.`
+     *     })
+     *     return false
+     *   }
+     * } */
 
     return true
   }
 
 
   render() {
-    const { form } = this.props
-    const { getFieldDecorator, getFieldValue } = form;
+    const {
+      form,
+      form: { getFieldDecorator, getFieldValue }
+    } = this.props
 
     return (
       <Fragment>
@@ -296,11 +294,4 @@ class SharesForm extends Component {
   }
 }
 
-const mapStateToProps = state => {}
-const mapDispatchToProps = dispatch => {
-  return {
-    requestCompanyUpdate: (companyId, body) => { dispatch(requestCompanyUpdate(companyId, body)) }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SharesForm)
+export default Form.create()(Shares)

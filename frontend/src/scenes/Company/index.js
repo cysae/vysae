@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 // scenes
 import Shareholders from './scenes/Shareholders'
 import Basics from './scenes/Basics'
+import Shares from './scenes/Shares'
 
 class RawCompanyMenu extends Component {
   getSelectedKey() {
@@ -15,6 +16,7 @@ class RawCompanyMenu extends Component {
 
     switch(pathname.substr(companyIndex, pathname.length)) {
       case '/company/basics': return ['basics']
+      case '/company/shares': return ['shares']
       case '/company/shareholders': return ['shareholders']
       default: return ['basics']
     }
@@ -29,6 +31,9 @@ class RawCompanyMenu extends Component {
       >
         <Menu.Item key="basics">
           <Link to={`/${companyId}/company/basics`}>Basicos</Link>
+        </Menu.Item>
+        <Menu.Item key="shares">
+          <Link to={`/${companyId}/company/shares`}>Shares</Link>
         </Menu.Item>
         <Menu.Item key="shareholders">
           <Link to={`/${companyId}/company/shareholders`}>Socios</Link>
@@ -47,6 +52,7 @@ export default (props) => {
       </Col>
       <Col span={20}>
         <Route path="/:companyId/company/basics" component={Basics} />
+        <Route path="/:companyId/company/shares" component={Shares} />
         <Route path="/:companyId/company/shareholders" component={Shareholders} />
       </Col>
     </Row>

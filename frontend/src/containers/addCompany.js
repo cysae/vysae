@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react'
 import { Steps, Divider } from 'antd'
-import BasicForm from '../containers/basicForm.js'
-import SharesForm from '../containers/sharesForm.js'
 import AgreementRules from '../containers/agreementRulesForm.js'
 import ShareholderRegistry from '../containers/shareholderRegistry.js'
 import GoverningBodies from '../containers/governingBodiesForm.js'
@@ -35,12 +33,6 @@ class AddCompany extends React.Component {
     const { current } = this.state
 
     const steps = [{
-      title: 'Información',
-      content: <BasicForm next={this.next} prev={this.prev} form={form}/>,
-    }, {
-      title: 'Participaciones',
-      content: <SharesForm next={this.next} prev={this.prev} form={form} />,
-    }, {
       title: 'Acuerdos',
       content: <AgreementRules next={this.next} prev={this.prev} form={form} />,
     }, {
