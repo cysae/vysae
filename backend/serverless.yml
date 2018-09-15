@@ -55,6 +55,11 @@ custom:
         field: myShareholders
         request: "Company-myShareholders-request.vm"
         response: "Company-myShareholders-response.vm"
+      - dataSource: ShareIntervalTable
+        type: Company
+        field: shareIntervals
+        request: "Company-shareIntervals-request.vm"
+        response: "Company-shareIntervals-response.vm"
       - dataSource: ShareholderTable
         type: Company
         field: shareholders
@@ -105,6 +110,11 @@ custom:
         field: updateCompany
         request: "MutationUpdateCompany-request.vm"
         response: "MutationUpdateCompany-response.vm"
+      - dataSource: ShareIntervalTable
+        type: Mutation
+        field: createShareInterval
+        request: "MutationCreateShareInterval-request.vm"
+        response: "MutationCreateShareInterval-response.vm"
       - dataSource: ShareholderTable
         type: Mutation
         field: createShareholder
@@ -144,6 +154,12 @@ custom:
         description: "Meeting table"
         config:
           tableName: { Ref: "VysaeMeetingTable" }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
+      - type: AMAZON_DYNAMODB
+        name: ShareIntervalTable
+        description: "Shareinterval table"
+        config:
+          tableName: { Ref: "VysaeShareIntervalTable" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AMAZON_DYNAMODB
         name: ShareholderTable
@@ -277,6 +293,23 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 3 
               WriteCapacityUnits: 3 
+    VysaeShareIntervalTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: VysaeShareInterval
+        AttributeDefinitions:
+          - AttributeName: companyId 
+            AttributeType: S
+          - AttributeName: start
+            AttributeType: N
+        KeySchema:
+          - AttributeName: companyId
+            KeyType: HASH
+          - AttributeName: start
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 3
+          WriteCapacityUnits: 3
     VysaeShareholderTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:

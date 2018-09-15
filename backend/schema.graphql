@@ -14,6 +14,10 @@ type Company {
   name: String
   placeOfBusiness: String
   nif: String
+  shareIntervals(
+    limit: Int
+    nextToken: String
+  ): ShareIntervalConnection
   shareholders(
     limit: Int
     nextToken: String
@@ -66,6 +70,7 @@ type Mutation {
     email: String!
     phone_number: String!
   ): User!
+  createShareInterval( shareInterval: ShareIntervalInput! ) : ShareInterval!
   createShareholder(
     companyId: ID!
     name: String!
@@ -82,6 +87,31 @@ type Mutation {
     vote: VoteInput!
   ): Vote!
 }
+
+type ShareInterval {
+  attributes: ShareAttributes
+  companyId: ID!
+  end: Int!
+  start: Int!
+}
+type ShareIntervalConnection {
+  items: [ShareInterval]
+  nextToken: String
+}
+input ShareIntervalInput {
+  attributes: ShareAttributesInput
+  companyId: ID!
+  end: Int!
+  start: Int!
+}
+
+type ShareAttributes {
+  value: Int
+}
+input ShareAttributesInput {
+  value: Int
+}
+
 
 type Shareholder {
   shareholderId: ID!
