@@ -1,12 +1,16 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Button, Radio, Divider, Row, Col, Alert} from 'antd'
-// utils
+// services
 import { mergeTriplets } from './services/mergeIntervalTriplets'
+import renameObjKey from '../../../../services/renameObjKey'
 // components
 import ShareIntervalFields from '../../../../components/shareIntervalFields'
 import IntervalTypeField from '../../../../components/intervalTypeField'
 import ShareSuffrageFields from '../../../../components/shareSuffrageFields'
 import { MyInputNumber } from '../../../../containers/addCompanyForms'
+// graphql
+import { graphql, compose } from 'react-apollo'
+import MutationCreateShareInterval from '../../../../queries/MutationCreateShareInterval'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
@@ -33,7 +37,7 @@ class Shares extends Component {
     const valueInEurPerShare = getFieldValue('capital') / getFieldValue('numberOfShares')
     intvls = intvls.concat(this.toIntervalFrom('shareInterval'))
     for(const intvl of intvls) {
-      intvl.attr.valueInEur = valueInEurPerShare
+      intvl.attr.value = valueInEurPerShare
     }
 
     // valued shares
@@ -69,13 +73,14 @@ class Shares extends Component {
 
     const triplets = mergeTriplets(this.toTripleFrom(intvls))
 
-    const body = {
-      shareIntervals: triplets,
-    }
-
     console.log(triplets)
 
-    const companyId = this.props.form.getFieldValue('companyId')
+    const shareInterval = {
+      companyId: this.props.match.params.companyId,
+      ...renameObjKey(triplets[0], 'attr', 'attributes') // rename attr -> attributes
+    }
+
+    this.props.createShareInterval(shareInterval)
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {
@@ -294,4 +299,35 @@ class Shares extends Component {
   }
 }
 
-export default Form.create()(Shares)
+export default compose(
+  Form.create(),
+  graphql(
+    MutationCreateShareInterval,
+    {
+      props: props => ({
+        createShareInterval: (shareInterval) => {
+          console.log('shareInterval', shareInterval)
+          return props.mutate({
+            variables: {
+              shareInterval
+            },
+            optimisticResponse: {
+              __typename: "Mutation",
+              createShareInterval: {
+                __typename: "ShareInterval",
+                ...shareInterval,
+                attributes: {
+                  __typename: "ShareAttributes",
+                  ...shareInterval.attributes
+                }
+              }
+            },
+            update: (proxy, { data } ) => {
+              console.log(data)
+            }
+          })
+        }
+      })
+    }
+  )
+)(Shares)
