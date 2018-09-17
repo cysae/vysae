@@ -86,6 +86,9 @@ type Mutation {
 	createVote(
     vote: VoteInput!
   ): Vote!
+  deleteShareInterval(
+    companyId: ID!, start: Int!
+  ): ShareInterval!
 }
 
 type ShareInterval {

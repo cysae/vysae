@@ -135,6 +135,11 @@ custom:
         field: createVote
         request: "MutationCreateVote-request.vm"
         response: "MutationCreateVote-response.vm"
+      - dataSource: ShareIntervalTable
+        type: Mutation
+        field: deleteShareInterval
+        request: "MutationDeleteShareInterval-request.vm"
+        response: "MutationDeleteShareInterval-response.vm"
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
