@@ -22,7 +22,7 @@ class ShareIntervals extends Component {
     } = props
 
     this.state = {
-      id: (intvls) ? intvls.lenght : 1,
+      id: (intvls) ? intvls.length : 1,
       fieldId: (fieldId) ? fieldId : 'shareInterval',
     }
 
@@ -65,12 +65,8 @@ class ShareIntervals extends Component {
   addShareIntervalField = () => {
     const { form: { getFieldValue, setFieldsValue }} = this.props
     const { id, fieldId } = this.state
-    const shareIntervalIds = getFieldValue(`${fieldId}_ids`);
-    const nextShareIntervalIds = shareIntervalIds.concat(id);
     this.setState({ id: id+1 })
-    const fieldsValue = {}
-    fieldsValue[`${fieldId}_ids`] = nextShareIntervalIds
-    setFieldsValue(fieldsValue)
+    setFieldsValue({[`${fieldId}_ids`]: getFieldValue(`${fieldId}_ids`).concat(id)})
   }
 
   render() {
