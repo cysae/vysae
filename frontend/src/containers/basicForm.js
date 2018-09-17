@@ -48,14 +48,6 @@ class BasicForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.handleSubmit}>
         <FormItem
-          style={{display: 'none'}}
-        >
-          {getFieldDecorator('companyId', {
-             rules: [{ required: true, message: 'Es obligatorio.' }],
-          })(<Input />)}
-        </FormItem>
-
-        <FormItem
           label="Denominación social"
         >
           {getFieldDecorator('name', {

@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Button, Radio, Divider, Row, Col, Alert} from 'antd'
+import { Form, Button, Radio, Divider, Row, Col, Alert, InputNumber } from 'antd'
 // services
 import { mergeTriplets } from './services/mergeIntervalTriplets'
 import renameObjKey from '../../../../services/renameObjKey'
+import { getCapital, numSharesFromIntvls } from './services/shareIntervals'
 // components
-import ShareIntervalFields from '../../../../components/shareIntervalFields'
+import ShareIntervalFields from './components/ShareIntervalFields'
 import IntervalTypeField from '../../../../components/intervalTypeField'
 import ShareSuffrageFields from '../../../../components/shareSuffrageFields'
-import { MyInputNumber } from '../../../../containers/addCompanyForms'
 // graphql
 import { graphql, compose } from 'react-apollo'
 import MutationCreateShareInterval from '../../../../queries/MutationCreateShareInterval'
@@ -18,6 +18,34 @@ const RadioGroup = Radio.Group
 class Shares extends Component {
   state = {
     error: null
+  }
+
+  componentDidMount() {
+    const {
+      form: { setFieldsValue },
+      match: { params: { companyId }},
+    } = this.props
+
+    const shareIntvls = [{
+      companyId,
+      start: 1,
+      end: 990,
+      attr: {
+        value: 1,
+      }
+    }, {
+      companyId,
+      start: 991,
+      end: 1000,
+      attr: {
+        value: 1,
+      }
+    }]
+
+    setFieldsValue({
+      capital: getCapital(shareIntvls),
+      numberOfShares: numSharesFromIntvls(shareIntvls)
+    })
   }
 
   handleSubmit = (e) => {
@@ -171,39 +199,50 @@ class Shares extends Component {
   render() {
     const {
       form,
-      form: { getFieldDecorator, getFieldValue }
+      form: { getFieldDecorator, getFieldValue },
+      match: { params: { companyId }},
     } = this.props
+
+    const shareIntvls = [{
+      companyId,
+      start: 1,
+      end: 990,
+      attr: {
+        value: 1,
+      }
+    }, {
+      companyId,
+      start: 991,
+      end: 1000,
+      attr: {
+        value: 1,
+      }
+    }]
 
     return (
       <Fragment>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem
-            label="Capital social"
-            labelCol={{span: 12}}
-          >
+        <Form layout="vertical" onSubmit={this.handleSubmit}>
+          <FormItem label="Capital social">
             {getFieldDecorator('capital', {
                rules: [
                  {pattern: /^.*$/, message: 'Tiene que ser un número entero positivo'},
                  {required: true, message: 'Este campo es obligatorio'},
                ],
             })(
-               <MyInputNumber min={1} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />
+               <InputNumber min={1} formatter={value => `${value}€`} parser={value => value.replace('€', '')} />
             )}
           </FormItem>
-          <FormItem
-            label="Número de participaciones"
-            labelCol={{span: 12}}
-          >
+          <FormItem label="Número de participaciones">
             {getFieldDecorator('numberOfShares', {
                rules: [
                  {required: true, message: 'Este campo es obligatorio.'},
                  {pattern: /^\d*$/, message: 'Tiene que ser un número entero positivo'},
                ],
-            })(<MyInputNumber min={1} />)}
+            })(<InputNumber min={1} />)}
           </FormItem>
           <Row>
-            <Col offset={12} span={12}>
-              <ShareIntervalFields form={form} />
+            <Col>
+              <ShareIntervalFields intvls={shareIntvls} form={form} />
             </Col>
           </Row>
           <Divider />
