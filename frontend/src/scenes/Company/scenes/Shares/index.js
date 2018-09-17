@@ -12,6 +12,7 @@ import ShareSuffrageFields from '../../../../components/shareSuffrageFields'
 // graphql
 import { graphql, compose } from 'react-apollo'
 import MutationCreateShareInterval from '../../../../queries/MutationCreateShareInterval'
+import QueryGetCompany from '../../../../queries/QueryGetCompany'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
@@ -332,6 +333,7 @@ export default compose(
     {
       props: props => ({
         createShareInterval: (shareInterval) => {
+          const companyId = props.ownProps.match.params.companyId
           return props.mutate({
             variables: {
               shareInterval
@@ -348,7 +350,16 @@ export default compose(
               }
             },
             update: (proxy, { data } ) => {
-              console.log(data)
+              const query = QueryGetCompany
+              const resQuery = proxy.readQuery({
+                query,
+                variables: { companyId }
+              })
+
+              /* resQuery.getComapny.shareIntervals.items = [{
+               *   data.createShareInterval
+               * }] */
+
             }
           })
         }
