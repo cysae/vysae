@@ -4,6 +4,7 @@ import { Form, Button, Radio, Divider, Row, Col, Alert, InputNumber } from 'antd
 import { mergeTriplets } from './services/mergeIntervalTriplets'
 import renameObjKey from '../../../../services/renameObjKey'
 import { getCapital, numSharesFromIntvls } from './services/shareIntervals'
+import getCompany from '../../../../services/getCompany'
 // components
 import ShareIntervalFields from './components/ShareIntervalFields'
 import IntervalTypeField from '../../../../components/intervalTypeField'
@@ -201,23 +202,8 @@ class Shares extends Component {
       form,
       form: { getFieldDecorator, getFieldValue },
       match: { params: { companyId }},
+      company: { shareIntervals },
     } = this.props
-
-    const shareIntvls = [{
-      companyId,
-      start: 1,
-      end: 990,
-      attr: {
-        value: 1,
-      }
-    }, {
-      companyId,
-      start: 991,
-      end: 1000,
-      attr: {
-        value: 1,
-      }
-    }]
 
     return (
       <Fragment>
@@ -242,7 +228,7 @@ class Shares extends Component {
           </FormItem>
           <Row>
             <Col>
-              <ShareIntervalFields intvls={shareIntvls} form={form} />
+              <ShareIntervalFields intvls={shareIntervals.items} form={form} />
             </Col>
           </Row>
           <Divider />
@@ -340,12 +326,12 @@ class Shares extends Component {
 
 export default compose(
   Form.create(),
+  getCompany,
   graphql(
     MutationCreateShareInterval,
     {
       props: props => ({
         createShareInterval: (shareInterval) => {
-          console.log('shareInterval', shareInterval)
           return props.mutate({
             variables: {
               shareInterval

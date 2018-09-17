@@ -41,6 +41,12 @@ query QueryGetCompany (
       shareholderId
       name
     }
+    shareIntervals {
+      items {
+        start
+        end
+      }
+    }
     shareholders(
       limit: $shareholdersLimit
       nextToken: $shareholdersNextToken
