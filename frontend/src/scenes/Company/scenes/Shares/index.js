@@ -5,6 +5,7 @@ import { mergeTriplets } from './services/mergeIntervalTriplets'
 import renameObjKey from '../../../../services/renameObjKey'
 import { getCapital, numSharesFromIntvls } from './services/shareIntervals'
 import getCompany from '../../../../services/getCompany'
+import Promise from 'bluebird'
 // components
 import ShareIntervalFields from './components/ShareIntervalFields'
 import IntervalTypeField from '../../../../components/intervalTypeField'
@@ -13,6 +14,7 @@ import ShareSuffrageFields from '../../../../components/shareSuffrageFields'
 import { graphql, compose } from 'react-apollo'
 import MutationCreateShareInterval from '../../../../queries/MutationCreateShareInterval'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
+
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
@@ -60,7 +62,11 @@ class Shares extends Component {
   }
 
   update() {
-    const { getFieldValue } = this.props.form
+    const {
+      form: { getFieldValue },
+      createShareInterval,
+      match: { params: { companyId }}
+    } = this.props
 
     let intvls = []
     // normal shares
@@ -103,14 +109,19 @@ class Shares extends Component {
 
     const triplets = mergeTriplets(this.toTripleFrom(intvls))
 
-    console.log(triplets)
-
-    const shareInterval = {
-      companyId: this.props.match.params.companyId,
-      ...renameObjKey(triplets[0], 'attr', 'attributes') // rename attr -> attributes
+    let promises = []
+    for (const triplet of triplets) {
+      const shareInterval = {
+        companyId,
+        ...renameObjKey(triplet, 'attr', 'attributes') // rename attr -> attributes
+      }
+      console.log('shintvl', shareInterval)
+      promises.push(createShareInterval(shareInterval))
     }
 
-    this.props.createShareInterval(shareInterval)
+    Promise.all(promises)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {

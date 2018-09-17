@@ -109,10 +109,10 @@ input ShareIntervalInput {
 }
 
 type ShareAttributes {
-  value: Int
+  value: Float
 }
 input ShareAttributesInput {
-  value: Int
+  value: Float
 }
 
 
