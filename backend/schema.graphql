@@ -92,29 +92,23 @@ type Mutation {
 }
 
 type ShareInterval {
-  attributes: ShareAttributes
   companyId: ID!
   end: Int!
   start: Int!
+  value: Float
+  voteWeight: Float
 }
 type ShareIntervalConnection {
   items: [ShareInterval]
   nextToken: String
 }
 input ShareIntervalInput {
-  attributes: ShareAttributesInput
   companyId: ID!
   end: Int!
   start: Int!
-}
-
-type ShareAttributes {
   value: Float
+  voteWeight: Float
 }
-input ShareAttributesInput {
-  value: Float
-}
-
 
 type Shareholder {
   shareholderId: ID!

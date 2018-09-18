@@ -7,6 +7,7 @@
   },
   "attributeValues": {
     "end": { "N": $ctx.args.shareInterval.end },
-    "attributes": $util.dynamodb.toDynamoDBJson($ctx.args.shareInterval.attributes)
+    "value": $util.dynamodb.toDynamoDBJson($ctx.args.shareInterval.value),
+    "voteWeight": $util.dynamodb.toDynamoDBJson($ctx.args.shareInterval.voteWeight)
   }
 }
