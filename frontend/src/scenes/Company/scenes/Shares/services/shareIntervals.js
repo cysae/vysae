@@ -6,7 +6,7 @@ export function numSharesFromIntvl(intvl) {
 export function numSharesFromIntvls(intvls) {
   let numOfShares = 0
   for( const intvl of intvls) {
-    numOfShares = intvl.end - intvl.start + 1;
+    numOfShares += intvl.end - intvl.start + 1;
   }
   return numOfShares
 }
@@ -14,7 +14,7 @@ export function numSharesFromIntvls(intvls) {
 export function getCapital(intvls) {
   let capital = 0
   for(const intvl of intvls) {
-    if(intvl.attr.value)
+    if(intvl.attributes && intvl.attributes.value)
       capital += intvl.attr.value * numSharesFromIntvl(intvl)
   }
   return capital

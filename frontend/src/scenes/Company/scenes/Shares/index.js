@@ -35,27 +35,13 @@ class Shares extends Component {
     const {
       form: { setFieldsValue },
       match: { params: { companyId }},
+      company: { shareIntervals },
     } = this.props
 
-    const shareIntvls = [{
-      companyId,
-      start: 1,
-      end: 990,
-      attr: {
-        value: 1,
-      }
-    }, {
-      companyId,
-      start: 991,
-      end: 1000,
-      attr: {
-        value: 1,
-      }
-    }]
-
+    console.log('const', shareIntervals)
     setFieldsValue({
-      capital: getCapital(shareIntvls),
-      numberOfShares: numSharesFromIntvls(shareIntvls)
+      capital: getCapital(shareIntervals.items),
+      numberOfShares: numSharesFromIntvls(shareIntervals.items)
     })
   }
 
@@ -256,72 +242,73 @@ class Shares extends Component {
               <ShareIntervalFields intvls={shareIntervals.items} form={form} />
             </Col>
           </Row>
-          <Divider />
 
-          <FormItem
-            label="¿Tienen todas las participaciones el mismo valor nominal?"
-            labelCol={{span: 12}}
-          >
-            {getFieldDecorator('sharesHaveSameValue', {
-               rules: [{
-                 required: true,
-                 message: 'Este campo es obligatorio.',
-               }]
-            })(
-               <RadioGroup>
-                 <RadioButton value="yes">Sí</RadioButton>
-                 <RadioButton value="no">No</RadioButton>
-               </RadioGroup>
-             )}
-          </FormItem>
-          {getFieldValue('sharesHaveSameValue') === 'no' && (
-             <IntervalTypeField fieldId='shareValue' form={form}  />
-          )}
-          <Divider />
+          {/* <Divider />
 
-          <FormItem
-            label="¿Todas las participaciones tienen el mismo derecho de voto?"
-            labelCol={{span: 12}}
-          >
-            {getFieldDecorator('sharesHaveEqualSuffrage', {
-               rules: [{
-                 required: true,
-                 message: 'Este campo es obligatorio.',
-               }]
-            })(
-               <RadioGroup>
-                 <RadioButton value="yes">Sí</RadioButton>
-                 <RadioButton value="no">No</RadioButton>
-               </RadioGroup>
-             )}
-          </FormItem>
-          {(getFieldValue('sharesHaveEqualSuffrage') === 'no') && <ShareSuffrageFields form={form} />}
-          <Divider />
+              <FormItem
+              label="¿Tienen todas las participaciones el mismo valor nominal?"
+              labelCol={{span: 12}}
+              >
+              {getFieldDecorator('sharesHaveSameValue', {
+              rules: [{
+              required: true,
+              message: 'Este campo es obligatorio.',
+              }]
+              })(
+              <RadioGroup>
+              <RadioButton value="yes">Sí</RadioButton>
+              <RadioButton value="no">No</RadioButton>
+              </RadioGroup>
+              )}
+              </FormItem>
+              {getFieldValue('sharesHaveSameValue') === 'no' && (
+              <IntervalTypeField fieldId='shareValue' form={form}  />
+              )}
+              <Divider />
 
-          <FormItem
-            label="¿Hay acciones en autocartera?"
-            labelCol={{span: 12}}
-          >
-            {getFieldDecorator('hasTreasuryShares', {
-               rules: [{
-                 required: true,
-                 message: 'Este campo es obligatorio.',
-               }]
-            })(
-               <RadioGroup>
-                 <RadioButton value="yes">Sí</RadioButton>
-                 <RadioButton value="no">No</RadioButton>
-               </RadioGroup>
-             )}
-          </FormItem>
-          {(getFieldValue('hasTreasuryShares') === 'yes') ? (
-             <Row>
-               <Col offset={12}>
-                 <ShareIntervalFields form={form} fieldId="treasuryShareIntervals" />
-               </Col>
-             </Row>
-          ) : null}
-          <Divider />
+              <FormItem
+              label="¿Todas las participaciones tienen el mismo derecho de voto?"
+              labelCol={{span: 12}}
+              >
+              {getFieldDecorator('sharesHaveEqualSuffrage', {
+              rules: [{
+              required: true,
+              message: 'Este campo es obligatorio.',
+              }]
+              })(
+              <RadioGroup>
+              <RadioButton value="yes">Sí</RadioButton>
+              <RadioButton value="no">No</RadioButton>
+              </RadioGroup>
+              )}
+              </FormItem>
+              {(getFieldValue('sharesHaveEqualSuffrage') === 'no') && <ShareSuffrageFields form={form} />}
+              <Divider />
+
+              <FormItem
+              label="¿Hay acciones en autocartera?"
+              labelCol={{span: 12}}
+              >
+              {getFieldDecorator('hasTreasuryShares', {
+              rules: [{
+              required: true,
+              message: 'Este campo es obligatorio.',
+              }]
+              })(
+              <RadioGroup>
+              <RadioButton value="yes">Sí</RadioButton>
+              <RadioButton value="no">No</RadioButton>
+              </RadioGroup>
+              )}
+              </FormItem>
+              {(getFieldValue('hasTreasuryShares') === 'yes') ? (
+              <Row>
+              <Col offset={12}>
+              <ShareIntervalFields form={form} fieldId="treasuryShareIntervals" />
+              </Col>
+              </Row>
+              ) : null}
+              <Divider /> */}
 
           {
             this.state.error ? (
