@@ -38,7 +38,6 @@ class Shares extends Component {
       company: { shareIntervals },
     } = this.props
 
-    console.log('const', shareIntervals)
     setFieldsValue({
       capital: getCapital(shareIntervals.items),
       numberOfShares: numSharesFromIntvls(shareIntervals.items)
@@ -73,7 +72,7 @@ class Shares extends Component {
 
     // valued shares
     if(getFieldValue('sharesHaveSameValue') === 'no') {
-      intvls = intvls.concat(this.toIntervalFromTypeWithFieldId('shareValue', 'valueInEur'))
+      intvls = intvls.concat(this.toIntervalFromTypeWithFieldId('shareValue', 'value'))
     }
 
     // share suffrage
@@ -158,7 +157,6 @@ class Shares extends Component {
 
 
   handleErrorClose = () => {
-    console.log('close')
     this.setState({ error: null })
   }
 
@@ -367,6 +365,7 @@ export default compose(
                 variables: { companyId }
               })
 
+              console.log('create', data.createShareInterval)
               resQuery.getCompany.shareIntervals.items.push( data.createShareInterval )
 
               proxy.writeQuery({

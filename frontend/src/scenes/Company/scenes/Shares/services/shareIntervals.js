@@ -15,7 +15,7 @@ export function getCapital(intvls) {
   let capital = 0
   for(const intvl of intvls) {
     if(intvl.attributes && intvl.attributes.value)
-      capital += intvl.attr.value * numSharesFromIntvl(intvl)
+      capital += intvl.attributes.value * numSharesFromIntvl(intvl)
   }
   return capital
 }

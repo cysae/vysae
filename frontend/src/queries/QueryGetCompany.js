@@ -45,6 +45,9 @@ query QueryGetCompany (
       items {
         start
         end
+        attributes {
+          value
+        }
       }
     }
     shareholders(
