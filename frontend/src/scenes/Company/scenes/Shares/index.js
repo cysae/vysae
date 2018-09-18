@@ -1,20 +1,18 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Button, Radio, Divider, Row, Col, Alert, InputNumber, message } from 'antd'
+import { Form, Button, Row, Col, Alert, InputNumber, message } from 'antd'
 // services
 import renameObjKey from '../../../../services/renameObjKey'
 import {
   getCapital,
   numSharesFromIntvls,
   mergeTriplets,
-  isIntersection,
-  hasIntvl
 } from './services/shareIntervals'
 import getCompany from '../../../../services/getCompany'
 import Promise from 'bluebird'
 // components
 import ShareIntervalFields from './components/ShareIntervalFields'
-import IntervalTypeField from '../../../../components/intervalTypeField'
-import ShareSuffrageFields from '../../../../components/shareSuffrageFields'
+/* import IntervalTypeField from '../../../../components/intervalTypeField' */
+/* import ShareSuffrageFields from '../../../../components/shareSuffrageFields' */
 // graphql
 import { graphql, compose } from 'react-apollo'
 import MutationCreateShareInterval from '../../../../queries/MutationCreateShareInterval'
@@ -22,10 +20,6 @@ import MutationDeleteShareInterval from '../../../../queries/MutationDeleteShare
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
 
 const FormItem = Form.Item
-const RadioButton = Radio.Button
-const RadioGroup = Radio.Group
-
-let i = 0
 
 class Shares extends Component {
   state = {
@@ -35,7 +29,6 @@ class Shares extends Component {
   componentDidMount() {
     const {
       form: { setFieldsValue },
-      match: { params: { companyId }},
       company: { shareIntervals },
     } = this.props
 
@@ -163,7 +156,6 @@ class Shares extends Component {
 
   isExtraValid() {
     const { getFieldValue } = this.props.form
-    const capital = getFieldValue('capital')
     const totalShareNumber = getFieldValue('numberOfShares')
 
     // total share number
@@ -210,8 +202,7 @@ class Shares extends Component {
   render() {
     const {
       form,
-      form: { getFieldDecorator, getFieldValue },
-      match: { params: { companyId }},
+      form: { getFieldDecorator },
       company: { shareIntervals },
     } = this.props
 
@@ -323,7 +314,7 @@ class Shares extends Component {
 
           <FormItem>
             <Button type="primary" htmlType="submit">
-              Save
+              Guardar
             </Button>
           </FormItem>
         </Form>
