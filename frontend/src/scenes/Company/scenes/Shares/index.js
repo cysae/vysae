@@ -1,9 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Button, Radio, Divider, Row, Col, Alert, InputNumber } from 'antd'
 // services
-import { mergeTriplets } from './services/mergeIntervalTriplets'
 import renameObjKey from '../../../../services/renameObjKey'
-import { getCapital, numSharesFromIntvls } from './services/shareIntervals'
+import {
+  getCapital,
+  numSharesFromIntvls,
+  mergeTriplets,
+  isIntersection,
+  hasIntvl
+} from './services/shareIntervals'
 import getCompany from '../../../../services/getCompany'
 import Promise from 'bluebird'
 // components
@@ -19,6 +24,7 @@ import QueryGetCompany from '../../../../queries/QueryGetCompany'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
+
 
 class Shares extends Component {
   state = {
@@ -62,12 +68,13 @@ class Shares extends Component {
     });
   }
 
-  update() {
+  update = async () =>  {
     const {
       form: { getFieldValue },
       createShareInterval,
       deleteShareInterval,
-      match: { params: { companyId }}
+      match: { params: { companyId }},
+      company: { shareIntervals }
     } = this.props
 
     let intvls = []
@@ -109,22 +116,25 @@ class Shares extends Component {
       )
     }
 
-    const triplets = mergeTriplets(this.toTripleFrom(intvls))
+    const mergedIntvls = mergeTriplets(this.toTripleFrom(intvls))
 
-    deleteShareInterval(1)
-    /* let promises = []
-     * for (const triplet of triplets) {
-     *   const shareInterval = {
-     *     companyId,
-     *     ...renameObjKey(triplet, 'attr', 'attributes') // rename attr -> attributes
-     *   }
-     *   console.log('shintvl', shareInterval)
-     *   promises.push(createShareInterval(shareInterval))
-     * }
+    // delete all intervals
+    let promises = []
+    for(const intvl of shareIntervals.items) {
+      promises.push(deleteShareInterval(intvl.start))
+    }
+    await Promise.all(promises)
 
-     * Promise.all(promises)
-     *   .then((res) => console.log(res))
-     *   .catch((err) => console.log(err)) */
+    // create new intervals
+    promises = []
+    for (const intvl of mergedIntvls) {
+      const shareInterval = {
+        companyId,
+        ...renameObjKey(intvl, 'attr', 'attributes') // rename attr -> attributes
+      }
+      promises.push(createShareInterval(shareInterval))
+    }
+    Promise.all(promises)
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {
@@ -370,7 +380,13 @@ export default compose(
                 variables: { companyId }
               })
 
-              resQuery.getComapny.shareIntervals.items.push( data.createShareInterval )
+              resQuery.getCompany.shareIntervals.items.push( data.createShareInterval )
+
+              proxy.writeQuery({
+                query,
+                variables: { companyId },
+                data: resQuery
+              })
             }
           })
         }
@@ -404,16 +420,14 @@ export default compose(
               })
 
               const shareIntvls = resQuery.getCompany.shareIntervals.items
-              for(const i in shareIntvls) {
-                if(shareIntvls[i].companyId === companyId && shareIntvls[i].start === start)
+              for(let i=shareIntvls.length -1; i>=0; i--) {
+                if(shareIntvls[i].start === start)
                   resQuery.getCompany.shareIntervals.items.splice(i, 1)
               }
 
               proxy.writeQuery({
                 query,
-                variables: {
-                  companyId
-                },
+                variables: { companyId },
                 data: resQuery
               })
             }
