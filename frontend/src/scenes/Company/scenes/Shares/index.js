@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Button, Radio, Divider, Row, Col, Alert, InputNumber } from 'antd'
+import { Form, Button, Radio, Divider, Row, Col, Alert, InputNumber, message } from 'antd'
 // services
 import renameObjKey from '../../../../services/renameObjKey'
 import {
@@ -25,6 +25,7 @@ const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
+let i = 0
 
 class Shares extends Component {
   state = {
@@ -49,6 +50,7 @@ class Shares extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err && this.isExtraValid()) {
         this.update()
+        message.success('Shares saved')
       }
     });
   }
@@ -154,7 +156,6 @@ class Shares extends Component {
     }
     return triplets
   }
-
 
   handleErrorClose = () => {
     this.setState({ error: null })
@@ -321,11 +322,8 @@ class Shares extends Component {
           }
 
           <FormItem>
-            <Button type="primary" onClick={this.props.prev}>
-              Atrás
-            </Button>
             <Button type="primary" htmlType="submit">
-              Continuar
+              Save
             </Button>
           </FormItem>
         </Form>
@@ -365,7 +363,6 @@ export default compose(
                 variables: { companyId }
               })
 
-              console.log('create', data.createShareInterval)
               resQuery.getCompany.shareIntervals.items.push( data.createShareInterval )
 
               proxy.writeQuery({

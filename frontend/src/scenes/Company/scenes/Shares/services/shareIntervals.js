@@ -88,9 +88,7 @@ export function mergeTriplets(triplets) {
             attr = { ...attr, ...lTriplet.attr}
             xStart = lTriplet.num
         } else {
-            console.log('remove', lTriplet)
             attr = disjunctiveUnionOf(attr, lTriplet.attr)
-            console.log('attr removed', attr)
             xStart = lTriplet.num+1
         }
 
