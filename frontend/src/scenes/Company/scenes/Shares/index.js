@@ -13,6 +13,7 @@ import ShareSuffrageFields from '../../../../components/shareSuffrageFields'
 // graphql
 import { graphql, compose } from 'react-apollo'
 import MutationCreateShareInterval from '../../../../queries/MutationCreateShareInterval'
+import MutationDeleteShareInterval from '../../../../queries/MutationDeleteShareInterval'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
 
 const FormItem = Form.Item
@@ -65,6 +66,7 @@ class Shares extends Component {
     const {
       form: { getFieldValue },
       createShareInterval,
+      deleteShareInterval,
       match: { params: { companyId }}
     } = this.props
 
@@ -109,19 +111,20 @@ class Shares extends Component {
 
     const triplets = mergeTriplets(this.toTripleFrom(intvls))
 
-    let promises = []
-    for (const triplet of triplets) {
-      const shareInterval = {
-        companyId,
-        ...renameObjKey(triplet, 'attr', 'attributes') // rename attr -> attributes
-      }
-      console.log('shintvl', shareInterval)
-      promises.push(createShareInterval(shareInterval))
-    }
+    deleteShareInterval(1)
+    /* let promises = []
+     * for (const triplet of triplets) {
+     *   const shareInterval = {
+     *     companyId,
+     *     ...renameObjKey(triplet, 'attr', 'attributes') // rename attr -> attributes
+     *   }
+     *   console.log('shintvl', shareInterval)
+     *   promises.push(createShareInterval(shareInterval))
+     * }
 
-    Promise.all(promises)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
+     * Promise.all(promises)
+     *   .then((res) => console.log(res))
+     *   .catch((err) => console.log(err)) */
   }
 
   toIntervalFromTypeWithFieldId(fieldId, attrName, ) {
@@ -367,10 +370,52 @@ export default compose(
                 variables: { companyId }
               })
 
-              /* resQuery.getComapny.shareIntervals.items = [{
-               *   data.createShareInterval
-               * }] */
+              resQuery.getComapny.shareIntervals.items.push( data.createShareInterval )
+            }
+          })
+        }
+      })
+    }
+  ),
+  graphql(
+    MutationDeleteShareInterval,
+    {
+      props: props => ({
+        deleteShareInterval: (start) => {
+          const companyId = props.ownProps.match.params.companyId
+          return props.mutate({
+            variables: {
+              companyId,
+              start
+            },
+            optimisticResponse: {
+              __typename: "Mutation",
+              deleteShareInterval: {
+                __typename: "ShareInterval",
+                companyId,
+                start
+              }
+            },
+            update: (proxy, { data } ) => {
+              const query = QueryGetCompany
+              const resQuery = proxy.readQuery({
+                query,
+                variables: { companyId }
+              })
 
+              const shareIntvls = resQuery.getCompany.shareIntervals.items
+              for(const i in shareIntvls) {
+                if(shareIntvls[i].companyId === companyId && shareIntvls[i].start === start)
+                  resQuery.getCompany.shareIntervals.items.splice(i, 1)
+              }
+
+              proxy.writeQuery({
+                query,
+                variables: {
+                  companyId
+                },
+                data: resQuery
+              })
             }
           })
         }
