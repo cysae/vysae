@@ -71,6 +71,8 @@ type Mutation {
     phone_number: String!
   ): User!
   createShareInterval( shareInterval: ShareIntervalInput! ) : ShareInterval!
+  updateShareInterval( shareInterval: ShareIntervalInput! ) : ShareInterval!
+  deleteShareInterval( companyId: ID!, start: Int! ): ShareInterval!
   createShareholder(
     companyId: ID!
     name: String!
@@ -86,9 +88,6 @@ type Mutation {
 	createVote(
     vote: VoteInput!
   ): Vote!
-  deleteShareInterval(
-    companyId: ID!, start: Int!
-  ): ShareInterval!
 }
 
 type ShareInterval {

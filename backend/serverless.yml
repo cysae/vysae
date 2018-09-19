@@ -115,6 +115,11 @@ custom:
         field: createShareInterval
         request: "MutationCreateShareInterval-request.vm"
         response: "MutationCreateShareInterval-response.vm"
+      - dataSource: ShareIntervalTable
+        type: Mutation
+        field: updateShareInterval
+        request: "MutationUpdateShareInterval-request.vm"
+        response: "MutationUpdateShareInterval-response.vm"
       - dataSource: ShareholderTable
         type: Mutation
         field: createShareholder
