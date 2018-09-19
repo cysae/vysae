@@ -10,9 +10,8 @@ export default gql(`
       companyId
       start
       end
-      attributes {
-        value
-      }
+      value
+      voteWeight
     }
   }
 `)

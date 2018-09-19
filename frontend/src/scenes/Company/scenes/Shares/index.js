@@ -1,16 +1,15 @@
 import React, { Fragment } from 'react'
+// antd
 import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon } from 'antd';
+// services
+import getCompany from '../../../../services/getCompany'
+// graphql
+import { graphql, compose } from 'react-apollo'
+import MutationCreateShareInterval from '../../../../queries/MutationCreateShareInterval'
+import MutationUpdateShareInterval from '../../../../queries/MutationCreateShareInterval'
+import QueryGetCompany from '../../../../queries/QueryGetCompany'
 
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    start: i,
-    end: i+1,
-    value: 1,
-    voteWeight: 1
-  });
-}
+
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -65,10 +64,10 @@ class EditableCell extends React.Component {
   }
 }
 
-export default class EditableTable extends React.Component {
+class Shares extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data, editingKey: '' };
+    this.state = { editingKey: '' };
     this.columns = [
       {
         title: 'start',
@@ -107,10 +106,10 @@ export default class EditableTable extends React.Component {
                      {form => (
                        <a
                          href="javascript:;"
-                         onClick={() => this.save(form, record.key)}
+                         onClick={() => this.update(form, record.key)}
                          style={{ marginRight: 8 }}
                          >
-                         Save
+                         Actualizar
                        </a>
                      )}
                    </EditableContext.Consumer>
@@ -140,14 +139,21 @@ export default class EditableTable extends React.Component {
   }
 
   create = () => {
-    data.splice(0, 0, {
-      key: data.length+1,
-      start: 1,
-      end: 2,
+    const {
+      match: { params: { companyId}},
+      company: { shareIntervals },
+      createShareInterval,
+    } = this.props
+    console.log(shareIntervals)
+    const lastShareNumber = shareIntervals.items.length !== 0 ? shareIntervals.items[shareIntervals.items.length-1].end : 0
+    createShareInterval({
+      companyId,
+      start: lastShareNumber+1,
+      end: lastShareNumber+2,
       value: 1,
       voteWeight: 1
     })
-    this.setState({ editingKey: data.length })
+    this.setState({ editingKey: shareIntervals.items.length })
   }
 
   isEditing = (record) => {
@@ -158,24 +164,22 @@ export default class EditableTable extends React.Component {
     this.setState({ editingKey: key });
   }
 
-  save(form, key) {
+  update(form, key) {
+    const {
+      createShareInterval,
+      match: { params: { companyId}}
+    } = this.props
     form.validateFields((error, row) => {
       if (error) {
         return;
       }
-      const newData = [...this.state.data];
-      const index = newData.findIndex(item => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        this.setState({ data: newData, editingKey: '' });
-      } else {
-        newData.push(row);
-        this.setState({ data: newData, editingKey: '' });
-      }
+
+      createShareInterval({
+        ...row,
+        companyId
+      })
+
+      this.setState({ editingKey: '' })
     });
   }
 
@@ -184,17 +188,18 @@ export default class EditableTable extends React.Component {
   };
 
   delete = () => {
-    for(const i in data) {
-      console.log(i)
-      if( data[i].key === this.state.editingKey) {
-        data.splice(i, 1)
-        break;
-      }
-    }
+    /* for(const i in data) {
+     *   console.log(i)
+     *   if( data[i].key === this.state.editingKey) {
+     *     data.splice(i, 1)
+     *     break;
+     *   }
+     * } */
     this.setState({ editingKey: '' })
   }
 
   render() {
+    const { company: { shareIntervals }} = this.props
     const components = {
       body: {
         row: EditableFormRow,
@@ -218,13 +223,20 @@ export default class EditableTable extends React.Component {
       };
     });
 
+    const data = shareIntervals.items.map(
+      (intvl) => ({
+        ...intvl,
+        key: `${intvl.companyId}-${intvl.start}`
+      })
+    )
+
     return (
       <Fragment>
         <Button type="primary" onClick={this.create}>Añadir Intervalo de Participaciones</Button>
         <Table
           components={components}
           bordered
-          dataSource={this.state.data}
+          dataSource={data}
           columns={columns}
           rowClassName="editable-row"
         />
@@ -232,3 +244,84 @@ export default class EditableTable extends React.Component {
     );
   }
 }
+
+export default compose(
+  graphql( // create
+    MutationCreateShareInterval,
+    {
+      props: props => ({
+        createShareInterval: (shareInterval) => {
+          const companyId = props.ownProps.match.params.companyId
+
+          return props.mutate({
+            variables: { shareInterval },
+            optimisticResponse: {
+              createShareInterval: {
+                __typename: 'ShareInterval',
+                ...shareInterval
+              }
+            },
+            update: (proxy, { data, ...rest }) => {
+              const query = QueryGetCompany
+              const newData = proxy.readQuery({
+                query,
+                variables: {
+                  companyId,
+                }
+              })
+
+              newData.getCompany.shareIntervals.items.push(data.createShareInterval)
+
+              proxy.writeQuery({
+                query,
+                variables: { companyId },
+                data: newData
+              })
+            }
+          })
+        }
+      })
+    }
+  ),
+  graphql( // update
+    MutationUpdateShareInterval,
+    {
+      props: props => ({
+        createShareInterval: (shareInterval) => {
+          const companyId = props.ownProps.match.params.companyId
+
+          return props.mutate({
+            variables: { shareInterval },
+            optimisticResponse: {
+              createShareInterval: {
+                __typename: 'ShareInterval',
+                ...shareInterval
+              }
+            },
+            update: (proxy, { data, ...rest }) => {
+              const query = QueryGetCompany
+              const newData = proxy.readQuery({
+                query,
+                variables: {
+                  companyId,
+                }
+              })
+
+              for(const i in newData.getCompany.shareIntervals.items) {
+                if(newData.getCompany.shareIntervals.items[i].start === data.createShareInterval.start)
+                  newData.getCompany.shareIntervals.items[i] = data.createShareInterval
+              }
+
+              proxy.writeQuery({
+                query,
+                variables: { companyId },
+                data: newData
+              })
+            }
+          })
+        }
+      })
+    }
+  ),
+  getCompany,
+)(Shares)
