@@ -55,7 +55,7 @@ custom:
         field: myShareholders
         request: "Company-myShareholders-request.vm"
         response: "Company-myShareholders-response.vm"
-      - dataSource: ShareIntervalTable
+      - dataSource: CompanyShareIntervalTable
         type: Company
         field: shareIntervals
         request: "Company-shareIntervals-request.vm"
@@ -110,16 +110,16 @@ custom:
         field: updateCompany
         request: "MutationUpdateCompany-request.vm"
         response: "MutationUpdateCompany-response.vm"
-      - dataSource: ShareIntervalTable
+      - dataSource: CompanyShareIntervalTable
         type: Mutation
-        field: createShareInterval
-        request: "MutationCreateShareInterval-request.vm"
-        response: "MutationCreateShareInterval-response.vm"
-      - dataSource: ShareIntervalTable
+        field: createCompanyShareInterval
+        request: "MutationCreateCompanyShareInterval-request.vm"
+        response: "MutationCreateCompanyShareInterval-response.vm"
+      - dataSource: CompanyShareIntervalTable
         type: Mutation
-        field: updateShareInterval
-        request: "MutationUpdateShareInterval-request.vm"
-        response: "MutationUpdateShareInterval-response.vm"
+        field: updateCompanyShareInterval
+        request: "MutationUpdateCompanyShareInterval-request.vm"
+        response: "MutationUpdateCompanyShareInterval-response.vm"
       - dataSource: ShareholderTable
         type: Mutation
         field: createShareholder
@@ -140,11 +140,11 @@ custom:
         field: createVote
         request: "MutationCreateVote-request.vm"
         response: "MutationCreateVote-response.vm"
-      - dataSource: ShareIntervalTable
+      - dataSource: CompanyShareIntervalTable
         type: Mutation
-        field: deleteShareInterval
-        request: "MutationDeleteShareInterval-request.vm"
-        response: "MutationDeleteShareInterval-response.vm"
+        field: deleteCompanyShareInterval
+        request: "MutationDeleteCompanyShareInterval-request.vm"
+        response: "MutationDeleteCompanyShareInterval-response.vm"
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
@@ -166,10 +166,10 @@ custom:
           tableName: { Ref: "VysaeMeetingTable" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AMAZON_DYNAMODB
-        name: ShareIntervalTable
-        description: "Shareinterval table"
+        name: CompanyShareIntervalTable
+        description: "Company shareinterval table"
         config:
-          tableName: { Ref: "VysaeShareIntervalTable" }
+          tableName: { Ref: "VysaeCompanyShareIntervalTable" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AMAZON_DYNAMODB
         name: ShareholderTable
@@ -303,10 +303,10 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 3 
               WriteCapacityUnits: 3 
-    VysaeShareIntervalTable:
+    VysaeCompanyShareIntervalTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
-        TableName: VysaeShareInterval
+        TableName: VysaeCompanyShareInterval
         AttributeDefinitions:
           - AttributeName: companyId 
             AttributeType: S

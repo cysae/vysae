@@ -6,10 +6,10 @@ import getCompany from '../../../../services/getCompany'
 // graphql
 import { graphql, compose } from 'react-apollo'
 import {
-  createShareInterval,
-  updateShareInterval,
-  deleteShareInterval
-} from '../../../../queries/shareIntervals.js'
+  createCompanyShareInterval,
+  updateCompanyShareInterval,
+  deleteCompanyShareInterval
+} from '../../../../queries/companyShareIntervals.js'
 import QueryGetCompany from '../../../../queries/QueryGetCompany'
 
 
@@ -145,12 +145,12 @@ class Shares extends React.Component {
     const {
       match: { params: { companyId}},
       company: { shareIntervals },
-      createShareInterval,
+      createCompanyShareInterval,
     } = this.props
 
     const lastShareNumber = shareIntervals.items.length !== 0 ? shareIntervals.items[shareIntervals.items.length-1].end : 0
     const start = lastShareNumber + 1
-    createShareInterval({
+    createCompanyShareInterval({
       companyId,
       start,
       end: start+1,
@@ -173,7 +173,7 @@ class Shares extends React.Component {
 
   update(form, key) {
     const {
-      updateShareInterval,
+      updateCompanyShareInterval,
       match: { params: { companyId}}
     } = this.props
     form.validateFields((error, row) => {
@@ -181,7 +181,7 @@ class Shares extends React.Component {
         return;
       }
 
-      updateShareInterval({
+      updateCompanyShareInterval({
         ...row,
         companyId
       })
@@ -196,8 +196,8 @@ class Shares extends React.Component {
   };
 
   delete = (start) => {
-    const { deleteShareInterval } = this.props
-    deleteShareInterval(start)
+    const { deleteCompanyShareInterval } = this.props
+    deleteCompanyShareInterval(start)
 
     message.success('Borrado')
   }
@@ -245,21 +245,22 @@ class Shares extends React.Component {
 
 export default compose(
   graphql( // create
-    createShareInterval,
+    createCompanyShareInterval,
     {
       props: props => ({
-        createShareInterval: (shareInterval) => {
+        createCompanyShareInterval: (companyShareInterval) => {
           const companyId = props.ownProps.match.params.companyId
 
           return props.mutate({
-            variables: { shareInterval },
+            variables: { companyShareInterval },
             optimisticResponse: {
-              createShareInterval: {
+              createCompanyShareInterval: {
                 __typename: 'ShareInterval',
-                ...shareInterval
+                ...companyShareInterval
               }
             },
             update: (proxy, { data, ...rest }) => {
+              console.log(data, rest)
               const query = QueryGetCompany
               const newData = proxy.readQuery({
                 query,
@@ -268,7 +269,7 @@ export default compose(
                 }
               })
 
-              newData.getCompany.shareIntervals.items.push(data.createShareInterval)
+              newData.getCompany.shareIntervals.items.push(data.createCompanyShareInterval)
 
               proxy.writeQuery({
                 query,
@@ -282,18 +283,18 @@ export default compose(
     }
   ),
   graphql( // update
-    updateShareInterval,
+    updateCompanyShareInterval,
     {
       props: props => ({
-        updateShareInterval: (shareInterval) => {
+        updateCompanyShareInterval: (companyShareInterval) => {
           const companyId = props.ownProps.match.params.companyId
 
           return props.mutate({
-            variables: { shareInterval },
+            variables: { companyShareInterval },
             optimisticResponse: {
-              updateShareInterval: {
+              updateCompanyShareInterval: {
                 __typename: 'ShareInterval',
-                ...shareInterval
+                ...companyShareInterval
               }
             },
             update: (proxy, { data, ...rest }) => {
@@ -306,8 +307,8 @@ export default compose(
               })
 
               for(const i in newData.getCompany.shareIntervals.items) {
-                if(newData.getCompany.shareIntervals.items[i].start === data.updateShareInterval.start) {
-                  newData.getCompany.shareIntervals.items[i] = data.updateShareInterval
+                if(newData.getCompany.shareIntervals.items[i].start === data.updateCompanyShareInterval.start) {
+                  newData.getCompany.shareIntervals.items[i] = data.updateCompanyShareInterval
                   break
                 }
               }
@@ -324,16 +325,16 @@ export default compose(
     }
   ),
   graphql( // delete
-    deleteShareInterval,
+    deleteCompanyShareInterval,
     {
       props: props => ({
-        deleteShareInterval: (start) => {
+        deleteCompanyShareInterval: (start) => {
           const companyId = props.ownProps.match.params.companyId
 
           return props.mutate({
             variables: { companyId, start },
             optimisticResponse: {
-              deleteShareInterval: {
+              deleteCompanyShareInterval: {
                 __typename: 'ShareInterval',
                 companyId,
                 start
@@ -349,7 +350,7 @@ export default compose(
               })
 
               for(const i in newData.getCompany.shareIntervals.items) {
-                if(newData.getCompany.shareIntervals.items[i].start === data.deleteShareInterval.start) {
+                if(newData.getCompany.shareIntervals.items[i].start === data.deleteCompanyShareInterval.start) {
                   newData.getCompany.shareIntervals.items.splice(i, 1)
                   break;
                 }

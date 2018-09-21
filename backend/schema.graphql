@@ -17,7 +17,7 @@ type Company {
   shareIntervals(
     limit: Int
     nextToken: String
-  ): ShareIntervalConnection
+  ): CompanyShareIntervalConnection
   shareholders(
     limit: Int
     nextToken: String
@@ -35,6 +35,25 @@ type CompanyMeetingConnection {
 type CompanyShareholderConnection {
   items: [Shareholder]
   nextToken: String
+}
+type CompanyShareIntervalConnection {
+  items: [CompanyShareInterval]
+  nextToken: String
+}
+
+type CompanyShareInterval {
+  companyId: ID!
+  end: Int!
+  start: Int!
+  value: Float
+  voteWeight: Float
+}
+input CompanyShareIntervalInput {
+  companyId: ID!
+  end: Int!
+  start: Int!
+  value: Float
+  voteWeight: Float
 }
 
 type Docx {
@@ -70,9 +89,9 @@ type Mutation {
     email: String!
     phone_number: String!
   ): User!
-  createShareInterval( shareInterval: ShareIntervalInput! ) : ShareInterval!
-  updateShareInterval( shareInterval: ShareIntervalInput! ) : ShareInterval!
-  deleteShareInterval( companyId: ID!, start: Int! ): ShareInterval!
+  createCompanyShareInterval( companyShareInterval: CompanyShareIntervalInput! ) : CompanyShareInterval!
+  updateCompanyShareInterval( companyShareInterval: CompanyShareIntervalInput! ) : CompanyShareInterval!
+  deleteCompanyShareInterval( companyId: ID!, start: Int! ): CompanyShareInterval!
   createShareholder(
     companyId: ID!
     name: String!
@@ -90,24 +109,6 @@ type Mutation {
   ): Vote!
 }
 
-type ShareInterval {
-  companyId: ID!
-  end: Int!
-  start: Int!
-  value: Float
-  voteWeight: Float
-}
-type ShareIntervalConnection {
-  items: [ShareInterval]
-  nextToken: String
-}
-input ShareIntervalInput {
-  companyId: ID!
-  end: Int!
-  start: Int!
-  value: Float
-  voteWeight: Float
-}
 
 type Shareholder {
   shareholderId: ID!

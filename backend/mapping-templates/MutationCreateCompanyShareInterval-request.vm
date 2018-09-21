@@ -1,0 +1,13 @@
+{
+  "version": "2017-02-28",
+  "operation": "PutItem",
+  "key": {
+    "companyId": { "S": "$ctx.args.companyShareInterval.companyId" },
+    "start": { "N": $ctx.args.companyShareInterval.start }
+  },
+  "attributeValues": {
+    "end": { "N": $ctx.args.companyShareInterval.end },
+    "value": $util.dynamodb.toDynamoDBJson($ctx.args.companyShareInterval.value),
+    "voteWeight": $util.dynamodb.toDynamoDBJson($ctx.args.companyShareInterval.voteWeight)
+  }
+}
