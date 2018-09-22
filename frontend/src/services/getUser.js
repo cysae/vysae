@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 // amplify
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
-import { GetUser } from '../graphql/queries.js'
-import { print as gqlToString } from 'graphql/language'
 import aws_exports from '../aws-exports.js'
+import { print as gqlToString } from 'graphql/language'
+import { GetUser } from '../graphql/queries.js'
 // recompose
 import { compose } from 'recompose'
 // services
@@ -26,7 +26,7 @@ const getCurrentUser = (WrappedComponent) => {
         .then(({ data: { getUser }}) => {
           this.setState({
             loading: false,
-            getUser
+            user: getUser
           })
         })
         .catch(error => { this.setState({ error })})

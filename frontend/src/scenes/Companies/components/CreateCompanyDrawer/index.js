@@ -1,13 +1,13 @@
 import React from 'react'
 // antd
-import {
-  Drawer, Form, Button, Col, Row, Input,
-  notification
-} from 'antd';
-// graphql
-import { graphql } from 'react-apollo'
-import MutationCreateCompany from '../../../../queries/MutationCreateCompany'
-import QueryGetUser from '../../../../queries/QueryGetUser'
+import { Drawer, Form, Button, Col, Row, Input, notification, message } from 'antd';
+import createCompany from '../../services/createCompany'
+
+
+/* createCompany(
+ *   '3310d472-a8e6-4978-8c9d-bb947d45c689',
+ *   { input: { name: 'company1' }}
+ * ) */
 
 class CreateCompanyDrawer extends React.Component {
   state = { visible: false };
@@ -20,16 +20,21 @@ class CreateCompanyDrawer extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { form: { validateFields }, createCompany } = this.props
+    const { userId, form: { validateFields }} = this.props
     validateFields((err, values) => {
       if (!err) {
-        createCompany(values.name)
+        const hideLoadingMsg = message.loading('Guardando...', 0)
+        createCompany(userId, { input: { name: values.name }})
           .then(res => {
             notification.success({
               message: `Sociedad añadida!`,
               description: `Has guardado la sociedad: ${values.name}.`
             })
+            hideLoadingMsg()
             this.onClose()
+          })
+          .catch(err => {
+            hideLoadingMsg()
           })
       }
     })
@@ -42,7 +47,8 @@ class CreateCompanyDrawer extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form: { getFieldDecorator }} = this.props;
+
     return (
       <div>
         <Button type="primary" onClick={this.showDrawer}>
@@ -101,39 +107,4 @@ class CreateCompanyDrawer extends React.Component {
   }
 }
 
-export default Form.create()(graphql(
-  MutationCreateCompany,
-  {
-    props: props => ({
-      createCompany: (name) => {
-        return props.mutate({
-          variables: {
-            name
-          },
-          optimisticResponse: {
-            __typename: "Mutation",
-            createCompany: {
-              __typename: "Company",
-              companyId: 'id',
-              name
-            }
-          },
-          update: (proxy, { data }) => {
-            const query = QueryGetUser
-            const newData = proxy.readQuery({ query, variables: { limit: null, nextToken: null } })
-
-            // AppSync fix
-            newData.getUser.companies.items[0] === null && newData.getUser.companies.items.splice(0, 1)
-
-            newData.getUser.companies.items.push(data.createCompany)
-
-            proxy.writeQuery({
-              query,
-              data: newData
-            })
-          }
-        })
-      }
-    })
-  }
-)(CreateCompanyDrawer))
+export default Form.create()(CreateCompanyDrawer)
