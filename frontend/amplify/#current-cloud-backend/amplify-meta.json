@@ -1,0 +1,74 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "frontend-20180922124305-authRole",
+			"UnauthRoleArn": "arn:aws:iam::037641059503:role/frontend-20180922124305-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::037641059503:role/frontend-20180922124305-authRole",
+			"Region": "eu-west-1",
+			"DeploymentBucketName": "frontend-20180922124305-deployment",
+			"UnauthRoleName": "frontend-20180922124305-unauthRole",
+			"StackName": "frontend-20180922124305",
+			"StackId": "arn:aws:cloudformation:eu-west-1:037641059503:stack/frontend-20180922124305/4a1d88e0-be54-11e8-8893-500c3d1abad2"
+		}
+	},
+	"auth": {
+		"cognito931a75d8": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/frontend-20180922124305-deployment/amplify-cfn-templates/auth/cognito931a75d8-cloudformation-template.yml",
+				"logicalId": "authcognito931a75d8"
+			},
+			"lastPushTimeStamp": "2018-09-22T13:31:40.921Z",
+			"output": {
+				"AppClientSecret": "19m3mvmngq4tvndqo5kul4cvp7ud5ogrroj7kbpqb80u4j0en4mr",
+				"UserPoolId": "eu-west-1_dC5sc4UDk",
+				"AppClientIDWeb": "7uegmfbi8o5vhk2ei5d469cl2t",
+				"AppClientID": "6nr2u0l44nvnbup5umj427ddr",
+				"IdentityPoolId": "eu-west-1:eed9cf7e-6c5f-4fcf-8c81-bd6972e94dea",
+				"IdentityPoolName": "cognito931a75d8_identitypool_931a75d8",
+				"UserPoolName": "cognito931a75d8_userpool_931a75d8"
+			},
+			"lastPushDirHash": "zPcaNLuaLWoRhJRxTI0rbC2o5HU="
+		}
+	},
+	"hosting": {
+		"S3AndCloudFront": {
+			"service": "S3AndCloudFront",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/frontend-20180922124305-deployment/amplify-cfn-templates/hosting/template.json",
+				"logicalId": "hostingS3AndCloudFront"
+			},
+			"lastPushTimeStamp": "2018-09-22T13:31:40.921Z",
+			"output": {
+				"S3BucketSecureURL": "https://vysae-frontend.s3.amazonaws.com",
+				"WebsiteURL": "http://vysae-frontend.s3-website-eu-west-1.amazonaws.com",
+				"Region": "eu-west-1",
+				"HostingBucketName": "vysae-frontend"
+			},
+			"lastPushDirHash": "2DdoWD4VJWUFZjA0Tm8/oThnU/c="
+		}
+	},
+	"api": {
+		"vysaeApp": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"securityType": "AMAZON_COGNITO_USER_POOLS",
+				"GraphQLAPIIdOutput": "k7hooanygjbxdjz47aoqoju6uu",
+				"GraphQLAPIEndpointOutput": "https://qlu3sta6lfftfnixvccxvg2xvu.appsync-api.eu-west-1.amazonaws.com/graphql",
+				"GraphQLAPIKeyOutput": "da2-422cfjmfdnauteg7mbxoc47biu",
+				"AuthCognitoUserPoolIdOutput": "eu-west-1_dC5sc4UDk",
+				"AuthCognitoUserPoolNativeClientId": "See UserPool: eu-west-1_dC5sc4UDk",
+				"AuthCognitoUserPoolJSClientId": "See UserPool: eu-west-1_dC5sc4UDk"
+			},
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/frontend-20180922124305-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+				"logicalId": "apivysaeApp"
+			},
+			"lastPushTimeStamp": "2018-09-22T13:31:42.131Z",
+			"lastPushDirHash": "XAPfBFO5zeC0T/0Q6W439bLNvGw="
+		}
+	}
+}

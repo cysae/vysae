@@ -81,9 +81,9 @@
     "@aws-amplify/core" "^1.0.9"
     aws-sdk "^2.312.0"
 
-"@aws-amplify/ui@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/ui/-/ui-1.0.2.tgz#d37fb7ecf007618c1519b8964c72f1922757ba55"
+"@aws-amplify/ui@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/ui/-/ui-1.0.3.tgz#89a83a350b2f3dbe12b0950342758348a4a2f7db"
 
 "@babel/helper-module-imports@^7.0.0-beta.34":
   version "7.0.0"
@@ -675,11 +675,11 @@ autoprefixer@^6.3.1:
     postcss "^5.2.16"
     postcss-value-parser "^3.2.3"
 
-aws-amplify-react@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/aws-amplify-react/-/aws-amplify-react-2.0.1.tgz#40fe78b2e96241e0993ba47b2726e4d97534cacf"
+aws-amplify-react@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/aws-amplify-react/-/aws-amplify-react-2.0.4.tgz#ad6a8710c012b518311aca3206507ed1ff2de6c6"
   dependencies:
-    "@aws-amplify/ui" "^1.0.2"
+    "@aws-amplify/ui" "^1.0.3"
     qrcode.react "^0.8.0"
     regenerator-runtime "^0.11.1"
 

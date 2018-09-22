@@ -1,4 +1,4 @@
-service: backend
+service: vysaeBackend
 
 provider:
   name: aws
@@ -125,6 +125,21 @@ custom:
         field: createShareholder
         request: "MutationCreateShareholder-request.vm"
         response: "MutationCreateShareholder-response.vm"
+      - dataSource: ShareholderShareIntervalTable
+        type: Mutation
+        field: createShareholderShareInterval
+        request: "MutationCreateShareholderShareInterval-request.vm"
+        response: "MutationCreateShareholderShareInterval-response.vm"
+      - dataSource: ShareholderShareIntervalTable
+        type: Mutation
+        field: updateShareholderShareInterval
+        request: "MutationUpdateShareholderShareInterval-request.vm"
+        response: "MutationUpdateShareholderShareInterval-response.vm"
+      - dataSource: ShareholderShareIntervalTable
+        type: Mutation
+        field: deleteShareholderShareInterval
+        request: "MutationDeleteShareholderShareInterval-request.vm"
+        response: "MutationDeleteShareholderShareInterval-response.vm"
       - dataSource: createUser 
         type: Mutation
         field: createUser
@@ -145,6 +160,11 @@ custom:
         field: deleteCompanyShareInterval
         request: "MutationDeleteCompanyShareInterval-request.vm"
         response: "MutationDeleteCompanyShareInterval-response.vm"
+      - dataSource: ShareholderShareIntervalTable
+        type: Shareholder
+        field: shareIntervals
+        request: "Shareholder-shareIntervals-request.vm"
+        response: "Shareholder-shareIntervals-response.vm"
     serviceRole: "AppSyncServiceRole"
     dataSources:
       - type: AMAZON_DYNAMODB
@@ -176,6 +196,12 @@ custom:
         description: "Shareholder table"
         config:
           tableName: { Ref: "VysaeShareholderTable" }
+          serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
+      - type: AMAZON_DYNAMODB
+        name: ShareholderShareIntervalTable
+        description: "Shareholder share intervals table"
+        config:
+          tableName: { Ref: "VysaeShareholderShareIntervalTable" }
           serviceRoleArn: "arn:aws:iam::${env:AWS_ACCOUNTID}:role/Dynamo-${self:custom.appSync.serviceRole}"
       - type: AMAZON_DYNAMODB
         name: VoteTable
@@ -352,6 +378,48 @@ resources:
               - AttributeName: userId
                 KeyType: HASH
               - AttributeName: companyId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 3 
+              WriteCapacityUnits: 3 
+    VysaeShareholderShareIntervalTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: VysaeShareholderShareInterval
+        AttributeDefinitions:
+          - AttributeName: companyId
+            AttributeType: S 
+          - AttributeName: shareholderId
+            AttributeType: S 
+          - AttributeName: start
+            AttributeType: N 
+        KeySchema:
+          - AttributeName: companyId
+            KeyType: HASH
+          - AttributeName: start
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 3
+          WriteCapacityUnits: 3
+        GlobalSecondaryIndexes:
+          - IndexName: Shareholder
+            KeySchema:
+              - AttributeName: shareholderId
+                KeyType: HASH
+              - AttributeName: companyId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 3 
+              WriteCapacityUnits: 3 
+          - IndexName: User
+            KeySchema:
+              - AttributeName: companyId
+                KeyType: HASH
+              - AttributeName: start
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL

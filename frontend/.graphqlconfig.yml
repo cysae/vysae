@@ -1,0 +1,16 @@
+projects:
+  vysaeApp:
+    schemaPath: src/graphql/schema.json
+    includes:
+      - src/graphql/**/*.js
+    excludes:
+      - amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: src/API.ts
+        docsFilePath: src/graphql
+        graphQLApiId: k7hooanygjbxdjz47aoqoju6uu
+      endpoints:
+        prod: >-
+          https://qlu3sta6lfftfnixvccxvg2xvu.appsync-api.eu-west-1.amazonaws.com/graphql

@@ -3,7 +3,7 @@
   "operation": "PutItem",
   "key": {
     "companyId": { "S": "$ctx.args.companyShareInterval.companyId" },
-    "start": { "N": $ctx.args.companyShareInterval.start }
+    "start": { "N": $ctx.args.currentStart }
   },
   "attributeValues": {
     "end": { "N": $ctx.args.companyShareInterval.end },

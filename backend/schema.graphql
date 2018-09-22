@@ -90,12 +90,21 @@ type Mutation {
     phone_number: String!
   ): User!
   createCompanyShareInterval( companyShareInterval: CompanyShareIntervalInput! ) : CompanyShareInterval!
-  updateCompanyShareInterval( companyShareInterval: CompanyShareIntervalInput! ) : CompanyShareInterval!
+  updateCompanyShareInterval(
+    currentStart: Int!
+    companyShareInterval: CompanyShareIntervalInput!
+  ) : CompanyShareInterval!
   deleteCompanyShareInterval( companyId: ID!, start: Int! ): CompanyShareInterval!
   createShareholder(
     companyId: ID!
     name: String!
   ): Shareholder!
+  createShareholderShareInterval( shareholderShareInterval: ShareholderShareIntervalInput! ) : ShareholderShareInterval!
+  updateShareholderShareInterval(
+    currentStart: Int!
+    shareholderShareInterval: ShareholderShareIntervalInput!
+  ) : ShareholderShareInterval!
+  deleteShareholderShareInterval( shareholderId: ID! companyId: ID! ): ShareholderShareInterval!
   linkShareholderWithUser(
     shareholderId: ID!
     user: UserInput!
@@ -109,17 +118,33 @@ type Mutation {
   ): Vote!
 }
 
-
 type Shareholder {
   shareholderId: ID!
   companyId: String!
   userId: String
   name: String
+  shareIntervals: ShareholderShareIntervalConnection
 }
-
 type ShareholderUserConnection {
   items: [User]
   nextToken: String
+}
+type ShareholderShareIntervalConnection {
+  items: [ShareholderShareInterval]
+  nextToken: String
+}
+
+type ShareholderShareInterval {
+  companyId: ID!
+  shareholderId: ID!
+  end: Int!
+  start: Int!
+}
+input ShareholderShareIntervalInput {
+  companyId: ID!
+  shareholderId: ID!
+  end: Int!
+  start: Int!
 }
 
 type Query {

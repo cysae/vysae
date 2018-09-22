@@ -1,0 +1,17 @@
+type Company @model {
+  id: ID!
+  name: String!
+  users: [CompanyUser] @connection(name: "CompanyUsers")
+}
+
+type CompanyUser @model(queries: null) {
+  id: ID!
+  company: Company! @connection(name: "CompanyUsers")
+  user: User! @connection(name: "UserCompanies")
+}
+
+type User @model {
+  id: ID!
+  name: String
+  companies: [CompanyUser] @connection(name: "UserCompanies")
+}

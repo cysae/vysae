@@ -1,0 +1,12 @@
+{
+  "version": "2017-02-28",
+  "operation": "PutItem",
+  "key": {
+    "companyId": { "S": "$ctx.args.shareholderShareInterval.companyId" }
+    "start": { "N": $ctx.args.currentStart }
+  },
+  "attributeValues": {
+    "start": { "N": $ctx.args.shareholderShareInterval.start },
+    "end": { "N": $ctx.args.shareholderShareInterval.end },
+  }
+}
