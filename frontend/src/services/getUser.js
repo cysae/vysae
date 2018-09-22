@@ -7,19 +7,14 @@ import aws_exports from '../aws-exports.js'
 // recompose
 import { compose } from 'recompose'
 // services
-import renderWhileLoading from './renderWhileLoading'
-import renderIfError from './renderIfError'
-// components
-import Loading from '../components/Loading'
-import Error from '../components/Error'
+import handleLoadingAndErrors from './handleLoadingAndErrors'
 Amplify.configure(aws_exports)
 
-const getCurrentAuthenticatedUser = (WrappedComponent) => {
+const getCurrentUser = (WrappedComponent) => {
   return class extends Component {
     state = {
       loading: true,
       error: null,
-      userT: null,
     }
 
     componentDidMount() {
@@ -45,8 +40,7 @@ const getCurrentAuthenticatedUser = (WrappedComponent) => {
 
 export default (WrappedComponent) => {
   return compose(
-    getCurrentAuthenticatedUser,
-    renderWhileLoading(Loading),
-    renderIfError(Error)
+    getCurrentUser,
+    handleLoadingAndErrors
   )(WrappedComponent)
 }

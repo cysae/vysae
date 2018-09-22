@@ -2,11 +2,7 @@
 import { compose, graphql } from 'react-apollo'
 import QueryGetCompany from '../queries/QueryGetCompany'
 // services
-import renderWhileLoading from './renderWhileLoading'
-import renderIfError from './renderIfError'
-// components
-import Loading from '../components/Loading'
-import Error from '../components/Error'
+import handleLoadingAndErrors from './handleLoadingAndErrors'
 
 export default (WrappedComponent) => {
   return compose(
@@ -23,8 +19,7 @@ export default (WrappedComponent) => {
           company: getCompany,
         })
       },
+      handleLoadingAndErrors
     ),
-    renderWhileLoading(Loading),
-    renderIfError(Error),
   )(WrappedComponent)
 }
