@@ -7,14 +7,6 @@ import CreateCompanyDrawer from './components/CreateCompanyDrawer'
 
 /* addUserIdToCognitoUser() */
 class Companies extends Component {
-  handleTableChange = async (pagination, filters, sorter) => {
-    if ( this.props.user.companies.nextToken !== null ) {
-      const hide = message.loading('Cargando datos', 0)
-      await this.props.fetchMore()
-      hide()
-    }
-  }
-
   render() {
     const {
       user, handleSelectCompanyId
@@ -35,19 +27,16 @@ class Companies extends Component {
         </Button>
       ),
     }];
-    console.log(user)
 
     return (
       <Fragment>
         <CreateCompanyDrawer userId={user.id} />
-        { companies[0] !== null && (
-            <Table
-              rowKey="id"
-              columns={columns}
-              dataSource={companies}
-              onChange={this.handleTableChange}
-            />
-        )}
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={companies}
+          onChange={this.handleTableChange}
+        />
       </Fragment>
     )
   }

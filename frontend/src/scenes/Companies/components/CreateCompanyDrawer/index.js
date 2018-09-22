@@ -3,12 +3,6 @@ import React from 'react'
 import { Drawer, Form, Button, Col, Row, Input, notification, message } from 'antd';
 import createCompany from '../../services/createCompany'
 
-
-/* createCompany(
- *   '3310d472-a8e6-4978-8c9d-bb947d45c689',
- *   { input: { name: 'company1' }}
- * ) */
-
 class CreateCompanyDrawer extends React.Component {
   state = { visible: false };
 
