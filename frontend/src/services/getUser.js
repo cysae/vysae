@@ -20,7 +20,7 @@ const getCurrentUser = (WrappedComponent) => {
       error: null,
     }
 
-    subscription = null
+    companiesSubscription = null
 
     componentDidMount() {
       Auth.currentAuthenticatedUser()
@@ -36,7 +36,7 @@ const getCurrentUser = (WrappedComponent) => {
         })
         .catch(error => { this.setState({ error })})
 
-      this.subscription = API.graphql(
+      this.companiesSubscription = API.graphql(
         graphqlOperation(gqlToString(OnCreateCompany))
       ).subscribe({
         next: ({ value: { data: { onCreateCompany }}}) => {
@@ -83,12 +83,11 @@ const getCurrentUser = (WrappedComponent) => {
     }
 
     componentWillUnmount() {
-      console.log('unmount', this.subscription)
-      this.subscription.unsubscribe()
+      this.companiesSubscription.unsubscribe()
     }
 
     render() {
-      return <WrappedComponent {...this.state} {...this.props} fetchMore={this.fetchMore} />
+      return <WrappedComponent {...this.state} {...this.props} fetchMoreCompanies={this.fetchMoreCompanies} />
     }
   }
 }

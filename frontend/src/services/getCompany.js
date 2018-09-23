@@ -21,7 +21,7 @@ const getCurrentCompany = (WrappedComponent) => {
       error: null,
     }
 
-    subscription = null
+    // subscription = null
 
     componentDidMount() {
       const { match: { params: { companyId }}} = this.props
@@ -81,8 +81,7 @@ const getCurrentCompany = (WrappedComponent) => {
     }
 
     componentWillUnmount() {
-      console.log('unmount', this.subscription)
-      this.subscription.unsubscribe()
+      // this.subscription.unsubscribe()
     }
 
     render() {
