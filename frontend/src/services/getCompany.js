@@ -9,6 +9,7 @@ import { GetCompany } from '../graphql/queries.js'
 import {
   OnCreateCompanyShareInterval,
   OnUpdateCompanyShareInterval,
+  OnDeleteCompanyShareInterval,
 } from '../graphql/subscriptions.js'
 
 
@@ -28,6 +29,7 @@ const getCurrentCompany = (WrappedComponent) => {
 
     createCompanyShareIntervalSubscription = null
     updateCompanyShareIntervalSubscription = null
+    deleteCompanyShareIntervalSubscription = null
 
     componentDidMount() {
       const { match: { params: { companyId }}} = this.props
@@ -81,6 +83,27 @@ const getCurrentCompany = (WrappedComponent) => {
           this.setState(newState)
         }
       })
+
+      // delete shareinterval subscription
+      this.deleteCompanyShareIntervalSubscription = API.graphql(
+        graphqlOperation(gqlToString(OnDeleteCompanyShareInterval))
+      ).subscribe({
+        next: ({ value: { data: { onDeleteCompanyShareInterval }}}) => {
+          const newState = {
+            ...this.state,
+            company: {
+              ...this.state.company,
+              shareIntervals: {
+                ...this.state.company.shareIntervals,
+                items: this.state.company.shareIntervals.items.filter(shareInterval => {
+                  return shareInterval.id !== onDeleteCompanyShareInterval.id
+                }),
+              }
+            }
+          }
+          this.setState(newState)
+        }
+      })
     }
 
     fetchMore = () => {
@@ -113,6 +136,7 @@ const getCurrentCompany = (WrappedComponent) => {
     componentWillUnmount() {
       this.createCompanyShareIntervalSubscription.unsubscribe()
       this.updateCompanyShareIntervalSubscription.unsubscribe()
+      this.deleteCompanyShareIntervalSubscription.unsubscribe()
     }
 
     render() {
