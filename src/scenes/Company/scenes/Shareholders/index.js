@@ -40,7 +40,10 @@ const columns = [{
   }
 }];
 
-const Shareholders = ({ company: { shareholders: { items }}}) => {
+const Shareholders = ({
+  company: { shareholders: { items }},
+  match: { params: { companyId }}
+}) => {
   const shareholders = items
 
   const expandedRowRender = () => {
@@ -86,11 +89,11 @@ const Shareholders = ({ company: { shareholders: { items }}}) => {
 
   return (
     <Fragment>
-      <CreateShareholderDrawer />
+      <CreateShareholderDrawer companyId={companyId} />
       <Table
         columns={columns}
         dataSource={shareholders}
-        rowKey='shareholderId'
+        rowKey='id'
       />
     </Fragment>
   )

@@ -2,14 +2,16 @@ import React from 'react'
 // antd
 import {
   Drawer, Form, Button, Col, Row, Input,
-  notification
+  notification, message
 } from 'antd';
-// router
-import { withRouter } from 'react-router'
-// graphql
-import { graphql, compose } from 'react-apollo'
-import MutationCreateShareholder from '../../../../../../queries/MutationCreateShareholder'
-import QueryGetCompany from '../../../../../../queries/QueryGetCompany'
+// services
+import { compose } from 'recompose'
+// amplify
+import { API, graphqlOperation } from 'aws-amplify'
+import { print as gqlToString } from 'graphql/language'
+import {
+  CreateShareholder,
+} from '../../../../../../graphql/mutations'
 
 class CreateShareholderDrawer extends React.Component {
   state = { visible: false };
@@ -30,8 +32,7 @@ class CreateShareholderDrawer extends React.Component {
     e.preventDefault()
 
     const {
-      createShareholder,
-      match: { params: { companyId }},
+      companyId,
       form: {
         getFieldValue,
         validateFields
@@ -40,16 +41,20 @@ class CreateShareholderDrawer extends React.Component {
 
     validateFields((err, values) => {
       if (!err) {
-        const name = getFieldValue('name')
 
-        createShareholder(companyId, name)
-          .then(res => {
-            notification.success({
-              message: `Shareholder creado!`,
-              description: `Has creado un shareholder con un usario.`
-            })
-            this.onClose()
+        const hideLoadingMsg = message.loading('Creando socio...')
+
+        API.graphql(
+          graphqlOperation(gqlToString(CreateShareholder), {
+            input: {
+              shareholderCompanyId: companyId,
+              ...values
+            }
           })
+        )
+          .then(res => console.log(res))
+          .catch(err => console.error(err))
+          .finally(() => hideLoadingMsg())
       }
     })
   }
@@ -164,48 +169,5 @@ class CreateShareholderDrawer extends React.Component {
 }
 
 export default compose(
-  withRouter,
   Form.create(),
-  graphql(
-    MutationCreateShareholder,
-    {
-      props: props => ({
-        createShareholder: (companyId, name) =>
-          props.mutate({
-            variables: {
-              companyId,
-              name,
-            },
-            optimisticResponse: {
-              createShareholder: {
-                __typename: 'Shareholder',
-                shareholderId: 'id',
-                companyId,
-                userId: null,
-                name,
-              }
-            },
-            update: (proxy, { data, ...rest }) => {
-              const query = QueryGetCompany
-              const newData = proxy.readQuery({
-                query,
-                variables: {
-                  companyId,
-                }
-              })
-
-              newData.getCompany.shareholders.items.push(data.createShareholder)
-
-              proxy.writeQuery({
-                query,
-                variables: {
-                  companyId
-                },
-                data: newData
-              })
-            }
-          })
-      })
-    }
-  )
 )(CreateShareholderDrawer)

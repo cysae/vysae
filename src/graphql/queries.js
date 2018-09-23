@@ -15,6 +15,10 @@ export const GetCompany = gql`
         nextToken
       }
       shareholders {
+        items {
+          id
+          name
+        }
         nextToken
       }
       shareIntervals {
