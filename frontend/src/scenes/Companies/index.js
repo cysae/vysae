@@ -32,7 +32,7 @@ class Companies extends Component {
       dataIndex: 'id',
       render: (text, record) =>(
         <Button onClick={
-          () => handleSelectCompanyId( record.companyId )
+          () => handleSelectCompanyId( record.id )
         }>
           Seleccionar
         </Button>
