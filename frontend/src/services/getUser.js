@@ -42,7 +42,13 @@ const getCurrentUser = (WrappedComponent) => {
         next: ({ value: { data: { onCreateCompany }}}) => {
           const newState = {
             ...this.state,
-            user: { companies: { items: [...this.state.user.companies.items, { company: { ...onCreateCompany }}] }}
+            user: {
+              ...this.state.user,
+              companies: {
+                ...this.state.user.companies,
+                items: [...this.state.user.companies.items, { company: { ...onCreateCompany }}]
+              }
+            }
           }
           this.setState(newState)
         }

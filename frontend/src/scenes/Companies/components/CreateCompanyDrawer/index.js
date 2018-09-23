@@ -14,7 +14,11 @@ class CreateCompanyDrawer extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { userId, form: { validateFields }} = this.props
+    const {
+      userId,
+      form,
+      form: { validateFields }
+    } = this.props
     validateFields((err, values) => {
       if (!err) {
         const hideLoadingMsg = message.loading('Guardando...', 0)
@@ -24,12 +28,13 @@ class CreateCompanyDrawer extends React.Component {
               message: `Sociedad añadida!`,
               description: `Has guardado la sociedad: ${values.name}.`
             })
-            hideLoadingMsg()
+            form.resetFields()
             this.onClose()
           })
           .catch(err => {
-            hideLoadingMsg()
+            console.log('createCompanyDrawer error: ', err)
           })
+          .finally(() => hideLoadingMsg())
       }
     })
   }

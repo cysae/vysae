@@ -28,12 +28,12 @@ export const ListCompanys = gql`
   }
 `;
 export const GetUser = gql`
-  query GetUser($id: ID! $companiesNextToken: String = null) {
+  query GetUser($id: ID! $companiesNextToken: String = null $companiesLimit: Int = 11 ) {
     getUser(id: $id) {
       id
       name
       companies (
-        limit: 1
+        limit: $companiesLimit
         nextToken: $companiesNextToken
       ) {
         items {

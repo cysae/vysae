@@ -7,8 +7,15 @@ import CreateCompanyDrawer from './components/CreateCompanyDrawer'
 
 /* addUserIdToCognitoUser() */
 class Companies extends Component {
-  handleTabChange() {
+  state = {
+    pagination: 1
+  }
 
+  handleTableChange = (pagination) => {
+    if(pagination && pagination.current > this.state.pagination) {
+      this.props.fetchMore()
+      this.setState({ pagination: pagination.current })
+    }
   }
 
   render() {
@@ -41,7 +48,6 @@ class Companies extends Component {
           dataSource={companies}
           onChange={this.handleTableChange}
         />
-        <Button onClick={this.props.fetchMore}>fetch</Button>
       </Fragment>
     )
   }
