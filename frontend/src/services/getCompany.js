@@ -51,23 +51,6 @@ const getCurrentCompany = (WrappedComponent) => {
           this.setState(newState)
         }
       })
-      // this.subscription = API.graphql(
-      //   graphqlOperation(gqlToString(OnCreateCompany))
-      // ).subscribe({
-      //   next: ({ value: { data: { onCreateCompany }}}) => {
-      //     const newState = {
-      //       ...this.state,
-      //       user: {
-      //         ...this.state.user,
-      //         companies: {
-      //           ...this.state.user.companies,
-      //           items: [...this.state.user.companies.items, { company: { ...onCreateCompany }}]
-      //         }
-      //       }
-      //     }
-      //     this.setState(newState)
-      //   }
-      // })
     }
 
     fetchMore = () => {

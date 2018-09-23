@@ -71,7 +71,7 @@ class EditableCell extends React.Component {
 class Shares extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editingKey: '' };
+    this.state = { editingId: '' };
     this.columns = [
       {
         title: 'start',
@@ -110,7 +110,7 @@ class Shares extends React.Component {
                      {form => (
                        <a
                          href="javascript:;"
-                         onClick={() => this.update(form, record.key)}
+                         onClick={() => this.update(form, record.id)}
                          style={{ marginRight: 8 }}
                          >
                          Actualizar
@@ -119,21 +119,21 @@ class Shares extends React.Component {
                    </EditableContext.Consumer>
                    <Popconfirm
                      title="Sure to delete?"
-                     onConfirm={() => this.delete(record.start)}
+                     onConfirm={() => this.delete(record.id)}
                      icon={<Icon type="exclamation-circle-o" style={{ color: 'red' }} />}
                    >
                      <a style={{ marginRight: 8 }}>Delete</a>
                    </Popconfirm>
                    <Popconfirm
                      title="Sure to cancel?"
-                     onConfirm={() => this.cancel(record.key)}
+                     onConfirm={() => this.cancel(record.id)}
                      icon={<Icon type="question-circle-o" style={{ color: 'yellow' }} />}
                    >
                      <a>Cancel</a>
                    </Popconfirm>
                  </span>
               ) : (
-                 <a onClick={() => this.edit(record.key)}>Edit</a>
+                 <a onClick={() => this.edit(record.id)}>Edit</a>
               )}
             </div>
           );
@@ -164,20 +164,22 @@ class Shares extends React.Component {
       }
       })
     )
-      .then(res => { this.setState({ editingKey: start }) })
+      .then(({ data: { createCompanyShareInterval: { id }}}) => {
+        this.setState({ editingId: id })
+      })
       .catch(err => console.error(err))
       .finally(() => hideLoadingMsg())
   }
 
   isEditing = (record) => {
-    return record.key === this.state.editingKey;
+    return record.id === this.state.editingId;
   };
 
-  edit(key) {
-    this.setState({ editingKey: key });
+  edit(id) {
+    this.setState({ editingId: id });
   }
 
-  update(form, key) {
+  update(form, id) {
     const {
       match: { params: { companyId}}
     } = this.props
@@ -186,18 +188,34 @@ class Shares extends React.Component {
         return;
       }
 
+      console.log(id)
+      /* API.graphql(
+       *   graphqlOperation(gqlToString(UpdateCompanyShareInterval), {
+       *     input: {
+       *       id: 
+       *       companyShareIntervalCompanyId: companyId,
+       *       start,
+       *       end: start+1,
+       *       value: 1,
+       *       voteWeight: 1
+       *     }
+       *   })
+       * )
+       *   .then(res => { this.setState({ editingId: start }) })
+       *   .catch(err => console.error(err))
+       *   .finally(() => hideLoadingMsg()) */
       /* UpdateCompanyShareInterval({
        *   ...row,
        *   companyId
        * }) */
 
-      this.setState({ editingKey: '' })
+      this.setState({ editingId: '' })
       message.success('Actualizado')
     });
   }
 
   cancel = () => {
-    this.setState({ editingKey: '' })
+    this.setState({ editingId: '' })
   };
 
   delete = (start) => {
@@ -237,9 +255,9 @@ class Shares extends React.Component {
         <Button type="primary" onClick={this.create}>Añadir Intervalo de Participaciones</Button>
         <Table
           components={components}
+          rowKey="id"
           bordered
           dataSource={shareIntervals.items}
-          rowKey="id"
           columns={columns}
           rowClassName="editable-row"
         />
