@@ -183,34 +183,25 @@ class Shares extends React.Component {
     const {
       match: { params: { companyId}}
     } = this.props
-    form.validateFields((error, row) => {
+    form.validateFields((error, values) => {
       if (error) {
         return;
       }
 
-      console.log(id)
-      /* API.graphql(
-       *   graphqlOperation(gqlToString(UpdateCompanyShareInterval), {
-       *     input: {
-       *       id: 
-       *       companyShareIntervalCompanyId: companyId,
-       *       start,
-       *       end: start+1,
-       *       value: 1,
-       *       voteWeight: 1
-       *     }
-       *   })
-       * )
-       *   .then(res => { this.setState({ editingId: start }) })
-       *   .catch(err => console.error(err))
-       *   .finally(() => hideLoadingMsg()) */
-      /* UpdateCompanyShareInterval({
-       *   ...row,
-       *   companyId
-       * }) */
+      const hideLoadingMsg = message.loading('Acutalizando intervalo de participaciones...')
 
-      this.setState({ editingId: '' })
-      message.success('Actualizado')
+      API.graphql(
+        graphqlOperation(gqlToString(UpdateCompanyShareInterval), {
+          input: {
+            id,
+            companyShareIntervalCompanyId: companyId,
+            ...values
+          }
+        })
+      )
+        .then(res => { this.setState({ editingId: null }) })
+        .catch(err => message.error(err))
+        .finally(() => hideLoadingMsg())
     });
   }
 
