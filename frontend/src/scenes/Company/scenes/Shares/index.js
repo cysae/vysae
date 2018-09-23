@@ -8,7 +8,10 @@ import { compose } from 'recompose'
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
 import aws_exports from '../../../../aws-exports.js'
 import { print as gqlToString } from 'graphql/language'
-import { CreateCompanyShareInterval } from '../../../../graphql/mutations'
+import {
+  CreateCompanyShareInterval,
+  UpdateCompanyShareInterval
+} from '../../../../graphql/mutations'
 
 
 const FormItem = Form.Item;
@@ -176,7 +179,6 @@ class Shares extends React.Component {
 
   update(form, key) {
     const {
-      updateCompanyShareInterval,
       match: { params: { companyId}}
     } = this.props
     form.validateFields((error, row) => {
@@ -184,10 +186,10 @@ class Shares extends React.Component {
         return;
       }
 
-      updateCompanyShareInterval({
-        ...row,
-        companyId
-      })
+      /* UpdateCompanyShareInterval({
+       *   ...row,
+       *   companyId
+       * }) */
 
       this.setState({ editingKey: '' })
       message.success('Actualizado')
@@ -237,7 +239,7 @@ class Shares extends React.Component {
           components={components}
           bordered
           dataSource={shareIntervals.items}
-          rowKey="start"
+          rowKey="id"
           columns={columns}
           rowClassName="editable-row"
         />

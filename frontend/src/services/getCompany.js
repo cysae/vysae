@@ -6,7 +6,7 @@ import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
 import aws_exports from '../aws-exports.js'
 import { print as gqlToString } from 'graphql/language'
 import { GetCompany } from '../graphql/queries.js'
-import { OnCreateCompany } from '../graphql/subscriptions.js'
+import { OnCreateCompanyShareInterval } from '../graphql/subscriptions.js'
 // recompose
 import { compose } from 'recompose'
 // services
@@ -21,7 +21,7 @@ const getCurrentCompany = (WrappedComponent) => {
       error: null,
     }
 
-    // subscription = null
+    createCompanyShareIntervalSubscription = null
 
     componentDidMount() {
       const { match: { params: { companyId }}} = this.props
@@ -34,6 +34,23 @@ const getCurrentCompany = (WrappedComponent) => {
         })
         .catch(error => { this.setState({ error })})
 
+      this.createCompanyShareIntervalSubscription = API.graphql(
+        graphqlOperation(gqlToString(OnCreateCompanyShareInterval))
+      ).subscribe({
+        next: ({ value: { data: { onCreateCompanyShareInterval }}}) => {
+          const newState = {
+            ...this.state,
+            company: {
+              ...this.state.company,
+              shareIntervals: {
+                ...this.state.company.shareIntervals,
+                items: [...this.state.company.shareIntervals.items, onCreateCompanyShareInterval],
+              }
+            }
+          }
+          this.setState(newState)
+        }
+      })
       // this.subscription = API.graphql(
       //   graphqlOperation(gqlToString(OnCreateCompany))
       // ).subscribe({
@@ -81,7 +98,7 @@ const getCurrentCompany = (WrappedComponent) => {
     }
 
     componentWillUnmount() {
-      // this.subscription.unsubscribe()
+      this.createCompanyShareIntervalSubscription.unsubscribe()
     }
 
     render() {
