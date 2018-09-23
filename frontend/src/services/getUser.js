@@ -55,7 +55,7 @@ const getCurrentUser = (WrappedComponent) => {
       })
     }
 
-    fetchMore = () => {
+    fetchMoreCompanies = () => {
       const {
         user,
         user: { companies: { nextToken }}

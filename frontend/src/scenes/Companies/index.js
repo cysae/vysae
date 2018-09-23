@@ -13,7 +13,7 @@ class Companies extends Component {
 
   handleTableChange = (pagination) => {
     if(pagination && pagination.current > this.state.pagination) {
-      this.props.fetchMore()
+      this.props.fetchMoreCompanies()
       this.setState({ pagination: pagination.current })
     }
   }
