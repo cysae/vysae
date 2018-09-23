@@ -5,7 +5,7 @@
   "query": {
       "expression": "#connectionAttribute = :connectionAttribute",
       "expressionNames": {
-          "#connectionAttribute": "companyShareIntervalsId"
+          "#connectionAttribute": "companyShareIntervalCompanyId"
     },
       "expressionValues": {
           ":connectionAttribute": {
@@ -33,5 +33,5 @@
   #else
     null
   #end,
-  "index": "gsi-Company.shareIntervals"
+  "index": "gsi-CompanyShareIntervals"
 }

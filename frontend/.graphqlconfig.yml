@@ -1,5 +1,5 @@
 projects:
-  vysaeApp:
+  VysaeApp:
     schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js
@@ -10,7 +10,7 @@ projects:
         codeGenTarget: typescript
         generatedFileName: src/API.ts
         docsFilePath: src/graphql
-        graphQLApiId: k7hooanygjbxdjz47aoqoju6uu
+        graphQLApiId: svcx2lzhtfejhpqzyh7ge7wuxm
       endpoints:
         prod: >-
-          https://qlu3sta6lfftfnixvccxvg2xvu.appsync-api.eu-west-1.amazonaws.com/graphql
+          https://bsm4p66j45ccfcpzthpxvhv5ka.appsync-api.eu-west-1.amazonaws.com/graphql

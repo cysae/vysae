@@ -4,7 +4,16 @@ type Company @model {
   nif: String
   placeOfBusiness: String
   users: [CompanyUser] @connection(name: "CompanyUsers")
-  shareIntervals: [ShareInterval] @connection
+  shareIntervals: [CompanyShareInterval] @connection(name: "CompanyShareIntervals")
+}
+
+type CompanyShareInterval @model {
+  id: ID!
+  start: Int!
+  end: Int!
+  value: Float
+  voteWeight: Float
+  company: Company! @connection(name: "CompanyShareIntervals")
 }
 
 type CompanyUser @model(queries: null) {
@@ -13,12 +22,28 @@ type CompanyUser @model(queries: null) {
   user: User! @connection(name: "UserCompanies")
 }
 
-type ShareInterval @model {
+type CompanyShareInterval @model {
   id: ID!
   start: Int!
   end: Int!
   value: Float
   voteWeight: Float
+  company: Company! @connection(name: "ShareholderShareIntervals")
+}
+
+type Shareholder @model {
+  id: ID!
+  name: String!
+  shareIntervals: [ShareholderShareInterval] @connection(name: "ShareholderShareIntervals")
+}
+
+type ShareholderShareInterval @model {
+  id: ID!
+  start: Int!
+  end: Int!
+  value: Float
+  voteWeight: Float
+  shareholder: Shareholder! @connection(name: "ShareholderShareIntervals")
 }
 
 type User @model {

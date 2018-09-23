@@ -49,6 +49,57 @@ export const OnDeleteCompany = gql`
     }
   }
 `;
+export const OnCreateCompanyShareInterval = gql`
+  subscription OnCreateCompanyShareInterval {
+    onCreateCompanyShareInterval {
+      id
+      start
+      end
+      value
+      voteWeight
+      company {
+        id
+        name
+        nif
+        placeOfBusiness
+      }
+    }
+  }
+`;
+export const OnUpdateCompanyShareInterval = gql`
+  subscription OnUpdateCompanyShareInterval {
+    onUpdateCompanyShareInterval {
+      id
+      start
+      end
+      value
+      voteWeight
+      company {
+        id
+        name
+        nif
+        placeOfBusiness
+      }
+    }
+  }
+`;
+export const OnDeleteCompanyShareInterval = gql`
+  subscription OnDeleteCompanyShareInterval {
+    onDeleteCompanyShareInterval {
+      id
+      start
+      end
+      value
+      voteWeight
+      company {
+        id
+        name
+        nif
+        placeOfBusiness
+      }
+    }
+  }
+`;
 export const OnCreateCompanyUser = gql`
   subscription OnCreateCompanyUser {
     onCreateCompanyUser {
@@ -100,36 +151,81 @@ export const OnDeleteCompanyUser = gql`
     }
   }
 `;
-export const OnCreateShareInterval = gql`
-  subscription OnCreateShareInterval {
-    onCreateShareInterval {
+export const OnCreateShareholder = gql`
+  subscription OnCreateShareholder {
+    onCreateShareholder {
       id
-      start
-      end
-      value
-      voteWeight
+      name
+      shareIntervals {
+        nextToken
+      }
     }
   }
 `;
-export const OnUpdateShareInterval = gql`
-  subscription OnUpdateShareInterval {
-    onUpdateShareInterval {
+export const OnUpdateShareholder = gql`
+  subscription OnUpdateShareholder {
+    onUpdateShareholder {
       id
-      start
-      end
-      value
-      voteWeight
+      name
+      shareIntervals {
+        nextToken
+      }
     }
   }
 `;
-export const OnDeleteShareInterval = gql`
-  subscription OnDeleteShareInterval {
-    onDeleteShareInterval {
+export const OnDeleteShareholder = gql`
+  subscription OnDeleteShareholder {
+    onDeleteShareholder {
+      id
+      name
+      shareIntervals {
+        nextToken
+      }
+    }
+  }
+`;
+export const OnCreateShareholderShareInterval = gql`
+  subscription OnCreateShareholderShareInterval {
+    onCreateShareholderShareInterval {
       id
       start
       end
       value
       voteWeight
+      shareholder {
+        id
+        name
+      }
+    }
+  }
+`;
+export const OnUpdateShareholderShareInterval = gql`
+  subscription OnUpdateShareholderShareInterval {
+    onUpdateShareholderShareInterval {
+      id
+      start
+      end
+      value
+      voteWeight
+      shareholder {
+        id
+        name
+      }
+    }
+  }
+`;
+export const OnDeleteShareholderShareInterval = gql`
+  subscription OnDeleteShareholderShareInterval {
+    onDeleteShareholderShareInterval {
+      id
+      start
+      end
+      value
+      voteWeight
+      shareholder {
+        id
+        name
+      }
     }
   }
 `;

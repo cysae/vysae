@@ -49,6 +49,63 @@ export const DeleteCompany = gql`
     }
   }
 `;
+export const CreateCompanyShareInterval = gql`
+  mutation CreateCompanyShareInterval(
+    $input: CreateCompanyShareIntervalInput!
+  ) {
+    createCompanyShareInterval(input: $input) {
+      id
+      start
+      end
+      value
+      voteWeight
+      company {
+        id
+        name
+        nif
+        placeOfBusiness
+      }
+    }
+  }
+`;
+export const UpdateCompanyShareInterval = gql`
+  mutation UpdateCompanyShareInterval(
+    $input: UpdateCompanyShareIntervalInput!
+  ) {
+    updateCompanyShareInterval(input: $input) {
+      id
+      start
+      end
+      value
+      voteWeight
+      company {
+        id
+        name
+        nif
+        placeOfBusiness
+      }
+    }
+  }
+`;
+export const DeleteCompanyShareInterval = gql`
+  mutation DeleteCompanyShareInterval(
+    $input: DeleteCompanyShareIntervalInput!
+  ) {
+    deleteCompanyShareInterval(input: $input) {
+      id
+      start
+      end
+      value
+      voteWeight
+      company {
+        id
+        name
+        nif
+        placeOfBusiness
+      }
+    }
+  }
+`;
 export const CreateCompanyUser = gql`
   mutation CreateCompanyUser($input: CreateCompanyUserInput!) {
     createCompanyUser(input: $input) {
@@ -100,36 +157,87 @@ export const DeleteCompanyUser = gql`
     }
   }
 `;
-export const CreateShareInterval = gql`
-  mutation CreateShareInterval($input: CreateShareIntervalInput!) {
-    createShareInterval(input: $input) {
+export const CreateShareholder = gql`
+  mutation CreateShareholder($input: CreateShareholderInput!) {
+    createShareholder(input: $input) {
       id
-      start
-      end
-      value
-      voteWeight
+      name
+      shareIntervals {
+        nextToken
+      }
     }
   }
 `;
-export const UpdateShareInterval = gql`
-  mutation UpdateShareInterval($input: UpdateShareIntervalInput!) {
-    updateShareInterval(input: $input) {
+export const UpdateShareholder = gql`
+  mutation UpdateShareholder($input: UpdateShareholderInput!) {
+    updateShareholder(input: $input) {
       id
-      start
-      end
-      value
-      voteWeight
+      name
+      shareIntervals {
+        nextToken
+      }
     }
   }
 `;
-export const DeleteShareInterval = gql`
-  mutation DeleteShareInterval($input: DeleteShareIntervalInput!) {
-    deleteShareInterval(input: $input) {
+export const DeleteShareholder = gql`
+  mutation DeleteShareholder($input: DeleteShareholderInput!) {
+    deleteShareholder(input: $input) {
+      id
+      name
+      shareIntervals {
+        nextToken
+      }
+    }
+  }
+`;
+export const CreateShareholderShareInterval = gql`
+  mutation CreateShareholderShareInterval(
+    $input: CreateShareholderShareIntervalInput!
+  ) {
+    createShareholderShareInterval(input: $input) {
       id
       start
       end
       value
       voteWeight
+      shareholder {
+        id
+        name
+      }
+    }
+  }
+`;
+export const UpdateShareholderShareInterval = gql`
+  mutation UpdateShareholderShareInterval(
+    $input: UpdateShareholderShareIntervalInput!
+  ) {
+    updateShareholderShareInterval(input: $input) {
+      id
+      start
+      end
+      value
+      voteWeight
+      shareholder {
+        id
+        name
+      }
+    }
+  }
+`;
+export const DeleteShareholderShareInterval = gql`
+  mutation DeleteShareholderShareInterval(
+    $input: DeleteShareholderShareIntervalInput!
+  ) {
+    deleteShareholderShareInterval(input: $input) {
+      id
+      start
+      end
+      value
+      voteWeight
+      shareholder {
+        id
+        name
+      }
     }
   }
 `;

@@ -13,13 +13,11 @@ export const GetCompany = gql`
       }
       shareIntervals {
         items {
-          shareInterval: {
-            id
-            start
-            end
-            value
-            voteWeight
-          }
+          id
+          start
+          end
+          value
+          voteWeight
         }
         nextToken
       }
@@ -43,24 +41,34 @@ export const ListCompanys = gql`
     }
   }
 `;
-export const GetShareInterval = gql`
-  query GetShareInterval($id: ID!) {
-    getShareInterval(id: $id) {
+export const GetCompanyShareInterval = gql`
+  query GetCompanyShareInterval($id: ID!) {
+    getCompanyShareInterval(id: $id) {
       id
       start
       end
       value
       voteWeight
+      company {
+        id
+        name
+        nif
+        placeOfBusiness
+      }
     }
   }
 `;
-export const ListShareIntervals = gql`
-  query ListShareIntervals(
-    $filter: ModelShareIntervalFilterInput
+export const ListCompanyShareIntervals = gql`
+  query ListCompanyShareIntervals(
+    $filter: ModelCompanyShareIntervalFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listShareIntervals(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listCompanyShareIntervals(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
         start
@@ -72,6 +80,70 @@ export const ListShareIntervals = gql`
     }
   }
 `;
+export const GetShareholder = gql`
+  query GetShareholder($id: ID!) {
+    getShareholder(id: $id) {
+      id
+      name
+      shareIntervals {
+        nextToken
+      }
+    }
+  }
+`;
+export const ListShareholders = gql`
+  query ListShareholders(
+    $filter: ModelShareholderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listShareholders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+      }
+      nextToken
+    }
+  }
+`;
+export const GetShareholderShareInterval = gql`
+  query GetShareholderShareInterval($id: ID!) {
+    getShareholderShareInterval(id: $id) {
+      id
+      start
+      end
+      value
+      voteWeight
+      shareholder {
+        id
+        name
+      }
+    }
+  }
+`;
+export const ListShareholderShareIntervals = gql`
+  query ListShareholderShareIntervals(
+    $filter: ModelShareholderShareIntervalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listShareholderShareIntervals(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        start
+        end
+        value
+        voteWeight
+      }
+      nextToken
+    }
+  }
+`;
+
 export const GetUser = gql`
   query GetUser($id: ID! $companiesNextToken: String = null $companiesLimit: Int = 11 ) {
     getUser(id: $id) {
@@ -92,6 +164,7 @@ export const GetUser = gql`
     }
   }
 `;
+
 export const ListUsers = gql`
   query ListUsers(
     $filter: ModelUserFilterInput

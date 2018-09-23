@@ -19,7 +19,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/frontend-20180922124305-deployment/amplify-cfn-templates/auth/cognito931a75d8-cloudformation-template.yml",
 				"logicalId": "authcognito931a75d8"
 			},
-			"lastPushTimeStamp": "2018-09-23T09:55:17.168Z",
+			"lastPushTimeStamp": "2018-09-23T12:35:53.372Z",
 			"output": {
 				"AppClientSecret": "19m3mvmngq4tvndqo5kul4cvp7ud5ogrroj7kbpqb80u4j0en4mr",
 				"UserPoolId": "eu-west-1_dC5sc4UDk",
@@ -40,7 +40,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/frontend-20180922124305-deployment/amplify-cfn-templates/hosting/template.json",
 				"logicalId": "hostingS3AndCloudFront"
 			},
-			"lastPushTimeStamp": "2018-09-23T09:55:17.181Z",
+			"lastPushTimeStamp": "2018-09-23T12:35:53.382Z",
 			"output": {
 				"S3BucketSecureURL": "https://vysae-frontend.s3.amazonaws.com",
 				"WebsiteURL": "http://vysae-frontend.s3-website-eu-west-1.amazonaws.com",
@@ -51,24 +51,24 @@
 		}
 	},
 	"api": {
-		"vysaeApp": {
+		"VysaeApp": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
 			"output": {
 				"securityType": "AMAZON_COGNITO_USER_POOLS",
-				"GraphQLAPIIdOutput": "k7hooanygjbxdjz47aoqoju6uu",
-				"GraphQLAPIEndpointOutput": "https://qlu3sta6lfftfnixvccxvg2xvu.appsync-api.eu-west-1.amazonaws.com/graphql",
-				"GraphQLAPIKeyOutput": "da2-422cfjmfdnauteg7mbxoc47biu",
+				"GraphQLAPIIdOutput": "svcx2lzhtfejhpqzyh7ge7wuxm",
+				"GraphQLAPIEndpointOutput": "https://bsm4p66j45ccfcpzthpxvhv5ka.appsync-api.eu-west-1.amazonaws.com/graphql",
+				"GraphQLAPIKeyOutput": "da2-624yvizperec5mu5umpdack55e",
 				"AuthCognitoUserPoolIdOutput": "eu-west-1_dC5sc4UDk",
 				"AuthCognitoUserPoolNativeClientId": "See UserPool: eu-west-1_dC5sc4UDk",
 				"AuthCognitoUserPoolJSClientId": "See UserPool: eu-west-1_dC5sc4UDk"
 			},
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/frontend-20180922124305-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-				"logicalId": "apivysaeApp"
+				"logicalId": "apiVysaeApp"
 			},
-			"lastPushTimeStamp": "2018-09-23T09:55:18.283Z",
-			"lastPushDirHash": "JpYPycXnokFOXx28r0cySypeA/k="
+			"lastPushTimeStamp": "2018-09-23T12:35:54.842Z",
+			"lastPushDirHash": "322KcxFt8cKNqPYur3bCfLrQq7M="
 		}
 	}
 }

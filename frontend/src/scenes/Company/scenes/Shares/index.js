@@ -4,6 +4,11 @@ import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } fr
 // services
 import getCompany from '../../../../services/getCompany'
 import { compose } from 'recompose'
+// amplify
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
+import aws_exports from '../../../../aws-exports.js'
+import { print as gqlToString } from 'graphql/language'
+import { CreateCompanyShareInterval } from '../../../../graphql/mutations'
 
 
 const FormItem = Form.Item;
@@ -136,24 +141,29 @@ class Shares extends React.Component {
 
   create = () => {
     const {
-      match: { params: { companyId}},
+      match: { params: { companyId }},
       company: { shareIntervals },
-      createCompanyShareInterval,
+      company
     } = this.props
+
+    const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
 
     const lastShareNumber = shareIntervals.items.length !== 0 ? shareIntervals.items[shareIntervals.items.length-1].end : 0
     const start = lastShareNumber + 1
-    createCompanyShareInterval({
-      companyId,
-      start,
-      end: start+1,
-      value: 1,
-      voteWeight: 1
-    })
-
-    this.setState({ editingKey: start })
-
-    message.success('Creado')
+    API.graphql(
+      graphqlOperation(gqlToString(CreateCompanyShareInterval), {
+      input: {
+        companyShareIntervalCompanyId: companyId,
+        start,
+        end: start+1,
+        value: 1,
+        voteWeight: 1
+      }
+      })
+    )
+      .then(res => { this.setState({ editingKey: start }) })
+      .catch(err => console.error(err))
+      .finally(() => hideLoadingMsg())
   }
 
   isEditing = (record) => {

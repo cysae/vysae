@@ -1,13 +1,13 @@
 {
-    "AppSyncApiName": "vysaeApp",
+    "AppSyncApiName": "VysaeApp",
     "AuthCognitoUserPoolId": {
         "Fn::GetAtt": [
             "authcognito931a75d8",
             "Outputs.UserPoolId"
         ]
     },
-    "schemaGraphql": "s3://frontend-20180922124305-deployment/amplify-appsync-files/schema.graphql.1537696351253",
+    "schemaGraphql": "s3://frontend-20180922124305-deployment/amplify-appsync-files/schema.graphql.1537705906746",
     "ResolverBucket": "frontend-20180922124305-deployment",
     "ResolverRootKey": "amplify-appsync-files",
-    "DeploymentTimestamp": "1537696351253"
+    "DeploymentTimestamp": "1537705906746"
 }

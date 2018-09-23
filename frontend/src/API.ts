@@ -18,6 +18,27 @@ export type DeleteCompanyInput = {
   id?: string | null,
 };
 
+export type CreateCompanyShareIntervalInput = {
+  start: number,
+  end: number,
+  value?: number | null,
+  voteWeight?: number | null,
+  companyShareIntervalCompanyId?: string | null,
+};
+
+export type UpdateCompanyShareIntervalInput = {
+  id: string,
+  start?: number | null,
+  end?: number | null,
+  value?: number | null,
+  voteWeight?: number | null,
+  companyShareIntervalCompanyId?: string | null,
+};
+
+export type DeleteCompanyShareIntervalInput = {
+  id?: string | null,
+};
+
 export type CreateCompanyUserInput = {
   companyUserCompanyId?: string | null,
   companyUserUserId?: string | null,
@@ -33,24 +54,37 @@ export type DeleteCompanyUserInput = {
   id?: string | null,
 };
 
-export type CreateShareIntervalInput = {
+export type CreateShareholderInput = {
+  name: string,
+};
+
+export type UpdateShareholderInput = {
+  id: string,
+  name?: string | null,
+};
+
+export type DeleteShareholderInput = {
+  id?: string | null,
+};
+
+export type CreateShareholderShareIntervalInput = {
   start: number,
   end: number,
   value?: number | null,
   voteWeight?: number | null,
-  companyShareIntervalsId?: string | null,
+  shareholderShareIntervalShareholderId?: string | null,
 };
 
-export type UpdateShareIntervalInput = {
+export type UpdateShareholderShareIntervalInput = {
   id: string,
   start?: number | null,
   end?: number | null,
   value?: number | null,
   voteWeight?: number | null,
-  companyShareIntervalsId?: string | null,
+  shareholderShareIntervalShareholderId?: string | null,
 };
 
-export type DeleteShareIntervalInput = {
+export type DeleteShareholderShareIntervalInput = {
   id?: string | null,
 };
 
@@ -103,15 +137,15 @@ export type ModelStringFilterInput = {
   beginsWith?: string | null,
 };
 
-export type ModelShareIntervalFilterInput = {
+export type ModelCompanyShareIntervalFilterInput = {
   id?: ModelIDFilterInput | null,
   start?: ModelIntFilterInput | null,
   end?: ModelIntFilterInput | null,
   value?: ModelFloatFilterInput | null,
   voteWeight?: ModelFloatFilterInput | null,
-  and?: Array< ModelShareIntervalFilterInput | null > | null,
-  or?: Array< ModelShareIntervalFilterInput | null > | null,
-  not?: ModelShareIntervalFilterInput | null,
+  and?: Array< ModelCompanyShareIntervalFilterInput | null > | null,
+  or?: Array< ModelCompanyShareIntervalFilterInput | null > | null,
+  not?: ModelCompanyShareIntervalFilterInput | null,
 };
 
 export type ModelIntFilterInput = {
@@ -138,6 +172,25 @@ export type ModelFloatFilterInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelShareholderFilterInput = {
+  id?: ModelIDFilterInput | null,
+  name?: ModelStringFilterInput | null,
+  and?: Array< ModelShareholderFilterInput | null > | null,
+  or?: Array< ModelShareholderFilterInput | null > | null,
+  not?: ModelShareholderFilterInput | null,
+};
+
+export type ModelShareholderShareIntervalFilterInput = {
+  id?: ModelIDFilterInput | null,
+  start?: ModelIntFilterInput | null,
+  end?: ModelIntFilterInput | null,
+  value?: ModelFloatFilterInput | null,
+  voteWeight?: ModelFloatFilterInput | null,
+  and?: Array< ModelShareholderShareIntervalFilterInput | null > | null,
+  or?: Array< ModelShareholderShareIntervalFilterInput | null > | null,
+  not?: ModelShareholderShareIntervalFilterInput | null,
+};
+
 export type ModelUserFilterInput = {
   id?: ModelIDFilterInput | null,
   name?: ModelStringFilterInput | null,
@@ -162,7 +215,7 @@ export type CreateCompanyMutation = {
       nextToken: string | null,
     } | null,
     shareIntervals:  {
-      __typename: "ModelShareIntervalConnection",
+      __typename: "ModelCompanyShareIntervalConnection",
       nextToken: string | null,
     } | null,
   } | null,
@@ -184,7 +237,7 @@ export type UpdateCompanyMutation = {
       nextToken: string | null,
     } | null,
     shareIntervals:  {
-      __typename: "ModelShareIntervalConnection",
+      __typename: "ModelCompanyShareIntervalConnection",
       nextToken: string | null,
     } | null,
   } | null,
@@ -206,9 +259,75 @@ export type DeleteCompanyMutation = {
       nextToken: string | null,
     } | null,
     shareIntervals:  {
-      __typename: "ModelShareIntervalConnection",
+      __typename: "ModelCompanyShareIntervalConnection",
       nextToken: string | null,
     } | null,
+  } | null,
+};
+
+export type CreateCompanyShareIntervalMutationVariables = {
+  input: CreateCompanyShareIntervalInput,
+};
+
+export type CreateCompanyShareIntervalMutation = {
+  createCompanyShareInterval:  {
+    __typename: "CompanyShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    company:  {
+      __typename: "Company",
+      id: string,
+      name: string,
+      nif: string | null,
+      placeOfBusiness: string | null,
+    },
+  } | null,
+};
+
+export type UpdateCompanyShareIntervalMutationVariables = {
+  input: UpdateCompanyShareIntervalInput,
+};
+
+export type UpdateCompanyShareIntervalMutation = {
+  updateCompanyShareInterval:  {
+    __typename: "CompanyShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    company:  {
+      __typename: "Company",
+      id: string,
+      name: string,
+      nif: string | null,
+      placeOfBusiness: string | null,
+    },
+  } | null,
+};
+
+export type DeleteCompanyShareIntervalMutationVariables = {
+  input: DeleteCompanyShareIntervalInput,
+};
+
+export type DeleteCompanyShareIntervalMutation = {
+  deleteCompanyShareInterval:  {
+    __typename: "CompanyShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    company:  {
+      __typename: "Company",
+      id: string,
+      name: string,
+      nif: string | null,
+      placeOfBusiness: string | null,
+    },
   } | null,
 };
 
@@ -281,48 +400,111 @@ export type DeleteCompanyUserMutation = {
   } | null,
 };
 
-export type CreateShareIntervalMutationVariables = {
-  input: CreateShareIntervalInput,
+export type CreateShareholderMutationVariables = {
+  input: CreateShareholderInput,
 };
 
-export type CreateShareIntervalMutation = {
-  createShareInterval:  {
-    __typename: "ShareInterval",
+export type CreateShareholderMutation = {
+  createShareholder:  {
+    __typename: "Shareholder",
     id: string,
-    start: number,
-    end: number,
-    value: number | null,
-    voteWeight: number | null,
+    name: string,
+    shareIntervals:  {
+      __typename: "ModelShareholderShareIntervalConnection",
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
-export type UpdateShareIntervalMutationVariables = {
-  input: UpdateShareIntervalInput,
+export type UpdateShareholderMutationVariables = {
+  input: UpdateShareholderInput,
 };
 
-export type UpdateShareIntervalMutation = {
-  updateShareInterval:  {
-    __typename: "ShareInterval",
+export type UpdateShareholderMutation = {
+  updateShareholder:  {
+    __typename: "Shareholder",
     id: string,
-    start: number,
-    end: number,
-    value: number | null,
-    voteWeight: number | null,
+    name: string,
+    shareIntervals:  {
+      __typename: "ModelShareholderShareIntervalConnection",
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
-export type DeleteShareIntervalMutationVariables = {
-  input: DeleteShareIntervalInput,
+export type DeleteShareholderMutationVariables = {
+  input: DeleteShareholderInput,
 };
 
-export type DeleteShareIntervalMutation = {
-  deleteShareInterval:  {
-    __typename: "ShareInterval",
+export type DeleteShareholderMutation = {
+  deleteShareholder:  {
+    __typename: "Shareholder",
+    id: string,
+    name: string,
+    shareIntervals:  {
+      __typename: "ModelShareholderShareIntervalConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type CreateShareholderShareIntervalMutationVariables = {
+  input: CreateShareholderShareIntervalInput,
+};
+
+export type CreateShareholderShareIntervalMutation = {
+  createShareholderShareInterval:  {
+    __typename: "ShareholderShareInterval",
     id: string,
     start: number,
     end: number,
     value: number | null,
     voteWeight: number | null,
+    shareholder:  {
+      __typename: "Shareholder",
+      id: string,
+      name: string,
+    },
+  } | null,
+};
+
+export type UpdateShareholderShareIntervalMutationVariables = {
+  input: UpdateShareholderShareIntervalInput,
+};
+
+export type UpdateShareholderShareIntervalMutation = {
+  updateShareholderShareInterval:  {
+    __typename: "ShareholderShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    shareholder:  {
+      __typename: "Shareholder",
+      id: string,
+      name: string,
+    },
+  } | null,
+};
+
+export type DeleteShareholderShareIntervalMutationVariables = {
+  input: DeleteShareholderShareIntervalInput,
+};
+
+export type DeleteShareholderShareIntervalMutation = {
+  deleteShareholderShareInterval:  {
+    __typename: "ShareholderShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    shareholder:  {
+      __typename: "Shareholder",
+      id: string,
+      name: string,
+    },
   } | null,
 };
 
@@ -390,7 +572,7 @@ export type GetCompanyQuery = {
       nextToken: string | null,
     } | null,
     shareIntervals:  {
-      __typename: "ModelShareIntervalConnection",
+      __typename: "ModelCompanyShareIntervalConnection",
       nextToken: string | null,
     } | null,
   } | null,
@@ -416,32 +598,114 @@ export type ListCompanysQuery = {
   } | null,
 };
 
-export type GetShareIntervalQueryVariables = {
+export type GetCompanyShareIntervalQueryVariables = {
   id: string,
 };
 
-export type GetShareIntervalQuery = {
-  getShareInterval:  {
-    __typename: "ShareInterval",
+export type GetCompanyShareIntervalQuery = {
+  getCompanyShareInterval:  {
+    __typename: "CompanyShareInterval",
     id: string,
     start: number,
     end: number,
     value: number | null,
     voteWeight: number | null,
+    company:  {
+      __typename: "Company",
+      id: string,
+      name: string,
+      nif: string | null,
+      placeOfBusiness: string | null,
+    },
   } | null,
 };
 
-export type ListShareIntervalsQueryVariables = {
-  filter?: ModelShareIntervalFilterInput | null,
+export type ListCompanyShareIntervalsQueryVariables = {
+  filter?: ModelCompanyShareIntervalFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListShareIntervalsQuery = {
-  listShareIntervals:  {
-    __typename: "ModelShareIntervalConnection",
+export type ListCompanyShareIntervalsQuery = {
+  listCompanyShareIntervals:  {
+    __typename: "ModelCompanyShareIntervalConnection",
     items:  Array< {
-      __typename: "ShareInterval",
+      __typename: "CompanyShareInterval",
+      id: string,
+      start: number,
+      end: number,
+      value: number | null,
+      voteWeight: number | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetShareholderQueryVariables = {
+  id: string,
+};
+
+export type GetShareholderQuery = {
+  getShareholder:  {
+    __typename: "Shareholder",
+    id: string,
+    name: string,
+    shareIntervals:  {
+      __typename: "ModelShareholderShareIntervalConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type ListShareholdersQueryVariables = {
+  filter?: ModelShareholderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListShareholdersQuery = {
+  listShareholders:  {
+    __typename: "ModelShareholderConnection",
+    items:  Array< {
+      __typename: "Shareholder",
+      id: string,
+      name: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetShareholderShareIntervalQueryVariables = {
+  id: string,
+};
+
+export type GetShareholderShareIntervalQuery = {
+  getShareholderShareInterval:  {
+    __typename: "ShareholderShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    shareholder:  {
+      __typename: "Shareholder",
+      id: string,
+      name: string,
+    },
+  } | null,
+};
+
+export type ListShareholderShareIntervalsQueryVariables = {
+  filter?: ModelShareholderShareIntervalFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListShareholderShareIntervalsQuery = {
+  listShareholderShareIntervals:  {
+    __typename: "ModelShareholderShareIntervalConnection",
+    items:  Array< {
+      __typename: "ShareholderShareInterval",
       id: string,
       start: number,
       end: number,
@@ -498,7 +762,7 @@ export type OnCreateCompanySubscription = {
       nextToken: string | null,
     } | null,
     shareIntervals:  {
-      __typename: "ModelShareIntervalConnection",
+      __typename: "ModelCompanyShareIntervalConnection",
       nextToken: string | null,
     } | null,
   } | null,
@@ -516,7 +780,7 @@ export type OnUpdateCompanySubscription = {
       nextToken: string | null,
     } | null,
     shareIntervals:  {
-      __typename: "ModelShareIntervalConnection",
+      __typename: "ModelCompanyShareIntervalConnection",
       nextToken: string | null,
     } | null,
   } | null,
@@ -534,9 +798,63 @@ export type OnDeleteCompanySubscription = {
       nextToken: string | null,
     } | null,
     shareIntervals:  {
-      __typename: "ModelShareIntervalConnection",
+      __typename: "ModelCompanyShareIntervalConnection",
       nextToken: string | null,
     } | null,
+  } | null,
+};
+
+export type OnCreateCompanyShareIntervalSubscription = {
+  onCreateCompanyShareInterval:  {
+    __typename: "CompanyShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    company:  {
+      __typename: "Company",
+      id: string,
+      name: string,
+      nif: string | null,
+      placeOfBusiness: string | null,
+    },
+  } | null,
+};
+
+export type OnUpdateCompanyShareIntervalSubscription = {
+  onUpdateCompanyShareInterval:  {
+    __typename: "CompanyShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    company:  {
+      __typename: "Company",
+      id: string,
+      name: string,
+      nif: string | null,
+      placeOfBusiness: string | null,
+    },
+  } | null,
+};
+
+export type OnDeleteCompanyShareIntervalSubscription = {
+  onDeleteCompanyShareInterval:  {
+    __typename: "CompanyShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    company:  {
+      __typename: "Company",
+      id: string,
+      name: string,
+      nif: string | null,
+      placeOfBusiness: string | null,
+    },
   } | null,
 };
 
@@ -597,36 +915,87 @@ export type OnDeleteCompanyUserSubscription = {
   } | null,
 };
 
-export type OnCreateShareIntervalSubscription = {
-  onCreateShareInterval:  {
-    __typename: "ShareInterval",
+export type OnCreateShareholderSubscription = {
+  onCreateShareholder:  {
+    __typename: "Shareholder",
     id: string,
-    start: number,
-    end: number,
-    value: number | null,
-    voteWeight: number | null,
+    name: string,
+    shareIntervals:  {
+      __typename: "ModelShareholderShareIntervalConnection",
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
-export type OnUpdateShareIntervalSubscription = {
-  onUpdateShareInterval:  {
-    __typename: "ShareInterval",
+export type OnUpdateShareholderSubscription = {
+  onUpdateShareholder:  {
+    __typename: "Shareholder",
     id: string,
-    start: number,
-    end: number,
-    value: number | null,
-    voteWeight: number | null,
+    name: string,
+    shareIntervals:  {
+      __typename: "ModelShareholderShareIntervalConnection",
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
-export type OnDeleteShareIntervalSubscription = {
-  onDeleteShareInterval:  {
-    __typename: "ShareInterval",
+export type OnDeleteShareholderSubscription = {
+  onDeleteShareholder:  {
+    __typename: "Shareholder",
+    id: string,
+    name: string,
+    shareIntervals:  {
+      __typename: "ModelShareholderShareIntervalConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnCreateShareholderShareIntervalSubscription = {
+  onCreateShareholderShareInterval:  {
+    __typename: "ShareholderShareInterval",
     id: string,
     start: number,
     end: number,
     value: number | null,
     voteWeight: number | null,
+    shareholder:  {
+      __typename: "Shareholder",
+      id: string,
+      name: string,
+    },
+  } | null,
+};
+
+export type OnUpdateShareholderShareIntervalSubscription = {
+  onUpdateShareholderShareInterval:  {
+    __typename: "ShareholderShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    shareholder:  {
+      __typename: "Shareholder",
+      id: string,
+      name: string,
+    },
+  } | null,
+};
+
+export type OnDeleteShareholderShareIntervalSubscription = {
+  onDeleteShareholderShareInterval:  {
+    __typename: "ShareholderShareInterval",
+    id: string,
+    start: number,
+    end: number,
+    value: number | null,
+    voteWeight: number | null,
+    shareholder:  {
+      __typename: "Shareholder",
+      id: string,
+      name: string,
+    },
   } | null,
 };
 
