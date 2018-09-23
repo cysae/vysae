@@ -10,7 +10,8 @@ import aws_exports from '../../../../aws-exports.js'
 import { print as gqlToString } from 'graphql/language'
 import {
   CreateCompanyShareInterval,
-  UpdateCompanyShareInterval
+  UpdateCompanyShareInterval,
+  DeleteCompanyShareInterval
 } from '../../../../graphql/mutations'
 
 
@@ -200,7 +201,10 @@ class Shares extends React.Component {
         })
       )
         .then(res => { this.setState({ editingId: null }) })
-        .catch(err => message.error(err))
+        .catch(err => {
+          message.error('error')
+          console.err(err)
+        })
         .finally(() => hideLoadingMsg())
     });
   }
@@ -209,11 +213,15 @@ class Shares extends React.Component {
     this.setState({ editingId: '' })
   };
 
-  delete = (start) => {
-    const { deleteCompanyShareInterval } = this.props
-    deleteCompanyShareInterval(start)
-
-    message.success('Borrado')
+  delete = (id) => {
+    const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
+    API.graphql(graphqlOperation(gqlToString(DeleteCompanyShareInterval), { input: { id } } ))
+      .then(res => { this.setState({ editingId: null }) })
+      .catch(err => {
+        console.error(err)
+        message.error('error')
+      })
+      .finally(() => hideLoadingMsg())
   }
 
   render() {
