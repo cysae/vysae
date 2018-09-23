@@ -3,11 +3,12 @@ import React, { Component } from 'react'
 import { Form, Button, Input, message } from 'antd'
 // services
 import getCompany from '../../../../services/getCompany'
-// graphql
-import { compose, graphql } from 'react-apollo'
-import MutationUpdateCompany from '../../../../queries/MutationUpdateCompany'
-import QueryGetCompany from '../../../../queries/QueryGetCompany'
-import QueryGetUser from '../../../../queries/QueryGetUser'
+import { compose } from 'recompose'
+// amplify
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
+import aws_exports from '../../../../aws-exports.js'
+import { print as gqlToString } from 'graphql/language'
+import { UpdateCompany } from '../../../../graphql/mutations'
 
 const FormItem = Form.Item
 
@@ -27,15 +28,20 @@ class Basics extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { form : { validateFields }, updateCompany } = this.props
+    const {
+      form : { validateFields },
+      match: { params: { companyId }},
+      updateCompany
+    } = this.props
     validateFields((err, values) => {
       if (!err) {
-        const hide = message.loading('Updating Company')
-        updateCompany(values.name, values.placeOfBusiness, values.nif)
+        const hideLoadingMsg = message.loading('Updating Company...')
+        API.graphql(graphqlOperation(gqlToString(UpdateCompany), { input: { id: companyId, name: values.name }}))
           .then(() => {
-            hide()
-            message.success('Saved', 2.5)
+            message.success('Company updated', 2.5)
           })
+          .catch(err => console.error(err))
+          .finally(() => hideLoadingMsg())
       }
     })
   }
@@ -79,67 +85,6 @@ class Basics extends Component {
 }
 
 export default compose(
-  graphql(MutationUpdateCompany, {
-    props: props => ({
-      updateCompany: (name, placeOfBusiness, nif) => {
-        const companyId = props.ownProps.match.params.companyId
-        console.log('mut', companyId)
-        return props.mutate({
-          variables: {
-            companyId,
-            name,
-            placeOfBusiness,
-            nif,
-          },
-          optimisticResponse: {
-            updateCompany: {
-              __typename: "Company",
-              companyId: 'id',
-              name,
-              placeOfBusiness,
-              nif,
-            }
-          },
-          update: (proxy, { data }) => {
-            // getCompany Query
-            const newData = proxy.readQuery({
-              query: QueryGetCompany,
-              variables: {
-                companyId
-              }
-            })
-
-            newData.getCompany = {
-              ...newData.getCompany,
-              ...data.updateCompany
-            }
-
-            proxy.writeQuery({
-              query: QueryGetCompany,
-              variables: { companyId },
-              data: newData
-            })
-
-            // getUser Query
-            const getUserData = proxy.readQuery({
-              query: QueryGetUser
-            })
-
-            for( const company of getUserData.getUser.companies.items ) {
-              if( company.companyId === companyId ) {
-                console.log('si')
-                company.name = data.updateCompany.name
-              }
-            }
-            proxy.writeQuery({
-              query: QueryGetUser,
-              data: getUserData
-            })
-          }
-        })
-      }
-    })
-  }),
   Form.create(),
   getCompany,
 )(Basics)
