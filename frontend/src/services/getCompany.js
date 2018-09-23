@@ -6,7 +6,12 @@ import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
 import aws_exports from '../aws-exports.js'
 import { print as gqlToString } from 'graphql/language'
 import { GetCompany } from '../graphql/queries.js'
-import { OnCreateCompanyShareInterval } from '../graphql/subscriptions.js'
+import {
+  OnCreateCompanyShareInterval,
+  OnUpdateCompanyShareInterval,
+} from '../graphql/subscriptions.js'
+
+
 // recompose
 import { compose } from 'recompose'
 // services
@@ -22,6 +27,7 @@ const getCurrentCompany = (WrappedComponent) => {
     }
 
     createCompanyShareIntervalSubscription = null
+    updateCompanyShareIntervalSubscription = null
 
     componentDidMount() {
       const { match: { params: { companyId }}} = this.props
@@ -34,6 +40,7 @@ const getCurrentCompany = (WrappedComponent) => {
         })
         .catch(error => { this.setState({ error })})
 
+      // create shareinterval subscription
       this.createCompanyShareIntervalSubscription = API.graphql(
         graphqlOperation(gqlToString(OnCreateCompanyShareInterval))
       ).subscribe({
@@ -45,6 +52,29 @@ const getCurrentCompany = (WrappedComponent) => {
               shareIntervals: {
                 ...this.state.company.shareIntervals,
                 items: [...this.state.company.shareIntervals.items, onCreateCompanyShareInterval],
+              }
+            }
+          }
+          this.setState(newState)
+        }
+      })
+
+      // update shareinterval subscription
+      this.updateCompanyShareIntervalSubscription = API.graphql(
+        graphqlOperation(gqlToString(OnUpdateCompanyShareInterval))
+      ).subscribe({
+        next: ({ value: { data: { onUpdateCompanyShareInterval }}}) => {
+          const newState = {
+            ...this.state,
+            company: {
+              ...this.state.company,
+              shareIntervals: {
+                ...this.state.company.shareIntervals,
+                items: this.state.company.shareIntervals.items.map(shareInterval => {
+                  if(shareInterval.id === onUpdateCompanyShareInterval.id)
+                    shareInterval = onUpdateCompanyShareInterval
+                  return shareInterval
+                }),
               }
             }
           }
@@ -82,6 +112,7 @@ const getCurrentCompany = (WrappedComponent) => {
 
     componentWillUnmount() {
       this.createCompanyShareIntervalSubscription.unsubscribe()
+      this.updateCompanyShareIntervalSubscription.unsubscribe()
     }
 
     render() {
