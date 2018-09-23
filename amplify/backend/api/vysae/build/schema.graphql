@@ -1,0 +1,578 @@
+type Mutation {
+  createCompany(input: CreateCompanyInput!): Company
+  updateCompany(input: UpdateCompanyInput!): Company
+  deleteCompany(input: DeleteCompanyInput!): Company
+  createCompanyUser(input: CreateCompanyUserInput!): CompanyUser
+  updateCompanyUser(input: UpdateCompanyUserInput!): CompanyUser
+  deleteCompanyUser(input: DeleteCompanyUserInput!): CompanyUser
+  createCompanyShareInterval(input: CreateCompanyShareIntervalInput!): CompanyShareInterval
+  updateCompanyShareInterval(input: UpdateCompanyShareIntervalInput!): CompanyShareInterval
+  deleteCompanyShareInterval(input: DeleteCompanyShareIntervalInput!): CompanyShareInterval
+  createMajority(input: CreateMajorityInput!): Majority
+  updateMajority(input: UpdateMajorityInput!): Majority
+  deleteMajority(input: DeleteMajorityInput!): Majority
+  createMajorityAgreement(input: CreateMajorityAgreementInput!): MajorityAgreement
+  updateMajorityAgreement(input: UpdateMajorityAgreementInput!): MajorityAgreement
+  deleteMajorityAgreement(input: DeleteMajorityAgreementInput!): MajorityAgreement
+  createMeeting(input: CreateMeetingInput!): Meeting
+  updateMeeting(input: UpdateMeetingInput!): Meeting
+  deleteMeeting(input: DeleteMeetingInput!): Meeting
+  createMeetingAgreement(input: CreateMeetingAgreementInput!): MeetingAgreement
+  updateMeetingAgreement(input: UpdateMeetingAgreementInput!): MeetingAgreement
+  deleteMeetingAgreement(input: DeleteMeetingAgreementInput!): MeetingAgreement
+  createShareholder(input: CreateShareholderInput!): Shareholder
+  updateShareholder(input: UpdateShareholderInput!): Shareholder
+  deleteShareholder(input: DeleteShareholderInput!): Shareholder
+  createShareholderShareInterval(input: CreateShareholderShareIntervalInput!): ShareholderShareInterval
+  updateShareholderShareInterval(input: UpdateShareholderShareIntervalInput!): ShareholderShareInterval
+  deleteShareholderShareInterval(input: DeleteShareholderShareIntervalInput!): ShareholderShareInterval
+  createUser(input: CreateUserInput!): User
+  updateUser(input: UpdateUserInput!): User
+  deleteUser(input: DeleteUserInput!): User
+  createVote(input: CreateVoteInput!): Vote
+  updateVote(input: UpdateVoteInput!): Vote
+  deleteVote(input: DeleteVoteInput!): Vote
+}
+
+type Query {
+  getCompany(id: ID!): Company
+  listCompanys(filter: ModelCompanyFilterInput, limit: Int, nextToken: String): ModelCompanyConnection
+  getCompanyShareInterval(id: ID!): CompanyShareInterval
+  listCompanyShareIntervals(filter: ModelCompanyShareIntervalFilterInput, limit: Int, nextToken: String): ModelCompanyShareIntervalConnection
+  getMajority(id: ID!): Majority
+  listMajoritys(filter: ModelMajorityFilterInput, limit: Int, nextToken: String): ModelMajorityConnection
+  getMajorityAgreement(id: ID!): MajorityAgreement
+  listMajorityAgreements(filter: ModelMajorityAgreementFilterInput, limit: Int, nextToken: String): ModelMajorityAgreementConnection
+  getMeeting(id: ID!): Meeting
+  listMeetings(filter: ModelMeetingFilterInput, limit: Int, nextToken: String): ModelMeetingConnection
+  getMeetingAgreement(id: ID!): MeetingAgreement
+  listMeetingAgreements(filter: ModelMeetingAgreementFilterInput, limit: Int, nextToken: String): ModelMeetingAgreementConnection
+  getShareholder(id: ID!): Shareholder
+  listShareholders(filter: ModelShareholderFilterInput, limit: Int, nextToken: String): ModelShareholderConnection
+  getShareholderShareInterval(id: ID!): ShareholderShareInterval
+  listShareholderShareIntervals(filter: ModelShareholderShareIntervalFilterInput, limit: Int, nextToken: String): ModelShareholderShareIntervalConnection
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  getVote(id: ID!): Vote
+  listVotes(filter: ModelVoteFilterInput, limit: Int, nextToken: String): ModelVoteConnection
+}
+
+type Subscription {
+  onCreateCompany: Company @aws_subscribe(mutations: ["createCompany"])
+  onUpdateCompany: Company @aws_subscribe(mutations: ["updateCompany"])
+  onDeleteCompany: Company @aws_subscribe(mutations: ["deleteCompany"])
+  onCreateCompanyUser: CompanyUser @aws_subscribe(mutations: ["createCompanyUser"])
+  onUpdateCompanyUser: CompanyUser @aws_subscribe(mutations: ["updateCompanyUser"])
+  onDeleteCompanyUser: CompanyUser @aws_subscribe(mutations: ["deleteCompanyUser"])
+  onCreateCompanyShareInterval: CompanyShareInterval @aws_subscribe(mutations: ["createCompanyShareInterval"])
+  onUpdateCompanyShareInterval: CompanyShareInterval @aws_subscribe(mutations: ["updateCompanyShareInterval"])
+  onDeleteCompanyShareInterval: CompanyShareInterval @aws_subscribe(mutations: ["deleteCompanyShareInterval"])
+  onCreateMajority: Majority @aws_subscribe(mutations: ["createMajority"])
+  onUpdateMajority: Majority @aws_subscribe(mutations: ["updateMajority"])
+  onDeleteMajority: Majority @aws_subscribe(mutations: ["deleteMajority"])
+  onCreateMajorityAgreement: MajorityAgreement @aws_subscribe(mutations: ["createMajorityAgreement"])
+  onUpdateMajorityAgreement: MajorityAgreement @aws_subscribe(mutations: ["updateMajorityAgreement"])
+  onDeleteMajorityAgreement: MajorityAgreement @aws_subscribe(mutations: ["deleteMajorityAgreement"])
+  onCreateMeeting: Meeting @aws_subscribe(mutations: ["createMeeting"])
+  onUpdateMeeting: Meeting @aws_subscribe(mutations: ["updateMeeting"])
+  onDeleteMeeting: Meeting @aws_subscribe(mutations: ["deleteMeeting"])
+  onCreateMeetingAgreement: MeetingAgreement @aws_subscribe(mutations: ["createMeetingAgreement"])
+  onUpdateMeetingAgreement: MeetingAgreement @aws_subscribe(mutations: ["updateMeetingAgreement"])
+  onDeleteMeetingAgreement: MeetingAgreement @aws_subscribe(mutations: ["deleteMeetingAgreement"])
+  onCreateShareholder: Shareholder @aws_subscribe(mutations: ["createShareholder"])
+  onUpdateShareholder: Shareholder @aws_subscribe(mutations: ["updateShareholder"])
+  onDeleteShareholder: Shareholder @aws_subscribe(mutations: ["deleteShareholder"])
+  onCreateShareholderShareInterval: ShareholderShareInterval @aws_subscribe(mutations: ["createShareholderShareInterval"])
+  onUpdateShareholderShareInterval: ShareholderShareInterval @aws_subscribe(mutations: ["updateShareholderShareInterval"])
+  onDeleteShareholderShareInterval: ShareholderShareInterval @aws_subscribe(mutations: ["deleteShareholderShareInterval"])
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
+  onCreateVote: Vote @aws_subscribe(mutations: ["createVote"])
+  onUpdateVote: Vote @aws_subscribe(mutations: ["updateVote"])
+  onDeleteVote: Vote @aws_subscribe(mutations: ["deleteVote"])
+}
+
+type Company {
+  id: ID!
+  name: String!
+  nif: String
+  placeOfBusiness: String
+  majorities(filter: ModelMajorityFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelMajorityConnection
+  meetings(filter: ModelMeetingFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelMeetingConnection
+  shareholders(filter: ModelShareholderFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelShareholderConnection
+  shareIntervals(filter: ModelCompanyShareIntervalFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyShareIntervalConnection
+  users(filter: ModelCompanyUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyUserConnection
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelCompanyConnection {
+  items: [Company]
+  nextToken: String
+}
+
+input ModelStringFilterInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+}
+
+input ModelIDFilterInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+}
+
+input ModelIntFilterInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  contains: Int
+  notContains: Int
+  between: [Int]
+}
+
+input ModelFloatFilterInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  contains: Float
+  notContains: Float
+  between: [Float]
+}
+
+input ModelBooleanFilterInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelCompanyFilterInput {
+  id: ModelIDFilterInput
+  name: ModelStringFilterInput
+  nif: ModelStringFilterInput
+  placeOfBusiness: ModelStringFilterInput
+  and: [ModelCompanyFilterInput]
+  or: [ModelCompanyFilterInput]
+  not: ModelCompanyFilterInput
+}
+
+input CreateCompanyInput {
+  name: String!
+  nif: String
+  placeOfBusiness: String
+}
+
+input UpdateCompanyInput {
+  id: ID!
+  name: String
+  nif: String
+  placeOfBusiness: String
+}
+
+input DeleteCompanyInput {
+  id: ID
+}
+
+type CompanyUser {
+  id: ID!
+  company: Company!
+  user: User!
+}
+
+input CreateCompanyUserInput {
+  companyUserCompanyId: ID
+  companyUserUserId: ID
+}
+
+input UpdateCompanyUserInput {
+  id: ID!
+  companyUserCompanyId: ID
+  companyUserUserId: ID
+}
+
+input DeleteCompanyUserInput {
+  id: ID
+}
+
+type CompanyShareInterval {
+  id: ID!
+  start: Int!
+  end: Int!
+  value: Float
+  voteWeight: Float
+  company: Company!
+}
+
+type ModelCompanyShareIntervalConnection {
+  items: [CompanyShareInterval]
+  nextToken: String
+}
+
+input ModelCompanyShareIntervalFilterInput {
+  id: ModelIDFilterInput
+  start: ModelIntFilterInput
+  end: ModelIntFilterInput
+  value: ModelFloatFilterInput
+  voteWeight: ModelFloatFilterInput
+  and: [ModelCompanyShareIntervalFilterInput]
+  or: [ModelCompanyShareIntervalFilterInput]
+  not: ModelCompanyShareIntervalFilterInput
+}
+
+input CreateCompanyShareIntervalInput {
+  start: Int!
+  end: Int!
+  value: Float
+  voteWeight: Float
+  companyShareIntervalCompanyId: ID
+}
+
+input UpdateCompanyShareIntervalInput {
+  id: ID!
+  start: Int
+  end: Int
+  value: Float
+  voteWeight: Float
+  companyShareIntervalCompanyId: ID
+}
+
+input DeleteCompanyShareIntervalInput {
+  id: ID
+}
+
+type Majority {
+  agreements(filter: ModelMajorityAgreementFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelMajorityAgreementConnection
+  id: ID!
+  company: Company!
+  name: String!
+  relativeThreshold: Float!
+  absoluteThreshold: Float!
+  minimumVotes: Int!
+}
+
+type ModelMajorityConnection {
+  items: [Majority]
+  nextToken: String
+}
+
+input ModelMajorityFilterInput {
+  id: ModelIDFilterInput
+  name: ModelStringFilterInput
+  relativeThreshold: ModelFloatFilterInput
+  absoluteThreshold: ModelFloatFilterInput
+  minimumVotes: ModelIntFilterInput
+  and: [ModelMajorityFilterInput]
+  or: [ModelMajorityFilterInput]
+  not: ModelMajorityFilterInput
+}
+
+input CreateMajorityInput {
+  name: String!
+  relativeThreshold: Float!
+  absoluteThreshold: Float!
+  minimumVotes: Int!
+  majorityCompanyId: ID
+}
+
+input UpdateMajorityInput {
+  id: ID!
+  name: String
+  relativeThreshold: Float
+  absoluteThreshold: Float
+  minimumVotes: Int
+  majorityCompanyId: ID
+}
+
+input DeleteMajorityInput {
+  id: ID
+}
+
+type MajorityAgreement {
+  id: ID!
+  majority: Majority!
+  name: String!
+}
+
+type ModelMajorityAgreementConnection {
+  items: [MajorityAgreement]
+  nextToken: String
+}
+
+input ModelMajorityAgreementFilterInput {
+  id: ModelIDFilterInput
+  name: ModelStringFilterInput
+  and: [ModelMajorityAgreementFilterInput]
+  or: [ModelMajorityAgreementFilterInput]
+  not: ModelMajorityAgreementFilterInput
+}
+
+input CreateMajorityAgreementInput {
+  name: String!
+  majorityAgreementMajorityId: ID
+}
+
+input UpdateMajorityAgreementInput {
+  id: ID!
+  name: String
+  majorityAgreementMajorityId: ID
+}
+
+input DeleteMajorityAgreementInput {
+  id: ID
+}
+
+type Meeting {
+  id: ID!
+  agreements(filter: ModelMeetingAgreementFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelMeetingAgreementConnection
+  start: String!
+  end: String!
+  company: Company!
+}
+
+type ModelMeetingConnection {
+  items: [Meeting]
+  nextToken: String
+}
+
+input ModelMeetingFilterInput {
+  id: ModelIDFilterInput
+  start: ModelStringFilterInput
+  end: ModelStringFilterInput
+  and: [ModelMeetingFilterInput]
+  or: [ModelMeetingFilterInput]
+  not: ModelMeetingFilterInput
+}
+
+input CreateMeetingInput {
+  start: String!
+  end: String!
+  meetingCompanyId: ID
+}
+
+input UpdateMeetingInput {
+  id: ID!
+  start: String
+  end: String
+  meetingCompanyId: ID
+}
+
+input DeleteMeetingInput {
+  id: ID
+}
+
+type MeetingAgreement {
+  id: ID!
+  name: String!
+  meeting: Meeting!
+  votes(filter: ModelVoteFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelVoteConnection
+}
+
+type ModelMeetingAgreementConnection {
+  items: [MeetingAgreement]
+  nextToken: String
+}
+
+input ModelMeetingAgreementFilterInput {
+  id: ModelIDFilterInput
+  name: ModelStringFilterInput
+  and: [ModelMeetingAgreementFilterInput]
+  or: [ModelMeetingAgreementFilterInput]
+  not: ModelMeetingAgreementFilterInput
+}
+
+input CreateMeetingAgreementInput {
+  name: String!
+  meetingAgreementMeetingId: ID
+}
+
+input UpdateMeetingAgreementInput {
+  id: ID!
+  name: String
+  meetingAgreementMeetingId: ID
+}
+
+input DeleteMeetingAgreementInput {
+  id: ID
+}
+
+type Shareholder {
+  id: ID!
+  name: String
+  company: Company!
+  user: User
+  shareIntervals(filter: ModelShareholderShareIntervalFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelShareholderShareIntervalConnection
+}
+
+type ModelShareholderConnection {
+  items: [Shareholder]
+  nextToken: String
+}
+
+input ModelShareholderFilterInput {
+  id: ModelIDFilterInput
+  name: ModelStringFilterInput
+  and: [ModelShareholderFilterInput]
+  or: [ModelShareholderFilterInput]
+  not: ModelShareholderFilterInput
+}
+
+input CreateShareholderInput {
+  name: String
+  shareholderCompanyId: ID
+  shareholderUserId: ID
+}
+
+input UpdateShareholderInput {
+  id: ID!
+  name: String
+  shareholderCompanyId: ID
+  shareholderUserId: ID
+}
+
+input DeleteShareholderInput {
+  id: ID
+}
+
+type ShareholderShareInterval {
+  id: ID!
+  start: Int!
+  end: Int!
+  shareholder: Shareholder!
+}
+
+type ModelShareholderShareIntervalConnection {
+  items: [ShareholderShareInterval]
+  nextToken: String
+}
+
+input ModelShareholderShareIntervalFilterInput {
+  id: ModelIDFilterInput
+  start: ModelIntFilterInput
+  end: ModelIntFilterInput
+  and: [ModelShareholderShareIntervalFilterInput]
+  or: [ModelShareholderShareIntervalFilterInput]
+  not: ModelShareholderShareIntervalFilterInput
+}
+
+input CreateShareholderShareIntervalInput {
+  start: Int!
+  end: Int!
+  shareholderShareIntervalShareholderId: ID
+}
+
+input UpdateShareholderShareIntervalInput {
+  id: ID!
+  start: Int
+  end: Int
+  shareholderShareIntervalShareholderId: ID
+}
+
+input DeleteShareholderShareIntervalInput {
+  id: ID
+}
+
+type User {
+  id: ID!
+  name: String
+  companies(filter: ModelCompanyUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyUserConnection
+  shareholders(filter: ModelShareholderFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelShareholderConnection
+}
+
+type ModelUserConnection {
+  items: [User]
+  nextToken: String
+}
+
+input ModelUserFilterInput {
+  id: ModelIDFilterInput
+  name: ModelStringFilterInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  name: String
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+}
+
+input DeleteUserInput {
+  id: ID
+}
+
+type Vote {
+  id: ID!
+  agreement: MeetingAgreement
+  result: Int!
+  shareholder: Shareholder!
+}
+
+type ModelVoteConnection {
+  items: [Vote]
+  nextToken: String
+}
+
+input ModelVoteFilterInput {
+  id: ModelIDFilterInput
+  result: ModelIntFilterInput
+  and: [ModelVoteFilterInput]
+  or: [ModelVoteFilterInput]
+  not: ModelVoteFilterInput
+}
+
+input CreateVoteInput {
+  result: Int!
+  voteAgreementId: ID
+  voteShareholderId: ID
+}
+
+input UpdateVoteInput {
+  id: ID!
+  result: Int
+  voteAgreementId: ID
+  voteShareholderId: ID
+}
+
+input DeleteVoteInput {
+  id: ID
+}
+
+type ModelCompanyUserConnection {
+  items: [CompanyUser]
+  nextToken: String
+}
+
+input ModelCompanyUserFilterInput {
+  id: ModelIDFilterInput
+  and: [ModelCompanyUserFilterInput]
+  or: [ModelCompanyUserFilterInput]
+  not: ModelCompanyUserFilterInput
+}

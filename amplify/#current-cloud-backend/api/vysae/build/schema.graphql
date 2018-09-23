@@ -1,0 +1,250 @@
+type Mutation {
+  createCompany(input: CreateCompanyInput!): Company
+  updateCompany(input: UpdateCompanyInput!): Company
+  deleteCompany(input: DeleteCompanyInput!): Company
+  createCompanyUser(input: CreateCompanyUserInput!): CompanyUser
+  updateCompanyUser(input: UpdateCompanyUserInput!): CompanyUser
+  deleteCompanyUser(input: DeleteCompanyUserInput!): CompanyUser
+  createCompanyShareInterval(input: CreateCompanyShareIntervalInput!): CompanyShareInterval
+  updateCompanyShareInterval(input: UpdateCompanyShareIntervalInput!): CompanyShareInterval
+  deleteCompanyShareInterval(input: DeleteCompanyShareIntervalInput!): CompanyShareInterval
+  createUser(input: CreateUserInput!): User
+  updateUser(input: UpdateUserInput!): User
+  deleteUser(input: DeleteUserInput!): User
+}
+
+type Query {
+  getCompany(id: ID!): Company
+  listCompanys(filter: ModelCompanyFilterInput, limit: Int, nextToken: String): ModelCompanyConnection
+  getCompanyShareInterval(id: ID!): CompanyShareInterval
+  listCompanyShareIntervals(filter: ModelCompanyShareIntervalFilterInput, limit: Int, nextToken: String): ModelCompanyShareIntervalConnection
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+}
+
+type Subscription {
+  onCreateCompany: Company @aws_subscribe(mutations: ["createCompany"])
+  onUpdateCompany: Company @aws_subscribe(mutations: ["updateCompany"])
+  onDeleteCompany: Company @aws_subscribe(mutations: ["deleteCompany"])
+  onCreateCompanyUser: CompanyUser @aws_subscribe(mutations: ["createCompanyUser"])
+  onUpdateCompanyUser: CompanyUser @aws_subscribe(mutations: ["updateCompanyUser"])
+  onDeleteCompanyUser: CompanyUser @aws_subscribe(mutations: ["deleteCompanyUser"])
+  onCreateCompanyShareInterval: CompanyShareInterval @aws_subscribe(mutations: ["createCompanyShareInterval"])
+  onUpdateCompanyShareInterval: CompanyShareInterval @aws_subscribe(mutations: ["updateCompanyShareInterval"])
+  onDeleteCompanyShareInterval: CompanyShareInterval @aws_subscribe(mutations: ["deleteCompanyShareInterval"])
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
+}
+
+type Company {
+  id: ID!
+  name: String!
+  nif: String
+  placeOfBusiness: String
+  users(filter: ModelCompanyUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyUserConnection
+  shareIntervals(filter: ModelCompanyShareIntervalFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyShareIntervalConnection
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelCompanyConnection {
+  items: [Company]
+  nextToken: String
+}
+
+input ModelStringFilterInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+}
+
+input ModelIDFilterInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+}
+
+input ModelIntFilterInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  contains: Int
+  notContains: Int
+  between: [Int]
+}
+
+input ModelFloatFilterInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  contains: Float
+  notContains: Float
+  between: [Float]
+}
+
+input ModelBooleanFilterInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelCompanyFilterInput {
+  id: ModelIDFilterInput
+  name: ModelStringFilterInput
+  nif: ModelStringFilterInput
+  placeOfBusiness: ModelStringFilterInput
+  and: [ModelCompanyFilterInput]
+  or: [ModelCompanyFilterInput]
+  not: ModelCompanyFilterInput
+}
+
+input CreateCompanyInput {
+  name: String!
+  nif: String
+  placeOfBusiness: String
+}
+
+input UpdateCompanyInput {
+  id: ID!
+  name: String
+  nif: String
+  placeOfBusiness: String
+}
+
+input DeleteCompanyInput {
+  id: ID
+}
+
+type CompanyUser {
+  id: ID!
+  company: Company!
+  user: User!
+}
+
+input CreateCompanyUserInput {
+  companyUserCompanyId: ID
+  companyUserUserId: ID
+}
+
+input UpdateCompanyUserInput {
+  id: ID!
+  companyUserCompanyId: ID
+  companyUserUserId: ID
+}
+
+input DeleteCompanyUserInput {
+  id: ID
+}
+
+type CompanyShareInterval {
+  id: ID!
+  start: Int!
+  end: Int!
+  value: Float
+  voteWeight: Float
+  company: Company!
+}
+
+type ModelCompanyShareIntervalConnection {
+  items: [CompanyShareInterval]
+  nextToken: String
+}
+
+input ModelCompanyShareIntervalFilterInput {
+  id: ModelIDFilterInput
+  start: ModelIntFilterInput
+  end: ModelIntFilterInput
+  value: ModelFloatFilterInput
+  voteWeight: ModelFloatFilterInput
+  and: [ModelCompanyShareIntervalFilterInput]
+  or: [ModelCompanyShareIntervalFilterInput]
+  not: ModelCompanyShareIntervalFilterInput
+}
+
+input CreateCompanyShareIntervalInput {
+  start: Int!
+  end: Int!
+  value: Float
+  voteWeight: Float
+  companyShareIntervalCompanyId: ID
+}
+
+input UpdateCompanyShareIntervalInput {
+  id: ID!
+  start: Int
+  end: Int
+  value: Float
+  voteWeight: Float
+  companyShareIntervalCompanyId: ID
+}
+
+input DeleteCompanyShareIntervalInput {
+  id: ID
+}
+
+type User {
+  id: ID!
+  name: String
+  companies(filter: ModelCompanyUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyUserConnection
+}
+
+type ModelUserConnection {
+  items: [User]
+  nextToken: String
+}
+
+input ModelUserFilterInput {
+  id: ModelIDFilterInput
+  name: ModelStringFilterInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  name: String
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+}
+
+input DeleteUserInput {
+  id: ID
+}
+
+type ModelCompanyUserConnection {
+  items: [CompanyUser]
+  nextToken: String
+}
+
+input ModelCompanyUserFilterInput {
+  id: ModelIDFilterInput
+  and: [ModelCompanyUserFilterInput]
+  or: [ModelCompanyUserFilterInput]
+  not: ModelCompanyUserFilterInput
+}

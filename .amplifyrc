@@ -1,0 +1,14 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "vysae-20180923175301-authRole",
+            "UnauthRoleArn": "arn:aws:iam::037641059503:role/vysae-20180923175301-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::037641059503:role/vysae-20180923175301-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "vysae-20180923175301-deployment",
+            "UnauthRoleName": "vysae-20180923175301-unauthRole",
+            "StackName": "vysae-20180923175301",
+            "StackId": "arn:aws:cloudformation:eu-west-1:037641059503:stack/vysae-20180923175301/bffb5430-bf48-11e8-b387-50a686333cfd"
+        }
+    }
+}
