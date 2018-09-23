@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Table, Button, message } from 'antd'
+import { Table, Button } from 'antd'
 // services
 import getUser from '../../services/getUser'
 // Components

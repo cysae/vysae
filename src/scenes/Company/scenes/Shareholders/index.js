@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+/*eslint-disable no-script-url*/
 // antd
 import { Table, Badge, Menu, Dropdown, Icon } from 'antd'
 // services

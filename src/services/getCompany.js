@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-// antd
-import { message } from 'antd'
 // amplify
-import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
-import aws_exports from '../aws-exports.js'
+import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import { GetCompany } from '../graphql/queries.js'
 import {
@@ -11,14 +8,10 @@ import {
   OnUpdateCompanyShareInterval,
   OnDeleteCompanyShareInterval,
 } from '../graphql/subscriptions.js'
-
-
 // recompose
 import { compose } from 'recompose'
 // services
 import handleLoadingAndErrors from './handleLoadingAndErrors'
-// router
-Amplify.configure(aws_exports)
 
 const getCurrentCompany = (WrappedComponent) => {
   return class extends Component {

@@ -1,7 +1,5 @@
-import React, { Component } from 'react'
 // amplify
-import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
-import aws_exports from '../../../aws-exports.js'
+import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import { CreateCompany, CreateCompanyUser } from '../../../graphql/mutations'
 

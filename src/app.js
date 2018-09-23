@@ -13,7 +13,6 @@ import MyHeader from './components/header.js'
 import Companies from './scenes/Companies'
 import Dashboard from './scenes/Dashboard'
 import AddCompany from './containers/addCompany'
-import Info from './containers/info'
 import Meetings from './scenes/Meeting'
 import Company from './scenes/Company'
 // AppSync/Apollo
@@ -141,10 +140,6 @@ class App extends Component {
             <Route path="/:companyId/dashboard" component={Dashboard} />
             <Route path="/:companyId/company" component={Company} />
             <Route path="/añadirSociedad" component={AddCompany}/>
-            {/* <CurrentCompanyRoute
-                path="/info"
-                component={Info}
-                /> */}
             <Route path="/:companyId/meeting" component={Meetings}/>
           </div>
         </Content>

@@ -5,8 +5,7 @@ import { Form, Button, Input, message } from 'antd'
 import getCompany from '../../../../services/getCompany'
 import { compose } from 'recompose'
 // amplify
-import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
-import aws_exports from '../../../../aws-exports.js'
+import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import { UpdateCompany } from '../../../../graphql/mutations'
 
@@ -31,8 +30,8 @@ class Basics extends Component {
     const {
       form : { validateFields },
       match: { params: { companyId }},
-      updateCompany
     } = this.props
+
     validateFields((err, values) => {
       if (!err) {
         const hideLoadingMsg = message.loading('Updating Company...')

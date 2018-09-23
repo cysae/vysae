@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react'
+/*eslint-disable no-script-url*/
 // antd
 import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } from 'antd';
 // services
 import getCompany from '../../../../services/getCompany'
 import { compose } from 'recompose'
 // amplify
-import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
-import aws_exports from '../../../../aws-exports.js'
+import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import {
   CreateCompanyShareInterval,
@@ -155,7 +155,6 @@ class Shares extends React.Component {
     const {
       match: { params: { companyId }},
       company: { shareIntervals },
-      company
     } = this.props
 
     const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
