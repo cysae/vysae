@@ -5,6 +5,9 @@ type Mutation {
   createCompanyUser(input: CreateCompanyUserInput!): CompanyUser
   updateCompanyUser(input: UpdateCompanyUserInput!): CompanyUser
   deleteCompanyUser(input: DeleteCompanyUserInput!): CompanyUser
+  createShareInterval(input: CreateShareIntervalInput!): ShareInterval
+  updateShareInterval(input: UpdateShareIntervalInput!): ShareInterval
+  deleteShareInterval(input: DeleteShareIntervalInput!): ShareInterval
   createUser(input: CreateUserInput!): User
   updateUser(input: UpdateUserInput!): User
   deleteUser(input: DeleteUserInput!): User
@@ -13,6 +16,8 @@ type Mutation {
 type Query {
   getCompany(id: ID!): Company
   listCompanys(filter: ModelCompanyFilterInput, limit: Int, nextToken: String): ModelCompanyConnection
+  getShareInterval(id: ID!): ShareInterval
+  listShareIntervals(filter: ModelShareIntervalFilterInput, limit: Int, nextToken: String): ModelShareIntervalConnection
   getUser(id: ID!): User
   listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
 }
@@ -24,6 +29,9 @@ type Subscription {
   onCreateCompanyUser: CompanyUser @aws_subscribe(mutations: ["createCompanyUser"])
   onUpdateCompanyUser: CompanyUser @aws_subscribe(mutations: ["updateCompanyUser"])
   onDeleteCompanyUser: CompanyUser @aws_subscribe(mutations: ["deleteCompanyUser"])
+  onCreateShareInterval: ShareInterval @aws_subscribe(mutations: ["createShareInterval"])
+  onUpdateShareInterval: ShareInterval @aws_subscribe(mutations: ["updateShareInterval"])
+  onDeleteShareInterval: ShareInterval @aws_subscribe(mutations: ["deleteShareInterval"])
   onCreateUser: User @aws_subscribe(mutations: ["createUser"])
   onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
   onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
@@ -32,7 +40,10 @@ type Subscription {
 type Company {
   id: ID!
   name: String!
+  nif: String
+  placeOfBusiness: String
   users(filter: ModelCompanyUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyUserConnection
+  shareIntervals(filter: ModelShareIntervalFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelShareIntervalConnection
 }
 
 enum ModelSortDirection {
@@ -103,6 +114,8 @@ input ModelBooleanFilterInput {
 input ModelCompanyFilterInput {
   id: ModelIDFilterInput
   name: ModelStringFilterInput
+  nif: ModelStringFilterInput
+  placeOfBusiness: ModelStringFilterInput
   and: [ModelCompanyFilterInput]
   or: [ModelCompanyFilterInput]
   not: ModelCompanyFilterInput
@@ -110,11 +123,15 @@ input ModelCompanyFilterInput {
 
 input CreateCompanyInput {
   name: String!
+  nif: String
+  placeOfBusiness: String
 }
 
 input UpdateCompanyInput {
   id: ID!
   name: String
+  nif: String
+  placeOfBusiness: String
 }
 
 input DeleteCompanyInput {
@@ -139,6 +156,51 @@ input UpdateCompanyUserInput {
 }
 
 input DeleteCompanyUserInput {
+  id: ID
+}
+
+type ShareInterval {
+  id: ID!
+  start: Int!
+  end: Int!
+  value: Float
+  voteWeight: Float
+}
+
+type ModelShareIntervalConnection {
+  items: [ShareInterval]
+  nextToken: String
+}
+
+input ModelShareIntervalFilterInput {
+  id: ModelIDFilterInput
+  start: ModelIntFilterInput
+  end: ModelIntFilterInput
+  value: ModelFloatFilterInput
+  voteWeight: ModelFloatFilterInput
+  and: [ModelShareIntervalFilterInput]
+  or: [ModelShareIntervalFilterInput]
+  not: ModelShareIntervalFilterInput
+}
+
+input CreateShareIntervalInput {
+  start: Int!
+  end: Int!
+  value: Float
+  voteWeight: Float
+  companyShareIntervalsId: ID
+}
+
+input UpdateShareIntervalInput {
+  id: ID!
+  start: Int
+  end: Int
+  value: Float
+  voteWeight: Float
+  companyShareIntervalsId: ID
+}
+
+input DeleteShareIntervalInput {
   id: ID
 }
 

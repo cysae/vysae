@@ -1,13 +1,24 @@
 type Company @model {
   id: ID!
   name: String!
+  nif: String
+  placeOfBusiness: String
   users: [CompanyUser] @connection(name: "CompanyUsers")
+  shareIntervals: [ShareInterval] @connection
 }
 
 type CompanyUser @model(queries: null) {
   id: ID!
   company: Company! @connection(name: "CompanyUsers")
   user: User! @connection(name: "UserCompanies")
+}
+
+type ShareInterval @model {
+  id: ID!
+  start: Int!
+  end: Int!
+  value: Float
+  voteWeight: Float
 }
 
 type User @model {

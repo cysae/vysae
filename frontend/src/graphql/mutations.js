@@ -6,7 +6,12 @@ export const CreateCompany = gql`
     createCompany(input: $input) {
       id
       name
+      nif
+      placeOfBusiness
       users {
+        nextToken
+      }
+      shareIntervals {
         nextToken
       }
     }
@@ -17,7 +22,12 @@ export const UpdateCompany = gql`
     updateCompany(input: $input) {
       id
       name
+      nif
+      placeOfBusiness
       users {
+        nextToken
+      }
+      shareIntervals {
         nextToken
       }
     }
@@ -28,7 +38,12 @@ export const DeleteCompany = gql`
     deleteCompany(input: $input) {
       id
       name
+      nif
+      placeOfBusiness
       users {
+        nextToken
+      }
+      shareIntervals {
         nextToken
       }
     }
@@ -41,6 +56,8 @@ export const CreateCompanyUser = gql`
       company {
         id
         name
+        nif
+        placeOfBusiness
       }
       user {
         id
@@ -56,6 +73,8 @@ export const UpdateCompanyUser = gql`
       company {
         id
         name
+        nif
+        placeOfBusiness
       }
       user {
         id
@@ -71,11 +90,46 @@ export const DeleteCompanyUser = gql`
       company {
         id
         name
+        nif
+        placeOfBusiness
       }
       user {
         id
         name
       }
+    }
+  }
+`;
+export const CreateShareInterval = gql`
+  mutation CreateShareInterval($input: CreateShareIntervalInput!) {
+    createShareInterval(input: $input) {
+      id
+      start
+      end
+      value
+      voteWeight
+    }
+  }
+`;
+export const UpdateShareInterval = gql`
+  mutation UpdateShareInterval($input: UpdateShareIntervalInput!) {
+    updateShareInterval(input: $input) {
+      id
+      start
+      end
+      value
+      voteWeight
+    }
+  }
+`;
+export const DeleteShareInterval = gql`
+  mutation DeleteShareInterval($input: DeleteShareIntervalInput!) {
+    deleteShareInterval(input: $input) {
+      id
+      start
+      end
+      value
+      voteWeight
     }
   }
 `;

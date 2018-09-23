@@ -6,21 +6,7 @@ export const GetCompany = gql`
     getCompany(id: $id) {
       id
       name
-      nif
-      placeOfBusiness
       users {
-        nextToken
-      }
-      shareIntervals {
-        items {
-          shareInterval: {
-            id
-            start
-            end
-            value
-            voteWeight
-          }
-        }
         nextToken
       }
     }
@@ -36,37 +22,6 @@ export const ListCompanys = gql`
       items {
         id
         name
-        nif
-        placeOfBusiness
-      }
-      nextToken
-    }
-  }
-`;
-export const GetShareInterval = gql`
-  query GetShareInterval($id: ID!) {
-    getShareInterval(id: $id) {
-      id
-      start
-      end
-      value
-      voteWeight
-    }
-  }
-`;
-export const ListShareIntervals = gql`
-  query ListShareIntervals(
-    $filter: ModelShareIntervalFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listShareIntervals(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        start
-        end
-        value
-        voteWeight
       }
       nextToken
     }

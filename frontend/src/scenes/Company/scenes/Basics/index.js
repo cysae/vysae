@@ -36,7 +36,7 @@ class Basics extends Component {
     validateFields((err, values) => {
       if (!err) {
         const hideLoadingMsg = message.loading('Updating Company...')
-        API.graphql(graphqlOperation(gqlToString(UpdateCompany), { input: { id: companyId, name: values.name }}))
+        API.graphql(graphqlOperation(gqlToString(UpdateCompany), { input: { id: companyId, ...values }}))
           .then(() => {
             message.success('Company updated', 2.5)
           })

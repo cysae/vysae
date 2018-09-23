@@ -6,7 +6,12 @@ export const OnCreateCompany = gql`
     onCreateCompany {
       id
       name
+      nif
+      placeOfBusiness
       users {
+        nextToken
+      }
+      shareIntervals {
         nextToken
       }
     }
@@ -17,7 +22,12 @@ export const OnUpdateCompany = gql`
     onUpdateCompany {
       id
       name
+      nif
+      placeOfBusiness
       users {
+        nextToken
+      }
+      shareIntervals {
         nextToken
       }
     }
@@ -28,7 +38,12 @@ export const OnDeleteCompany = gql`
     onDeleteCompany {
       id
       name
+      nif
+      placeOfBusiness
       users {
+        nextToken
+      }
+      shareIntervals {
         nextToken
       }
     }
@@ -41,6 +56,8 @@ export const OnCreateCompanyUser = gql`
       company {
         id
         name
+        nif
+        placeOfBusiness
       }
       user {
         id
@@ -56,6 +73,8 @@ export const OnUpdateCompanyUser = gql`
       company {
         id
         name
+        nif
+        placeOfBusiness
       }
       user {
         id
@@ -71,11 +90,46 @@ export const OnDeleteCompanyUser = gql`
       company {
         id
         name
+        nif
+        placeOfBusiness
       }
       user {
         id
         name
       }
+    }
+  }
+`;
+export const OnCreateShareInterval = gql`
+  subscription OnCreateShareInterval {
+    onCreateShareInterval {
+      id
+      start
+      end
+      value
+      voteWeight
+    }
+  }
+`;
+export const OnUpdateShareInterval = gql`
+  subscription OnUpdateShareInterval {
+    onUpdateShareInterval {
+      id
+      start
+      end
+      value
+      voteWeight
+    }
+  }
+`;
+export const OnDeleteShareInterval = gql`
+  subscription OnDeleteShareInterval {
+    onDeleteShareInterval {
+      id
+      start
+      end
+      value
+      voteWeight
     }
   }
 `;
