@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+// antd
+import { message } from 'antd'
 // amplify
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
 import aws_exports from '../aws-exports.js'
@@ -42,11 +44,36 @@ const getCurrentUser = (WrappedComponent) => {
             ...this.state,
             user: { companies: { items: [...this.state.user.companies.items, { company: { ...onCreateCompany }}] }}
           }
-
-          console.log(newState)
           this.setState(newState)
         }
       })
+    }
+
+    fetchMore = () => {
+      const {
+        user,
+        user: { companies: { nextToken }}
+      } = this.state
+
+      if(nextToken) {
+        const hideLoadingMsg = message.loading('Fetching data...')
+        API.graphql(graphqlOperation(gqlToString(GetUser), { id: user.id, companiesNextToken: nextToken }))
+          .then(({ data: { getUser: { companies } }}) => {
+            const newState = {
+              ...this.state,
+              user: {
+                ...this.state.user,
+                companies: {
+                  ...companies,
+                  items: [...this.state.user.companies.items, ...companies.items ]
+                }
+              }
+            }
+            this.setState(newState)
+          })
+          .catch(error => { this.setState({ error })})
+          .finally(() => hideLoadingMsg())
+      }
     }
 
     componentWillUnmount() {
@@ -55,7 +82,7 @@ const getCurrentUser = (WrappedComponent) => {
     }
 
     render() {
-      return <WrappedComponent {...this.state} {...this.props} />
+      return <WrappedComponent {...this.state} {...this.props} fetchMore={this.fetchMore} />
     }
   }
 }

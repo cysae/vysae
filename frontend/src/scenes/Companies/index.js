@@ -7,6 +7,10 @@ import CreateCompanyDrawer from './components/CreateCompanyDrawer'
 
 /* addUserIdToCognitoUser() */
 class Companies extends Component {
+  handleTabChange() {
+
+  }
+
   render() {
     const {
       user, handleSelectCompanyId
@@ -37,6 +41,7 @@ class Companies extends Component {
           dataSource={companies}
           onChange={this.handleTableChange}
         />
+        <Button onClick={this.props.fetchMore}>fetch</Button>
       </Fragment>
     )
   }
