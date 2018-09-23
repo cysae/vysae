@@ -14,6 +14,14 @@ import {
   DeleteCompanyShareInterval
 } from '../../../../graphql/mutations'
 
+function getLastShareNumber(intvls) {
+  let last = 0
+  for(const intvl of intvls) {
+    if(last < intvl.end)
+      last = intvl.end
+  }
+  return last
+}
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -152,7 +160,7 @@ class Shares extends React.Component {
 
     const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
 
-    const lastShareNumber = shareIntervals.items.length !== 0 ? shareIntervals.items[shareIntervals.items.length-1].end : 0
+    const lastShareNumber = getLastShareNumber(shareIntervals.items)
     const start = lastShareNumber + 1
     API.graphql(
       graphqlOperation(gqlToString(CreateCompanyShareInterval), {
