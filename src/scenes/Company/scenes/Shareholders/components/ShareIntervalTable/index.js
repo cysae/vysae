@@ -1,28 +1,18 @@
 import React, { Fragment } from 'react'
 /*eslint-disable no-script-url*/
 // antd
-import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } from 'antd';
-// services
-import getCompany from '../../../../services/getCompany'
-import { compose } from 'recompose'
-// amplify
+import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } from 'antd'
 import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import {
   CreateCompanyShareInterval,
   UpdateCompanyShareInterval,
   DeleteCompanyShareInterval
-} from '../../../../graphql/mutations'
+} from '../../../../../../graphql/mutations'
+// services
+import getShareholder from '../../../../../../services/getShareholder'
+import { compose } from 'recompose'
 
-
-function getLastShareNumber(intvls) {
-  let last = 0
-  for(const intvl of intvls) {
-    if(last < intvl.end)
-      last = intvl.end
-  }
-  return last
-}
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -34,6 +24,16 @@ const EditableRow = ({ form, index, ...props }) => (
 );
 
 const EditableFormRow = Form.create()(EditableRow);
+
+function getLastShareNumber(intvls) {
+  let last = 0
+  for(const intvl of intvls) {
+    if(last < intvl.end)
+      last = intvl.end
+  }
+  return last
+}
+
 
 class EditableCell extends React.Component {
   getInput = () => {
@@ -78,7 +78,7 @@ class EditableCell extends React.Component {
   }
 }
 
-class Shares extends React.Component {
+class ShareIntervalTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = { editingId: '' };
@@ -233,7 +233,10 @@ class Shares extends React.Component {
   }
 
   render() {
-    const { company: { shareIntervals }} = this.props
+    /* const { company: { shareIntervals }} = this.props */
+    const shareIntervals = { items: []}
+    console.log(this.props)
+
     const components = {
       body: {
         row: EditableFormRow,
@@ -274,5 +277,6 @@ class Shares extends React.Component {
 }
 
 export default compose(
-  getCompany,
-)(Shares)
+  Form.create(),
+  getShareholder,
+)(ShareIntervalTable)

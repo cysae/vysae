@@ -34,7 +34,7 @@ const getCurrentUser = (WrappedComponent) => {
             user: getUser
           })
         })
-        .catch(error => { this.setState({ error })})
+        .catch(error => { this.setState({ loading: false, error })})
 
       this.companiesSubscription = API.graphql(
         graphqlOperation(gqlToString(OnCreateCompany))

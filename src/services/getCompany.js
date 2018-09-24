@@ -8,8 +8,6 @@ import {
   OnUpdateCompanyShareInterval,
   OnDeleteCompanyShareInterval,
   OnCreateShareholder,
-  OnUpdateShareholder,
-  OnDeleteShareholder,
 } from '../graphql/subscriptions.js'
 // recompose
 import { compose } from 'recompose'
@@ -30,8 +28,8 @@ const getCurrentCompany = (WrappedComponent) => {
 
     // Shareholder
     createShareholderSubscription = null
-    updateShareholderSubscription = null
-    deleteShareholderSubscription = null
+    /* updateShareholderSubscription = null
+     * deleteShareholderSubscription = null */
 
 
     componentDidMount() {
@@ -43,7 +41,7 @@ const getCurrentCompany = (WrappedComponent) => {
             company: getCompany
           })
         })
-        .catch(error => { this.setState({ error })})
+        .catch(error => { this.setState({ loading: false, error })})
 
       this.handleCompanySubscriptions()
       this.handleShareholderSubscriptions()
