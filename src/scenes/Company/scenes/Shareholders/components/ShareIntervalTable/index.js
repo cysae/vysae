@@ -5,14 +5,13 @@ import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } fr
 import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import {
-  CreateCompanyShareInterval,
-  UpdateCompanyShareInterval,
-  DeleteCompanyShareInterval
+  CreateShareholderShareInterval,
+  UpdateShareholderShareInterval,
+  DeleteShareholderShareInterval,
 } from '../../../../../../graphql/mutations'
 // services
 import getShareholder from '../../../../../../services/getShareholder'
 import { compose } from 'recompose'
-
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -33,7 +32,6 @@ function getLastShareNumber(intvls) {
   }
   return last
 }
-
 
 class EditableCell extends React.Component {
   getInput = () => {
@@ -153,9 +151,10 @@ class ShareIntervalTable extends React.Component {
   }
 
   create = () => {
+    console.log(this.props)
     const {
-      match: { params: { companyId }},
-      company: { shareIntervals },
+      shareholder,
+      shareholder: { id, shareIntervals },
     } = this.props
 
     const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
@@ -163,17 +162,15 @@ class ShareIntervalTable extends React.Component {
     const lastShareNumber = getLastShareNumber(shareIntervals.items)
     const start = lastShareNumber + 1
     API.graphql(
-      graphqlOperation(gqlToString(CreateCompanyShareInterval), {
-      input: {
-        companyShareIntervalCompanyId: companyId,
-        start,
-        end: start+1,
-        value: 1,
-        voteWeight: 1
-      }
+      graphqlOperation(gqlToString(CreateShareholderShareInterval), {
+        input: {
+          shareholderShareIntervalShareholderId: id,
+          start,
+          end: start+1,
+        }
       })
     )
-      .then(({ data: { createCompanyShareInterval: { id }}}) => {
+      .then(({ data: { createShareholderShareInterval: { id }}}) => {
         this.setState({ editingId: id })
       })
       .catch(err => console.error(err))
@@ -189,32 +186,32 @@ class ShareIntervalTable extends React.Component {
   }
 
   update(form, id) {
-    const {
-      match: { params: { companyId}}
-    } = this.props
-    form.validateFields((error, values) => {
-      if (error) {
-        return;
-      }
+    /* const {
+     *   match: { params: { companyId}}
+     * } = this.props
+     * form.validateFields((error, values) => {
+     *   if (error) {
+     *     return;
+     *   }
 
-      const hideLoadingMsg = message.loading('Acutalizando intervalo de participaciones...')
+     *   const hideLoadingMsg = message.loading('Acutalizando intervalo de participaciones...')
 
-      API.graphql(
-        graphqlOperation(gqlToString(UpdateCompanyShareInterval), {
-          input: {
-            id,
-            companyShareIntervalCompanyId: companyId,
-            ...values
-          }
-        })
-      )
-        .then(res => { this.setState({ editingId: null }) })
-        .catch(err => {
-          message.error('error')
-          console.err(err)
-        })
-        .finally(() => hideLoadingMsg())
-    });
+     *   API.graphql(
+     *     graphqlOperation(gqlToString(UpdateCompanyShareInterval), {
+     *       input: {
+     *         id,
+     *         companyShareIntervalCompanyId: companyId,
+     *         ...values
+     *       }
+     *     })
+     *   )
+     *     .then(res => { this.setState({ editingId: null }) })
+     *     .catch(err => {
+     *       message.error('error')
+     *       console.err(err)
+     *     })
+     *     .finally(() => hideLoadingMsg())
+     * }); */
   }
 
   cancel = () => {
@@ -222,14 +219,14 @@ class ShareIntervalTable extends React.Component {
   };
 
   delete = (id) => {
-    const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
-    API.graphql(graphqlOperation(gqlToString(DeleteCompanyShareInterval), { input: { id } } ))
-      .then(res => { this.setState({ editingId: null }) })
-      .catch(err => {
-        console.error(err)
-        message.error('error')
-      })
-      .finally(() => hideLoadingMsg())
+    /* const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
+     * API.graphql(graphqlOperation(gqlToString(DeleteCompanyShareInterval), { input: { id } } ))
+     *   .then(res => { this.setState({ editingId: null }) })
+     *   .catch(err => {
+     *     console.error(err)
+     *     message.error('error')
+     *   })
+     *   .finally(() => hideLoadingMsg()) */
   }
 
   render() {

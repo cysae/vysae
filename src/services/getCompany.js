@@ -214,7 +214,7 @@ const getCurrentCompany = (WrappedComponent) => {
     }
 
     render() {
-      return <WrappedComponent {...this.state} {...this.props} fetchMore={this.fetchMore} />
+      return <WrappedComponent {...this.props} {...this.state} fetchMore={this.fetchMore} />
     }
   }
 }

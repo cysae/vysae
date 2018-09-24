@@ -245,11 +245,12 @@ export const GetShareholder = gql`
         nif
         placeOfBusiness
       }
-      user {
-        id
-        name
-      }
       shareIntervals {
+        items {
+          id
+          start
+          end
+        }
         nextToken
       }
     }

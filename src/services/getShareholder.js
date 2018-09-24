@@ -23,6 +23,7 @@ const getCurrentCompany = (WrappedComponent) => {
       console.log('test', shareholder)
       API.graphql(graphqlOperation(gqlToString(GetShareholder), { id: shareholder.id }))
         .then(({ data: { getShareholder }}) => {
+          console.log('getShareholder', getShareholder)
           this.setState({
             loading: false,
             shareholder: getShareholder
@@ -131,7 +132,7 @@ const getCurrentCompany = (WrappedComponent) => {
     }
 
     render() {
-      return <WrappedComponent {...this.state} {...this.props} fetchMore={this.fetchMore} />
+      return <WrappedComponent {...this.props} {...this.state} fetchMore={this.fetchMore} />
     }
   }
 }

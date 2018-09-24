@@ -81,13 +81,13 @@ const getCurrentUser = (WrappedComponent) => {
           .finally(() => hideLoadingMsg())
       }
     }
-
+ 
     componentWillUnmount() {
       this.companiesSubscription.unsubscribe()
     }
 
     render() {
-      return <WrappedComponent {...this.state} {...this.props} fetchMoreCompanies={this.fetchMoreCompanies} />
+      return <WrappedComponent {...this.props} {...this.state} fetchMoreCompanies={this.fetchMoreCompanies} />
     }
   }
 }
