@@ -166,31 +166,29 @@ class AgreementTable extends React.Component {
   }
 
   update(form, id) {
-    /* const { shareholder } = this.props
+    const { majority } = this.props
 
-     * form.validateFields((error, values) => {
-     *   if (error) {
-     *     return;
-     *   }
+    form.validateFields((error, values) => {
+      if (error) return
 
-     *   const hideLoadingMsg = message.loading('Acutalizando intervalo de participaciones...')
+      const hideLoadingMsg = message.loading('Acutalizando agreement...')
 
-     *   API.graphql(
-     *     graphqlOperation(gqlToString(UpdateShareholderShareInterval), {
-     *       input: {
-     *         id,
-     *         shareholderShareIntervalShareholderId: shareholder.id,
-     *         ...values
-     *       }
-     *     })
-     *   )
-     *     .then(res => { this.setState({ editingId: null }) })
-     *     .catch(err => {
-     *       message.error('error')
-     *       console.error(err)
-     *     })
-     *     .finally(() => hideLoadingMsg())
-     * }); */
+      API.graphql(
+        graphqlOperation(gqlToString(UpdateMajorityAgreement), {
+          input: {
+            id,
+            majorityAgreementMajorityId: majority.id,
+            ...values
+          }
+        })
+      )
+        .then(res => { this.setState({ editingId: null }) })
+        .catch(err => {
+          message.error('error')
+          console.error(err)
+        })
+        .finally(() => hideLoadingMsg())
+    });
   }
 
   cancel = () => {
@@ -198,20 +196,18 @@ class AgreementTable extends React.Component {
   };
 
   delete = (id) => {
-    /* const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
-     * API.graphql(graphqlOperation(gqlToString(DeleteShareholderShareInterval), { input: { id } } ))
-     *   .then(res => { this.setState({ editingId: null }) })
-     *   .catch(err => {
-     *     console.error(err)
-     *     message.error('error')
-     *   })
-     *   .finally(() => hideLoadingMsg()) */
+    const hideLoadingMsg = message.loading('Borrando agreement...')
+    API.graphql(graphqlOperation(gqlToString(DeleteMajorityAgreement), { input: { id } } ))
+      .then(res => { this.setState({ editingId: null }) })
+      .catch(err => {
+        console.error(err)
+        message.error('error')
+      })
+      .finally(() => hideLoadingMsg())
   }
 
   render() {
     const { majority: { agreements }} = this.props
-
-    console.log(agreements)
 
     const components = {
       body: {

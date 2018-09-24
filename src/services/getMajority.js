@@ -86,56 +86,55 @@ const getCurrentMajority = (WrappedComponent) => {
         }
       })
 
-        /* update shareinterval subscription */
-      /* this.updateShareholderShareIntervalSubscription = API.graphql(
-       *   graphqlOperation(gqlToString(OnUpdateShareholderShareInterval))
-       * ).subscribe({
-       *   next: ({ value: { data: { onUpdateShareholderShareInterval }}}) => {
-       *     const newState = {
-       *       ...this.state,
-       *       shareholder: {
-       *         ...this.state.shareholder,
-       *         shareIntervals: {
-       *           ...this.state.shareholder.shareIntervals,
-       *           items: this.state.shareholder.shareIntervals.items.map(shareInterval => {
-       *             if(shareInterval.id === onUpdateShareholderShareInterval.id)
-       *               shareInterval = onUpdateShareholderShareInterval
-       *             return shareInterval
-       *           }),
-       *         }
-       *       }
-       *     }
-       *     this.setState(newState)
-       *   }
-       * }) */
+      /* update shareinterval subscription */
+      this.updateMajorityAgreementSubscription = API.graphql(
+        graphqlOperation(gqlToString(OnUpdateMajorityAgreement))
+      ).subscribe({
+        next: ({ value: { data: { onUpdateMajorityAgreement }}}) => {
+          const newState = {
+            majority: {
+              ...this.state.majority,
+              agreements: {
+                ...this.state.majority.agreements,
+                items: this.state.majority.agreements.items.map(agreement => {
+                  if(agreement.id === onUpdateMajorityAgreement.id)
+                    agreement = onUpdateMajorityAgreement
+                  return agreement
+                }),
+              }
+            }
+          }
+          this.setState(newState)
+        }
+      })
 
       // delete shareinterval subscription
-      /* this.deleteCompanyShareIntervalSubscription = API.graphql(
-       *   graphqlOperation(gqlToString(OnDeleteShareholderShareInterval))
-       * ).subscribe({
-       *   next: ({ value: { data: { onDeleteShareholderShareInterval }}}) => {
-       *     const newState = {
-       *       ...this.state,
-       *       shareholder: {
-       *         ...this.state.shareholder,
-       *         shareIntervals: {
-       *           ...this.state.shareholder.shareIntervals,
-       *           items: this.state.shareholder.shareIntervals.items.filter(shareInterval => {
-       *             return shareInterval.id !== onDeleteShareholderShareInterval.id
-       *           }),
-       *         }
-       *       }
-       *     }
-       *     this.setState(newState)
-       *   }
-       * }) */
+      this.deleteMajorityAgreementSubscription = API.graphql(
+        graphqlOperation(gqlToString(OnDeleteMajorityAgreement))
+      ).subscribe({
+        next: ({ value: { data: { onDeleteMajorityAgreement }}}) => {
+          const newState = {
+            ...this.state,
+            majority: {
+              ...this.state.majority,
+              agreements: {
+                ...this.state.majority.agreements,
+                items: this.state.majority.agreements.items.filter(agreement => {
+                  return agreement.id !== onDeleteMajorityAgreement.id
+                }),
+              }
+            }
+          }
+          this.setState(newState)
+        }
+      })
     }
 
 
     componentWillUnmount() {
       this.createMajorityAgreementSubscription.unsubscribe()
-      /* this.updateMajorityAgreementSubscription.unsubscribe()
-       * this.deleteMajorityAgreementSubscription.unsubscribe() */
+      this.updateMajorityAgreementSubscription.unsubscribe()
+      this.deleteMajorityAgreementSubscription.unsubscribe()
     }
 
     render() {
