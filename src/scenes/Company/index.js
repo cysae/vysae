@@ -2,28 +2,29 @@ import React, { Component } from 'react'
 // antd
 import { Menu, Row, Col } from 'antd'
 // react-router
-import { withRouter, Route } from 'react-router'
+import { Route } from 'react-router'
 import { Link } from 'react-router-dom'
 // scenes
 import Shareholders from './scenes/Shareholders'
 import Basics from './scenes/Basics'
 import Shares from './scenes/Shares'
 
-class RawCompanyMenu extends Component {
+class CompanyMenu extends Component {
   getSelectedKey() {
-    const { pathname } = this.props.location
+    const { pathname } = this.props
     const companyIndex = pathname.indexOf('/', 1)
 
     switch(pathname.substr(companyIndex, pathname.length)) {
       case '/company/basics': return ['basics']
       case '/company/shares': return ['shares']
       case '/company/shareholders': return ['shareholders']
+      case '/company/majorities': return ['majorities']
       default: return ['basics']
     }
   }
 
   render() {
-    const { match: { params: { companyId }}} = this.props
+    const { companyId } = this.props
 
     return(
       <Menu
@@ -38,22 +39,30 @@ class RawCompanyMenu extends Component {
         <Menu.Item key="shareholders">
           <Link to={`/${companyId}/company/shareholders`}>Socios</Link>
         </Menu.Item>
+        <Menu.Item key="majorities">
+          <Link to={`/${companyId}/company/majorities`}>Majorias</Link>
+        </Menu.Item>
       </Menu>
     )
   }
 }
-const CompanyMenu = withRouter(RawCompanyMenu)
 
 export default (props) => {
+  const {
+    match: { params: { companyId }},
+    location: { pathname },
+  } = props
+
   return (
     <Row type="flex">
       <Col span={4}>
-        <CompanyMenu />
+        <CompanyMenu companyId={companyId} pathname={pathname} />
       </Col>
       <Col span={20}>
         <Route path="/:companyId/company/basics" component={Basics} />
         <Route path="/:companyId/company/shares" component={Shares} />
         <Route path="/:companyId/company/shareholders" component={Shareholders} />
+        <Route path="/:companyId/company/majorities" component={Shareholders} />
       </Col>
     </Row>
   )
