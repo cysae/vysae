@@ -211,7 +211,7 @@ class Shares extends React.Component {
         .then(res => { this.setState({ editingId: null }) })
         .catch(err => {
           message.error('error')
-          console.err(err)
+          console.error(err)
         })
         .finally(() => hideLoadingMsg())
     });

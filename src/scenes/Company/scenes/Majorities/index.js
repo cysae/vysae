@@ -215,32 +215,32 @@ class Shares extends React.Component {
   }
 
   update(form, id) {
-    /* const {
-     *   match: { params: { companyId}}
-     * } = this.props
-     * form.validateFields((error, values) => {
-     *   if (error) {
-     *     return;
-     *   }
+    const {
+      match: { params: { companyId}}
+    } = this.props
 
-     *   const hideLoadingMsg = message.loading('Acutalizando intervalo de participaciones...')
+    form.validateFields((error, values) => {
+      if (error)
+        return
 
-     *   API.graphql(
-     *     graphqlOperation(gqlToString(UpdateCompanyShareInterval), {
-     *       input: {
-     *         id,
-     *         companyShareIntervalCompanyId: companyId,
-     *         ...values
-     *       }
-     *     })
-     *   )
-     *     .then(res => { this.setState({ editingId: null }) })
-     *     .catch(err => {
-     *       message.error('error')
-     *       console.err(err)
-     *     })
-     *     .finally(() => hideLoadingMsg())
-     * }); */
+      const hideLoadingMsg = message.loading('Acutalizando majoria...')
+
+      API.graphql(
+        graphqlOperation(gqlToString(UpdateMajority), {
+          input: {
+            id,
+            majorityCompanyId: companyId,
+            ...values
+          }
+        })
+      )
+        .then(res => { this.setState({ editingId: null }) })
+        .catch(err => {
+          message.error('error')
+          console.error(err)
+        })
+        .finally(() => hideLoadingMsg())
+    });
   }
 
   cancel = () => {

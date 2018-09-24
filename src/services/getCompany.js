@@ -9,6 +9,8 @@ import {
   OnDeleteCompanyShareInterval,
   OnCreateShareholder,
   OnCreateMajority,
+  OnUpdateMajority,
+  OnDeleteMajority,
 } from '../graphql/subscriptions.js'
 // recompose
 import { compose } from 'recompose'
@@ -34,6 +36,7 @@ const getCurrentCompany = (WrappedComponent) => {
 
     // Majorities
     createMajoritySubscription = null
+    updateMajoritySubscription = null
 
 
     componentDidMount() {
@@ -230,27 +233,27 @@ const getCurrentCompany = (WrappedComponent) => {
       })
 
       // update shareinterval subscription
-      /* this.updateCompanyShareIntervalSubscription = API.graphql(
-       *   graphqlOperation(gqlToString(OnUpdateCompanyShareInterval))
-       * ).subscribe({
-       *   next: ({ value: { data: { onUpdateCompanyShareInterval }}}) => {
-       *     const newState = {
-       *       ...this.state,
-       *       company: {
-       *         ...this.state.company,
-       *         shareIntervals: {
-       *           ...this.state.company.shareIntervals,
-       *           items: this.state.company.shareIntervals.items.map(shareInterval => {
-       *             if(shareInterval.id === onUpdateCompanyShareInterval.id)
-       *               shareInterval = onUpdateCompanyShareInterval
-       *             return shareInterval
-       *           }),
-       *         }
-       *       }
-       *     }
-       *     this.setState(newState)
-       *   }
-       * }) */
+      this.updateMajoritySubscription = API.graphql(
+        graphqlOperation(gqlToString(OnUpdateMajority))
+      ).subscribe({
+        next: ({ value: { data: { onUpdateMajority }}}) => {
+          const newState = {
+            ...this.state,
+            company: {
+              ...this.state.company,
+              majorities: {
+                ...this.state.company.majorities,
+                items: this.state.company.majorities.items.map(majority => {
+                  if(majority.id === onUpdateMajority.id)
+                    majority = onUpdateMajority
+                  return majority
+                }),
+              }
+            }
+          }
+          this.setState(newState)
+        }
+      })
 
       // delete shareinterval subscription
       /* this.deleteCompanyShareIntervalSubscription = API.graphql(
@@ -282,6 +285,7 @@ const getCurrentCompany = (WrappedComponent) => {
       /* this.updateShareholderSubscription.unsubscribe()
        * this.deleteShareholderSubscription.unsubscribe() */
       this.createMajoritySubscription.unsubscribe()
+      this.updateMajoritySubscription.unsubscribe()
     }
 
     render() {
