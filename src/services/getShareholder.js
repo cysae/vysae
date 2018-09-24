@@ -6,6 +6,7 @@ import { GetShareholder } from '../graphql/queries.js'
 import {
   OnCreateShareholderShareInterval,
   OnUpdateShareholderShareInterval,
+  OnDeleteShareholderShareInterval,
 } from '../graphql/subscriptions.js'
 // recompose
 import { compose } from 'recompose'
@@ -22,6 +23,7 @@ const getCurrentCompany = (WrappedComponent) => {
     // ShareIntervals
     createShareholderShareIntervalSubscription = null
     updateShareholderShareIntervalSubscription = null
+    deleteShareholderShareIntervalSubscription = null
 
     componentDidMount() {
       const { shareholder } = this.props
@@ -110,31 +112,32 @@ const getCurrentCompany = (WrappedComponent) => {
         })
 
       // delete shareinterval subscription
-      /* this.deleteCompanyShareIntervalSubscription = API.graphql(
-       *   graphqlOperation(gqlToString(OnDeleteCompanyShareInterval))
-       * ).subscribe({
-       *   next: ({ value: { data: { onDeleteCompanyShareInterval }}}) => {
-       *     const newState = {
-       *       ...this.state,
-       *       company: {
-       *         ...this.state.company,
-       *         shareIntervals: {
-       *           ...this.state.company.shareIntervals,
-       *           items: this.state.company.shareIntervals.items.filter(shareInterval => {
-       *             return shareInterval.id !== onDeleteCompanyShareInterval.id
-       *           }),
-       *         }
-       *       }
-       *     }
-       *     this.setState(newState)
-       *   }
-       * }) */
+      this.deleteCompanyShareIntervalSubscription = API.graphql(
+        graphqlOperation(gqlToString(OnDeleteShareholderShareInterval))
+      ).subscribe({
+        next: ({ value: { data: { onDeleteShareholderShareInterval }}}) => {
+          const newState = {
+            ...this.state,
+            shareholder: {
+              ...this.state.shareholder,
+              shareIntervals: {
+                ...this.state.shareholder.shareIntervals,
+                items: this.state.shareholder.shareIntervals.items.filter(shareInterval => {
+                  return shareInterval.id !== onDeleteShareholderShareInterval.id
+                }),
+              }
+            }
+          }
+          this.setState(newState)
+        }
+      })
     }
 
 
     componentWillUnmount() {
       this.createShareholderShareIntervalSubscription.unsubscribe()
       this.updateShareholderShareIntervalSubscription.unsubscribe()
+      this.deleteShareholderShareIntervalSubscription.unsubscribe()
     }
 
     render() {

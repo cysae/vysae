@@ -84,13 +84,13 @@ class ShareIntervalTable extends React.Component {
       {
         title: 'start',
         dataIndex: 'start',
-        width: '20%',
+        width: '30%',
         editable: true,
       },
       {
         title: 'end',
         dataIndex: 'end',
-        width: '20%',
+        width: '30%',
         editable: true,
       },
       {
@@ -206,14 +206,14 @@ class ShareIntervalTable extends React.Component {
   };
 
   delete = (id) => {
-    /* const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
-     * API.graphql(graphqlOperation(gqlToString(DeleteCompanyShareInterval), { input: { id } } ))
-     *   .then(res => { this.setState({ editingId: null }) })
-     *   .catch(err => {
-     *     console.error(err)
-     *     message.error('error')
-     *   })
-     *   .finally(() => hideLoadingMsg()) */
+    const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
+    API.graphql(graphqlOperation(gqlToString(DeleteShareholderShareInterval), { input: { id } } ))
+      .then(res => { this.setState({ editingId: null }) })
+      .catch(err => {
+        console.error(err)
+        message.error('error')
+      })
+      .finally(() => hideLoadingMsg())
   }
 
   render() {
