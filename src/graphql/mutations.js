@@ -402,10 +402,6 @@ export const CreateShareholder = gql`
         nif
         placeOfBusiness
       }
-      user {
-        id
-        name
-      }
       shareIntervals {
         nextToken
       }

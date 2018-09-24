@@ -19,7 +19,7 @@
                 "s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/auth/vysaeCognito-cloudformation-template.yml",
                 "logicalId": "authvysaeCognito"
             },
-            "lastPushTimeStamp": "2018-09-23T18:23:13.263Z",
+            "lastPushTimeStamp": "2018-09-24T06:28:44.650Z",
             "output": {
                 "AppClientSecret": "g4u1vjav40mn02mdmutau6bg06v8h57tfami0eg7t5lum528iuf",
                 "UserPoolId": "eu-west-1_d9W2WnqzS",
@@ -50,7 +50,7 @@
                 "s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/cloudformation-template.json",
                 "logicalId": "apivysae"
             },
-            "lastPushTimeStamp": "2018-09-23T18:23:13.263Z",
+            "lastPushTimeStamp": "2018-09-24T06:28:44.650Z",
             "lastPushDirHash": "YsxP+BpTQbcjd7URME2o5JyMqzc="
         }
     }

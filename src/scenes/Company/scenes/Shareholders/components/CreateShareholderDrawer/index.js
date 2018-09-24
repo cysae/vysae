@@ -40,8 +40,8 @@ class CreateShareholderDrawer extends React.Component {
     } = this.props
 
     validateFields((err, values) => {
+      const { form: { resetFields }} = this.props
       if (!err) {
-
         const hideLoadingMsg = message.loading('Creando socio...')
 
         API.graphql(
@@ -52,7 +52,10 @@ class CreateShareholderDrawer extends React.Component {
             }
           })
         )
-          .then(res => console.log(res))
+          .then(res => {
+            resetFields()
+            this.onClose()
+          })
           .catch(err => console.error(err))
           .finally(() => hideLoadingMsg())
       }
