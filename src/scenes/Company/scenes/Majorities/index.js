@@ -83,26 +83,32 @@ class Shares extends React.Component {
     this.state = { editingId: '' };
     this.columns = [
       {
-        title: 'start',
-        dataIndex: 'start',
+        title: 'name',
+        dataIndex: 'name',
         width: '20%',
         editable: true,
       },
       {
-        title: 'end',
-        dataIndex: 'end',
+        title: 'rel. Threshold',
+        dataIndex: 'relativeThreshold',
         width: '20%',
         editable: true,
+        render: (text, record) => (
+          <span>{text} %</span>
+        )
       },
       {
-        title: 'Valor en €',
-        dataIndex: 'value',
+        title: 'abs. Threshold',
+        dataIndex: 'absoluteThreshold',
         width: '20%',
         editable: true,
+        render: (text, record) => (
+          <span>{text} %</span>
+        )
       },
       {
-        title: 'Peso de Voto',
-        dataIndex: 'voteWeight',
+        title: 'min. Votes',
+        dataIndex: 'minimumVotes',
         width: '20%',
         editable: true,
       },

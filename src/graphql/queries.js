@@ -12,6 +12,9 @@ export const GetCompany = gql`
         items {
           id
           name
+          relativeThreshold
+          absoluteThreshold
+          minimumVotes
         }
         nextToken
       }
