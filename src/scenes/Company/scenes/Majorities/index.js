@@ -248,14 +248,14 @@ class Shares extends React.Component {
   };
 
   delete = (id) => {
-    /* const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
-     * API.graphql(graphqlOperation(gqlToString(DeleteCompanyShareInterval), { input: { id } } ))
-     *   .then(res => { this.setState({ editingId: null }) })
-     *   .catch(err => {
-     *     console.error(err)
-     *     message.error('error')
-     *   })
-     *   .finally(() => hideLoadingMsg()) */
+    const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
+    API.graphql(graphqlOperation(gqlToString(DeleteMajority), { input: { id } } ))
+      .then(res => { this.setState({ editingId: null }) })
+      .catch(err => {
+        console.error(err)
+        message.error('error')
+      })
+      .finally(() => hideLoadingMsg())
   }
 
   render() {

@@ -37,6 +37,7 @@ const getCurrentCompany = (WrappedComponent) => {
     // Majorities
     createMajoritySubscription = null
     updateMajoritySubscription = null
+    deleteMajoritySubscription = null
 
 
     componentDidMount() {
@@ -256,25 +257,25 @@ const getCurrentCompany = (WrappedComponent) => {
       })
 
       // delete shareinterval subscription
-      /* this.deleteCompanyShareIntervalSubscription = API.graphql(
-       *   graphqlOperation(gqlToString(OnDeleteCompanyShareInterval))
-       * ).subscribe({
-       *   next: ({ value: { data: { onDeleteCompanyShareInterval }}}) => {
-       *     const newState = {
-       *       ...this.state,
-       *       company: {
-       *         ...this.state.company,
-       *         shareIntervals: {
-       *           ...this.state.company.shareIntervals,
-       *           items: this.state.company.shareIntervals.items.filter(shareInterval => {
-       *             return shareInterval.id !== onDeleteCompanyShareInterval.id
-       *           }),
-       *         }
-       *       }
-       *     }
-       *     this.setState(newState)
-       *   }
-       * }) */
+      this.deleteMajoritySubscription = API.graphql(
+        graphqlOperation(gqlToString(OnDeleteMajority))
+      ).subscribe({
+        next: ({ value: { data: { onDeleteMajority }}}) => {
+          const newState = {
+            ...this.state,
+            company: {
+              ...this.state.company,
+              majorities: {
+                ...this.state.company.majorities,
+                items: this.state.company.majorities.items.filter(majority => {
+                  return majority.id !== onDeleteMajority.id
+                }),
+              }
+            }
+          }
+          this.setState(newState)
+        }
+      })
     }
 
     componentWillUnmount() {
@@ -286,6 +287,7 @@ const getCurrentCompany = (WrappedComponent) => {
        * this.deleteShareholderSubscription.unsubscribe() */
       this.createMajoritySubscription.unsubscribe()
       this.updateMajoritySubscription.unsubscribe()
+      this.deleteMajoritySubscription.unsubscribe()
     }
 
     render() {
