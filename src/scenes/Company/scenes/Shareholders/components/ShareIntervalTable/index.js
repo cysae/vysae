@@ -230,9 +230,7 @@ class ShareIntervalTable extends React.Component {
   }
 
   render() {
-    /* const { company: { shareIntervals }} = this.props */
-    const shareIntervals = { items: []}
-    console.log(this.props)
+    const { shareholder: { shareIntervals }} = this.props
 
     const components = {
       body: {
