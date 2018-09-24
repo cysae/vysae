@@ -104,6 +104,10 @@ export const GetMajority = gql`
   query GetMajority($id: ID!) {
     getMajority(id: $id) {
       agreements {
+        items {
+          id
+          name
+        }
         nextToken
       }
       id

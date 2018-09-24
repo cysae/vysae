@@ -139,7 +139,6 @@ class ShareIntervalTable extends React.Component {
   }
 
   create = () => {
-    console.log(this.props)
     const {
       shareholder,
       shareholder: { id, shareIntervals },
@@ -161,7 +160,10 @@ class ShareIntervalTable extends React.Component {
       .then(({ data: { createShareholderShareInterval: { id }}}) => {
         this.setState({ editingId: id })
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        message.error('error', 2.5)
+        console.error(err)
+      })
       .finally(() => hideLoadingMsg())
   }
 

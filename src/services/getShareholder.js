@@ -13,7 +13,7 @@ import { compose } from 'recompose'
 // services
 import handleLoadingAndErrors from './handleLoadingAndErrors'
 
-const getCurrentCompany = (WrappedComponent) => {
+const getCurrentShareholder = (WrappedComponent) => {
   return class extends Component {
     state = {
       loading: true,
@@ -27,7 +27,6 @@ const getCurrentCompany = (WrappedComponent) => {
 
     componentDidMount() {
       const { shareholder } = this.props
-      console.log('test', shareholder)
       API.graphql(graphqlOperation(gqlToString(GetShareholder), { id: shareholder.id }))
         .then(({ data: { getShareholder }}) => {
           console.log('getShareholder', getShareholder)
@@ -148,7 +147,7 @@ const getCurrentCompany = (WrappedComponent) => {
 
 export default (WrappedComponent) => {
   return compose(
-    getCurrentCompany,
+    getCurrentShareholder,
     handleLoadingAndErrors
   )(WrappedComponent)
 }

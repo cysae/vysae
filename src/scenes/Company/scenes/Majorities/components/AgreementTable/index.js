@@ -1,37 +1,17 @@
 import React, { Fragment } from 'react'
 /*eslint-disable no-script-url*/
 // antd
-import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } from 'antd';
-// services
-import getCompany from '../../../../services/getCompany'
-import { compose } from 'recompose'
-// amplify
+import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } from 'antd'
 import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import {
-  CreateMajority,
-  UpdateMajority,
-  DeleteMajority
-} from '../../../../graphql/mutations'
-// components
-import AgreementTable from './components/AgreementTable'
-
-function getLastShareNumber(intvls) {
-  let last = 0
-  for(const intvl of intvls) {
-    if(last < intvl.end)
-      last = intvl.end
-  }
-  return last
-}
-
-function getInputType(col) {
-  if(col.dataIndex === 'relativeThreshold' || col.dataIndex === 'absoluteThreshold')
-    return 'percentage'
-  if(col.dataIndex === 'minimumVotes')
-    return 'number'
-  return 'normal'
-}
+  CreateMajorityAgreement,
+  UpdateMajorityAgreement,
+  DeleteMajorityAgreement,
+} from '../../../../../../graphql/mutations'
+// services
+import getMajority from '../../../../../../services/getMajority'
+import { compose } from 'recompose'
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -44,25 +24,22 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
+function getLastShareNumber(intvls) {
+  let last = 0
+  for(const intvl of intvls) {
+    if(last < intvl.end)
+      last = intvl.end
+  }
+  return last
+}
+
 class EditableCell extends React.Component {
   getInput = () => {
-    if (this.props.inputType === 'percentage')
-      return (
-        <InputNumber
-          min={0}
-          max={100}
-          formatter={value => `${value}%`}
-          parser={value => value.replace('%', '')}
-        />
-      )
-
-    if (this.props.inputType === 'number')
-      return (
-        <InputNumber />
-      )
-
+    if (this.props.inputType === 'number') {
+      return <InputNumber />;
+    }
     return <Input />;
-  }
+  };
 
   render() {
     const {
@@ -99,7 +76,7 @@ class EditableCell extends React.Component {
   }
 }
 
-class Shares extends React.Component {
+class AgreementTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = { editingId: '' };
@@ -107,31 +84,7 @@ class Shares extends React.Component {
       {
         title: 'name',
         dataIndex: 'name',
-        width: '20%',
-        editable: true,
-      },
-      {
-        title: 'rel. Threshold',
-        dataIndex: 'relativeThreshold',
-        width: '20%',
-        editable: true,
-        render: (text, record) => (
-          <span>{text}%</span>
-        )
-      },
-      {
-        title: 'abs. Threshold',
-        dataIndex: 'absoluteThreshold',
-        width: '20%',
-        editable: true,
-        render: (text, record) => (
-          <span>{text} %</span>
-        )
-      },
-      {
-        title: 'min. Votes',
-        dataIndex: 'minimumVotes',
-        width: '20%',
+        width: '50%',
         editable: true,
       },
       {
@@ -181,24 +134,20 @@ class Shares extends React.Component {
 
   create = () => {
     const {
-      match: { params: { companyId }},
-      company: { majorities },
+      majority: { id, agreements },
     } = this.props
 
     const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
 
     API.graphql(
-      graphqlOperation(gqlToString(CreateMajority), {
+      graphqlOperation(gqlToString(CreateMajorityAgreement), {
         input: {
-          majorityCompanyId: companyId,
-          name: 'Majority',
-          relativeThreshold: 50,
-          absoluteThreshold: 0,
-          minimumVotes: 0,
+          majorityAgreementMajorityId: id,
+          name: 'Agreement'
         }
       })
     )
-      .then(({ data: { createMajority: { id }}}) => {
+      .then(({ data: { createMajorityAgreement : { id }}}) => {
         this.setState({ editingId: id })
       })
       .catch(err => {
@@ -217,32 +166,31 @@ class Shares extends React.Component {
   }
 
   update(form, id) {
-    const {
-      match: { params: { companyId}}
-    } = this.props
+    /* const { shareholder } = this.props
 
-    form.validateFields((error, values) => {
-      if (error)
-        return
+     * form.validateFields((error, values) => {
+     *   if (error) {
+     *     return;
+     *   }
 
-      const hideLoadingMsg = message.loading('Acutalizando majoria...')
+     *   const hideLoadingMsg = message.loading('Acutalizando intervalo de participaciones...')
 
-      API.graphql(
-        graphqlOperation(gqlToString(UpdateMajority), {
-          input: {
-            id,
-            majorityCompanyId: companyId,
-            ...values
-          }
-        })
-      )
-        .then(res => { this.setState({ editingId: null }) })
-        .catch(err => {
-          message.error('error')
-          console.error(err)
-        })
-        .finally(() => hideLoadingMsg())
-    });
+     *   API.graphql(
+     *     graphqlOperation(gqlToString(UpdateShareholderShareInterval), {
+     *       input: {
+     *         id,
+     *         shareholderShareIntervalShareholderId: shareholder.id,
+     *         ...values
+     *       }
+     *     })
+     *   )
+     *     .then(res => { this.setState({ editingId: null }) })
+     *     .catch(err => {
+     *       message.error('error')
+     *       console.error(err)
+     *     })
+     *     .finally(() => hideLoadingMsg())
+     * }); */
   }
 
   cancel = () => {
@@ -250,18 +198,21 @@ class Shares extends React.Component {
   };
 
   delete = (id) => {
-    const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
-    API.graphql(graphqlOperation(gqlToString(DeleteMajority), { input: { id } } ))
-      .then(res => { this.setState({ editingId: null }) })
-      .catch(err => {
-        console.error(err)
-        message.error('error')
-      })
-      .finally(() => hideLoadingMsg())
+    /* const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
+     * API.graphql(graphqlOperation(gqlToString(DeleteShareholderShareInterval), { input: { id } } ))
+     *   .then(res => { this.setState({ editingId: null }) })
+     *   .catch(err => {
+     *     console.error(err)
+     *     message.error('error')
+     *   })
+     *   .finally(() => hideLoadingMsg()) */
   }
 
   render() {
-    const { company: { majorities }} = this.props
+    const { majority: { agreements }} = this.props
+
+    console.log(agreements)
+
     const components = {
       body: {
         row: EditableFormRow,
@@ -277,7 +228,7 @@ class Shares extends React.Component {
         ...col,
         onCell: record => ({
           record,
-          inputType: getInputType(col),
+          inputType: false ? 'number' : 'text',
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
@@ -287,15 +238,14 @@ class Shares extends React.Component {
 
     return (
       <Fragment>
-        <Button type="primary" onClick={this.create}>Añadir Majoria</Button>
+        <Button type="primary" onClick={this.create}>Añadir Intervalo de Participaciones</Button>
         <Table
           components={components}
           rowKey="id"
           bordered
-          dataSource={majorities.items}
+          dataSource={agreements.items}
           columns={columns}
           rowClassName="editable-row"
-          expandedRowRender={(record) => <AgreementTable majority={record} />}
         />
       </Fragment>
     );
@@ -303,5 +253,6 @@ class Shares extends React.Component {
 }
 
 export default compose(
-  getCompany,
-)(Shares)
+  Form.create(),
+  getMajority,
+)(AgreementTable)
