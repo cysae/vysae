@@ -23,6 +23,14 @@ function getLastShareNumber(intvls) {
   return last
 }
 
+function getInputType(col) {
+  if(col.dataIndex === 'relativeThreshold' || col.dataIndex === 'absoluteThreshold')
+    return 'percentage'
+  if(col.dataIndex === 'minimumVotes')
+    return 'number'
+  return 'normal'
+}
+
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -36,11 +44,23 @@ const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
   getInput = () => {
-    if (this.props.inputType === 'number') {
-      return <InputNumber />;
-    }
+    if (this.props.inputType === 'percentage')
+      return (
+        <InputNumber
+          min={0}
+          max={100}
+          formatter={value => `${value}%`}
+          parser={value => value.replace('%', '')}
+        />
+      )
+
+    if (this.props.inputType === 'number')
+      return (
+        <InputNumber />
+      )
+
     return <Input />;
-  };
+  }
 
   render() {
     const {
@@ -94,7 +114,7 @@ class Shares extends React.Component {
         width: '20%',
         editable: true,
         render: (text, record) => (
-          <span>{text} %</span>
+          <span>{text}%</span>
         )
       },
       {
@@ -255,7 +275,7 @@ class Shares extends React.Component {
         ...col,
         onCell: record => ({
           record,
-          inputType: true ? 'number' : 'text',
+          inputType: getInputType(col),
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
