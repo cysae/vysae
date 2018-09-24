@@ -8,6 +8,7 @@ import {
   OnUpdateCompanyShareInterval,
   OnDeleteCompanyShareInterval,
   OnCreateShareholder,
+  OnCreateMajority,
 } from '../graphql/subscriptions.js'
 // recompose
 import { compose } from 'recompose'
@@ -31,6 +32,9 @@ const getCurrentCompany = (WrappedComponent) => {
     /* updateShareholderSubscription = null
      * deleteShareholderSubscription = null */
 
+    // Majorities
+    createMajoritySubscription = null
+
 
     componentDidMount() {
       const { match: { params: { companyId }}} = this.props
@@ -45,6 +49,7 @@ const getCurrentCompany = (WrappedComponent) => {
 
       this.handleCompanySubscriptions()
       this.handleShareholderSubscriptions()
+      this.handleMajoritySubscriptions()
     }
 
     fetchMore = () => {
@@ -204,6 +209,71 @@ const getCurrentCompany = (WrappedComponent) => {
        * }) */
     }
 
+    handleMajoritySubscriptions = () => {
+      // create shareinterval subscription
+      this.createMajoritySubscription = API.graphql(
+        graphqlOperation(gqlToString(OnCreateMajority))
+      ).subscribe({
+        next: ({ value: { data: { onCreateMajority }}}) => {
+          const newState = {
+            ...this.state,
+            company: {
+              ...this.state.company,
+              majorities: {
+                ...this.state.company.majorities,
+                items: [...this.state.company.majorities.items, onCreateMajority],
+              }
+            }
+          }
+          this.setState(newState)
+        }
+      })
+
+      // update shareinterval subscription
+      /* this.updateCompanyShareIntervalSubscription = API.graphql(
+       *   graphqlOperation(gqlToString(OnUpdateCompanyShareInterval))
+       * ).subscribe({
+       *   next: ({ value: { data: { onUpdateCompanyShareInterval }}}) => {
+       *     const newState = {
+       *       ...this.state,
+       *       company: {
+       *         ...this.state.company,
+       *         shareIntervals: {
+       *           ...this.state.company.shareIntervals,
+       *           items: this.state.company.shareIntervals.items.map(shareInterval => {
+       *             if(shareInterval.id === onUpdateCompanyShareInterval.id)
+       *               shareInterval = onUpdateCompanyShareInterval
+       *             return shareInterval
+       *           }),
+       *         }
+       *       }
+       *     }
+       *     this.setState(newState)
+       *   }
+       * }) */
+
+      // delete shareinterval subscription
+      /* this.deleteCompanyShareIntervalSubscription = API.graphql(
+       *   graphqlOperation(gqlToString(OnDeleteCompanyShareInterval))
+       * ).subscribe({
+       *   next: ({ value: { data: { onDeleteCompanyShareInterval }}}) => {
+       *     const newState = {
+       *       ...this.state,
+       *       company: {
+       *         ...this.state.company,
+       *         shareIntervals: {
+       *           ...this.state.company.shareIntervals,
+       *           items: this.state.company.shareIntervals.items.filter(shareInterval => {
+       *             return shareInterval.id !== onDeleteCompanyShareInterval.id
+       *           }),
+       *         }
+       *       }
+       *     }
+       *     this.setState(newState)
+       *   }
+       * }) */
+    }
+
     componentWillUnmount() {
       this.createCompanyShareIntervalSubscription.unsubscribe()
       this.updateCompanyShareIntervalSubscription.unsubscribe()
@@ -211,6 +281,7 @@ const getCurrentCompany = (WrappedComponent) => {
       this.createShareholderSubscription.unsubscribe()
       /* this.updateShareholderSubscription.unsubscribe()
        * this.deleteShareholderSubscription.unsubscribe() */
+      this.createMajoritySubscription.unsubscribe()
     }
 
     render() {

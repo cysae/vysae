@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import Shareholders from './scenes/Shareholders'
 import Basics from './scenes/Basics'
 import Shares from './scenes/Shares'
+import Majorities from './scenes/Majorities'
 
 class CompanyMenu extends Component {
   getSelectedKey() {
@@ -62,7 +63,7 @@ export default (props) => {
         <Route path="/:companyId/company/basics" component={Basics} />
         <Route path="/:companyId/company/shares" component={Shares} />
         <Route path="/:companyId/company/shareholders" component={Shareholders} />
-        <Route path="/:companyId/company/majorities" component={Shareholders} />
+        <Route path="/:companyId/company/majorities" component={Majorities} />
       </Col>
     </Row>
   )

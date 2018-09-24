@@ -9,6 +9,10 @@ export const GetCompany = gql`
       nif
       placeOfBusiness
       majorities {
+        items {
+          id
+          name
+        }
         nextToken
       }
       meetings {
