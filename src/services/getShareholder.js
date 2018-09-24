@@ -5,6 +5,7 @@ import { print as gqlToString } from 'graphql/language'
 import { GetShareholder } from '../graphql/queries.js'
 import {
   OnCreateShareholderShareInterval,
+  OnUpdateShareholderShareInterval,
 } from '../graphql/subscriptions.js'
 // recompose
 import { compose } from 'recompose'
@@ -20,6 +21,7 @@ const getCurrentCompany = (WrappedComponent) => {
 
     // ShareIntervals
     createShareholderShareIntervalSubscription = null
+    updateShareholderShareIntervalSubscription = null
 
     componentDidMount() {
       const { shareholder } = this.props
@@ -84,28 +86,28 @@ const getCurrentCompany = (WrappedComponent) => {
         }
       })
 
-      // update shareinterval subscription
-      /* this.updateCompanyShareIntervalSubscription = API.graphql(
-       *   graphqlOperation(gqlToString(OnUpdateCompanyShareInterval))
-       * ).subscribe({
-       *   next: ({ value: { data: { onUpdateCompanyShareInterval }}}) => {
-       *     const newState = {
-       *       ...this.state,
-       *       company: {
-       *         ...this.state.company,
-       *         shareIntervals: {
-       *           ...this.state.company.shareIntervals,
-       *           items: this.state.company.shareIntervals.items.map(shareInterval => {
-       *             if(shareInterval.id === onUpdateCompanyShareInterval.id)
-       *               shareInterval = onUpdateCompanyShareInterval
-       *             return shareInterval
-       *           }),
-       *         }
-       *       }
-       *     }
-       *     this.setState(newState)
-       *   }
-       * }) */
+        /* update shareinterval subscription */
+        this.updateShareholderShareIntervalSubscription = API.graphql(
+          graphqlOperation(gqlToString(OnUpdateShareholderShareInterval))
+        ).subscribe({
+          next: ({ value: { data: { onUpdateShareholderShareInterval }}}) => {
+            const newState = {
+              ...this.state,
+              shareholder: {
+                ...this.state.shareholder,
+                shareIntervals: {
+                  ...this.state.shareholder.shareIntervals,
+                  items: this.state.shareholder.shareIntervals.items.map(shareInterval => {
+                    if(shareInterval.id === onUpdateShareholderShareInterval.id)
+                      shareInterval = onUpdateShareholderShareInterval
+                    return shareInterval
+                  }),
+                }
+              }
+            }
+            this.setState(newState)
+          }
+        })
 
       // delete shareinterval subscription
       /* this.deleteCompanyShareIntervalSubscription = API.graphql(
@@ -131,7 +133,8 @@ const getCurrentCompany = (WrappedComponent) => {
 
 
     componentWillUnmount() {
-      /* this.createCompanyShareIntervalSubscription.unsubscribe() */
+      this.createShareholderShareIntervalSubscription.unsubscribe()
+      this.updateShareholderShareIntervalSubscription.unsubscribe()
     }
 
     render() {
