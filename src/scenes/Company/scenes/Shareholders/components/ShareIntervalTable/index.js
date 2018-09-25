@@ -169,28 +169,22 @@ class ShareIntervalTable extends React.Component {
   }
 
   update(form, id) {
-    const { shareholder } = this.props
+    const { getShareholder: { updateShareIntvl } } = this.props
 
     form.validateFields((error, values) => {
       if (error) return
 
-      const hideLoadingMsg = message.loading('Acutalizando intervalo de participaciones...')
+      const shareIntvl = {
+        id,
+        ...values
+      }
 
-      API.graphql(
-        graphqlOperation(gqlToString(UpdateShareholderShareInterval), {
-          input: {
-            id,
-            shareholderShareIntervalShareholderId: shareholder.id,
-            ...values
-          }
-        })
-      )
-        .then(res => { this.setState({ editingId: null }) })
+      updateShareIntvl(shareIntvl)
+        .then(() => { this.setState({ editingId: null }) })
         .catch(err => {
           message.error('error')
           console.error(err)
         })
-        .finally(() => hideLoadingMsg())
     });
   }
 
