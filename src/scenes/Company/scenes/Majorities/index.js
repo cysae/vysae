@@ -183,29 +183,24 @@ class Shares extends React.Component {
     const {
       match: { params: { companyId }},
       company: { majorities },
+      getCompany: { createMajority }
     } = this.props
 
-    const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
+    const majority = {
+      name: 'Majority',
+      relativeThreshold: 50,
+      absoluteThreshold: 0,
+      minimumVotes: 0,
+    }
 
-    API.graphql(
-      graphqlOperation(gqlToString(CreateMajority), {
-        input: {
-          majorityCompanyId: companyId,
-          name: 'Majority',
-          relativeThreshold: 50,
-          absoluteThreshold: 0,
-          minimumVotes: 0,
-        }
-      })
-    )
-      .then(({ data: { createMajority: { id }}}) => {
+    createMajority(majority)
+      .then(( id ) => {
         this.setState({ editingId: id })
       })
       .catch(err => {
-        message.error('error', 2.5)
+        message.error('error')
         console.error(err)
       })
-      .finally(() => hideLoadingMsg())
   }
 
   isEditing = (record) => {

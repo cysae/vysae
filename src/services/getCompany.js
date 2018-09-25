@@ -19,6 +19,9 @@ import {
   CreateCompanyShareInterval,
   UpdateCompanyShareInterval,
   DeleteCompanyShareInterval,
+  CreateMajority,
+  UpdateMajority,
+  DeleteMajority,
 } from '../graphql/mutations'
 // recompose
 import { compose } from 'recompose'
@@ -33,19 +36,8 @@ const getCurrentCompany = (WrappedComponent) => {
       error: null,
     }
 
-    // Company
-    createIntvlSub = null
-    updateIntrlSub = null
-    deleteIntrlSub = null
-
-    // Majorities
-    createMajoritySubscription = null
-    updateMajoritySubscription = null
-    deleteMajoritySubscription = null
-
     componentDidMount() {
       const { match: { params: { companyId }}} = this.props
-
 
       API.graphql(graphqlOperation(gqlToString(GetCompany), { id: companyId }))
         .then(({ data: { getCompany }}) => {
@@ -166,33 +158,42 @@ const getCurrentCompany = (WrappedComponent) => {
       }).finally(() => hideLoadingMsg())
     }
 
+    createMajority = (majority) => {
+      const { match: { params: { companyId }}} = this.props
+      const hideLoadingMsg = message.loading('Creando majoria...')
+
+      return API.graphql(
+        graphqlOperation(gqlToString(CreateMajority), {
+          input: {
+            majorityCompanyId: companyId,
+            ...majority
+          }
+        })
+      ).then(({ data: { createMajority }}) => {
+        const newState = {
+          ...this.state,
+          company: {
+            ...this.state.company,
+            majorities: {
+              ...this.state.company.majorities,
+              items: [...this.state.company.majorities.items, createMajority],
+            }
+          }
+        }
+        this.setState(newState)
+        return createMajority.id
+      }).finally(() => hideLoadingMsg())
+    }
+
     getCompany = () => ({
       createShareholder: this.createShareholder,
       createShareIntvl: this.createShareIntvl,
       updateShareIntvl: this.updateShareIntvl,
       deleteShareIntvl: this.deleteShareIntvl,
+      createMajority: this.createMajority,
     })
 
     handleMajoritySubscriptions = () => {
-      // create shareinterval subscription
-      this.createMajoritySubscription = API.graphql(
-        graphqlOperation(gqlToString(OnCreateMajority))
-      ).subscribe({
-        next: ({ value: { data: { onCreateMajority }}}) => {
-          const newState = {
-            ...this.state,
-            company: {
-              ...this.state.company,
-              majorities: {
-                ...this.state.company.majorities,
-                items: [...this.state.company.majorities.items, onCreateMajority],
-              }
-            }
-          }
-          this.setState(newState)
-        },
-      })
-
       // update shareinterval subscription
       this.updateMajoritySubscription = API.graphql(
         graphqlOperation(gqlToString(OnUpdateMajority))
