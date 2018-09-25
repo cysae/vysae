@@ -142,29 +142,22 @@ class ShareIntervalTable extends React.Component {
     const {
       shareholder,
       shareholder: { id, shareIntervals },
+      getShareholder: { createShareIntvl }
     } = this.props
-
-    const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
 
     const lastShareNumber = getLastShareNumber(shareIntervals.items)
     const start = lastShareNumber + 1
-    API.graphql(
-      graphqlOperation(gqlToString(CreateShareholderShareInterval), {
-        input: {
-          shareholderShareIntervalShareholderId: id,
-          start,
-          end: start+1,
-        }
-      })
-    )
-      .then(({ data: { createShareholderShareInterval: { id }}}) => {
+    const shareIntvl = {
+      start,
+      end: start+1,
+    }
+    createShareIntvl(shareIntvl)
+      .then(( id ) => {
         this.setState({ editingId: id })
-      })
-      .catch(err => {
+      }).catch(err => {
         message.error('error', 2.5)
         console.error(err)
       })
-      .finally(() => hideLoadingMsg())
   }
 
   isEditing = (record) => {
@@ -179,9 +172,7 @@ class ShareIntervalTable extends React.Component {
     const { shareholder } = this.props
 
     form.validateFields((error, values) => {
-      if (error) {
-        return;
-      }
+      if (error) return
 
       const hideLoadingMsg = message.loading('Acutalizando intervalo de participaciones...')
 

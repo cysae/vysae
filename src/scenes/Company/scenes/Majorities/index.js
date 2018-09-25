@@ -5,14 +5,6 @@ import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } fr
 // services
 import getCompany from '../../../../services/getCompany'
 import { compose } from 'recompose'
-// amplify
-import { API, graphqlOperation } from 'aws-amplify'
-import { print as gqlToString } from 'graphql/language'
-import {
-  CreateMajority,
-  UpdateMajority,
-  DeleteMajority
-} from '../../../../graphql/mutations'
 // components
 import AgreementTable from './components/AgreementTable'
 
@@ -239,14 +231,14 @@ class Shares extends React.Component {
   };
 
   delete = (id) => {
-    const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
-    API.graphql(graphqlOperation(gqlToString(DeleteMajority), { input: { id } } ))
-      .then(res => { this.setState({ editingId: null }) })
+    const { getCompany: { deleteMajority }} = this.props
+
+    deleteMajority(id)
+      .then(() => { this.setState({ editingId: null }) })
       .catch(err => {
         console.error(err)
         message.error('error')
       })
-      .finally(() => hideLoadingMsg())
   }
 
   render() {

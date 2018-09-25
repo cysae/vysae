@@ -6,15 +6,6 @@ import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import { GetCompany } from '../graphql/queries'
 import {
-  OnCreateCompanyShareInterval,
-  OnUpdateCompanyShareInterval,
-  OnDeleteCompanyShareInterval,
-  OnCreateShareholder,
-  OnCreateMajority,
-  OnUpdateMajority,
-  OnDeleteMajority,
-} from '../graphql/subscriptions'
-import {
   CreateShareholder,
   CreateCompanyShareInterval,
   UpdateCompanyShareInterval,
@@ -187,7 +178,7 @@ const getCurrentCompany = (WrappedComponent) => {
 
     updateMajority = (majority) => {
       const { match: { params: { companyId }}} = this.props
-      const hideLoadingMsg = message.loading('Creando majoria...')
+      const hideLoadingMsg = message.loading('Actualizando majoria...')
 
       return API.graphql(
         graphqlOperation(gqlToString(UpdateMajority), {
@@ -215,6 +206,31 @@ const getCurrentCompany = (WrappedComponent) => {
       }).finally(() => hideLoadingMsg())
     }
 
+    deleteMajority = (id) => {
+      const { match: { params: { companyId }}} = this.props
+      const hideLoadingMsg = message.loading('Borrando majoria...')
+
+      return API.graphql(
+        graphqlOperation(gqlToString(DeleteMajority), {
+          input: { id }
+        })
+      ).then(({ data: { deleteMajority }}) => {
+        const newState = {
+          ...this.state,
+          company: {
+            ...this.state.company,
+            majorities: {
+              ...this.state.company.majorities,
+              items: this.state.company.majorities.items.filter(majority => {
+                return majority.id !== deleteMajority.id
+              }),
+            }
+          }
+        }
+        this.setState(newState)
+      }).finally(() => hideLoadingMsg())
+    }
+
     getCompany = () => ({
       createShareholder: this.createShareholder,
       createShareIntvl: this.createShareIntvl,
@@ -224,37 +240,6 @@ const getCurrentCompany = (WrappedComponent) => {
       updateMajority: this.updateMajority,
       deleteMajority: this.deleteMajority,
     })
-
-    handleMajoritySubscriptions = () => {
-      // update shareinterval subscription
-      this.updateMajoritySubscription = API.graphql(
-        graphqlOperation(gqlToString(OnUpdateMajority))
-      ).subscribe({
-        next: ({ value: { data: { onUpdateMajority }}}) => {
-        }
-      })
-
-      // delete shareinterval subscription
-      this.deleteMajoritySubscription = API.graphql(
-        graphqlOperation(gqlToString(OnDeleteMajority))
-      ).subscribe({
-        next: ({ value: { data: { onDeleteMajority }}}) => {
-          const newState = {
-            ...this.state,
-            company: {
-              ...this.state.company,
-              majorities: {
-                ...this.state.company.majorities,
-                items: this.state.company.majorities.items.filter(majority => {
-                  return majority.id !== onDeleteMajority.id
-                }),
-              }
-            }
-          }
-          this.setState(newState)
-        }
-      })
-    }
 
     render() {
       return (

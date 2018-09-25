@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
+// antd
+import { message } from 'antd'
 // amplify
 import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
-import { GetShareholder } from '../graphql/queries.js'
+import { GetShareholder } from '../graphql/queries'
 import {
   OnCreateShareholderShareInterval,
   OnUpdateShareholderShareInterval,
   OnDeleteShareholderShareInterval,
 } from '../graphql/subscriptions.js'
+import {
+  CreateShareholderShareInterval,
+  UpdateShareholderShareInterval,
+  DeleteShareholderShareInterval
+} from '../graphql/mutations'
 // recompose
 import { compose } from 'recompose'
 // services
@@ -20,13 +27,9 @@ const getCurrentShareholder = (WrappedComponent) => {
       error: null,
     }
 
-    // ShareIntervals
-    createShareholderShareIntervalSubscription = null
-    updateShareholderShareIntervalSubscription = null
-    deleteShareholderShareIntervalSubscription = null
-
     componentDidMount() {
       const { shareholder } = this.props
+
       API.graphql(graphqlOperation(gqlToString(GetShareholder), { id: shareholder.id }))
         .then(({ data: { getShareholder }}) => {
           this.setState({
@@ -35,57 +38,41 @@ const getCurrentShareholder = (WrappedComponent) => {
           })
         })
         .catch(error => { this.setState({ loading: false, error })})
-
-      /* this.handleSubscriptions() */
     }
 
-    fetchMore = () => {
-      // const {
-      //   user,
-      //   user: { companies: { nextToken }}
-      // } = this.state
+    fetchMore = () => {}
 
-      // if(nextToken) {
-      //   const hideLoadingMsg = message.loading('Fetching data...')
-      //   API.graphql(graphqlOperation(gqlToString(GetUser), { id: user.id, companiesNextToken: nextToken }))
-      //     .then(({ data: { getUser: { companies } }}) => {
-      //       const newState = {
-      //         ...this.state,
-      //         user: {
-      //           ...this.state.user,
-      //           companies: {
-      //             ...companies,
-      //             items: [...this.state.user.companies.items, ...companies.items ]
-      //           }
-      //         }
-      //       }
-      //       this.setState(newState)
-      //     })
-      //     .catch(error => { this.setState({ error })})
-      //     .finally(() => hideLoadingMsg())
-      // }
-    }
+    createShareIntvl = (shareIntvl) => {
+      const { shareholder } = this.props
+      const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
 
-    handleSubscriptions = () => {
-      // create shareinterval subscription
-      this.createShareholderShareIntervalSubscription = API.graphql(
-        graphqlOperation(gqlToString(OnCreateShareholderShareInterval))
-      ).subscribe({
-        next: ({ value: { data: { onCreateShareholderShareInterval }}}) => {
+      return API.graphql(graphqlOperation(gqlToString(CreateShareholderShareInterval), {
+        input: {
+          shareholderShareIntervalShareholderId: shareholder.id,
+          ...shareIntvl,
+        }
+      }))
+        .then(({ data: { createShareholderShareInterval }}) => {
           const newState = {
             ...this.state,
             shareholder: {
               ...this.state.shareholder,
               shareIntervals: {
                 ...this.state.shareholder.shareIntervals,
-                items: [...this.state.shareholder.shareIntervals.items, onCreateShareholderShareInterval],
+                items: [...this.state.shareholder.shareIntervals.items, createShareholderShareInterval],
               }
             }
           }
           this.setState(newState)
-        }
-      })
+          return createShareholderShareInterval.id
+        }).finally(() => hideLoadingMsg())
+    }
 
+    getShareholder = () => ({
+      createShareIntvl: this.createShareIntvl
+    })
+
+    handleSubscriptions = () => {
         /* update shareinterval subscription */
         this.updateShareholderShareIntervalSubscription = API.graphql(
           graphqlOperation(gqlToString(OnUpdateShareholderShareInterval))
@@ -131,15 +118,15 @@ const getCurrentShareholder = (WrappedComponent) => {
       })
     }
 
-
-    componentWillUnmount() {
-      this.createShareholderShareIntervalSubscription.unsubscribe()
-      this.updateShareholderShareIntervalSubscription.unsubscribe()
-      this.deleteShareholderShareIntervalSubscription.unsubscribe()
-    }
-
     render() {
-      return <WrappedComponent {...this.props} {...this.state} fetchMore={this.fetchMore} />
+      return (
+        <WrappedComponent
+          {...this.props}
+          {...this.state}
+          fetchMore={this.fetchMore}
+          getShareholder={this.getShareholder()}
+        />
+      )
     }
   }
 }
