@@ -3,8 +3,11 @@ type Company @model {
   name: String!
   nif: String
   placeOfBusiness: String
-  users: [CompanyUser] @connection(name: "CompanyUsers")
+  majorities: [Majority] @connection(name: "CompanyMajorities")
+  meetings: [Meeting] @connection(name: "CompanyMeetings")
+  shareholders: [Shareholder] @connection(name: "CompanyShareholders")
   shareIntervals: [CompanyShareInterval] @connection(name: "CompanyShareIntervals")
+  users: [CompanyUser] @connection(name: "CompanyUsers")
 }
 
 type CompanyUser @model(queries: null) {
@@ -22,8 +25,62 @@ type CompanyShareInterval @model {
   company: Company! @connection(name: "CompanyShareIntervals")
 }
 
+type Majority @model {
+  agreements: [MajorityAgreement] @connection(name: "MajorityAgreements")
+  id: ID!
+  company: Company! @connection(name: "CompanyMajorities")
+  name: String!
+  relativeThreshold: Float!
+  absoluteThreshold: Float!
+  minimumVotes: Int!
+}
+
+type MajorityAgreement @model {
+  id: ID!
+  majority: Majority! @connection(name: "MajorityAgreements")
+  name: String!
+}
+
+type Meeting @model {
+  id: ID!
+  agreements: [MeetingAgreement] @connection(name: "MeetingAgreements")
+  start: String!
+  end: String!
+  company: Company! @connection(name: "CompanyMeetings")
+}
+
+type MeetingAgreement @model {
+  id: ID!
+  name: String!
+  meeting: Meeting! @connection(name: "MeetingAgreements")
+  votes: [Vote] @connection(name: "AgreementVotes")
+}
+
+type Shareholder @model {
+  id: ID!
+  name: String
+  company: Company! @connection(name: "CompanyShareholders")
+  user: User @connection(name: "UserShareholders")
+  shareIntervals: [ShareholderShareInterval] @connection(name: "ShareholderShareIntervals")
+}
+
+type ShareholderShareInterval @model {
+  id: ID!
+  start: Int!
+  end: Int!
+  shareholder: Shareholder! @connection(name: "ShareholderShareIntervals")
+}
+
 type User @model {
   id: ID!
   name: String
   companies: [CompanyUser] @connection(name: "UserCompanies")
+  shareholders: [Shareholder] @connection(name: "UserShareholders")
+}
+
+type Vote @model {
+  id: ID!
+  agreement: MeetingAgreement @connection(name: "AgreementVotes")
+  result: Int!
+  shareholder: Shareholder! @connection
 }

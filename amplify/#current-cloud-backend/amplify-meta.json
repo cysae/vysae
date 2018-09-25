@@ -19,7 +19,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/auth/vysaeCognito-cloudformation-template.yml",
 				"logicalId": "authvysaeCognito"
 			},
-			"lastPushTimeStamp": "2018-09-23T16:16:55.749Z",
+			"lastPushTimeStamp": "2018-09-24T10:31:32.340Z",
 			"output": {
 				"AppClientSecret": "g4u1vjav40mn02mdmutau6bg06v8h57tfami0eg7t5lum528iuf",
 				"UserPoolId": "eu-west-1_d9W2WnqzS",
@@ -32,7 +32,24 @@
 			"lastPushDirHash": "XBTKZC8qIyaog8PNR1BSFr4rm2U="
 		}
 	},
-	"hosting": {},
+	"hosting": {
+		"S3AndCloudFront": {
+			"service": "S3AndCloudFront",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/hosting/template.json",
+				"logicalId": "hostingS3AndCloudFront"
+			},
+			"lastPushTimeStamp": "2018-09-24T10:31:32.348Z",
+			"output": {
+				"S3BucketSecureURL": "https://vysae-hosting-dev.s3.amazonaws.com",
+				"WebsiteURL": "http://vysae-hosting-dev.s3-website-eu-west-1.amazonaws.com",
+				"Region": "eu-west-1",
+				"HostingBucketName": "vysae-hosting-dev"
+			},
+			"lastPushDirHash": "B0RYbyJvRvFf2Ad3YkI0F+Y4l6A="
+		}
+	},
 	"api": {
 		"vysae": {
 			"service": "AppSync",
@@ -50,8 +67,8 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/cloudformation-template.json",
 				"logicalId": "apivysae"
 			},
-			"lastPushTimeStamp": "2018-09-23T16:16:57.434Z",
-			"lastPushDirHash": "YsxP+BpTQbcjd7URME2o5JyMqzc="
+			"lastPushTimeStamp": "2018-09-24T10:31:32.348Z",
+			"lastPushDirHash": "33BafH6wfTbpd2wB+6M3fKQQ918="
 		}
 	}
 }

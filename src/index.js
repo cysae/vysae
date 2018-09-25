@@ -8,9 +8,6 @@ import { Provider } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
 /* import logger from 'redux-logger' */
 import reducers from './reducers/index.js'
-// Saga
-import createSagaMiddleware from 'redux-saga'
-import mySagas from './sagas/index.js'
 // Redux-Router
 import createHistory from 'history/createBrowserHistory'
 import { ConnectedRouter, routerMiddleware as createRouterMiddleware} from 'react-router-redux'
@@ -21,17 +18,13 @@ import './App.css'
 
 const history = createHistory()
 const routerMiddleware = createRouterMiddleware(history)
-const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
   reducers,
   applyMiddleware(
     /* logger, */
     routerMiddleware,
-    sagaMiddleware
   )
 )
-
-sagaMiddleware.run(mySagas)
 
 ReactDOM.render(
   <Provider store={store}>

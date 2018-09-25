@@ -51,7 +51,8 @@ const getCurrentUser = (WrappedComponent) => {
             }
           }
           this.setState(newState)
-        }
+        },
+        close: () => console.log('company create sub Done')
       })
     }
 
@@ -81,7 +82,7 @@ const getCurrentUser = (WrappedComponent) => {
           .finally(() => hideLoadingMsg())
       }
     }
- 
+
     componentWillUnmount() {
       this.companiesSubscription.unsubscribe()
     }

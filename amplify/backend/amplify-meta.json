@@ -1,57 +1,74 @@
 {
-    "providers": {
-        "awscloudformation": {
-            "AuthRoleName": "vysae-20180923175301-authRole",
-            "UnauthRoleArn": "arn:aws:iam::037641059503:role/vysae-20180923175301-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::037641059503:role/vysae-20180923175301-authRole",
-            "Region": "eu-west-1",
-            "DeploymentBucketName": "vysae-20180923175301-deployment",
-            "UnauthRoleName": "vysae-20180923175301-unauthRole",
-            "StackName": "vysae-20180923175301",
-            "StackId": "arn:aws:cloudformation:eu-west-1:037641059503:stack/vysae-20180923175301/bffb5430-bf48-11e8-b387-50a686333cfd"
-        }
-    },
-    "auth": {
-        "vysaeCognito": {
-            "service": "Cognito",
-            "providerPlugin": "awscloudformation",
-            "providerMetadata": {
-                "s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/auth/vysaeCognito-cloudformation-template.yml",
-                "logicalId": "authvysaeCognito"
-            },
-            "lastPushTimeStamp": "2018-09-24T06:28:44.650Z",
-            "output": {
-                "AppClientSecret": "g4u1vjav40mn02mdmutau6bg06v8h57tfami0eg7t5lum528iuf",
-                "UserPoolId": "eu-west-1_d9W2WnqzS",
-                "AppClientIDWeb": "70ueie0aisuv3bmctj391me9jb",
-                "AppClientID": "51fv5l32g63s118qluk4ee1suh",
-                "IdentityPoolId": "eu-west-1:e59133ae-fccc-422d-9ce4-e6368d7e3ad0",
-                "IdentityPoolName": "vysae",
-                "UserPoolName": "vysae"
-            },
-            "lastPushDirHash": "XBTKZC8qIyaog8PNR1BSFr4rm2U="
-        }
-    },
-    "hosting": {},
-    "api": {
-        "vysae": {
-            "service": "AppSync",
-            "providerPlugin": "awscloudformation",
-            "output": {
-                "securityType": "AMAZON_COGNITO_USER_POOLS",
-                "GraphQLAPIIdOutput": "r5s5fmi7cnawzefibjmwlnpkry",
-                "GraphQLAPIEndpointOutput": "https://pg5uripmh5acbelm3g5yb2dyr4.appsync-api.eu-west-1.amazonaws.com/graphql",
-                "GraphQLAPIKeyOutput": "da2-fp335ns75fbbpmhw5j4523b6yy",
-                "AuthCognitoUserPoolIdOutput": "eu-west-1_d9W2WnqzS",
-                "AuthCognitoUserPoolNativeClientId": "See UserPool: eu-west-1_d9W2WnqzS",
-                "AuthCognitoUserPoolJSClientId": "See UserPool: eu-west-1_d9W2WnqzS"
-            },
-            "providerMetadata": {
-                "s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-                "logicalId": "apivysae"
-            },
-            "lastPushTimeStamp": "2018-09-24T06:28:44.650Z",
-            "lastPushDirHash": "YsxP+BpTQbcjd7URME2o5JyMqzc="
-        }
-    }
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "vysae-20180923175301-authRole",
+			"UnauthRoleArn": "arn:aws:iam::037641059503:role/vysae-20180923175301-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::037641059503:role/vysae-20180923175301-authRole",
+			"Region": "eu-west-1",
+			"DeploymentBucketName": "vysae-20180923175301-deployment",
+			"UnauthRoleName": "vysae-20180923175301-unauthRole",
+			"StackName": "vysae-20180923175301",
+			"StackId": "arn:aws:cloudformation:eu-west-1:037641059503:stack/vysae-20180923175301/bffb5430-bf48-11e8-b387-50a686333cfd"
+		}
+	},
+	"auth": {
+		"vysaeCognito": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/auth/vysaeCognito-cloudformation-template.yml",
+				"logicalId": "authvysaeCognito"
+			},
+			"lastPushTimeStamp": "2018-09-24T10:31:32.340Z",
+			"output": {
+				"AppClientSecret": "g4u1vjav40mn02mdmutau6bg06v8h57tfami0eg7t5lum528iuf",
+				"UserPoolId": "eu-west-1_d9W2WnqzS",
+				"AppClientIDWeb": "70ueie0aisuv3bmctj391me9jb",
+				"AppClientID": "51fv5l32g63s118qluk4ee1suh",
+				"IdentityPoolId": "eu-west-1:e59133ae-fccc-422d-9ce4-e6368d7e3ad0",
+				"IdentityPoolName": "vysae",
+				"UserPoolName": "vysae"
+			},
+			"lastPushDirHash": "XBTKZC8qIyaog8PNR1BSFr4rm2U="
+		}
+	},
+	"hosting": {
+		"S3AndCloudFront": {
+			"service": "S3AndCloudFront",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/hosting/template.json",
+				"logicalId": "hostingS3AndCloudFront"
+			},
+			"lastPushTimeStamp": "2018-09-24T10:31:32.348Z",
+			"output": {
+				"S3BucketSecureURL": "https://vysae-hosting-dev.s3.amazonaws.com",
+				"WebsiteURL": "http://vysae-hosting-dev.s3-website-eu-west-1.amazonaws.com",
+				"Region": "eu-west-1",
+				"HostingBucketName": "vysae-hosting-dev"
+			},
+			"lastPushDirHash": "B0RYbyJvRvFf2Ad3YkI0F+Y4l6A="
+		}
+	},
+	"api": {
+		"vysae": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"securityType": "AMAZON_COGNITO_USER_POOLS",
+				"GraphQLAPIIdOutput": "r5s5fmi7cnawzefibjmwlnpkry",
+				"GraphQLAPIEndpointOutput": "https://pg5uripmh5acbelm3g5yb2dyr4.appsync-api.eu-west-1.amazonaws.com/graphql",
+				"GraphQLAPIKeyOutput": "da2-fp335ns75fbbpmhw5j4523b6yy",
+				"AuthCognitoUserPoolIdOutput": "eu-west-1_d9W2WnqzS",
+				"AuthCognitoUserPoolNativeClientId": "See UserPool: eu-west-1_d9W2WnqzS",
+				"AuthCognitoUserPoolJSClientId": "See UserPool: eu-west-1_d9W2WnqzS"
+			},
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+				"logicalId": "apivysae"
+			},
+			"lastPushTimeStamp": "2018-09-24T10:31:32.348Z",
+			"lastPushDirHash": "33BafH6wfTbpd2wB+6M3fKQQ918="
+		}
+	}
 }

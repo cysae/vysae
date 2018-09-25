@@ -35,12 +35,13 @@ const columns = [{
 const Shareholders = (props) => {
   const {
     company: { shareholders },
-    match: { params: { companyId }}
+    match: { params: { companyId }},
+    getCompany: { createShareholder }
   } = props
 
   return (
     <Fragment>
-      <CreateShareholderDrawer companyId={companyId} />
+      <CreateShareholderDrawer companyId={companyId} createShareholder={createShareholder} />
       <Table
         columns={columns}
         dataSource={shareholders.items}

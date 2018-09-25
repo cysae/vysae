@@ -29,7 +29,6 @@ const getCurrentShareholder = (WrappedComponent) => {
       const { shareholder } = this.props
       API.graphql(graphqlOperation(gqlToString(GetShareholder), { id: shareholder.id }))
         .then(({ data: { getShareholder }}) => {
-          console.log('getShareholder', getShareholder)
           this.setState({
             loading: false,
             shareholder: getShareholder
@@ -37,7 +36,7 @@ const getCurrentShareholder = (WrappedComponent) => {
         })
         .catch(error => { this.setState({ loading: false, error })})
 
-      this.handleSubscriptions()
+      /* this.handleSubscriptions() */
     }
 
     fetchMore = () => {

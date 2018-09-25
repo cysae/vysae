@@ -128,6 +128,13 @@
 				}
 			}
 		},
+		"hostingS3AndCloudFront": {
+			"Type": "AWS::CloudFormation::Stack",
+			"Properties": {
+				"TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/hosting/template.json",
+				"Parameters": {}
+			}
+		},
 		"apivysae": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
@@ -140,10 +147,10 @@
 							"Outputs.UserPoolId"
 						]
 					},
-					"schemaGraphql": "s3://vysae-20180923175301-deployment/amplify-appsync-files/schema.graphql.1537770389193",
+					"schemaGraphql": "s3://vysae-20180923175301-deployment/amplify-appsync-files/schema.graphql.1537784960790",
 					"ResolverBucket": "vysae-20180923175301-deployment",
 					"ResolverRootKey": "amplify-appsync-files",
-					"DeploymentTimestamp": "1537770389193"
+					"DeploymentTimestamp": "1537784960790"
 				}
 			}
 		}

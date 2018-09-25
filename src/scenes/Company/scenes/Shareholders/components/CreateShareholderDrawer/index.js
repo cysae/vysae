@@ -35,30 +35,23 @@ class CreateShareholderDrawer extends React.Component {
       companyId,
       form: {
         getFieldValue,
-        validateFields
+        validateFields,
+        resetFields
       }
     } = this.props
 
     validateFields((err, values) => {
-      const { form: { resetFields }} = this.props
-      if (!err) {
-        const hideLoadingMsg = message.loading('Creando socio...')
+      if (err) return
 
-        API.graphql(
-          graphqlOperation(gqlToString(CreateShareholder), {
-            input: {
-              shareholderCompanyId: companyId,
-              ...values
-            }
-          })
-        )
-          .then(res => {
-            resetFields()
-            this.onClose()
-          })
-          .catch(err => console.error(err))
-          .finally(() => hideLoadingMsg())
+      const shareholder = {
+        ...values
       }
+
+      const { createShareholder } = this.props
+      createShareholder(shareholder).then(() => {
+        resetFields()
+        this.onClose()
+      })
     })
   }
 
