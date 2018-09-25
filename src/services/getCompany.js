@@ -111,55 +111,43 @@ const getCurrentCompany = (WrappedComponent) => {
       }).finally(() => hideLoadingMsg())
     }
 
+    updateShareIntvl = (shareIntvl) => {
+      const { match: { params: { companyId }}} = this.props
+      const hideLoadingMsg = message.loading('Actualizando intervalo de participaciones...')
+
+      return API.graphql(
+        graphqlOperation(gqlToString(UpdateCompanyShareInterval), {
+          input: {
+            companyShareIntervalCompanyId: companyId,
+            ...shareIntvl
+          }
+        })
+      ).then(({ data: { updateCompanyShareInterval }}) => {
+        const newState = {
+          ...this.state,
+          company: {
+            ...this.state.company,
+            shareIntervals: {
+              ...this.state.company.shareIntervals,
+              items: this.state.company.shareIntervals.items.map(shareInterval => {
+                if(shareInterval.id === updateCompanyShareInterval.id)
+                  shareInterval = updateCompanyShareInterval
+                return shareInterval
+              }),
+            }
+          }
+        }
+        this.setState(newState)
+      }).finally(() => hideLoadingMsg())
+    }
+
     getCompany = () => ({
       createShareholder: this.createShareholder,
       createShareIntvl: this.createShareIntvl,
+      updateShareIntvl: this.updateShareIntvl,
     })
 
     handleCompanySubscriptions = () => {
-      // create shareinterval subscription
-      this.createIntvlSub = API.graphql(
-        graphqlOperation(gqlToString(OnCreateCompanyShareInterval))
-      ).subscribe({
-        next: ({ value: { data: { onCreateCompanyShareInterval }}}) => {
-          const newState = {
-            ...this.state,
-            company: {
-              ...this.state.company,
-              shareIntervals: {
-                ...this.state.company.shareIntervals,
-                items: [...this.state.company.shareIntervals.items, onCreateCompanyShareInterval]
-              }
-            }
-          }
-          this.setState(newState)
-        },
-        close: () => console.log('closing create shareintvl')
-      })
-
-      // update shareinterval subscription
-      this.updateIntvlSub = API.graphql(
-        graphqlOperation(gqlToString(OnUpdateCompanyShareInterval))
-      ).subscribe({
-        next: ({ value: { data: { onUpdateCompanyShareInterval }}}) => {
-          const newState = {
-            ...this.state,
-            company: {
-              ...this.state.company,
-              shareIntervals: {
-                ...this.state.company.shareIntervals,
-                items: this.state.company.shareIntervals.items.map(shareInterval => {
-                  if(shareInterval.id === onUpdateCompanyShareInterval.id)
-                    shareInterval = onUpdateCompanyShareInterval
-                  return shareInterval
-                }),
-              }
-            }
-          }
-          this.setState(newState)
-        }
-      })
-
       // delete shareinterval subscription
       this.deleteIntvlSub = API.graphql(
         graphqlOperation(gqlToString(OnDeleteCompanyShareInterval))

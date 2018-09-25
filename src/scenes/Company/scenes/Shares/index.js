@@ -9,7 +9,6 @@ import { compose } from 'recompose'
 import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import {
-  UpdateCompanyShareInterval,
   DeleteCompanyShareInterval
 } from '../../../../graphql/mutations'
 
@@ -185,30 +184,23 @@ class Shares extends React.Component {
 
   update(form, id) {
     const {
-      match: { params: { companyId}}
+      match: { params: { companyId}},
+      getCompany: { updateShareIntvl }
     } = this.props
     form.validateFields((error, values) => {
-      if (error) {
-        return;
+      if (error) return;
+
+      const shareIntvl = {
+        id,
+        ...values,
       }
 
-      const hideLoadingMsg = message.loading('Acutalizando intervalo de participaciones...')
-
-      API.graphql(
-        graphqlOperation(gqlToString(UpdateCompanyShareInterval), {
-          input: {
-            id,
-            companyShareIntervalCompanyId: companyId,
-            ...values
-          }
-        })
-      )
+      updateShareIntvl(shareIntvl)
         .then(res => { this.setState({ editingId: null }) })
         .catch(err => {
           message.error('error')
           console.error(err)
         })
-        .finally(() => hideLoadingMsg())
     });
   }
 
