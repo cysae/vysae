@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
+// antd
+import { message } from 'antd'
 // amplify
 import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
-import { GetMajority } from '../graphql/queries.js'
+import { GetMajority } from '../graphql/queries'
 import {
   OnCreateMajorityAgreement,
   OnUpdateMajorityAgreement,
   OnDeleteMajorityAgreement,
 } from '../graphql/subscriptions.js'
+import {
+  CreateMajorityAgreement,
+  UpdateMajorityAgreement,
+  DeleteMajorityAgreement
+} from '../graphql/mutations'
 // recompose
 import { compose } from 'recompose'
 // services
@@ -20,10 +27,9 @@ const getCurrentMajority = (WrappedComponent) => {
       error: null,
     }
 
-    // ShareIntervals
-    createMajorityAgreementSubscription = null
-    updateMajorityAgreementSubscription = null
-    deleteMajorityAgreementSubscription = null
+    getMajority = () => ({
+      createAgreement: this.createAgreement
+    })
 
     componentDidMount() {
       const { majority } = this.props
@@ -35,57 +41,37 @@ const getCurrentMajority = (WrappedComponent) => {
           })
         })
         .catch(error => { this.setState({ loading: false, error })})
-
-      this.handleSubscriptions()
     }
 
-    fetchMore = () => {
-      // const {
-      //   user,
-      //   user: { companies: { nextToken }}
-      // } = this.state
+    fetchMore = () => {}
 
-      // if(nextToken) {
-      //   const hideLoadingMsg = message.loading('Fetching data...')
-      //   API.graphql(graphqlOperation(gqlToString(GetUser), { id: user.id, companiesNextToken: nextToken }))
-      //     .then(({ data: { getUser: { companies } }}) => {
-      //       const newState = {
-      //         ...this.state,
-      //         user: {
-      //           ...this.state.user,
-      //           companies: {
-      //             ...companies,
-      //             items: [...this.state.user.companies.items, ...companies.items ]
-      //           }
-      //         }
-      //       }
-      //       this.setState(newState)
-      //     })
-      //     .catch(error => { this.setState({ error })})
-      //     .finally(() => hideLoadingMsg())
-      // }
-    }
+    createAgreement = (agreement) => {
+      const { majority } = this.props
+      const hideLoadingMsg = message.loading('Creando acuerdos...')
 
-    handleSubscriptions = () => {
-      //create majority agreemeent subscription
-      this.createMajorityAgreementSubscription = API.graphql(
-        graphqlOperation(gqlToString(OnCreateMajorityAgreement))
-      ).subscribe({
-        next: ({ value: { data: { onCreateMajorityAgreement }}}) => {
+      return API.graphql(graphqlOperation(gqlToString(CreateMajorityAgreement), {
+        input: {
+          majorityAgreementMajorityId: majority.id,
+          ...agreement,
+        }
+      }))
+        .then(({ data: { createMajorityAgreement }}) => {
           const newState = {
             ...this.state,
             majority: {
               ...this.state.majority,
               agreements: {
                 ...this.state.majority.agreements,
-                items: [...this.state.majority.agreements.items, onCreateMajorityAgreement],
+                items: [...this.state.majority.agreements.items, createMajorityAgreement],
               }
             }
           }
           this.setState(newState)
-        }
-      })
+          return createMajorityAgreement.id
+        }).finally(() => hideLoadingMsg())
+    }
 
+    handleSubscriptions = () => {
       /* update shareinterval subscription */
       this.updateMajorityAgreementSubscription = API.graphql(
         graphqlOperation(gqlToString(OnUpdateMajorityAgreement))
@@ -130,15 +116,15 @@ const getCurrentMajority = (WrappedComponent) => {
       })
     }
 
-
-    componentWillUnmount() {
-      this.createMajorityAgreementSubscription.unsubscribe()
-      this.updateMajorityAgreementSubscription.unsubscribe()
-      this.deleteMajorityAgreementSubscription.unsubscribe()
-    }
-
     render() {
-      return <WrappedComponent {...this.props} {...this.state} fetchMore={this.fetchMore} />
+      return (
+        <WrappedComponent
+          {...this.props}
+          {...this.state}
+          fetchMore={this.fetchMore}
+          getMajority={this.getMajority()}
+        />
+      )
     }
   }
 }

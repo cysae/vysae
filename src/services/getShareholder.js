@@ -6,11 +6,6 @@ import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import { GetShareholder } from '../graphql/queries'
 import {
-  OnCreateShareholderShareInterval,
-  OnUpdateShareholderShareInterval,
-  OnDeleteShareholderShareInterval,
-} from '../graphql/subscriptions.js'
-import {
   CreateShareholderShareInterval,
   UpdateShareholderShareInterval,
   DeleteShareholderShareInterval

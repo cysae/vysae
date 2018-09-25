@@ -133,28 +133,18 @@ class AgreementTable extends React.Component {
   }
 
   create = () => {
-    const {
-      majority: { id, agreements },
-    } = this.props
+    const { getMajority: { createAgreement }} = this.props
+    const agreement = {
+      name: 'Agreement'
+    }
+    console.log(this.props)
 
-    const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
-
-    API.graphql(
-      graphqlOperation(gqlToString(CreateMajorityAgreement), {
-        input: {
-          majorityAgreementMajorityId: id,
-          name: 'Agreement'
-        }
-      })
-    )
-      .then(({ data: { createMajorityAgreement : { id }}}) => {
-        this.setState({ editingId: id })
-      })
+    createAgreement(agreement)
+      .then(( id ) => { this.setState({ editingId: id })})
       .catch(err => {
         message.error('error', 2.5)
         console.error(err)
       })
-      .finally(() => hideLoadingMsg())
   }
 
   isEditing = (record) => {
