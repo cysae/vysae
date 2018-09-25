@@ -2,13 +2,6 @@ import React, { Fragment } from 'react'
 /*eslint-disable no-script-url*/
 // antd
 import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } from 'antd'
-import { API, graphqlOperation } from 'aws-amplify'
-import { print as gqlToString } from 'graphql/language'
-import {
-  CreateShareholderShareInterval,
-  UpdateShareholderShareInterval,
-  DeleteShareholderShareInterval,
-} from '../../../../../../graphql/mutations'
 // services
 import getShareholder from '../../../../../../services/getShareholder'
 import { compose } from 'recompose'
@@ -193,14 +186,14 @@ class ShareIntervalTable extends React.Component {
   };
 
   delete = (id) => {
-    const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
-    API.graphql(graphqlOperation(gqlToString(DeleteShareholderShareInterval), { input: { id } } ))
+    const { getShareholder: { deleteShareIntvl }} = this.props
+
+    deleteShareIntvl(id)
       .then(res => { this.setState({ editingId: null }) })
       .catch(err => {
         console.error(err)
         message.error('error')
       })
-      .finally(() => hideLoadingMsg())
   }
 
   render() {

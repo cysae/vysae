@@ -70,7 +70,7 @@ const getCurrentShareholder = (WrappedComponent) => {
 
     updateShareIntvl = (shareIntvl) => {
       const { shareholder } = this.props
-      const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
+      const hideLoadingMsg = message.loading('Actualizando intervalo de participaciones...')
 
       return API.graphql(graphqlOperation(gqlToString(UpdateShareholderShareInterval), {
         input: {
@@ -97,18 +97,13 @@ const getCurrentShareholder = (WrappedComponent) => {
         }).finally(() => hideLoadingMsg())
     }
 
-    getShareholder = () => ({
-      createShareIntvl: this.createShareIntvl,
-      updateShareIntvl: this.updateShareIntvl,
-      deleteShareIntvl: this.deleteShareIntvl
-    })
+    deleteShareIntvl = (id) => {
+      const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
 
-    handleSubscriptions = () => {
-      // delete shareinterval subscription
-      this.deleteCompanyShareIntervalSubscription = API.graphql(
-        graphqlOperation(gqlToString(OnDeleteShareholderShareInterval))
-      ).subscribe({
-        next: ({ value: { data: { onDeleteShareholderShareInterval }}}) => {
+      return API.graphql(graphqlOperation(gqlToString(DeleteShareholderShareInterval), {
+        input: { id }
+      }))
+        .then(({ data: { deleteShareholderShareInterval }}) => {
           const newState = {
             ...this.state,
             shareholder: {
@@ -116,15 +111,20 @@ const getCurrentShareholder = (WrappedComponent) => {
               shareIntervals: {
                 ...this.state.shareholder.shareIntervals,
                 items: this.state.shareholder.shareIntervals.items.filter(shareInterval => {
-                  return shareInterval.id !== onDeleteShareholderShareInterval.id
+                  return shareInterval.id !== deleteShareholderShareInterval.id
                 }),
               }
             }
           }
           this.setState(newState)
-        }
-      })
+        }).finally(() => hideLoadingMsg())
     }
+
+    getShareholder = () => ({
+      createShareIntvl: this.createShareIntvl,
+      updateShareIntvl: this.updateShareIntvl,
+      deleteShareIntvl: this.deleteShareIntvl
+    })
 
     render() {
       return (
