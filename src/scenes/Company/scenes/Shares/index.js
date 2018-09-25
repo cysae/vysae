@@ -5,13 +5,6 @@ import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } fr
 // services
 import getCompany from '../../../../services/getCompany'
 import { compose } from 'recompose'
-// amplify
-import { API, graphqlOperation } from 'aws-amplify'
-import { print as gqlToString } from 'graphql/language'
-import {
-  DeleteCompanyShareInterval
-} from '../../../../graphql/mutations'
-
 
 function getLastShareNumber(intvls) {
   let last = 0
@@ -196,7 +189,7 @@ class Shares extends React.Component {
       }
 
       updateShareIntvl(shareIntvl)
-        .then(res => { this.setState({ editingId: null }) })
+        .then(() => { this.setState({ editingId: null }) })
         .catch(err => {
           message.error('error')
           console.error(err)
@@ -209,14 +202,15 @@ class Shares extends React.Component {
   };
 
   delete = (id) => {
-    const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
-    API.graphql(graphqlOperation(gqlToString(DeleteCompanyShareInterval), { input: { id } } ))
-      .then(res => { this.setState({ editingId: null }) })
+    const { getCompany: { deleteShareIntvl }} = this.props
+
+    console.log(id)
+    deleteShareIntvl(id)
+      .then(() => { this.setState({ editingId: null }) })
       .catch(err => {
         console.error(err)
         message.error('error')
       })
-      .finally(() => hideLoadingMsg())
   }
 
   render() {

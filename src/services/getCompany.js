@@ -141,35 +141,37 @@ const getCurrentCompany = (WrappedComponent) => {
       }).finally(() => hideLoadingMsg())
     }
 
+    deleteShareIntvl = (id) => {
+      const { match: { params: { companyId }}} = this.props
+      const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
+
+      return API.graphql(
+        graphqlOperation(gqlToString(DeleteCompanyShareInterval), {
+          input: { id }
+        })
+      ).then(({ data: { deleteCompanyShareInterval }}) => {
+        const newState = {
+          ...this.state,
+          company: {
+            ...this.state.company,
+            shareIntervals: {
+              ...this.state.company.shareIntervals,
+              items: this.state.company.shareIntervals.items.filter(shareInterval => {
+                return shareInterval.id !== deleteCompanyShareInterval.id
+              }),
+            }
+          }
+        }
+        this.setState(newState)
+      }).finally(() => hideLoadingMsg())
+    }
+
     getCompany = () => ({
       createShareholder: this.createShareholder,
       createShareIntvl: this.createShareIntvl,
       updateShareIntvl: this.updateShareIntvl,
+      deleteShareIntvl: this.deleteShareIntvl,
     })
-
-    handleCompanySubscriptions = () => {
-      // delete shareinterval subscription
-      this.deleteIntvlSub = API.graphql(
-        graphqlOperation(gqlToString(OnDeleteCompanyShareInterval))
-      ).subscribe({
-        next: ({ value: { data: { onDeleteCompanyShareInterval }}}) => {
-          const newState = {
-            ...this.state,
-            company: {
-              ...this.state.company,
-              shareIntervals: {
-                ...this.state.company.shareIntervals,
-                items: this.state.company.shareIntervals.items.filter(shareInterval => {
-                  return shareInterval.id !== onDeleteCompanyShareInterval.id
-                }),
-              }
-            }
-          }
-          this.setState(newState)
-        }
-      })
-    }
-
 
     handleMajoritySubscriptions = () => {
       // create shareinterval subscription
