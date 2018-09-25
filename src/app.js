@@ -12,7 +12,6 @@ import { Layout, Breadcrumb, Modal, message } from 'antd'
 import MyHeader from './components/header.js'
 import Companies from './scenes/Companies'
 import Dashboard from './scenes/Dashboard'
-import AddCompany from './containers/addCompany'
 import Meetings from './scenes/Meeting'
 import Company from './scenes/Company'
 // AppSync/Apollo
@@ -139,7 +138,6 @@ class App extends Component {
             <Route exact path="/" component={Companies} />
             <Route path="/:companyId/dashboard" component={Dashboard} />
             <Route path="/:companyId/company" component={Company} />
-            <Route path="/añadirSociedad" component={AddCompany}/>
             <Route path="/:companyId/meeting" component={Meetings}/>
           </div>
         </Content>

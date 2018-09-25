@@ -62,7 +62,7 @@ const getCurrentCompany = (WrappedComponent) => {
         input: {
           shareholderCompanyId: companyId,
           ...shareholder,
-          hola: 'jo'
+          ho: 'ho'
         }
       }))
         .then(({ data: { createShareholder }}) => {

@@ -34,9 +34,7 @@ class RawHeaderMenu extends Component {
       >
         <Menu.Item key="dashboard"><Link to={`/${companyId}/dashboard`}>Dashboard</Link></Menu.Item>
         <Menu.Item key="company"><Link to={`/${companyId}/company/basics`}>Company</Link></Menu.Item>
-        {/* <Menu.Item key="info"><Link to="/info/company">Info</Link></Menu.Item> */}
         <Menu.Item key="meetings"><Link to={`/${companyId}/meeting/next`}>Juntas</Link></Menu.Item>
-        <Menu.Item key="addCompany"><Link to="/añadirSociedad">Añadir Sociedad</Link></Menu.Item>
       </Menu>
     )
   }

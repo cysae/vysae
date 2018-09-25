@@ -3,35 +3,18 @@ import "regenerator-runtime/runtime";
 import ReactDOM from 'react-dom'
 import './index.css'
 import registerServiceWorker from './registerServiceWorker'
-// Redux
-import { Provider } from 'react-redux'
-import { applyMiddleware, createStore } from 'redux'
-/* import logger from 'redux-logger' */
-import reducers from './reducers/index.js'
-// Redux-Router
-import createHistory from 'history/createBrowserHistory'
-import { ConnectedRouter, routerMiddleware as createRouterMiddleware} from 'react-router-redux'
-// Components
+// Router
+import { BrowserRouter } from 'react-router-dom'
+// Componen pfts
 import App from './app.js'
 import './utils/company.js'
 import './App.css'
 
-const history = createHistory()
-const routerMiddleware = createRouterMiddleware(history)
-const store = createStore(
-  reducers,
-  applyMiddleware(
-    /* logger, */
-    routerMiddleware,
-  )
-)
-
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App />
-    </ConnectedRouter>
-  </Provider>,
-  document.getElementById('root'))
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  document.getElementById('root')
+)
 registerServiceWorker()
 
