@@ -28,7 +28,9 @@ const getCurrentMajority = (WrappedComponent) => {
     }
 
     getMajority = () => ({
-      createAgreement: this.createAgreement
+      createAgreement: this.createAgreement,
+      updateAgreement: this.updateAgreement,
+      deleteAgreement: this.deleteAgreement,
     })
 
     componentDidMount() {
@@ -47,7 +49,7 @@ const getCurrentMajority = (WrappedComponent) => {
 
     createAgreement = (agreement) => {
       const { majority } = this.props
-      const hideLoadingMsg = message.loading('Creando acuerdos...')
+      const hideLoadingMsg = message.loading('Creando acuerdo...')
 
       return API.graphql(graphqlOperation(gqlToString(CreateMajorityAgreement), {
         input: {
@@ -71,34 +73,42 @@ const getCurrentMajority = (WrappedComponent) => {
         }).finally(() => hideLoadingMsg())
     }
 
-    handleSubscriptions = () => {
-      /* update shareinterval subscription */
-      this.updateMajorityAgreementSubscription = API.graphql(
-        graphqlOperation(gqlToString(OnUpdateMajorityAgreement))
-      ).subscribe({
-        next: ({ value: { data: { onUpdateMajorityAgreement }}}) => {
+    updateAgreement = (agreement) => {
+      const { majority } = this.props
+      const hideLoadingMsg = message.loading('Actualizando acuerdo...')
+
+      return API.graphql(graphqlOperation(gqlToString(UpdateMajorityAgreement), {
+        input: {
+          majorityAgreementMajorityId: majority.id,
+          ...agreement,
+        }
+      }))
+        .then(({ data: { updateMajorityAgreement }}) => {
           const newState = {
             majority: {
               ...this.state.majority,
               agreements: {
                 ...this.state.majority.agreements,
                 items: this.state.majority.agreements.items.map(agreement => {
-                  if(agreement.id === onUpdateMajorityAgreement.id)
-                    agreement = onUpdateMajorityAgreement
+                  if(agreement.id === updateMajorityAgreement.id)
+                    agreement = updateMajorityAgreement
                   return agreement
                 }),
               }
             }
           }
           this.setState(newState)
-        }
-      })
+        }).finally(() => hideLoadingMsg())
+    }
 
-      // delete shareinterval subscription
-      this.deleteMajorityAgreementSubscription = API.graphql(
-        graphqlOperation(gqlToString(OnDeleteMajorityAgreement))
-      ).subscribe({
-        next: ({ value: { data: { onDeleteMajorityAgreement }}}) => {
+    deleteAgreement = (id) => {
+      const { majority } = this.props
+      const hideLoadingMsg = message.loading('Borrando acuerdo...')
+
+      return API.graphql(graphqlOperation(gqlToString(DeleteMajorityAgreement), {
+        input: { id }
+      }))
+        .then(({ data: { deleteMajorityAgreement }}) => {
           const newState = {
             ...this.state,
             majority: {
@@ -106,14 +116,13 @@ const getCurrentMajority = (WrappedComponent) => {
               agreements: {
                 ...this.state.majority.agreements,
                 items: this.state.majority.agreements.items.filter(agreement => {
-                  return agreement.id !== onDeleteMajorityAgreement.id
+                  return agreement.id !== deleteMajorityAgreement.id
                 }),
               }
             }
           }
           this.setState(newState)
-        }
-      })
+        }).finally(() => hideLoadingMsg())
     }
 
     render() {

@@ -137,7 +137,6 @@ class AgreementTable extends React.Component {
     const agreement = {
       name: 'Agreement'
     }
-    console.log(this.props)
 
     createAgreement(agreement)
       .then(( id ) => { this.setState({ editingId: id })})
@@ -156,28 +155,20 @@ class AgreementTable extends React.Component {
   }
 
   update(form, id) {
-    const { majority } = this.props
-
+    const { getMajority: { updateAgreement }} = this.props
     form.validateFields((error, values) => {
       if (error) return
 
-      const hideLoadingMsg = message.loading('Acutalizando agreement...')
-
-      API.graphql(
-        graphqlOperation(gqlToString(UpdateMajorityAgreement), {
-          input: {
-            id,
-            majorityAgreementMajorityId: majority.id,
-            ...values
-          }
-        })
-      )
-        .then(res => { this.setState({ editingId: null }) })
+      const agreement = {
+        id,
+        ...values
+      }
+      updateAgreement(agreement)
+        .then(() => { this.setState({ editingId: null }) })
         .catch(err => {
           message.error('error')
           console.error(err)
         })
-        .finally(() => hideLoadingMsg())
     });
   }
 
@@ -186,14 +177,14 @@ class AgreementTable extends React.Component {
   };
 
   delete = (id) => {
-    const hideLoadingMsg = message.loading('Borrando agreement...')
-    API.graphql(graphqlOperation(gqlToString(DeleteMajorityAgreement), { input: { id } } ))
-      .then(res => { this.setState({ editingId: null }) })
+    const { getMajority: { deleteAgreement }} = this.props
+
+    deleteAgreement(id)
+      .then(() => { this.setState({ editingId: null }) })
       .catch(err => {
         console.error(err)
         message.error('error')
       })
-      .finally(() => hideLoadingMsg())
   }
 
   render() {
