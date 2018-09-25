@@ -9,7 +9,6 @@ import { compose } from 'recompose'
 import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import {
-  CreateCompanyShareInterval,
   UpdateCompanyShareInterval,
   DeleteCompanyShareInterval
 } from '../../../../graphql/mutations'
@@ -156,28 +155,24 @@ class Shares extends React.Component {
     const {
       match: { params: { companyId }},
       company: { shareIntervals },
+      getCompany: { createShareIntvl },
     } = this.props
-
-    const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
 
     const lastShareNumber = getLastShareNumber(shareIntervals.items)
     const start = lastShareNumber + 1
-    API.graphql(
-      graphqlOperation(gqlToString(CreateCompanyShareInterval), {
-      input: {
-        companyShareIntervalCompanyId: companyId,
-        start,
-        end: start+1,
-        value: 1,
-        voteWeight: 1
-      }
-      })
-    )
-      .then(({ data: { createCompanyShareInterval: { id }}}) => {
+    const shareIntvl = {
+      start,
+      end: start+1,
+      value: 1,
+      voteWeight: 1
+    }
+    createShareIntvl(shareIntvl)
+      .then(id => {
         this.setState({ editingId: id })
+      }).catch(err => {
+        message.error('error', 2.5)
+        console.error(err)
       })
-      .catch(err => console.error(err))
-      .finally(() => hideLoadingMsg())
   }
 
   isEditing = (record) => {

@@ -6,12 +6,6 @@ import {
 } from 'antd';
 // services
 import { compose } from 'recompose'
-// amplify
-import { API, graphqlOperation } from 'aws-amplify'
-import { print as gqlToString } from 'graphql/language'
-import {
-  CreateShareholder,
-} from '../../../../../../graphql/mutations'
 
 class CreateShareholderDrawer extends React.Component {
   state = { visible: false };
@@ -51,6 +45,9 @@ class CreateShareholderDrawer extends React.Component {
       createShareholder(shareholder).then(() => {
         resetFields()
         this.onClose()
+      }).catch(err => {
+        message.error('error', 2.5)
+        console.error(err)
       })
     })
   }

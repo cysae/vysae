@@ -14,7 +14,12 @@ import {
   OnUpdateMajority,
   OnDeleteMajority,
 } from '../graphql/subscriptions'
-import { CreateShareholder } from '../graphql/mutations'
+import {
+  CreateShareholder,
+  CreateCompanyShareInterval,
+  UpdateCompanyShareInterval,
+  DeleteCompanyShareInterval,
+} from '../graphql/mutations'
 // recompose
 import { compose } from 'recompose'
 // services
@@ -62,7 +67,6 @@ const getCurrentCompany = (WrappedComponent) => {
         input: {
           shareholderCompanyId: companyId,
           ...shareholder,
-          ho: 'ho'
         }
       }))
         .then(({ data: { createShareholder }}) => {
@@ -77,16 +81,39 @@ const getCurrentCompany = (WrappedComponent) => {
             }
           }
           this.setState(newState)
+        }).finally(() => hideLoadingMsg())
+    }
+
+    createShareIntvl = (shareIntvl) => {
+      const { match: { params: { companyId }}} = this.props
+      const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
+
+      return API.graphql(
+        graphqlOperation(gqlToString(CreateCompanyShareInterval), {
+          input: {
+            companyShareIntervalCompanyId: companyId,
+            ...shareIntvl
+          }
         })
-        .catch(err => {
-          message.error('error', 2.5)
-          console.error(err)
-        })
-        .finally(() => hideLoadingMsg())
+      ).then(({ data: { createCompanyShareInterval }}) => {
+        const newState = {
+          ...this.state,
+          company: {
+            ...this.state.company,
+            shareIntervals: {
+              ...this.state.company.shareIntervals,
+              items: [...this.state.company.shareIntervals.items, createCompanyShareInterval]
+            }
+          }
+        }
+        this.setState(newState)
+        return createCompanyShareInterval.id
+      }).finally(() => hideLoadingMsg())
     }
 
     getCompany = () => ({
-      createShareholder: this.createShareholder
+      createShareholder: this.createShareholder,
+      createShareIntvl: this.createShareIntvl,
     })
 
     handleCompanySubscriptions = () => {
