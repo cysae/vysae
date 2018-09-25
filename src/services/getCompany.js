@@ -185,12 +185,44 @@ const getCurrentCompany = (WrappedComponent) => {
       }).finally(() => hideLoadingMsg())
     }
 
+    updateMajority = (majority) => {
+      const { match: { params: { companyId }}} = this.props
+      const hideLoadingMsg = message.loading('Creando majoria...')
+
+      return API.graphql(
+        graphqlOperation(gqlToString(UpdateMajority), {
+          input: {
+            majorityCompanyId: companyId,
+            ...majority
+          }
+        })
+      ).then(({ data: { updateMajority }}) => {
+        const newState = {
+          ...this.state,
+          company: {
+            ...this.state.company,
+            majorities: {
+              ...this.state.company.majorities,
+              items: this.state.company.majorities.items.map(majority => {
+                if(majority.id === updateMajority.id)
+                  majority = updateMajority
+                return majority
+              }),
+            }
+          }
+        }
+        this.setState(newState)
+      }).finally(() => hideLoadingMsg())
+    }
+
     getCompany = () => ({
       createShareholder: this.createShareholder,
       createShareIntvl: this.createShareIntvl,
       updateShareIntvl: this.updateShareIntvl,
       deleteShareIntvl: this.deleteShareIntvl,
       createMajority: this.createMajority,
+      updateMajority: this.updateMajority,
+      deleteMajority: this.deleteMajority,
     })
 
     handleMajoritySubscriptions = () => {
@@ -199,21 +231,6 @@ const getCurrentCompany = (WrappedComponent) => {
         graphqlOperation(gqlToString(OnUpdateMajority))
       ).subscribe({
         next: ({ value: { data: { onUpdateMajority }}}) => {
-          const newState = {
-            ...this.state,
-            company: {
-              ...this.state.company,
-              majorities: {
-                ...this.state.company.majorities,
-                items: this.state.company.majorities.items.map(majority => {
-                  if(majority.id === onUpdateMajority.id)
-                    majority = onUpdateMajority
-                  return majority
-                }),
-              }
-            }
-          }
-          this.setState(newState)
         }
       })
 

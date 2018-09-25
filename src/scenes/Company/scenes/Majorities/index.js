@@ -213,30 +213,24 @@ class Shares extends React.Component {
 
   update(form, id) {
     const {
-      match: { params: { companyId}}
+      match: { params: { companyId}},
+      getCompany: { updateMajority }
     } = this.props
 
     form.validateFields((error, values) => {
       if (error)
         return
 
-      const hideLoadingMsg = message.loading('Acutalizando majoria...')
-
-      API.graphql(
-        graphqlOperation(gqlToString(UpdateMajority), {
-          input: {
-            id,
-            majorityCompanyId: companyId,
-            ...values
-          }
-        })
-      )
+      const majority = {
+        id,
+        ...values
+      }
+      updateMajority(majority)
         .then(res => { this.setState({ editingId: null }) })
         .catch(err => {
           message.error('error')
           console.error(err)
         })
-        .finally(() => hideLoadingMsg())
     });
   }
 
