@@ -125,7 +125,6 @@ const getCurrentCompany = (WrappedComponent) => {
     }
 
     deleteShareIntvl = (id) => {
-      const { match: { params: { companyId }}} = this.props
       const hideLoadingMsg = message.loading('Borrando intervalo de participaciones...')
 
       return API.graphql(
@@ -207,7 +206,6 @@ const getCurrentCompany = (WrappedComponent) => {
     }
 
     deleteMajority = (id) => {
-      const { match: { params: { companyId }}} = this.props
       const hideLoadingMsg = message.loading('Borrando majoria...')
 
       return API.graphql(

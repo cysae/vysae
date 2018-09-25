@@ -1,8 +1,7 @@
 import React from 'react'
 // antd
 import {
-  Drawer, Form, Button, Col, Row, Input,
-  notification, message
+  Drawer, Form, Button, Col, Row, Input, message
 } from 'antd';
 // services
 import { compose } from 'recompose'
@@ -26,9 +25,7 @@ class CreateShareholderDrawer extends React.Component {
     e.preventDefault()
 
     const {
-      companyId,
       form: {
-        getFieldValue,
         validateFields,
         resetFields
       }

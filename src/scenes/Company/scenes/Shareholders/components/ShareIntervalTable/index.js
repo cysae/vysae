@@ -133,8 +133,7 @@ class ShareIntervalTable extends React.Component {
 
   create = () => {
     const {
-      shareholder,
-      shareholder: { id, shareIntervals },
+      shareholder: { shareIntervals },
       getShareholder: { createShareIntvl }
     } = this.props
 

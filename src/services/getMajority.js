@@ -6,11 +6,6 @@ import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import { GetMajority } from '../graphql/queries'
 import {
-  OnCreateMajorityAgreement,
-  OnUpdateMajorityAgreement,
-  OnDeleteMajorityAgreement,
-} from '../graphql/subscriptions.js'
-import {
   CreateMajorityAgreement,
   UpdateMajorityAgreement,
   DeleteMajorityAgreement
@@ -102,7 +97,6 @@ const getCurrentMajority = (WrappedComponent) => {
     }
 
     deleteAgreement = (id) => {
-      const { majority } = this.props
       const hideLoadingMsg = message.loading('Borrando acuerdo...')
 
       return API.graphql(graphqlOperation(gqlToString(DeleteMajorityAgreement), {

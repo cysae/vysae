@@ -2,13 +2,6 @@ import React, { Fragment } from 'react'
 /*eslint-disable no-script-url*/
 // antd
 import { Table, Input, InputNumber, Popconfirm, Form, Button, Icon, message } from 'antd'
-import { API, graphqlOperation } from 'aws-amplify'
-import { print as gqlToString } from 'graphql/language'
-import {
-  CreateMajorityAgreement,
-  UpdateMajorityAgreement,
-  DeleteMajorityAgreement,
-} from '../../../../../../graphql/mutations'
 // services
 import getMajority from '../../../../../../services/getMajority'
 import { compose } from 'recompose'
@@ -23,15 +16,6 @@ const EditableRow = ({ form, index, ...props }) => (
 );
 
 const EditableFormRow = Form.create()(EditableRow);
-
-function getLastShareNumber(intvls) {
-  let last = 0
-  for(const intvl of intvls) {
-    if(last < intvl.end)
-      last = intvl.end
-  }
-  return last
-}
 
 class EditableCell extends React.Component {
   getInput = () => {

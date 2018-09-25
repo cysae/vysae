@@ -8,15 +8,6 @@ import { compose } from 'recompose'
 // components
 import AgreementTable from './components/AgreementTable'
 
-function getLastShareNumber(intvls) {
-  let last = 0
-  for(const intvl of intvls) {
-    if(last < intvl.end)
-      last = intvl.end
-  }
-  return last
-}
-
 function getInputType(col) {
   if(col.dataIndex === 'relativeThreshold' || col.dataIndex === 'absoluteThreshold')
     return 'percentage'
@@ -173,8 +164,6 @@ class Shares extends React.Component {
 
   create = () => {
     const {
-      match: { params: { companyId }},
-      company: { majorities },
       getCompany: { createMajority }
     } = this.props
 
@@ -205,7 +194,6 @@ class Shares extends React.Component {
 
   update(form, id) {
     const {
-      match: { params: { companyId}},
       getCompany: { updateMajority }
     } = this.props
 

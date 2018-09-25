@@ -145,7 +145,6 @@ class Shares extends React.Component {
 
   create = () => {
     const {
-      match: { params: { companyId }},
       company: { shareIntervals },
       getCompany: { createShareIntvl },
     } = this.props
@@ -177,7 +176,6 @@ class Shares extends React.Component {
 
   update(form, id) {
     const {
-      match: { params: { companyId}},
       getCompany: { updateShareIntvl }
     } = this.props
     form.validateFields((error, values) => {
