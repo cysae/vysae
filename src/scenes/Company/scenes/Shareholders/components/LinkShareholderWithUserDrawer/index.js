@@ -45,7 +45,6 @@ class LinkShareholderDrawer extends React.Component {
     validateFields((err, values) => {
       if (err) return
 
-      console.log(shareholder, values)
       const user = {
         ...values
       }

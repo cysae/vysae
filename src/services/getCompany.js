@@ -9,6 +9,7 @@ import {
   CreateShareholder,
   UpdateShareholder,
   CreateUser,
+  DeleteUser,
   CreateCompanyShareInterval,
   UpdateCompanyShareInterval,
   DeleteCompanyShareInterval,
@@ -86,13 +87,16 @@ const getCurrentCompany = (WrappedComponent) => {
 
     linkShareholder = (shareholder, user) => {
       const { match: { params: { companyId }}} = this.props
+      let userId
 
       return API.graphql(graphqlOperation(gqlToString(CreateUser), {
         input: { name: user.name }
       })).then(({ data: { createUser }}) => {
         const password = generator.generate({ length: 8, numbers: true, symbols: true, strict: true })
+        userId = createUser.id
 
         return Promises.all([
+          createUser.id,
           Auth.signUp({
             username: user.username,
             password,
@@ -111,6 +115,13 @@ const getCurrentCompany = (WrappedComponent) => {
             }
           }))
         ])
+      }).catch(err => {
+        console.log(userId)
+        return API.graphql(graphqlOperation(gqlToString(DeleteUser), {
+          input: { id: userId }
+        })).then(() => {
+          throw err
+        })
       })
     }
 
