@@ -10,38 +10,45 @@ import LinkShareholderWithUserDrawer from './components/LinkShareholderWithUserD
 import ShareIntervalTable from './components/ShareIntervalTable'
 
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-}, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => {
-    if (record.user === null)
-      return (
-        <span>
-          <LinkShareholderWithUserDrawer shareholder={record} />
-        </span>
-      )
-
-    return (
-      <span>is linked</span>
-    )
-  }
-}];
 
 
 const Shareholders = (props) => {
   const {
     company: { shareholders },
     match: { params: { companyId }},
-    getCompany: { createShareholder }
+    getCompany: { createShareholder, linkShareholder }
   } = props
+
+  const columns = [{
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+  }, {
+    title: 'Action',
+    key: 'action',
+    render: (text, record) => {
+      if (record.user === null)
+        return (
+          <span>
+            <LinkShareholderWithUserDrawer
+              shareholder={record}
+              linkShareholder={linkShareholder}
+            />
+          </span>
+        )
+
+      return (
+        <span>is linked</span>
+      )
+    }
+  }];
 
   return (
     <Fragment>
-      <CreateShareholderDrawer companyId={companyId} createShareholder={createShareholder} />
+      <CreateShareholderDrawer
+        companyId={companyId}
+        createShareholder={createShareholder}
+      />
       <Table
         columns={columns}
         dataSource={shareholders.items}

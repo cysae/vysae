@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 //antd
 import { message } from 'antd'
 // amplify
-import { API, graphqlOperation } from 'aws-amplify'
+import { Auth, API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import { GetCompany } from '../graphql/queries'
 import {
   CreateShareholder,
+  UpdateShareholder,
+  CreateUser,
   CreateCompanyShareInterval,
   UpdateCompanyShareInterval,
   DeleteCompanyShareInterval,
@@ -14,13 +16,14 @@ import {
   UpdateMajority,
   DeleteMajority,
   CreateMeeting,
-  CreateMeetingAgreement
+  CreateMeetingAgreement,
 } from '../graphql/mutations'
 // recompose
 import { compose } from 'recompose'
 // services
 import handleLoadingAndErrors from './handleLoadingAndErrors'
-
+import Promises from 'bluebird'
+import generator from 'generate-password'
 
 const getCurrentCompany = (WrappedComponent) => {
   return class extends Component {
@@ -28,6 +31,18 @@ const getCurrentCompany = (WrappedComponent) => {
       loading: true,
       error: null,
     }
+
+    getCompany = () => ({
+      createShareholder: this.createShareholder,
+      linkShareholder: this.linkShareholder,
+      createShareIntvl: this.createShareIntvl,
+      updateShareIntvl: this.updateShareIntvl,
+      deleteShareIntvl: this.deleteShareIntvl,
+      createMajority: this.createMajority,
+      updateMajority: this.updateMajority,
+      deleteMajority: this.deleteMajority,
+      createMeeting: this.createMeeting,
+    })
 
     componentDidMount() {
       const { match: { params: { companyId }}} = this.props
@@ -67,6 +82,36 @@ const getCurrentCompany = (WrappedComponent) => {
           }
           this.setState(newState)
         }).finally(() => hideLoadingMsg())
+    }
+
+    linkShareholder = (shareholder, user) => {
+      const { match: { params: { companyId }}} = this.props
+
+      return API.graphql(graphqlOperation(gqlToString(CreateUser), {
+        input: { name: user.name }
+      })).then(({ data: { createUser }}) => {
+        const password = generator.generate({ length: 8, numbers: true, symbols: true, strict: true })
+
+        return Promises.all([
+          Auth.signUp({
+            username: user.username,
+            password,
+            attributes: {
+              email: user.email,          // optional
+              phone_number: '+34'+user.phone_number,   // optional - E.164 number convention
+              ['custom:userId']: createUser.id,
+            },
+            validationData: []  //optional
+          }),
+          API.graphql(graphqlOperation(gqlToString(UpdateShareholder), {
+            input: {
+              shareholderCompanyId: companyId,
+              shareholderUserId: createUser.id,
+              ...shareholder
+            }
+          }))
+        ])
+      })
     }
 
     createShareIntvl = (shareIntvl) => {
@@ -262,16 +307,6 @@ const getCurrentCompany = (WrappedComponent) => {
       }).finally(() => hideLoadingMsg())
     }
 
-    getCompany = () => ({
-      createShareholder: this.createShareholder,
-      createShareIntvl: this.createShareIntvl,
-      updateShareIntvl: this.updateShareIntvl,
-      deleteShareIntvl: this.deleteShareIntvl,
-      createMajority: this.createMajority,
-      updateMajority: this.updateMajority,
-      deleteMajority: this.deleteMajority,
-      createMeeting: this.createMeeting,
-    })
 
     render() {
       return (

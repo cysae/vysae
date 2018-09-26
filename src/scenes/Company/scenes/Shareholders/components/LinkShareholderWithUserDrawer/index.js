@@ -34,7 +34,7 @@ class LinkShareholderDrawer extends React.Component {
     e.preventDefault()
 
     const {
-      linkShareholderWithUser,
+      linkShareholder,
       shareholder,
       form: {
         getFieldValue,
@@ -43,28 +43,29 @@ class LinkShareholderDrawer extends React.Component {
     } = this.props
 
     validateFields((err, values) => {
-      if (!err) {
-        const user = {
-          username: getFieldValue('dni'),
-          email: getFieldValue('email'),
-          phone_number: `+34${getFieldValue('phone_number')}`
-        }
+      if (err) return
 
-        linkShareholderWithUser(shareholder.id, user)
-          .then(res => {
-            notification.success({
-              message: `Shareholder linked!`,
-              description: `Has linked un shareholder con un usario.`
-            })
-            this.onClose()
-          })
-          .catch(err => {
-            notification.error({
-              message: `DNI ya existe!`,
-              description: `No puedo crear un nuevo usario.`
-            })
-          })
+      console.log(shareholder, values)
+      const user = {
+        ...values
       }
+      delete shareholder.user
+
+      linkShareholder(shareholder, user)
+        .then(res => {
+          notification.success({
+            message: `Shareholder linked!`,
+            description: `Has linked un shareholder con un usario.`
+          })
+          this.onClose()
+        })
+        .catch(err => {
+          console.error(err)
+          notification.error({
+            message: `DNI ya existe!`,
+            description: `No puedo crear un nuevo usario.`
+          })
+        })
     })
   }
 
@@ -98,7 +99,7 @@ class LinkShareholderDrawer extends React.Component {
               </Col>
               <Col span={12}>
                 <Form.Item label="DNI">
-                  {getFieldDecorator('dni', {
+                  {getFieldDecorator('username', {
                      rules: [{ required: true, message: 'please enter user DNI' }],
                   })(<Input placeholder="please enter user name" />)}
                 </Form.Item>
