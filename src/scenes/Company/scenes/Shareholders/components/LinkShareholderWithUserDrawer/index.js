@@ -38,7 +38,8 @@ class LinkShareholderDrawer extends React.Component {
       shareholder,
       form: {
         getFieldValue,
-        validateFields
+        validateFields,
+        setFields
       }
     } = this.props
 
@@ -64,6 +65,12 @@ class LinkShareholderDrawer extends React.Component {
             message: `DNI ya existe!`,
             description: `No puedo crear un nuevo usario.`
           })
+          setFields({
+            username: {
+              errors: [new Error('DNI existe ya!')],
+            }
+          })
+
         })
     })
   }

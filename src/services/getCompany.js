@@ -96,7 +96,6 @@ const getCurrentCompany = (WrappedComponent) => {
         userId = createUser.id
 
         return Promises.all([
-          createUser.id,
           Auth.signUp({
             username: user.username,
             password,
@@ -116,7 +115,6 @@ const getCurrentCompany = (WrappedComponent) => {
           }))
         ])
       }).catch(err => {
-        console.log(userId)
         return API.graphql(graphqlOperation(gqlToString(DeleteUser), {
           input: { id: userId }
         })).then(() => {
