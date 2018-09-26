@@ -13,6 +13,8 @@ import {
   CreateMajority,
   UpdateMajority,
   DeleteMajority,
+  CreateMeeting,
+  CreateMeetingAgreement
 } from '../graphql/mutations'
 // recompose
 import { compose } from 'recompose'
@@ -229,6 +231,37 @@ const getCurrentCompany = (WrappedComponent) => {
       }).finally(() => hideLoadingMsg())
     }
 
+    createMeeting = (meeting, agreements) => {
+      const { match: { params: { companyId }}} = this.props
+      const hideLoadingMsg = message.loading('Creando intervalo de participaciones...')
+
+      return API.graphql(graphqlOperation(gqlToString(CreateMeeting), {
+        input: { meetingCompanyId: companyId, ...meeting }
+      })).then(({ data: { createMeeting }}) => {
+        const newState = {
+          ...this.state,
+          company: {
+            ...this.state.company,
+            meetings: {
+              ...this.state.company.meetings,
+              items: [...this.state.company.meetings.items, createMeeting],
+            }
+          }
+        }
+        this.setState(newState)
+
+        const promises = agreements.map((agreement) => {
+          return API.graphql(graphqlOperation(gqlToString(CreateMeetingAgreement), {
+            input: {
+              meetingAgreementMeetingId: createMeeting.id,
+              ...agreement
+            }
+          }))
+        })
+        return Promise.all(promises)
+      }).finally(() => hideLoadingMsg())
+    }
+
     getCompany = () => ({
       createShareholder: this.createShareholder,
       createShareIntvl: this.createShareIntvl,
@@ -237,6 +270,7 @@ const getCurrentCompany = (WrappedComponent) => {
       createMajority: this.createMajority,
       updateMajority: this.updateMajority,
       deleteMajority: this.deleteMajority,
+      createMeeting: this.createMeeting,
     })
 
     render() {

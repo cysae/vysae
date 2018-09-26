@@ -6,7 +6,6 @@ import {
 } from 'antd';
 // services
 import { compose } from 'recompose'
-import createMeeting from '../../services/createMeeting'
 
 const { RangePicker } = DatePicker
 const Option = Select.Option
@@ -22,7 +21,10 @@ class CreateMeetingDrawer extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { form: { validateFields }, companyId } = this.props
+    const {
+      form: { validateFields },
+      createMeeting
+    } = this.props
     validateFields((err, values) => {
       if (!err) {
         const meeting = {
@@ -32,11 +34,11 @@ class CreateMeetingDrawer extends React.Component {
         }
         const agreements = values.agreements.map((name) => ({ name }))
 
-        createMeeting(companyId, meeting, agreements)
+        createMeeting(meeting, agreements)
           .then(res => {
             notification.success({
               message: `Junta añadida!`,
-              description: `Has guardado la junta.`
+              description: `Has convocado una junta.`
             })
             this.onClose()
           }).catch(err => {

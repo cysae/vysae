@@ -15,6 +15,7 @@ function Next(props) {
       majorities
     },
     match: { params: { companyId }},
+    getCompany: { createMeeting }
   } = props
 
   const columns = [{
@@ -54,10 +55,10 @@ function Next(props) {
 
   return (
     <Fragment>
-      <CreateMeetingDrawer companyId={companyId} agreements={agreements} />
+      <CreateMeetingDrawer agreements={agreements} createMeeting={createMeeting} />
       <Table
         columns={columns}
-        rowKey='meetingId'
+        rowKey='id'
         dataSource={meetings.items}
       />
     </Fragment>
