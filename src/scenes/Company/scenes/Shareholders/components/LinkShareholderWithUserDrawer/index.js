@@ -4,15 +4,19 @@ import {
   Drawer, Form, Button, Col, Row, Input,
   notification
 } from 'antd';
-// router
-import { withRouter } from 'react-router'
-// graphql
-import { graphql, compose } from 'react-apollo'
-import MutationLinkShareholderWithUser from '../../../../../../queries/MutationLinkShareholderWithUser'
-import QueryGetCompany from '../../../../../../queries/QueryGetCompany'
+// services
+import { compose } from 'recompose'
 
-class CreateShareholderDrawer extends React.Component {
+class LinkShareholderDrawer extends React.Component {
   state = { visible: false };
+
+  componentDidMount() {
+    /* const { form: { setFieldsValue }} = this.props */
+
+    /* setFieldsValue({
+     *   name
+     * }) */
+  }
 
   showDrawer = () => {
     this.setState({
@@ -31,7 +35,7 @@ class CreateShareholderDrawer extends React.Component {
 
     const {
       linkShareholderWithUser,
-      shareholderId,
+      shareholder,
       form: {
         getFieldValue,
         validateFields
@@ -46,7 +50,7 @@ class CreateShareholderDrawer extends React.Component {
           phone_number: `+34${getFieldValue('phone_number')}`
         }
 
-        linkShareholderWithUser(shareholderId, user)
+        linkShareholderWithUser(shareholder.id, user)
           .then(res => {
             notification.success({
               message: `Shareholder linked!`,
@@ -172,54 +176,5 @@ class CreateShareholderDrawer extends React.Component {
 }
 
 export default compose(
-  withRouter,
   Form.create(),
-  graphql(
-    MutationLinkShareholderWithUser,
-    {
-      props: props => ({
-        linkShareholderWithUser: (shareholderId, user) => {
-          return props.mutate({
-            errorPolicy: 'all',
-            variables: {
-              shareholderId,
-              user
-            },
-            optimisticResponse: {
-              linkShareholderWithUser: {
-                ...user,
-                userId: 'id',
-                __typename: "User"
-              }
-            },
-            update: (proxy, { data, ...rest }) => {
-              const companyId = props.ownProps.match.params.companyId
-
-              const query = QueryGetCompany
-              const newData = proxy.readQuery({
-                query,
-                variables: {
-                  companyId
-                },
-              })
-
-              for (const shareholder of newData.getCompany.shareholders.items) {
-                if (shareholder.shareholderId === props.ownProps.shareholderId)
-                  shareholder.userId = data.linkShareholderWithUser.userId
-              }
-
-              proxy.writeQuery({
-                query,
-                variables: {
-                  companyId
-                },
-                data: newData
-              })
-
-            }
-          })
-        }
-      })
-    }
-  ),
-)(CreateShareholderDrawer)
+)(LinkShareholderDrawer)

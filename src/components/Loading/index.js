@@ -1,8 +1,8 @@
 import React from 'react'
 
 // antd
-import { Spin } from 'antd'
+import { Skeleton } from 'antd'
 
 export default () => (
-  <Spin size="large" />
+  <Skeleton active />
 )

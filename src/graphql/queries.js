@@ -37,6 +37,9 @@ export const GetCompany = gql`
         items {
           id
           name
+          user {
+            id
+          }
         }
         nextToken
       }

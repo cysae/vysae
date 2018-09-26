@@ -57,7 +57,6 @@ class CreateMeetingDrawer extends React.Component {
 
   render() {
     const {
-      form,
       form: { getFieldDecorator },
       agreements,
     } = this.props;

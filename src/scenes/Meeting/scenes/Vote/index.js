@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // antd
 import { Steps, Button, message, Select, Icon } from 'antd';
 // services
-import getCompany from '../../../../services/getCompany'
+import getMeeting from '../../../../services/getCompany'
 // router
 import { Link } from 'react-router-dom'
 // components
@@ -124,4 +124,4 @@ class App extends Component {
   }
 }
 
-export default getCompany(App)
+export default getMeeting(App)

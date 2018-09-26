@@ -18,15 +18,15 @@ const columns = [{
   title: 'Action',
   key: 'action',
   render: (text, record) => {
-    if (record.userId !== null)
+    if (record.user === null)
       return (
-        <span>is linked</span>
+        <span>
+          <LinkShareholderWithUserDrawer shareholder={record} />
+        </span>
       )
 
     return (
-      <span>
-        <LinkShareholderWithUserDrawer shareholderId={record.shareholderId} />
-      </span>
+      <span>is linked</span>
     )
   }
 }];
