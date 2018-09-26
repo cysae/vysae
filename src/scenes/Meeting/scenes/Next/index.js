@@ -10,10 +10,12 @@ import CreateMeetingDrawer from './components/CreateMeetingDrawer'
 
 function Next(props) {
   const {
-    company: { meetings: { items }},
+    company: {
+      meetings,
+      majorities
+    },
     match: { params: { companyId }},
   } = props
-  const meetings = items
 
   const columns = [{
     title: 'Commienza',
@@ -46,13 +48,17 @@ function Next(props) {
     )
   }]
 
+  const agreements = [].concat(...majorities.items.map((majority) => {
+    return majority.agreements.items
+  }))
+
   return (
     <Fragment>
-      <CreateMeetingDrawer companyId={companyId} />
+      <CreateMeetingDrawer companyId={companyId} agreements={agreements} />
       <Table
         columns={columns}
         rowKey='meetingId'
-        dataSource={meetings}
+        dataSource={meetings.items}
       />
     </Fragment>
   )

@@ -298,6 +298,7 @@ export const CreateMeeting = gql`
       }
       start
       end
+      name
       company {
         id
         name
@@ -316,6 +317,7 @@ export const UpdateMeeting = gql`
       }
       start
       end
+      name
       company {
         id
         name
@@ -334,6 +336,7 @@ export const DeleteMeeting = gql`
       }
       start
       end
+      name
       company {
         id
         name

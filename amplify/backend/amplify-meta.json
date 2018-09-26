@@ -19,7 +19,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/auth/vysaeCognito-cloudformation-template.yml",
 				"logicalId": "authvysaeCognito"
 			},
-			"lastPushTimeStamp": "2018-09-24T10:31:32.340Z",
+			"lastPushTimeStamp": "2018-09-26T07:10:03.726Z",
 			"output": {
 				"AppClientSecret": "g4u1vjav40mn02mdmutau6bg06v8h57tfami0eg7t5lum528iuf",
 				"UserPoolId": "eu-west-1_d9W2WnqzS",
@@ -40,7 +40,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/hosting/template.json",
 				"logicalId": "hostingS3AndCloudFront"
 			},
-			"lastPushTimeStamp": "2018-09-24T10:31:32.348Z",
+			"lastPushTimeStamp": "2018-09-26T07:10:03.727Z",
 			"output": {
 				"S3BucketSecureURL": "https://vysae-hosting-dev.s3.amazonaws.com",
 				"WebsiteURL": "http://vysae-hosting-dev.s3-website-eu-west-1.amazonaws.com",
@@ -67,8 +67,8 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/cloudformation-template.json",
 				"logicalId": "apivysae"
 			},
-			"lastPushTimeStamp": "2018-09-24T10:31:32.348Z",
-			"lastPushDirHash": "33BafH6wfTbpd2wB+6M3fKQQ918="
+			"lastPushTimeStamp": "2018-09-26T07:10:03.735Z",
+			"lastPushDirHash": "3nMau8QwnRfYAvvdkl+xiTEWkNQ="
 		}
 	}
 }

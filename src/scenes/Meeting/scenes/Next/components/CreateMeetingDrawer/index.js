@@ -2,16 +2,14 @@ import React from 'react'
 // antd
 import {
   Drawer, Form, Button, Col, Row, DatePicker,
-  notification
+  Input, notification, Select, message
 } from 'antd';
-// graphql
-import { compose, graphql } from 'react-apollo'
-import MutationCreateMeeting from '../../../../../../queries/MutationCreateMeeting'
-import QueryGetCompany from '../../../../../../queries/QueryGetCompany'
-// components
-import AgreementSelector from '../../../../../../components/agreementSelector'
+// services
+import { compose } from 'recompose'
+import createMeeting from '../../services/createMeeting'
 
 const { RangePicker } = DatePicker
+const Option = Select.Option
 
 class CreateMeetingDrawer extends React.Component {
   state = { visible: false };
@@ -24,22 +22,26 @@ class CreateMeetingDrawer extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { form: { validateFields }, createMeeting, companyId } = this.props
+    const { form: { validateFields }, companyId } = this.props
     validateFields((err, values) => {
       if (!err) {
         const meeting = {
+          name: values.name,
           start: values.votingPeriod[0].toISOString(),
           end: values.votingPeriod[1].toISOString(),
-          agreements: values.agreementTypes.map((name) => ({ name }))
         }
+        const agreements = values.agreements.map((name) => ({ name }))
 
-        createMeeting(companyId, meeting)
+        createMeeting(companyId, meeting, agreements)
           .then(res => {
             notification.success({
               message: `Junta añadida!`,
               description: `Has guardado la junta.`
             })
             this.onClose()
+          }).catch(err => {
+            message.error('error')
+            console.error(err)
           })
       }
     })
@@ -52,7 +54,11 @@ class CreateMeetingDrawer extends React.Component {
   };
 
   render() {
-    const { form, form: { getFieldDecorator }} = this.props;
+    const {
+      form,
+      form: { getFieldDecorator },
+      agreements,
+    } = this.props;
     return (
       <div>
         <Button type="primary" onClick={this.showDrawer}>
@@ -74,6 +80,17 @@ class CreateMeetingDrawer extends React.Component {
           <Form layout="vertical" hideRequiredMark onSubmit={this.handleSubmit}>
             <Row gutter={16}>
               <Col span={24}>
+                <Form.Item label="Nombre">
+                  {getFieldDecorator('name', {
+                     rules: [{ required: true, message: 'please enter company name' }],
+                  })(
+                     <Input />
+                   )}
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
                 <Form.Item label="Duracion">
                   {getFieldDecorator('votingPeriod', {
                      rules: [{ required: true, message: 'please enter company name' }],
@@ -89,11 +106,20 @@ class CreateMeetingDrawer extends React.Component {
             </Row>
             <Row gutter={16}>
               <Col span={24}>
-                <AgreementSelector
-                  form={form}
-                  label="Selecciona tipos de acuerdos"
-                  fieldId="agreementTypes"
-                />
+                <Form.Item label="Duracion">
+                  {getFieldDecorator('agreements', {
+                     rules: [{ required: true, message: 'please enter company name' }],
+                  })(
+                     <Select
+                       mode="multiple"
+                       placeholder="Seleccionar acuerdos"
+                     >
+                       {agreements.map((agreement) => (
+                         <Option key={agreement.id}>{agreement.name}</Option>
+                       ))}
+                     </Select>
+                   )}
+                </Form.Item>
               </Col>
             </Row>
             <div
@@ -128,40 +154,4 @@ class CreateMeetingDrawer extends React.Component {
 
 export default compose(
   Form.create(),
-  graphql(
-    MutationCreateMeeting,
-    {
-      props: props => ({
-        createMeeting: (companyId, meeting) => {
-          return props.mutate({
-            variables: { companyId, meeting },
-            optimisticResponse: {
-              __typename: "Mutation",
-              createMeeting: {
-                __typename: "Meeting",
-                meetingId: 'id',
-                ...meeting,
-                agreements: meeting.agreements.map((agreement) => ({
-                  __typename: 'Agreement',
-                  agreementId: 'id',
-                  ...agreement,
-                  votes: null
-                }))
-              }
-            },
-            update: (proxy, { data }) => {
-              console.log(data)
-              const query = QueryGetCompany
-              const companyData = proxy.readQuery({ query, variables: { companyId }})
-
-              companyData.getCompany.meetings.items.push(data.createMeeting)
-
-              proxy.writeQuery({ query, variables: { companyId }, data: companyData })
-            }
-          })
-        }
-      })
-
-    }
-  )
 )(CreateMeetingDrawer)

@@ -347,6 +347,7 @@ input DeleteMajorityAgreementInput {
 
 type Meeting {
   id: ID!
+  name: String!
   agreements(filter: ModelMeetingAgreementFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelMeetingAgreementConnection
   start: String!
   end: String!
@@ -360,6 +361,7 @@ type ModelMeetingConnection {
 
 input ModelMeetingFilterInput {
   id: ModelIDFilterInput
+  name: ModelStringFilterInput
   start: ModelStringFilterInput
   end: ModelStringFilterInput
   and: [ModelMeetingFilterInput]
@@ -368,6 +370,7 @@ input ModelMeetingFilterInput {
 }
 
 input CreateMeetingInput {
+  name: String!
   start: String!
   end: String!
   meetingCompanyId: ID
@@ -375,6 +378,7 @@ input CreateMeetingInput {
 
 input UpdateMeetingInput {
   id: ID!
+  name: String
   start: String
   end: String
   meetingCompanyId: ID

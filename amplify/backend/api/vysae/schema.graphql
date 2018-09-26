@@ -43,6 +43,7 @@ type MajorityAgreement @model {
 
 type Meeting @model {
   id: ID!
+  name: String!
   agreements: [MeetingAgreement] @connection(name: "MeetingAgreements")
   start: String!
   end: String!

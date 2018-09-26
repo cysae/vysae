@@ -15,10 +15,22 @@ export const GetCompany = gql`
           relativeThreshold
           absoluteThreshold
           minimumVotes
+          agreements {
+            items {
+              id
+              name
+            }
+          }
         }
         nextToken
       }
       meetings {
+        items {
+          id
+          name
+          start
+          end
+        }
         nextToken
       }
       shareholders {
