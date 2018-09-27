@@ -45,7 +45,7 @@ app.get('/items/*', function(req, res) {
 
 app.post('/linkShareholder', async function(req, res) {
   // Add your code here
-  await sendMail(req.body.email, 'head', 'body')
+  await sendMail(req.body.email, 'Invitacion', 'body')
   res.json({success: 'posti call succeed!', url: req.url, body: req.body})
 });
 

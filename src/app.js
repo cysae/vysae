@@ -4,7 +4,7 @@ import Amplify, { API, Auth } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import aws_exports from './aws-exports';
 // Router
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { withRouter } from 'react-router'
 // Antd
 import { Layout, Breadcrumb, Modal, message } from 'antd'
@@ -14,6 +14,7 @@ import Companies from './scenes/Companies'
 import Dashboard from './scenes/Dashboard'
 import Meetings from './scenes/Meeting'
 import Company from './scenes/Company'
+import LinkShareholder from './scenes/LinkShareholder'
 // AppSync/Apollo
 import appSyncConfig from './AppSync'
 import AWSAppSyncClient, { createAppSyncLink, createLinkWithCache } from "aws-appsync";
@@ -25,10 +26,6 @@ import { defaultDataIdFromObject } from 'apollo-cache-inmemory'
 import './App.css'
 Amplify.configure(aws_exports);
 const { Content, Footer } = Layout;
-
-API.post('linkShareholder', '/linkShareholder', {body: { email: 'dirkhornung91@gmail.com'}}).then(res => console.log(res)).catch(err => console.error(err))
-
-
 
 // Apollo
 const stateLink = createLinkWithCache(cache => withClientState({
@@ -48,7 +45,7 @@ const stateLink = createLinkWithCache(cache => withClientState({
           currentSelections: {
             __typename: 'currentSelections',
             [field]: id
-          }
+           }
         }
         cache.writeData({ data })
         return data
@@ -114,41 +111,48 @@ class App extends Component {
 
   render() {
     const { companyId } = this.state
-    if (companyId === null) {
-      return (
-        <Modal
-          title="Seleccionar Sociedad"
-          visible={(companyId === null)}
-          width="90vw"
-          closable={false}
-          footer={null}
-        >
-          <Companies
-            handleSelectCompanyId={this.handleSelectCompanyId}
-          />
-        </Modal>
-      )
-    }
-
 
     return (
-      <Layout>
-        <MyHeader companyId={companyId} handleSignOut={this.handleSignOut} />
-        <Content style={{ padding: '0 50px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            {/* <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item> */}
-          </Breadcrumb>
-          <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-            <Route exact path="/" component={Companies} />
-            <Route path="/:companyId/dashboard" component={Dashboard} />
-            <Route path="/:companyId/company" component={Company} />
-            <Route path="/:companyId/meeting" component={Meetings}/>
-          </div>
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Vysae ©2018
-        </Footer>
-      </Layout>
+      <Switch>
+        <Route path="/linkShareholder/:companyId/:shareholderId" component={LinkShareholder} />
+        <Route path="/" render={() => {
+          if (companyId === null) {
+            return (
+              <Modal
+                title="Seleccionar Sociedad"
+                       visible={(companyId === null)}
+                       width="90vw"
+                       closable={false}
+                       footer={null}
+                >
+                <Companies
+                  handleSelectCompanyId={this.handleSelectCompanyId}
+                />
+              </Modal>
+            )
+          }
+
+            return (
+              <Layout>
+                <MyHeader companyId={companyId} handleSignOut={this.handleSignOut} />
+                <Content style={{ padding: '0 50px' }}>
+                  <Breadcrumb style={{ margin: '16px 0' }}>
+                    {/* <Breadcrumb.Item>Añadir sociedad</Breadcrumb.Item> */}
+                  </Breadcrumb>
+                  <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+                    <Route exact path="/" component={Companies} />
+                    <Route path="/:companyId/dashboard" component={Dashboard} />
+                    <Route path="/:companyId/company" component={Company} />
+                    <Route path="/:companyId/meeting" component={Meetings}/>
+                  </div>
+                </Content>
+                <Footer style={{ textAlign: 'center' }}>
+                  Vysae ©2018
+                </Footer>
+              </Layout>
+            )}
+        } />
+      </Switch>
     );
   }
 }

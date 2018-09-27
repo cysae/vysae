@@ -23,7 +23,7 @@ import {
 import { compose } from 'recompose'
 // services
 import handleLoadingAndErrors from './handleLoadingAndErrors'
-import Promises from 'bluebird'
+import Promise from 'bluebird'
 import generator from 'generate-password'
 
 const getCurrentCompany = (WrappedComponent) => {
@@ -35,7 +35,6 @@ const getCurrentCompany = (WrappedComponent) => {
 
     getCompany = () => ({
       createShareholder: this.createShareholder,
-      linkShareholder: this.linkShareholder,
       createShareIntvl: this.createShareIntvl,
       updateShareIntvl: this.updateShareIntvl,
       deleteShareIntvl: this.deleteShareIntvl,
@@ -83,44 +82,6 @@ const getCurrentCompany = (WrappedComponent) => {
           }
           this.setState(newState)
         }).finally(() => hideLoadingMsg())
-    }
-
-    linkShareholder = (shareholder, user) => {
-      const { match: { params: { companyId }}} = this.props
-      let userId
-
-      return API.graphql(graphqlOperation(gqlToString(CreateUser), {
-        input: { name: user.name }
-      })).then(({ data: { createUser }}) => {
-        const password = generator.generate({ length: 8, numbers: true, symbols: true, strict: true })
-        userId = createUser.id
-
-        return Promises.all([
-          Auth.signUp({
-            username: user.username,
-            password,
-            attributes: {
-              email: user.email,          // optional
-              phone_number: '+34'+user.phone_number,   // optional - E.164 number convention
-              ['custom:userId']: createUser.id,
-            },
-            validationData: []  //optional
-          }),
-          API.graphql(graphqlOperation(gqlToString(UpdateShareholder), {
-            input: {
-              shareholderCompanyId: companyId,
-              shareholderUserId: createUser.id,
-              ...shareholder
-            }
-          }))
-        ])
-      }).catch(err => {
-        return API.graphql(graphqlOperation(gqlToString(DeleteUser), {
-          input: { id: userId }
-        })).then(() => {
-          throw err
-        })
-      })
     }
 
     createShareIntvl = (shareIntvl) => {
