@@ -45,7 +45,9 @@ app.get('/items/*', function(req, res) {
 
 app.post('/linkShareholder', async function(req, res) {
   // Add your code here
-  await sendMail(req.body.email, 'Invitacion', 'body')
+  const { email, companyId, shareholderId } = req.body
+  const msg = `<a href="http://localhost:3000/linkShareholder/${companyId}/${shareholderId}">Invitation Link</a>`
+  await sendMail(req.body.email, 'Invitacion', msg)
   res.json({success: 'posti call succeed!', url: req.url, body: req.body})
 });
 

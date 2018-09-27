@@ -349,6 +349,13 @@ export const GetUser = gql`
         nextToken
       }
       shareholders {
+        items {
+          id
+          name
+          company {
+            id
+          }
+        }
         nextToken
       }
     }

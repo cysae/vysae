@@ -2,25 +2,30 @@ import React, { Component } from 'react'
 // antd
 import { Steps, Button, message, Select, Icon } from 'antd';
 // services
-import getMeeting from '../../../../services/getCompany'
+import getMeeting from '../../../../services/getMeeting'
+import getUser from '../../../../services/getUser'
 // router
 import { Link } from 'react-router-dom'
 // components
 import AgreementVotingList from './components/AgreementVotingList'
+import { compose } from 'recompose'
 
 const Step = Steps.Step
 const Option = Select.Option
 
 const SelectShareholder = props => {
-  const { shareholders, handleSelectShareholder } = props
+  const {
+    shareholders,
+    handleSelectShareholder,
+  } = props
 
   return (
     <Select defaultValue="Dirk" onChange={handleSelectShareholder}>
       {shareholders.map(
          shareholder => (
            <Option
-             key={shareholder.shareholderId}
-             value={shareholder.shareholderId}
+             key={shareholder.id}
+             value={shareholder.id}
              >
              {shareholder.name}
            </Option>
@@ -33,7 +38,14 @@ const SelectShareholder = props => {
 class App extends Component {
   constructor(props) {
     super(props);
-    const { company: { myShareholders }} = props
+    const {
+      user: { shareholders },
+      match: { params: { companyId}},
+    } = props
+
+    const myShareholders = shareholders.items.filter((shareholder) => {
+      return shareholder.company.id === companyId
+    })
 
     const shareholderId = (myShareholders.length !== 0) ? myShareholders[0].shareholderId : null
 
@@ -59,11 +71,15 @@ class App extends Component {
 
   render() {
     const {
-      company: { myShareholders },
-      company: { companyId },
-      match: { params: { meetingId }},
+      user: { shareholders },
+      match: { params: { companyId, meetingId }},
     } = this.props
     const { current, shareholderId } = this.state;
+
+
+    const myShareholders = shareholders.items.filter((shareholder) => {
+      return shareholder.company.id === companyId
+    })
 
     if( shareholderId === null )
       return (
@@ -113,9 +129,9 @@ class App extends Component {
           {
             current > 0
             && (
-            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-              Previous
-            </Button>
+              <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
+                Previous
+              </Button>
             )
           }
         </div>
@@ -124,4 +140,6 @@ class App extends Component {
   }
 }
 
-export default getMeeting(App)
+export default compose(
+  getUser,
+)(App)

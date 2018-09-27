@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // amplify
-import Amplify, { API, Auth } from 'aws-amplify'
+import Amplify, { Auth } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import aws_exports from './aws-exports';
 // Router

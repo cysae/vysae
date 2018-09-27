@@ -1,16 +1,27 @@
 import React, { Fragment } from 'react'
 /*eslint-disable no-script-url*/
 // antd
-import { Table } from 'antd'
+import { Table, message } from 'antd'
 // services
 import getCompany from '../../../../services/getCompany'
 // components
 import CreateShareholderDrawer from './components/CreateShareholderDrawer'
-import LinkShareholderWithUserDrawer from './components/LinkShareholderWithUserDrawer'
 import ShareIntervalTable from './components/ShareIntervalTable'
+// amplify
+import { API } from 'aws-amplify'
 
-
-
+const sendInvitation = (email, companyId, shareholderId) => {
+  const hideLoadingMsg = message.loading('loading', 0)
+  API.post('linkShareholder', '/linkShareholder', { body: {
+    email, companyId, shareholderId
+  }}).then((res) => {
+      console.log(res)
+      message.success('Invitacion enviado.')
+    }).catch(err => {
+      console.error(err)
+      message.error('No podia enviar la invitacion')
+    }).finally(() => hideLoadingMsg())
+}
 
 const Shareholders = (props) => {
   const {
@@ -29,12 +40,12 @@ const Shareholders = (props) => {
     render: (text, record) => {
       if (record.user === null)
         return (
-          <span>
-            <LinkShareholderWithUserDrawer
-              shareholder={record}
-              linkShareholder={linkShareholder}
-            />
-          </span>
+          <button
+            type="primary"
+            onClick={() => sendInvitation('dirkhornung91@gmail.com', companyId, record.id)}
+          >
+            Enviar Invitacion
+          </button>
         )
 
       return (

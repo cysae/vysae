@@ -48,7 +48,7 @@ const getCurrentMeeting = (WrappedComponent) => {
 
 export default (WrappedComponent) => {
   return compose(
-    getCurrentMajority,
+    getCurrentMeeting,
     handleLoadingAndErrors
   )(WrappedComponent)
 }

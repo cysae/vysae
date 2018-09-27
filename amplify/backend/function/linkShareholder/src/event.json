@@ -1,6 +1,6 @@
 {
   "httpMethod": "POST",
-  "body": "{\"email\": \"dirkhornung91@gmail.com\"}",
+  "body": "{\"email\": \"dirkhornung91@gmail.com\", \"companyId\": \"cId\", \"shareholderId\": \"sId\"}",
   "path": "/linkShareholder",
   "resource": "",
   "queryStringParameters": {}
