@@ -1,0 +1,35 @@
+{
+    "paths": [
+        {
+            "name": "/linkShareholder",
+            "lambdaFunction": "linkShareholder",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "linkShareholder",
+    "apiName": "vysae98db7c5b",
+    "functionArns": [
+        {
+            "lambdaFunction": "linkShareholder"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "vysae-20180923175301-authRole",
+        "unAuthRoleName": "vysae-20180923175301-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "linkShareholder",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ],
+    "uuid": "e0a3b641"
+}

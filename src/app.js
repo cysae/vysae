@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // amplify
-import Amplify, { Auth } from 'aws-amplify'
+import Amplify, { API, Auth } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import aws_exports from './aws-exports';
 // Router
@@ -25,6 +25,10 @@ import { defaultDataIdFromObject } from 'apollo-cache-inmemory'
 import './App.css'
 Amplify.configure(aws_exports);
 const { Content, Footer } = Layout;
+
+API.post('linkShareholder', '/linkShareholder', {body: { email: 'dirkhornung91@gmail.com'}}).then(res => console.log(res)).catch(err => console.error(err))
+
+
 
 // Apollo
 const stateLink = createLinkWithCache(cache => withClientState({

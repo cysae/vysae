@@ -153,6 +153,33 @@
 					"DeploymentTimestamp": "1537945678365"
 				}
 			}
+		},
+		"apilinkShareholder": {
+			"Type": "AWS::CloudFormation::Stack",
+			"Properties": {
+				"TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/linkShareholder-cloudformation-template.json",
+				"Parameters": {
+					"functionlinkShareholderName": {
+						"Fn::GetAtt": [
+							"functionlinkShareholder",
+							"Outputs.Name"
+						]
+					},
+					"functionlinkShareholderArn": {
+						"Fn::GetAtt": [
+							"functionlinkShareholder",
+							"Outputs.Arn"
+						]
+					}
+				}
+			}
+		},
+		"functionlinkShareholder": {
+			"Type": "AWS::CloudFormation::Stack",
+			"Properties": {
+				"TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/function/linkShareholder-cloudformation-template.json",
+				"Parameters": {}
+			}
 		}
 	},
 	"Outputs": {

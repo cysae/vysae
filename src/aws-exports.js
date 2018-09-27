@@ -11,7 +11,14 @@ const awsmobile =  {
     "aws_content_delivery_url": "http://vysae-hosting-dev.s3-website-eu-west-1.amazonaws.com",
     "aws_appsync_graphqlEndpoint": "https://pg5uripmh5acbelm3g5yb2dyr4.appsync-api.eu-west-1.amazonaws.com/graphql",
     "aws_appsync_region": "eu-west-1",
-    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS"
+    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
+    "aws_cloud_logic_custom": [
+        {
+            "name": "linkShareholder",
+            "endpoint": "https://5w3lx38chj.execute-api.eu-west-1.amazonaws.com/Prod",
+            "region": "eu-west-1"
+        }
+    ]
 };
 
 

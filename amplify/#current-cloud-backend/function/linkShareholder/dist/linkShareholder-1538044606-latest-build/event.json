@@ -1,0 +1,7 @@
+{
+  "httpMethod": "POST",
+  "body": "{\"email\": \"dirkhornung91@gmail.com\"}",
+  "path": "/linkShareholder",
+  "resource": "",
+  "queryStringParameters": {}
+}
