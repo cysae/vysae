@@ -38,6 +38,8 @@ class MeetingVote extends Component {
       agreements
     } = this.props
 
+    console.log(agreements)
+
     /* let agreements = {}
      * for (const meeting of meetings.items) {
      *   if(meeting.meetingId === meetingId) {

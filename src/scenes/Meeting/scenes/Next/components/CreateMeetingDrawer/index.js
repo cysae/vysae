@@ -34,15 +34,15 @@ class CreateMeetingDrawer extends React.Component {
           end: values.votingPeriod[1].toISOString(),
         }
 
+        // retrieve selected agreements and remove id key
         const selectedAgreements = agreements.filter((agreement) => {
           return !!values.agreementIds.find((id) => agreement.id === id)
-        })
-        selectedAgreements.map((agreement) => {
-          delete agreement.id
-          return agreement
+        }).map((agreement) => {
+          const {id, ...selected} = agreement
+          return selected
         })
 
-        createMeeting(meeting, agreements)
+        createMeeting(meeting, selectedAgreements)
           .then(res => {
             notification.success({
               message: `Junta añadida!`,

@@ -18,8 +18,6 @@ function Next(props) {
     getCompany: { createMeeting }
   } = props
 
-  console.log(meetings)
-
   const columns = [{
     title: 'Name',
     dataIndex: 'name',
