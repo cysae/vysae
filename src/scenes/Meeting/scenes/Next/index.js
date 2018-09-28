@@ -46,8 +46,8 @@ function Next(props) {
       <Fragment>
         {/* <Link to="/meetings/pdf" onClick={() => selectMeeting(record)}>Leer orden del día</Link> */}
         <Link to={`/${companyId}/meeting/${record.id}/vote`}>Votar</Link>
-        <Divider type="vertical"/>
-        <Link to={`/${companyId}/meeting/${record.meetingId}/result`}>Resultado</Link>
+        {/* <Divider type="vertical"/>
+            <Link to={`/${companyId}/meeting/${record.meetingId}/result`}>Resultado</Link> */}
       </Fragment>
     )
   }]
