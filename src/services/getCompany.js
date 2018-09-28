@@ -266,7 +266,6 @@ const getCurrentCompany = (WrappedComponent) => {
         this.setState(newState)
 
         const promises = agreements.map((agreement) => {
-          console.log(createMeeting.id, agreement.majority.id, agreement.name)
           return API.graphql(graphqlOperation(gqlToString(CreateMeetingAgreement), {
             input: {
               meetingAgreementMeetingId: createMeeting.id,

@@ -38,7 +38,7 @@ const Shareholders = (props) => {
     title: 'Action',
     key: 'action',
     render: (text, record) => {
-      if (record.user === null)
+      if (!record.user)
         return (
           <button
             type="primary"
