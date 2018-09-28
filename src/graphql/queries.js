@@ -196,6 +196,10 @@ export const GetMeeting = gql`
     getMeeting(id: $id) {
       id
       agreements {
+        items {
+          id
+          name
+        }
         nextToken
       }
       start

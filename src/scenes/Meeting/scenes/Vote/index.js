@@ -47,7 +47,7 @@ class App extends Component {
       return shareholder.company.id === companyId
     })
 
-    const shareholderId = (myShareholders.length !== 0) ? myShareholders[0].shareholderId : null
+    const shareholderId = (myShareholders.length !== 0) ? myShareholders[0].id : null
 
     this.state = {
       current: 0,
@@ -73,9 +73,9 @@ class App extends Component {
     const {
       user: { shareholders },
       match: { params: { companyId, meetingId }},
+      meeting: { agreements }
     } = this.props
     const { current, shareholderId } = this.state;
-
 
     const myShareholders = shareholders.items.filter((shareholder) => {
       return shareholder.company.id === companyId
@@ -102,7 +102,7 @@ class App extends Component {
         <AgreementVotingList
           shareholderId={shareholderId}
           companyId={companyId}
-          meetingId={meetingId}
+          agreements={agreements.items}
         />
       )
     }];
@@ -141,5 +141,6 @@ class App extends Component {
 }
 
 export default compose(
+  getMeeting,
   getUser,
 )(App)
