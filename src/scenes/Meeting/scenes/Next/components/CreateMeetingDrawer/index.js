@@ -23,6 +23,7 @@ class CreateMeetingDrawer extends React.Component {
     e.preventDefault()
     const {
       form: { validateFields },
+      agreements,
       createMeeting
     } = this.props
     validateFields((err, values) => {
@@ -32,7 +33,14 @@ class CreateMeetingDrawer extends React.Component {
           start: values.votingPeriod[0].toISOString(),
           end: values.votingPeriod[1].toISOString(),
         }
-        const agreements = values.agreements.map((name) => ({ name }))
+
+        const selectedAgreements = agreements.filter((agreement) => {
+          return !!values.agreementIds.find((id) => agreement.id === id)
+        })
+        selectedAgreements.map((agreement) => {
+          delete agreement.id
+          return agreement
+        })
 
         createMeeting(meeting, agreements)
           .then(res => {
@@ -108,7 +116,7 @@ class CreateMeetingDrawer extends React.Component {
             <Row gutter={16}>
               <Col span={24}>
                 <Form.Item label="Duracion">
-                  {getFieldDecorator('agreements', {
+                  {getFieldDecorator('agreementIds', {
                      rules: [{ required: true, message: 'please enter company name' }],
                   })(
                      <Select
