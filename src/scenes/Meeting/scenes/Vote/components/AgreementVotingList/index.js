@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 // antd
-import { Form, List, Radio } from 'antd'
+import { Form, List, Radio, message } from 'antd'
+// amplify
+import { API, graphqlOperation } from 'aws-amplify'
+import { print as gqlToString } from 'graphql/language'
+import { CreateVote } from '../../../../../../graphql/mutations'
 
 const FormItem = Form.Item
 const RadioButton = Radio.Button;
@@ -12,24 +16,24 @@ class MeetingVote extends Component {
   }
 
   handleChange = (result, agreementId) => {
-    const { shareholderId, createVote } = this.props
-    const vote = {
-      agreementId,
-      result,
-      shareholderId
-    }
-
-    createVote(vote)
-  }
-
-  myVoteResult = (agreement, isValue) => {
     const { shareholderId } = this.props
-    for(const vote of agreement.votes) {
-      if(vote.shareholderId === shareholderId) {
-        return vote.result === isValue
+
+    const hideLoadingMsg = message.loading('Votando...')
+
+    API.graphql(graphqlOperation(gqlToString(CreateVote), {
+      input: {
+        result,
+        voteAgreementId: agreementId,
+        voteShareholderId: shareholderId
       }
-    }
-    return null
+    })).then(() => {
+      hideLoadingMsg()
+      message.success('Voto guardado')
+    }).catch((err) => {
+      console.error(err)
+      hideLoadingMsg()
+      message.error('error')
+    })
   }
 
   render() {
@@ -37,16 +41,6 @@ class MeetingVote extends Component {
       meetingId,
       agreements
     } = this.props
-
-    console.log(agreements)
-
-    /* let agreements = {}
-     * for (const meeting of meetings.items) {
-     *   if(meeting.meetingId === meetingId) {
-     *     agreements = meeting.agreements
-     *     break;
-     *   }
-     * } */
 
     return (
       <Form layout="vertical" onSubmit={this.handleSubmit}>
@@ -57,10 +51,10 @@ class MeetingVote extends Component {
           renderItem={item => (
             <List.Item actions={[
               <FormItem>
-                <RadioGroup onChange={({ target: { value}}) => this.handleChange(value, item.agreementId)}>
-                  <RadioButton value={1} checked={this.myVoteResult(item, 1)}>Sí</RadioButton>
-                  <RadioButton value={0} checked={this.myVoteResult(item, 0)}>En blanco</RadioButton>
-                  <RadioButton value={-1} checked={this.myVoteResult(item, -1)}>No</RadioButton>
+                <RadioGroup onChange={({ target: { value}}) => this.handleChange(value, item.id)}>
+                  <RadioButton value={1}>Sí</RadioButton>
+                  <RadioButton value={0}>En blanco</RadioButton>
+                  <RadioButton value={-1}>No</RadioButton>
                 </RadioGroup>
               </FormItem>
             ]}>

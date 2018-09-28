@@ -40,6 +40,12 @@ export const GetCompany = gql`
           user {
             id
           }
+          votes {
+            items {
+              id
+              
+            }
+          }
         }
         nextToken
       }

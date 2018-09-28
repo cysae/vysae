@@ -63,6 +63,7 @@ type Shareholder @model {
   company: Company! @connection(name: "CompanyShareholders")
   user: User @connection(name: "UserShareholders")
   shareIntervals: [ShareholderShareInterval] @connection(name: "ShareholderShareIntervals")
+  votes: [Vote] @connection(name: "ShareholderVotes")
 }
 
 type ShareholderShareInterval @model {
@@ -83,5 +84,5 @@ type Vote @model {
   id: ID!
   agreement: MeetingAgreement @connection(name: "AgreementVotes")
   result: Int!
-  shareholder: Shareholder! @connection
+  shareholder: Shareholder! @connection(name: "ShareholderVotes")
 }

@@ -6212,6 +6212,10 @@
                     {
                         "AttributeName": "voteAgreementId",
                         "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "voteShareholderId",
+                        "AttributeType": "S"
                     }
                 ],
                 "ProvisionedThroughput": {
@@ -6231,6 +6235,26 @@
                         "KeySchema": [
                             {
                                 "AttributeName": "voteAgreementId",
+                                "KeyType": "HASH"
+                            }
+                        ],
+                        "Projection": {
+                            "ProjectionType": "ALL"
+                        },
+                        "ProvisionedThroughput": {
+                            "ReadCapacityUnits": {
+                                "Ref": "DynamoDBModelTableReadIOPS"
+                            },
+                            "WriteCapacityUnits": {
+                                "Ref": "DynamoDBModelTableWriteIOPS"
+                            }
+                        }
+                    },
+                    {
+                        "IndexName": "gsi-ShareholderVotes",
+                        "KeySchema": [
+                            {
+                                "AttributeName": "voteShareholderId",
                                 "KeyType": "HASH"
                             }
                         ],
@@ -8374,6 +8398,94 @@
                                                 [
                                                     "Shareholder",
                                                     "shareIntervals",
+                                                    "response",
+                                                    {
+                                                        "Ref": "DeploymentTimestamp"
+                                                    }
+                                                ]
+                                            ]
+                                        }
+                                    ]
+                                ]
+                            }
+                        ]
+                    ]
+                }
+            },
+            "DependsOn": "GraphQLSchema"
+        },
+        "ShareholdervotesResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Fn::GetAtt": [
+                        "GraphQLAPI",
+                        "ApiId"
+                    ]
+                },
+                "DataSourceName": {
+                    "Fn::GetAtt": [
+                        "VoteDataSource",
+                        "Name"
+                    ]
+                },
+                "FieldName": "votes",
+                "TypeName": "Shareholder",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "s3://",
+                            {
+                                "Fn::Join": [
+                                    "/",
+                                    [
+                                        {
+                                            "Ref": "ResolverBucket"
+                                        },
+                                        {
+                                            "Ref": "ResolverRootKey"
+                                        },
+                                        {
+                                            "Fn::Join": [
+                                                ".",
+                                                [
+                                                    "Shareholder",
+                                                    "votes",
+                                                    "request",
+                                                    {
+                                                        "Ref": "DeploymentTimestamp"
+                                                    }
+                                                ]
+                                            ]
+                                        }
+                                    ]
+                                ]
+                            }
+                        ]
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "s3://",
+                            {
+                                "Fn::Join": [
+                                    "/",
+                                    [
+                                        {
+                                            "Ref": "ResolverBucket"
+                                        },
+                                        {
+                                            "Ref": "ResolverRootKey"
+                                        },
+                                        {
+                                            "Fn::Join": [
+                                                ".",
+                                                [
+                                                    "Shareholder",
+                                                    "votes",
                                                     "response",
                                                     {
                                                         "Ref": "DeploymentTimestamp"

@@ -429,6 +429,7 @@ type Shareholder {
   company: Company!
   user: User
   shareIntervals(filter: ModelShareholderShareIntervalFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelShareholderShareIntervalConnection
+  votes(filter: ModelVoteFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelVoteConnection
 }
 
 type ModelShareholderConnection {
