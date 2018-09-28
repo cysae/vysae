@@ -24,6 +24,8 @@ import { ApolloLink } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
 import { defaultDataIdFromObject } from 'apollo-cache-inmemory'
 import './App.css'
+/* import addUserIdToCognito from './services/addUserIdtoCognitoUser'
+ * addUserIdToCognito() */
 Amplify.configure(aws_exports);
 const { Content, Footer } = Layout;
 
