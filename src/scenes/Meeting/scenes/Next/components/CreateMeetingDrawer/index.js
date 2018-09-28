@@ -42,6 +42,8 @@ class CreateMeetingDrawer extends React.Component {
           return selected
         })
 
+
+
         createMeeting(meeting, selectedAgreements)
           .then(res => {
             notification.success({
@@ -68,6 +70,7 @@ class CreateMeetingDrawer extends React.Component {
       form: { getFieldDecorator },
       agreements,
     } = this.props;
+
     return (
       <div>
         <Button type="primary" onClick={this.showDrawer}>

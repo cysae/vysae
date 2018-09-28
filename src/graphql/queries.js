@@ -19,6 +19,9 @@ export const GetCompany = gql`
             items {
               id
               name
+              majority {
+                id
+              }
             }
           }
         }
@@ -43,7 +46,6 @@ export const GetCompany = gql`
           votes {
             items {
               id
-              
             }
           }
         }
@@ -204,6 +206,9 @@ export const GetMeeting = gql`
       agreements {
         items {
           id
+          majority {
+            id
+          }
           name
         }
         nextToken

@@ -391,6 +391,7 @@ input DeleteMeetingInput {
 type MeetingAgreement {
   id: ID!
   name: String!
+  majority: Majority!
   meeting: Meeting!
   votes(filter: ModelVoteFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelVoteConnection
 }
@@ -410,12 +411,14 @@ input ModelMeetingAgreementFilterInput {
 
 input CreateMeetingAgreementInput {
   name: String!
+  meetingAgreementMajorityId: ID
   meetingAgreementMeetingId: ID
 }
 
 input UpdateMeetingAgreementInput {
   id: ID!
   name: String
+  meetingAgreementMajorityId: ID
   meetingAgreementMeetingId: ID
 }
 
@@ -535,7 +538,7 @@ input DeleteUserInput {
 
 type Vote {
   id: ID!
-  agreement: MeetingAgreement
+  agreement: MeetingAgreement!
   result: Int!
   shareholder: Shareholder!
 }

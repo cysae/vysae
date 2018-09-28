@@ -53,6 +53,7 @@ type Meeting @model {
 type MeetingAgreement @model {
   id: ID!
   name: String!
+  majority: Majority! @connection
   meeting: Meeting! @connection(name: "MeetingAgreements")
   votes: [Vote] @connection(name: "AgreementVotes")
 }
@@ -82,7 +83,7 @@ type User @model {
 
 type Vote @model {
   id: ID!
-  agreement: MeetingAgreement @connection(name: "AgreementVotes")
+  agreement: MeetingAgreement! @connection(name: "AgreementVotes")
   result: Int!
   shareholder: Shareholder! @connection(name: "ShareholderVotes")
 }
