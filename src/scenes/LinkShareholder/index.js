@@ -9,33 +9,37 @@ const Step = Steps.Step;
 
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      current: 0,
-    };
-  }
+ state = {
+   current: 0,
+   user: null,
+ }
 
-  next() {
+  next = (user) => {
     const current = this.state.current + 1;
-    this.setState({ current });
+    this.setState({ current, user });
   }
 
-  prev() {
+  prev = () => {
     const current = this.state.current - 1;
     this.setState({ current });
   }
 
   render() {
-    const { current } = this.state;
+    const { current, user } = this.state;
     const { match: { params: { companyId, shareholderId }}} = this.props
 
     const steps = [{
       title: 'Registracion',
-      content: <Register next={this.next} companyId={companyId} shareholderId={shareholderId} />,
+      content: <Register next={this.next} />,
     }, {
       title: 'Confirmar',
-      content: <Confirm />,
+      content: (
+        <Confirm
+          user={user}
+          companyId={companyId}
+          shareholderId={shareholderId}
+        />
+      )
     }];
 
     return (

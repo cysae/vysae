@@ -2,44 +2,44 @@ import React from 'react'
 // antd
 import { Form, Input, Button, message } from 'antd'
 // amplify
-import { Auth } from 'aws-amplify'
+// amplify
+import aws_exports from '../../../../aws-exports';
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
+import { print as gqlToString } from 'graphql/language'
+import {
+  CreateUser,
+  CreateCompanyUser,
+  UpdateShareholder,
+  DeleteUser
+} from '../../../../graphql/mutations'
 const FormItem = Form.Item
 
 class Confirm extends React.Component {
-  componentDidMount() {
-    this.sendCode()
+  state = {
+    loading: false
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
     const {
-      username,
+      user,
       form: { validateFieldsAndScroll },
-    } = this.props.username
+      companyId,
+      shareholderId
+    } = this.props
 
     validateFieldsAndScroll((err, values) => {
       if (err) return
 
-      this.confirmCode(username, values.code)
+      this.setState({ loading: true })
+      this.confirmCode(user.username, values.code)
+  .then(() => this.loginUser(user.username, user.password))
+      .then(() => this.linkShareholder(user, companyId, shareholderId))
+  .catch(err => {
+    message.error('error')
+    console.error(err)
+  })
     })
-  }
-
-  sendCode = () => {
-    const hideLoadingMsg = message.loading('Enviando codigo...', 0)
-    /* Auth.confirmSignUp(username, code, {
-     *   // Optional. Force user confirmation irrespective of existing alias. By default set to True.
-     *   forceAliasCreation: true    
-     * }) */
-    /* Auth.verifyCurrentUserAttribute('email')
-     *   .then(() => {
-     *     hideLoadingMsg()
-     *     message.success('Codigo enviado, mira tus emails')
-     *     console.log('a verification code is sent');
-     *   }).catch((e) => {
-     *     hideLoadingMsg()
-     *     message.error('No podia enviar tu codigo')
-     *     console.log('failed with error', e);
-     *   }); */
   }
 
   confirmCode = (username, code) => {
@@ -48,17 +48,51 @@ class Confirm extends React.Component {
     })
   }
 
-  /* Auth.verifyCurrentUserAttributeSubmit(attr, 'the_verification_code')
-   *   .then(() => {
-   *     console.log('phone_number verified');
-   *   }).catch(e) => {
-   *     console.log('failed with error', e);
-   *   }); */
+  loginUser = (username, password) => {
+    return Auth.signIn(username, password)
+  }
+
+  linkShareholder = async (user, companyId, shareholderId) => {
+    let userId
+
+    return API.graphql(graphqlOperation(gqlToString(CreateUser), {
+      input: { name: user.username }
+    })).then(({ data: { createUser }}) => {
+      userId = createUser.id
+      return Auth.currentAuthenticatedUser();
+    }).then((user) => {
+      return Promise.all([
+        Auth.updateUserAttributes(user, {
+          ['custom:userId']: userId,
+        }),
+        API.graphql(graphqlOperation(gqlToString(UpdateShareholder), {
+          input: {
+            id: shareholderId,
+            shareholderUserId: userId,
+          }
+        })),
+        API.graphql(graphqlOperation(gqlToString(CreateCompanyUser), {
+          input: {
+            companyUserCompanyId: companyId,
+            companyUserUserId: userId,
+          }
+        }))
+      ])
+    }).catch(err => {
+      return API.graphql(graphqlOperation(gqlToString(DeleteUser), {
+        input: { id: userId }
+      })).then(() => {
+        throw err
+      })
+    }).finally(() => this.setState({ loading: false }))
+  }
 
   render() {
     const {
-      form: { getFieldDecorator }
+      form: { getFieldDecorator },
     } = this.props
+
+    const { loading } = this.state
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -72,7 +106,7 @@ class Confirm extends React.Component {
            )}
         </FormItem>
         <FormItem>
-          <Button type="primary" htmlType="submit">Confirmar</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>Confirmar</Button>
         </FormItem>
       </Form>
     )

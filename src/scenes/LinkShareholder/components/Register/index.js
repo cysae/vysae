@@ -10,16 +10,16 @@ import {
   UpdateShareholder,
   DeleteUser
 } from '../../../../graphql/mutations'
-Amplify.configure(aws_exports);
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-
 class Register extends Component {
   state = {
     confirmDirty: false,
-  };
+    loading: false
+  }
+
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -27,28 +27,39 @@ class Register extends Component {
       if (err) return
 
       const {
-        shareholderId,
-        companyId,
-        next
+        next,
+        setUser
       } = this.props
 
       const user = {
         ...values
       }
 
-      this.linkShareholder(user, companyId, shareholderId)
-        .then(() => {
-          message.success('Estas registrado')
-          next()
-        }).catch(err => {
-          console.error(err)
-          switch(err.code) {
-            case "InvalidParameterException": message.error("Password must have length greater than 6"); break
-            case "InvalidPasswordException": message.error("Password needs to contain upper case and symbols"); break
-            case "UsernameExistsException": message.error("El nombre de usario ya es cogido"); break
-            default: message.error("Check your input again")
-          }
+      this.setState({ loading: true })
+      Auth.signOut()
+      .then(() => {
+        return Auth.signUp({
+          username: user.username,
+          password: user.password,
+          attributes: {
+            email: user.email,          // optional
+            phone_number: user.prefix+user.phone,   // optional - E.164 number convention
+          },
+          validationData: []  //optional
         })
+      }).then(() => {
+        message.success('Estas registrado')
+        next(user)
+      }).catch(err => {
+        console.error(err)
+        switch(err.code) {
+          case "InvalidParameterException": message.error("Password must have length greater than 6"); break
+          case "InvalidPasswordException": message.error("Password needs to contain upper case and symbols"); break
+          case "UsernameExistsException": message.error("El nombre de usario ya es cogido"); break
+          default: message.error("Check your input again")
+        }
+        this.setState({ loading: false})
+      })
     });
   }
 
@@ -74,51 +85,11 @@ class Register extends Component {
     callback();
   }
 
-  linkShareholder = async (user, companyId, shareholderId) => {
-    let userId
-
-    return API.graphql(graphqlOperation(gqlToString(CreateUser), {
-      input: { name: user.username }
-    })).then(({ data: { createUser }}) => {
-      userId = createUser.id
-
-      return Promise.all([
-        Auth.signUp({
-          username: user.username,
-          password: user.password,
-          attributes: {
-            email: user.email,          // optional
-            phone_number: user.prefix+user.phone,   // optional - E.164 number convention
-            ['custom:userId']: createUser.id,
-          },
-          validationData: []  //optional
-        }),
-        API.graphql(graphqlOperation(gqlToString(UpdateShareholder), {
-          input: {
-            id: shareholderId,
-            shareholderUserId: createUser.id,
-          }
-        })),
-        API.graphql(graphqlOperation(gqlToString(CreateCompanyUser), {
-          input: {
-            companyUserCompanyId: companyId,
-            companyUserUserId: createUser.id,
-          }
-        }))
-      ])
-    }).catch(err => {
-      return API.graphql(graphqlOperation(gqlToString(DeleteUser), {
-        input: { id: userId }
-      })).then(() => {
-        throw err
-      })
-    })
-  }
-
   render() {
     const {
       form: { getFieldDecorator },
     } = this.props;
+    const { loading } = this.state
 
     const prefixSelector = getFieldDecorator('prefix', {
       initialValue: '+34',
@@ -182,7 +153,7 @@ class Register extends Component {
           )}
         </FormItem>
         <FormItem>
-          <Button type="primary" htmlType="submit">Register</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>Register</Button>
         </FormItem>
       </Form>
     );

@@ -36,10 +36,14 @@ class Shareholders extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) return
 
+      console.log(this.props)
+      const { match: { params: { companyId}}} = this.props
+      const { linkShareholderId } = this.state
+
       const hideLoadingMsg = message.loading('loading', 0)
 
       API.post('linkShareholder', '/linkShareholder', {
-        body: { email: values.email }
+        body: { email: values.email, companyId, shareholderId: linkShareholderId }
       }).then(() => {
         hideLoadingMsg()
         message.success('invitado')
