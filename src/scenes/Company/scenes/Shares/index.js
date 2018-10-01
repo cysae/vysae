@@ -31,6 +31,11 @@ class EditableCell extends React.Component {
     if (this.props.inputType === 'number') {
       return <InputNumber />;
     }
+    if (this.props.inputType === 'euro') {
+      return (
+        <span><InputNumber /> euros (€)</span>
+      )
+    }
     return <Input />;
   };
 
@@ -55,7 +60,7 @@ class EditableCell extends React.Component {
                     {getFieldDecorator(dataIndex, {
                        rules: [{
                          required: true,
-                         message: `Please Input ${title}!`,
+                         message: `Debes introducer un valor`,
                        }],
                        initialValue: record[dataIndex],
                     })(this.getInput())}
@@ -75,31 +80,36 @@ class Shares extends React.Component {
     this.state = { editingId: '' };
     this.columns = [
       {
-        title: 'start',
+        title: 'De la:',
         dataIndex: 'start',
         width: '20%',
         editable: true,
       },
       {
-        title: 'end',
+        title: 'a la:',
         dataIndex: 'end',
         width: '20%',
         editable: true,
       },
       {
-        title: 'Valor en €',
+        title: 'Valor nominal por participación',
         dataIndex: 'value',
         width: '20%',
         editable: true,
+        render: (text, record) => {
+          return (
+            <span>{text} euros (€)</span>
+          )
+        }
       },
       {
-        title: 'Peso de Voto',
+        title: 'Peso del Voto',
         dataIndex: 'voteWeight',
         width: '20%',
         editable: true,
       },
       {
-        title: 'operation',
+        title: 'Operación',
         dataIndex: 'operation',
         render: (text, record) => {
           const editable = this.isEditing(record);
@@ -186,8 +196,14 @@ class Shares extends React.Component {
         ...values,
       }
 
+      const hideLoadingMsg = message.loading('Actualizando intervalo...', 0)
+
       updateShareIntvl(shareIntvl)
-        .then(() => { this.setState({ editingId: null }) })
+        .then(() => {
+          hideLoadingMsg()
+          message.success('Intervalo actualizado')
+          this.setState({ editingId: null })
+        })
         .catch(err => {
           message.error('error')
           console.error(err)
@@ -228,7 +244,7 @@ class Shares extends React.Component {
         ...col,
         onCell: record => ({
           record,
-          inputType: true ? 'number' : 'text',
+          inputType: (col.dataIndex === 'value') ? 'euro' : 'number',
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
@@ -247,6 +263,14 @@ class Shares extends React.Component {
           columns={columns}
           rowClassName="editable-row"
         />
+        <div>
+          <h3>Peso del Voto:</h3>
+          <ul>
+            <li>0 = participaciones sin voto</li>
+            <li>1 = una participación da derecho a 1 voto</li>
+            <li>X = una participación da derecho a X votos</li>
+          </ul>
+        </div>
       </Fragment>
     );
   }

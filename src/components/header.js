@@ -33,7 +33,7 @@ class RawHeaderMenu extends Component {
         style={{ lineHeight: '64px' }}
       >
         <Menu.Item key="dashboard"><Link to={`/${companyId}/dashboard`}>Dashboard</Link></Menu.Item>
-        <Menu.Item key="company"><Link to={`/${companyId}/company/basics`}>Company</Link></Menu.Item>
+        <Menu.Item key="company"><Link to={`/${companyId}/company/basics`}>Sociedad</Link></Menu.Item>
         <Menu.Item key="meetings"><Link to={`/${companyId}/meeting/next`}>Juntas</Link></Menu.Item>
       </Menu>
     )

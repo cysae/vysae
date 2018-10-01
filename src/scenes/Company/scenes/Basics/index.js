@@ -37,7 +37,7 @@ class Basics extends Component {
         const hideLoadingMsg = message.loading('Updating Company...')
         API.graphql(graphqlOperation(gqlToString(UpdateCompany), { input: { id: companyId, ...values }}))
           .then(() => {
-            message.success('Company updated', 2.5)
+            message.success('Sociedad actualizada', 2.5)
           })
           .catch(err => console.error(err))
           .finally(() => hideLoadingMsg())

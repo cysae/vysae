@@ -32,16 +32,16 @@ class CompanyMenu extends Component {
         selectedKeys={this.getSelectedKey()}
       >
         <Menu.Item key="basics">
-          <Link to={`/${companyId}/company/basics`}>Basicos</Link>
+          <Link to={`/${companyId}/company/basics`}>Información Básica</Link>
         </Menu.Item>
         <Menu.Item key="shares">
-          <Link to={`/${companyId}/company/shares`}>Shares</Link>
+          <Link to={`/${companyId}/company/shares`}>Patricipaciones</Link>
         </Menu.Item>
         <Menu.Item key="shareholders">
           <Link to={`/${companyId}/company/shareholders`}>Socios</Link>
         </Menu.Item>
         <Menu.Item key="majorities">
-          <Link to={`/${companyId}/company/majorities`}>Majorias</Link>
+          <Link to={`/${companyId}/company/majorities`}>Mayorías</Link>
         </Menu.Item>
       </Menu>
     )

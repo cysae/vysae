@@ -51,7 +51,7 @@ class CreateCompanyDrawer extends React.Component {
     return (
       <div>
         <Button type="primary" onClick={this.showDrawer}>
-          Añadir Sociedad
+          Dar de alta una Sociedad Limitada
         </Button>
         <Drawer
           title="Create"
