@@ -1,31 +1,10 @@
 import React from 'react'
 // antd
-import { Row, Col, List, Card, Spin } from 'antd'
+import { List, Card, Spin } from 'antd'
 // services
 import getMeeting from '../../../../services/getMeeting'
 import getAgreementWithResult from './services/getAgreementResult'
 import Promise from 'bluebird'
-
-const data = [
-  {
-    title: 'Title 1',
-  },
-  {
-    title: 'Title 2',
-  },
-  {
-    title: 'Title 3',
-  },
-  {
-    title: 'Title 4',
-  },
-  {
-    title: 'Title 5',
-  },
-  {
-    title: 'Title 6',
-  },
-];
 
 class Acta extends React.Component {
   constructor(props) {
@@ -64,6 +43,7 @@ class Acta extends React.Component {
           <List.Item>
             <Card title={agreement.name}>
               {loading ? <Spin size="large" /> : this.renderAgreementResult(agreement.result)}
+              {!loading && this.renderAgreementResult(agreement.result)}
             </Card>
           </List.Item>
         )}

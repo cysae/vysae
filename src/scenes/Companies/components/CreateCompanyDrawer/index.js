@@ -69,10 +69,10 @@ class CreateCompanyDrawer extends React.Component {
           <Form layout="vertical" hideRequiredMark onSubmit={this.handleSubmit}>
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item label="Name">
+                <Form.Item label="Denominación Social">
                   {getFieldDecorator('name', {
-                    rules: [{ required: true, message: 'please enter company name' }],
-                  })(<Input placeholder="please enter company name" />)}
+                     rules: [{ required: true, message: 'La denominación es obligatorio' }],
+                  })(<Input placeholder="Escribe la denominación social aquí" addonAfter=", S.L."/>)}
                 </Form.Item>
               </Col>
             </Row>
@@ -97,7 +97,7 @@ class CreateCompanyDrawer extends React.Component {
               >
                 Cancelar
               </Button>
-              <Button type="primary" htmlType="submit">Submit</Button>
+              <Button type="primary" htmlType="submit">Guardar</Button>
             </div>
           </Form>
         </Drawer>
