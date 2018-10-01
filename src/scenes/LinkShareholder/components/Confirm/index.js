@@ -53,6 +53,7 @@ class Confirm extends React.Component {
   }
 
   linkShareholder = async (user, companyId, shareholderId) => {
+    const { toCompanyDashboard } = this.props
     let userId
 
     return API.graphql(graphqlOperation(gqlToString(CreateUser), {
@@ -78,6 +79,9 @@ class Confirm extends React.Component {
           }
         }))
       ])
+    }).then(() => {
+      message.success('Confirmado y vinculado')
+      toCompanyDashboard()
     }).catch(err => {
       return API.graphql(graphqlOperation(gqlToString(DeleteUser), {
         input: { id: userId }

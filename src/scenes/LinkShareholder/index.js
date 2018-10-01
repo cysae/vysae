@@ -24,9 +24,18 @@ export default class App extends React.Component {
     this.setState({ current });
   }
 
+  toCompanyDashboard = () => {
+    const {
+      history,
+      match: { params: { companyId }},
+    } = this.props
+    history.push(`/${companyId}/dashboard`)
+  }
+
   render() {
     const { current, user } = this.state;
     const { match: { params: { companyId, shareholderId }}} = this.props
+    console.log(this.props)
 
     const steps = [{
       title: 'Registracion',
@@ -38,6 +47,7 @@ export default class App extends React.Component {
           user={user}
           companyId={companyId}
           shareholderId={shareholderId}
+          toCompanyDashboard={this.toCompanyDashboard}
         />
       )
     }];
