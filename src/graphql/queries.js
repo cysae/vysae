@@ -251,6 +251,10 @@ export const GetMeetingAgreement = gql`
         end
       }
       votes {
+        items {
+          id
+          result
+        }
         nextToken
       }
     }

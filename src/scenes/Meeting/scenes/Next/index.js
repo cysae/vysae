@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 // antd
-import { Table } from 'antd'
+import { Table, Divider } from 'antd'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 // services
@@ -44,10 +44,9 @@ function Next(props) {
     key: 'action',
     render: (text, record) => (
       <Fragment>
-        {/* <Link to="/meetings/pdf" onClick={() => selectMeeting(record)}>Leer orden del día</Link> */}
         <Link to={`/${companyId}/meeting/${record.id}/vote`}>Votar</Link>
-        {/* <Divider type="vertical"/>
-            <Link to={`/${companyId}/meeting/${record.meetingId}/result`}>Resultado</Link> */}
+        <Divider type="vertical"/>
+        <Link to={`/${companyId}/meeting/${record.id}/acta`}>Acta</Link>
       </Fragment>
     )
   }]
