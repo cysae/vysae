@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, message, Steps } from 'antd';
 // amplify
-import { Auth, API, graphqlOperation } from 'aws-amplify'
+import aws_exports from '../../../../aws-exports';
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import {
   CreateUser,
@@ -9,51 +10,11 @@ import {
   UpdateShareholder,
   DeleteUser
 } from '../../../../graphql/mutations'
+Amplify.configure(aws_exports);
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-const linkShareholder = async (user, companyId, shareholderId) => {
-
-  let userId
-
-  return API.graphql(graphqlOperation(gqlToString(CreateUser), {
-    input: { name: user.username }
-  })).then(({ data: { createUser }}) => {
-    userId = createUser.id
-
-    return Promise.all([
-      Auth.signUp({
-        username: user.username,
-        password: user.password,
-        attributes: {
-          email: user.email,          // optional
-          phone_number: user.prefix+user.phone,   // optional - E.164 number convention
-          ['custom:userId']: createUser.id,
-        },
-        validationData: []  //optional
-      }),
-      API.graphql(graphqlOperation(gqlToString(UpdateShareholder), {
-        input: {
-          id: shareholderId,
-          shareholderUserId: createUser.id,
-        }
-      })),
-      API.graphql(graphqlOperation(gqlToString(CreateCompanyUser), {
-        input: {
-          companyUserCompanyId: companyId,
-          companyUserUserId: createUser.id,
-        }
-      }))
-    ])
-  }).catch(err => {
-    return API.graphql(graphqlOperation(gqlToString(DeleteUser), {
-      input: { id: userId }
-    })).then(() => {
-      throw err
-    })
-  })
-}
 
 class Register extends Component {
   state = {
@@ -66,7 +27,8 @@ class Register extends Component {
       if (err) return
 
       const {
-        match: { params: { shareholderId, companyId }},
+        shareholderId,
+        companyId,
         next
       } = this.props
 
@@ -74,7 +36,7 @@ class Register extends Component {
         ...values
       }
 
-      linkShareholder(user, companyId, shareholderId)
+      this.linkShareholder(user, companyId, shareholderId)
         .then(() => {
           message.success('Estas registrado')
           next()
@@ -110,6 +72,47 @@ class Register extends Component {
       form.validateFields(['confirm'], { force: true });
     }
     callback();
+  }
+
+  linkShareholder = async (user, companyId, shareholderId) => {
+    let userId
+
+    return API.graphql(graphqlOperation(gqlToString(CreateUser), {
+      input: { name: user.username }
+    })).then(({ data: { createUser }}) => {
+      userId = createUser.id
+
+      return Promise.all([
+        Auth.signUp({
+          username: user.username,
+          password: user.password,
+          attributes: {
+            email: user.email,          // optional
+            phone_number: user.prefix+user.phone,   // optional - E.164 number convention
+            ['custom:userId']: createUser.id,
+          },
+          validationData: []  //optional
+        }),
+        API.graphql(graphqlOperation(gqlToString(UpdateShareholder), {
+          input: {
+            id: shareholderId,
+            shareholderUserId: createUser.id,
+          }
+        })),
+        API.graphql(graphqlOperation(gqlToString(CreateCompanyUser), {
+          input: {
+            companyUserCompanyId: companyId,
+            companyUserUserId: createUser.id,
+          }
+        }))
+      ])
+    }).catch(err => {
+      return API.graphql(graphqlOperation(gqlToString(DeleteUser), {
+        input: { id: userId }
+      })).then(() => {
+        throw err
+      })
+    })
   }
 
   render() {

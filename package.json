@@ -3,12 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-pdf/dom": "^0.7.6",
     "antd": "^3.8.2",
     "aws-amplify": "^1.0.11",
     "aws-amplify-react": "^2.0.4",
     "aws-sdk": "^2.323.0",
-    "babel-plugin-import": "^1.8.0",
     "core-js": "2",
     "generate-password": "^1.4.0",
     "graphql-tag": "^2.9.2",
@@ -30,6 +28,7 @@
     "eject": "react-app-rewired eject"
   },
   "devDependencies": {
+    "babel-plugin-import": "^1.9.1",
     "transform-loader": "^0.2.4"
   }
 }

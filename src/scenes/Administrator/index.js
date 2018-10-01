@@ -12,6 +12,7 @@ import LinkShareholder from '../../scenes/LinkShareholder'
 import { Route, Switch } from 'react-router-dom'
 // amplify
 import { withAuthenticator } from 'aws-amplify-react'
+import Amplify, { Auth } from 'aws-amplify'
 const { Content, Footer } = Layout;
 
 class Administrator extends React.Component {
@@ -20,6 +21,13 @@ class Administrator extends React.Component {
   handleSelectCompanyId = (companyId) => {
     this.setState({ companyId })
     this.props.history.push(`/${companyId}/dashboard`)
+  }
+
+  handleSignOut = async () => {
+    const hide = message.loading('Sign Out')
+    await Auth.signOut()
+    hide()
+    window.location.href = '/'
   }
 
   render() {

@@ -12,7 +12,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 1,
+      current: 0,
     };
   }
 
@@ -28,10 +28,11 @@ export default class App extends React.Component {
 
   render() {
     const { current } = this.state;
+    const { match: { params: { companyId, shareholderId }}} = this.props
 
     const steps = [{
       title: 'Registracion',
-      content: <Register next={this.next} />,
+      content: <Register next={this.next} companyId={companyId} shareholderId={shareholderId} />,
     }, {
       title: 'Confirmar',
       content: <Confirm />,

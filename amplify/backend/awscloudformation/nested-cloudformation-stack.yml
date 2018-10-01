@@ -147,10 +147,10 @@
 							"Outputs.UserPoolId"
 						]
 					},
-					"schemaGraphql": "s3://vysae-20180923175301-deployment/amplify-appsync-files/schema.graphql.1538125448346",
+					"schemaGraphql": "s3://vysae-20180923175301-deployment/amplify-appsync-files/schema.graphql.1538344726120",
 					"ResolverBucket": "vysae-20180923175301-deployment",
 					"ResolverRootKey": "amplify-appsync-files",
-					"DeploymentTimestamp": "1538125448346"
+					"DeploymentTimestamp": "1538344726120"
 				}
 			}
 		},
