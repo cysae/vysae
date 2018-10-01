@@ -42,6 +42,8 @@ class MeetingVote extends Component {
       agreements
     } = this.props
 
+    console.log(this.props.shareholderId, 'lol')
+
     return (
       <Form layout="vertical" onSubmit={this.handleSubmit}>
         <List

@@ -20,7 +20,7 @@ const SelectShareholder = props => {
   } = props
 
   return (
-    <Select defaultValue="Dirk" onChange={handleSelectShareholder}>
+    <Select defaultValue={shareholders[0].name} onChange={handleSelectShareholder}>
       {shareholders.map(
          shareholder => (
            <Option
@@ -86,6 +86,7 @@ class App extends Component {
         <div>No tiene Socio dentro de la empresa</div>
       )
 
+
     const steps = [{
       title: '1. Seleccionar Socio',
       icon: <Icon type="user" />,
@@ -106,6 +107,7 @@ class App extends Component {
         />
       )
     }];
+
 
     return (
       <div>
