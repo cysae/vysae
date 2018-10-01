@@ -1,15 +1,7 @@
 import React, { Component } from 'react'
-import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, message, Steps } from 'antd';
+import { Form, Input, Select, Button, message } from 'antd';
 // amplify
-import aws_exports from '../../../../aws-exports';
-import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
-import { print as gqlToString } from 'graphql/language'
-import {
-  CreateUser,
-  CreateCompanyUser,
-  UpdateShareholder,
-  DeleteUser
-} from '../../../../graphql/mutations'
+import { Auth } from 'aws-amplify'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -28,7 +20,6 @@ class Register extends Component {
 
       const {
         next,
-        setUser
       } = this.props
 
       const user = {

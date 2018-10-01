@@ -12,19 +12,6 @@ import ShareIntervalTable from './components/ShareIntervalTable'
 import { API } from 'aws-amplify'
 const FormItem = Form.Item;
 
-const sendInvitation = (email, companyId, shareholderId) => {
-  const hideLoadingMsg = message.loading('loading', 0)
-  API.post('linkShareholder', '/linkShareholder', { body: {
-    email, companyId, shareholderId
-  }}).then((res) => {
-      console.log(res)
-      message.success('Invitacion enviado.')
-    }).catch(err => {
-      console.error(err)
-      message.error('No podia enviar la invitacion')
-    }).finally(() => hideLoadingMsg())
-}
-
 class Shareholders extends Component {
   state = {
     visible: false,
@@ -72,13 +59,12 @@ class Shareholders extends Component {
     const {
       company: { shareholders },
       match: { params: { companyId }},
-      getCompany: { createShareholder, linkShareholder },
+      getCompany: { createShareholder },
       form: { getFieldDecorator }
     } = this.props
 
     const {
       visible,
-      linkShareholderId
     } = this.state
 
 

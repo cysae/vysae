@@ -3,8 +3,7 @@ import React from 'react'
 import { Form, Input, Button, message } from 'antd'
 // amplify
 // amplify
-import aws_exports from '../../../../aws-exports';
-import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
+import { Auth, API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import {
   CreateUser,
@@ -64,7 +63,7 @@ class Confirm extends React.Component {
     }).then((user) => {
       return Promise.all([
         Auth.updateUserAttributes(user, {
-          ['custom:userId']: userId,
+          'custom:userId': userId,
         }),
         API.graphql(graphqlOperation(gqlToString(UpdateShareholder), {
           input: {

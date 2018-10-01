@@ -72,7 +72,7 @@ class App extends Component {
   render() {
     const {
       user: { shareholders },
-      match: { params: { companyId, meetingId }},
+      match: { params: { companyId }},
       meeting: { agreements }
     } = this.props
     const { current, shareholderId } = this.state;

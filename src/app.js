@@ -1,8 +1,6 @@
 import React from 'react'
 // Router
 import { Route, Switch } from 'react-router-dom'
-// Antd
-import { Breadcrumb, Modal, message } from 'antd'
 // Components
 import LinkShareholder from './scenes/LinkShareholder'
 import Administrator from './scenes/Administrator'

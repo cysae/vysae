@@ -38,11 +38,8 @@ class MeetingVote extends Component {
 
   render() {
     const {
-      meetingId,
       agreements
     } = this.props
-
-    console.log(this.props.shareholderId, 'lol')
 
     return (
       <Form layout="vertical" onSubmit={this.handleSubmit}>

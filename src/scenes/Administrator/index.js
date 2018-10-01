@@ -7,12 +7,11 @@ import Companies from '../../scenes/Companies'
 import Dashboard from '../../scenes/Dashboard'
 import Meetings from '../../scenes/Meeting'
 import Company from '../../scenes/Company'
-import LinkShareholder from '../../scenes/LinkShareholder'
 // router
 import { Route, Switch } from 'react-router-dom'
 // amplify
 import { withAuthenticator } from 'aws-amplify-react'
-import Amplify, { Auth } from 'aws-amplify'
+import { Auth } from 'aws-amplify'
 const { Content, Footer } = Layout;
 
 class Administrator extends React.Component {

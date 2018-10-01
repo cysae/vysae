@@ -2,14 +2,11 @@ import React, { Component } from 'react'
 //antd
 import { message } from 'antd'
 // amplify
-import { Auth, API, graphqlOperation } from 'aws-amplify'
+import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'
 import { GetCompany } from '../graphql/queries'
 import {
   CreateShareholder,
-  UpdateShareholder,
-  CreateUser,
-  DeleteUser,
   CreateCompanyShareInterval,
   UpdateCompanyShareInterval,
   DeleteCompanyShareInterval,
@@ -24,7 +21,6 @@ import { compose } from 'recompose'
 // services
 import handleLoadingAndErrors from './handleLoadingAndErrors'
 import Promise from 'bluebird'
-import generator from 'generate-password'
 
 const getCurrentCompany = (WrappedComponent) => {
   return class extends Component {

@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-// antd
-import { message } from 'antd'
 // amplify
 import { API, graphqlOperation } from 'aws-amplify'
 import { print as gqlToString } from 'graphql/language'

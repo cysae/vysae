@@ -1,6 +1,6 @@
 import React from 'react'
 // antd
-import { Steps, Button, message } from 'antd';
+import { Steps } from 'antd';
 // components
 import Register from './components/Register'
 import Confirm from './components/Confirm'
