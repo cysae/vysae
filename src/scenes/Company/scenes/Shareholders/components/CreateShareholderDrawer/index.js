@@ -73,19 +73,21 @@ class CreateShareholderDrawer extends React.Component {
           <Form layout="vertical" hideRequiredMark onSubmit={this.handleSubmit} >
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Name">
+                <Form.Item label="Nombre">
                   {getFieldDecorator('name', {
-                     rules: [{ required: true, message: 'please enter user name' }],
+                     rules: [{ required: true, message: 'Escribe un nombre' }],
                   })(<Input placeholder="please enter user name" />)}
                 </Form.Item>
               </Col>
-              {/* <Col span={12}>
-                  <Form.Item label="DNI">
-                  {getFieldDecorator('dni', {
-                  rules: [{ required: true, message: 'please enter user DNI' }],
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Apellido 1">
+                  {getFieldDecorator('firstSurname', {
+                     rules: [{ required: true, message: 'Escribe un nombre' }],
                   })(<Input placeholder="please enter user name" />)}
-                  </Form.Item>
-                  </Col> */}
+                </Form.Item>
+              </Col>
             </Row>
             {/* <Row gutter={16}>
                 <Col span={12}>

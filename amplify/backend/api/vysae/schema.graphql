@@ -61,6 +61,7 @@ type MeetingAgreement @model {
 type Shareholder @model {
   id: ID!
   name: String
+  firstSurname: String
   company: Company! @connection(name: "CompanyShareholders")
   user: User @connection(name: "UserShareholders")
   shareIntervals: [ShareholderShareInterval] @connection(name: "ShareholderShareIntervals")

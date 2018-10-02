@@ -429,6 +429,7 @@ input DeleteMeetingAgreementInput {
 type Shareholder {
   id: ID!
   name: String
+  firstSurname: String
   company: Company!
   user: User
   shareIntervals(filter: ModelShareholderShareIntervalFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelShareholderShareIntervalConnection
@@ -443,6 +444,7 @@ type ModelShareholderConnection {
 input ModelShareholderFilterInput {
   id: ModelIDFilterInput
   name: ModelStringFilterInput
+  firstSurname: ModelStringFilterInput
   and: [ModelShareholderFilterInput]
   or: [ModelShareholderFilterInput]
   not: ModelShareholderFilterInput
@@ -450,6 +452,7 @@ input ModelShareholderFilterInput {
 
 input CreateShareholderInput {
   name: String
+  firstSurname: String
   shareholderCompanyId: ID
   shareholderUserId: ID
 }
@@ -457,6 +460,7 @@ input CreateShareholderInput {
 input UpdateShareholderInput {
   id: ID!
   name: String
+  firstSurname: String
   shareholderCompanyId: ID
   shareholderUserId: ID
 }
