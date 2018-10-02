@@ -114,7 +114,7 @@ class ShareIntervalTable extends React.Component {
                      <a style={{ marginRight: 8 }}>Eliminar</a>
                    </Popconfirm>
                    <Popconfirm
-                     title="¿Seguro que quere cancelar?"
+                     title="¿Seguro que quiere cancelar?"
                      onConfirm={() => this.cancel(record.id)}
                      icon={<Icon type="question-circle-o" style={{ color: 'yellow' }} />}
                    >
