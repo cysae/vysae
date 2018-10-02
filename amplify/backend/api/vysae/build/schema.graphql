@@ -430,7 +430,7 @@ type Shareholder {
   id: ID!
   name: String
   firstSurname: String
-  //secondSurname: String
+  secondSurname: String
   company: Company!
   user: User
   shareIntervals(filter: ModelShareholderShareIntervalFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelShareholderShareIntervalConnection
@@ -446,7 +446,7 @@ input ModelShareholderFilterInput {
   id: ModelIDFilterInput
   name: ModelStringFilterInput
   firstSurname: ModelStringFilterInput
-  //secondSurname: ModelStringFilterInput
+  secondSurname: ModelStringFilterInput
   and: [ModelShareholderFilterInput]
   or: [ModelShareholderFilterInput]
   not: ModelShareholderFilterInput
@@ -455,7 +455,7 @@ input ModelShareholderFilterInput {
 input CreateShareholderInput {
   name: String
   firstSurname: String
-  //secondSurname: String
+  secondSurname: String
   shareholderCompanyId: ID
   shareholderUserId: ID
 }
@@ -464,6 +464,7 @@ input UpdateShareholderInput {
   id: ID!
   name: String
   firstSurname: String
+  secondSurname: String
   shareholderCompanyId: ID
   shareholderUserId: ID
 }

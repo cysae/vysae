@@ -82,50 +82,7 @@
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
 				"TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/auth/vysaeCognito-cloudformation-template.yml",
-				"Parameters": {
-					"identityPoolName": "vysae",
-					"allowUnauthenticatedIdentities": false,
-					"thirdPartyAuth": false,
-					"lambdaLogPolicy": "vysaeCognito_lambda_log_policy",
-					"openIdLambdaRoleName": "vysaeCognito_openid_lambda_role",
-					"openIdRolePolicy": "vysaeCognito_openid_pass_role_policy",
-					"openIdLambdaIAMPolicy": "vysaeCognito_openid_lambda_iam_policy",
-					"openIdLogPolicy": "vysaeCognito_openid_lambda_log_policy",
-					"userPoolName": "vysae",
-					"autoVerifiedAttributes": "email",
-					"mfaConfiguration": "OFF",
-					"mfaTypes": "SMS Text Message",
-					"roleName": "vysaeCognito_sns-role",
-					"roleExternalId": "vysaeCognito_role_external_id",
-					"policyName": "vysaeCognito-sns-policy",
-					"smsAuthenticationMessage": "Your authentication code is {####}",
-					"smsVerificationMessage": "Your verification code is {####}",
-					"emailVerificationSubject": "Your verification code",
-					"emailVerificationMessage": "Your verification code is {####}",
-					"defaultPasswordPolicy": false,
-					"passwordPolicyMinLength": 8,
-					"passwordPolicyCharacters": "Requires Lowercase,Requires Uppercase,Requires Numbers,Requires Symbols",
-					"requiredAttributes": "email",
-					"userpoolClientName": "vysaeCognito_app_client",
-					"userpoolClientGenerateSecret": true,
-					"userpoolClientRefreshTokenValidity": 30,
-					"userpoolClientReadAttributes": "email",
-					"mfaLambdaRole": "vysaeCognito_totp_lambda_role",
-					"mfaLambdaLogPolicy": "vysaeCognito_totp_lambda_log_policy",
-					"mfaPassRolePolicy": "vysaeCognito_totp_pass_role_policy",
-					"mfaLambdaIAMPolicy": "vysaeCognito_totp_lambda_iam_policy",
-					"userpoolClientLambdaRole": "vysaeCognito_userpoolclient_lambda_role",
-					"userpoolClientLogPolicy": "vysaeCognito_userpoolclient_lambda_log_policy",
-					"userpoolClientLambdaPolicy": "vysaeCognito_userpoolclient_lambda_iam_policy",
-					"userpoolClientSetAttributes": false,
-					"useDefault": "manual",
-					"authSelections": "identityPoolAndUserPool",
-					"resourceName": "vysaeCognito",
-					"unAuthRoleName": "vysae-20180923175301-unauthRole",
-					"authRoleName": "vysae-20180923175301-authRole",
-					"unAuthRoleArn": "arn:aws:iam::037641059503:role/vysae-20180923175301-unauthRole",
-					"authRoleArn": "arn:aws:iam::037641059503:role/vysae-20180923175301-authRole"
-				}
+				"Parameters": {}
 			}
 		},
 		"hostingS3AndCloudFront": {
@@ -139,19 +96,7 @@
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
 				"TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-				"Parameters": {
-					"AppSyncApiName": "vysae",
-					"AuthCognitoUserPoolId": {
-						"Fn::GetAtt": [
-							"authvysaeCognito",
-							"Outputs.UserPoolId"
-						]
-					},
-					"schemaGraphql": "s3://vysae-20180923175301-deployment/amplify-appsync-files/schema.graphql.1538344726120",
-					"ResolverBucket": "vysae-20180923175301-deployment",
-					"ResolverRootKey": "amplify-appsync-files",
-					"DeploymentTimestamp": "1538344726120"
-				}
+				"Parameters": {}
 			}
 		},
 		"apilinkShareholder": {
