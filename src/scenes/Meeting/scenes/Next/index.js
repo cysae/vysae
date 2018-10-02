@@ -19,10 +19,10 @@ function Next(props) {
   } = props
 
   const columns = [{
-    title: 'Name',
+    title: 'Nombre',
     dataIndex: 'name',
   }, {
-    title: 'Commienza',
+    title: 'Comienza',
     key: 'start',
     render: (text, record) => {
       const { start } = record

@@ -87,7 +87,7 @@ class Shareholders extends Component {
           )
 
         return (
-          <span>está conectado</span>
+          <span>Está conectado</span>
         )
       }
     }];
@@ -107,13 +107,13 @@ class Shareholders extends Component {
         <Form>
           <Modal
             visible={visible}
-            title="Title"
+            title="Título"
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             footer={[
               <Button key="back" onClick={this.closeModal}>Cancelar</Button>,
               <Button key="submit" type="primary" htmlType="submit" onClick={this.handleSubmit}>
-                Enviar invitacion
+                Enviar invitación
               </Button>
             ]}
           >

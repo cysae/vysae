@@ -50,19 +50,19 @@ class MeetingResult extends Component {
     const meetingResult = this.getMeetingResult(meeting.agreements)
 
     const columns = [{
-      title: 'Name',
+      title: 'Nombre',
       dataIndex: 'name',
       key: 'name'
     }, {
-      title: 'Pro',
+      title: 'A favor',
       dataIndex: 'pro',
       key: 'pro'
     }, {
-      title: 'Contra',
+      title: 'En contra',
       dataIndex: 'contra',
       key: 'contra'
     }, {
-      title: 'Blanco',
+      title: 'En blanco',
       dataIndex: 'blank',
       key: 'blank'
     }]

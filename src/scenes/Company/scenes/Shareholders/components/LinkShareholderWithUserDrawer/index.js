@@ -107,7 +107,7 @@ class LinkShareholderDrawer extends React.Component {
                 <Form.Item label="DNI">
                   {getFieldDecorator('username', {
                      rules: [{ required: true, message: 'Introduzca el DNI del usuario' }],
-                  })(<Input placeholder="Introduzca el nombre de usuario" />)}
+                  })(<Input placeholder="Introduzca el DNI" />)}
                 </Form.Item>
               </Col>
             </Row>
@@ -173,7 +173,7 @@ class LinkShareholderDrawer extends React.Component {
               >
                 Cancelar
               </Button>
-              <Button htmlType="submit" type="primary">Submit</Button>
+              <Button htmlType="submit" type="primary">Guardar</Button>
             </div>
           </Form>
         </Drawer>

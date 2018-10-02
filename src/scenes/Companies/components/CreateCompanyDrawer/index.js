@@ -25,7 +25,7 @@ class CreateCompanyDrawer extends React.Component {
         createCompany(userId, { input: { name: values.name }})
           .then(res => {
             notification.success({
-              message: `Sociedad añadida!`,
+              message: `¡Sociedad añadida!`,
               description: `Has guardado la sociedad: ${values.name}.`
             })
             form.resetFields()
@@ -54,7 +54,7 @@ class CreateCompanyDrawer extends React.Component {
           Dar de alta una Sociedad Limitada
         </Button>
         <Drawer
-          title="Create"
+          title="Crear"
           width={720}
           placement="right"
           onClose={this.onClose}
@@ -71,7 +71,7 @@ class CreateCompanyDrawer extends React.Component {
               <Col span={24}>
                 <Form.Item label="Denominación Social">
                   {getFieldDecorator('name', {
-                     rules: [{ required: true, message: 'La denominación es obligatorio' }],
+                     rules: [{ required: true, message: 'La denominación es obligatoria' }],
                   })(<Input placeholder="Escribe la denominación social aquí" addonAfter=", S.L."/>)}
                 </Form.Item>
               </Col>

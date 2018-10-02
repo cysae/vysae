@@ -68,7 +68,7 @@ class EditableCell extends React.Component {
                     {getFieldDecorator(dataIndex, {
                        rules: [{
                          required: true,
-                         message: `Please Input ${title}!`,
+                         message: `Por favor, introduzca ${title}!`,
                        }],
                        initialValue: record[dataIndex],
                     })(this.getInput())}
@@ -88,13 +88,13 @@ class Shares extends React.Component {
     this.state = { editingId: '' };
     this.columns = [
       {
-        title: 'name',
+        title: 'Nombre',
         dataIndex: 'name',
         width: '20%',
         editable: true,
       },
       {
-        title: 'rel. Threshold',
+        title: 'Límite relativo',
         dataIndex: 'relativeThreshold',
         width: '20%',
         editable: true,
@@ -103,7 +103,7 @@ class Shares extends React.Component {
         )
       },
       {
-        title: 'abs. Threshold',
+        title: 'Límite absoluto',
         dataIndex: 'absoluteThreshold',
         width: '20%',
         editable: true,
@@ -112,13 +112,13 @@ class Shares extends React.Component {
         )
       },
       {
-        title: 'min. Votes',
+        title: 'Votos mínimos',
         dataIndex: 'minimumVotes',
         width: '20%',
         editable: true,
       },
       {
-        title: 'operation',
+        title: 'Operación',
         dataIndex: 'operation',
         render: (text, record) => {
           const editable = this.isEditing(record);
@@ -138,18 +138,18 @@ class Shares extends React.Component {
                      )}
                    </EditableContext.Consumer>
                    <Popconfirm
-                     title="Sure to delete?"
+                     title="¿Seguro que quiere eliminar?"
                      onConfirm={() => this.delete(record.id)}
                      icon={<Icon type="exclamation-circle-o" style={{ color: 'red' }} />}
                    >
-                     <a style={{ marginRight: 8 }}>Delete</a>
+                     <a style={{ marginRight: 8 }}>Eliminar</a>
                    </Popconfirm>
                    <Popconfirm
-                     title="Sure to cancel?"
+                     title="¿Seguro que quiere cancelar?"
                      onConfirm={() => this.cancel(record.id)}
                      icon={<Icon type="question-circle-o" style={{ color: 'yellow' }} />}
                    >
-                     <a>Cancel</a>
+                     <a>Cancelar</a>
                    </Popconfirm>
                  </span>
               ) : (
@@ -256,7 +256,7 @@ class Shares extends React.Component {
 
     return (
       <Fragment>
-        <Button type="primary" onClick={this.create}>Añadir Majoria</Button>
+        <Button type="primary" onClick={this.create}>Añadir mayoría</Button>
         <Table
           components={components}
           rowKey="id"

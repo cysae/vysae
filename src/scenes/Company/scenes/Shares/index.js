@@ -86,7 +86,7 @@ class Shares extends React.Component {
         editable: true,
       },
       {
-        title: 'a la:',
+        title: 'A la:',
         dataIndex: 'end',
         width: '20%',
         editable: true,
@@ -254,7 +254,7 @@ class Shares extends React.Component {
 
     return (
       <Fragment>
-        <Button type="primary" onClick={this.create}>Añadir Intervalo de Participaciones</Button>
+        <Button type="primary" onClick={this.create}>Añadir intervalo de participaciones</Button>
         <Table
           components={components}
           rowKey="id"
