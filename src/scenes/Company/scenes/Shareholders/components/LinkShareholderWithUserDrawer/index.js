@@ -54,20 +54,20 @@ class LinkShareholderDrawer extends React.Component {
       linkShareholder(shareholder, user)
         .then(res => {
           notification.success({
-            message: `Shareholder linked!`,
-            description: `Has linked un shareholder con un usario.`
+            message: `¡Accionista conectado!`,
+            description: `Se ha conectado un accionista con un usuario.`
           })
           this.onClose()
         })
         .catch(err => {
           console.error(err)
           notification.error({
-            message: `DNI ya existe!`,
-            description: `No puedo crear un nuevo usario.`
+            message: `¡Este DNI ya existe!`,
+            description: `No se pudo crear un nuevo usuario.`
           })
           setFields({
             username: {
-              errors: [new Error('DNI existe ya!')],
+              errors: [new Error('¡Este DNI ya existe!')],
             }
           })
 
@@ -82,7 +82,7 @@ class LinkShareholderDrawer extends React.Component {
       <div>
         <Button onClick={this.showDrawer}>Link User</Button>
         <Drawer
-          title="Create"
+          title="Crear"
           width={720}
           placement="right"
           onClose={this.onClose}
@@ -97,17 +97,17 @@ class LinkShareholderDrawer extends React.Component {
           <Form layout="vertical" hideRequiredMark onSubmit={this.handleSubmit}>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Name">
+                <Form.Item label="Nombre">
                   {getFieldDecorator('name', {
-                     rules: [{ required: true, message: 'please enter user name' }],
-                  })(<Input placeholder="please enter user name" />)}
+                     rules: [{ required: true, message: 'Introduzca el nombre de usuario' }],
+                  })(<Input placeholder="Introduzca el nombre de usuario" />)}
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item label="DNI">
                   {getFieldDecorator('username', {
-                     rules: [{ required: true, message: 'please enter user DNI' }],
-                  })(<Input placeholder="please enter user name" />)}
+                     rules: [{ required: true, message: 'Introduzca el DNI del usuario' }],
+                  })(<Input placeholder="Introduzca el nombre de usuario" />)}
                 </Form.Item>
               </Col>
             </Row>
@@ -115,11 +115,11 @@ class LinkShareholderDrawer extends React.Component {
               <Col span={12}>
                 <Form.Item label="Email">
                   {getFieldDecorator('email', {
-                     rules: [{ required: true, message: 'please enter email' }],
+                     rules: [{ required: true, message: 'Introduzca el email' }],
                   })(
                      <Input
                        style={{ width: '100%' }}
-                       placeholder="please enter email"
+                       placeholder="Introduzca el email"
                      />
                    )}
                 </Form.Item>
@@ -127,12 +127,12 @@ class LinkShareholderDrawer extends React.Component {
               <Col span={12}>
                 <Form.Item label="Número de Teléfono">
                   {getFieldDecorator('phone_number', {
-                     rules: [{ required: true, message: 'please enter phone' }],
+                     rules: [{ required: true, message: 'Introduzca el número de teléfono' }],
                   })(
                      <Input
                        style={{ width: '100%' }}
                        addonBefore="+34"
-                       placeholder="please enter phone"
+                       placeholder="Introduzca el número de teléfono"
                      />
                    )}
                 </Form.Item>

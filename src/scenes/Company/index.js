@@ -35,7 +35,7 @@ class CompanyMenu extends Component {
           <Link to={`/${companyId}/company/basics`}>Información Básica</Link>
         </Menu.Item>
         <Menu.Item key="shares">
-          <Link to={`/${companyId}/company/shares`}>Patricipaciones</Link>
+          <Link to={`/${companyId}/company/shares`}>Participaciones</Link>
         </Menu.Item>
         <Menu.Item key="shareholders">
           <Link to={`/${companyId}/company/shareholders`}>Socios</Link>
@@ -68,4 +68,3 @@ export default (props) => {
     </Row>
   )
 }
-

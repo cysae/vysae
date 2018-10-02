@@ -55,10 +55,10 @@ class CreateShareholderDrawer extends React.Component {
     return (
       <div>
         <Button type="primary" onClick={this.showDrawer}>
-          Añadir Socio
+          Añadir socio
         </Button>
         <Drawer
-          title="Create"
+          title="Crear"
           width={720}
           placement="right"
           onClose={this.onClose}
@@ -75,17 +75,26 @@ class CreateShareholderDrawer extends React.Component {
               <Col span={12}>
                 <Form.Item label="Nombre">
                   {getFieldDecorator('name', {
-                     rules: [{ required: true, message: 'Escribe un nombre' }],
-                  })(<Input placeholder="please enter user name" />)}
+                     rules: [{ required: true, message: 'Escriba un nombre' }],
+                  })(<Input placeholder="Introduzca un nombre" />)}
                 </Form.Item>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Apellido 1">
+                <Form.Item label="Primer apellido">
                   {getFieldDecorator('firstSurname', {
-                     rules: [{ required: true, message: 'Escribe un nombre' }],
-                  })(<Input placeholder="please enter user name" />)}
+                     rules: [{ required: true, message: 'Escriba el primer apellido' }],
+                  })(<Input placeholder="Introduzca el primer apellido" />)}
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Segundo apellido">
+                  {getFieldDecorator('secondSurname', {
+                     rules: [{ required: true, message: 'Escriba el segundo apellido' }],
+                  })(<Input placeholder="Introduzca el segundo apellido" />)}
                 </Form.Item>
               </Col>
             </Row>
@@ -151,7 +160,7 @@ class CreateShareholderDrawer extends React.Component {
               >
                 Cancelar
               </Button>
-              <Button htmlType="submit" type="primary">Submit</Button>
+              <Button htmlType="submit" type="primary">Enviar</Button>
             </div>
           </Form>
         </Drawer>

@@ -62,6 +62,7 @@ type Shareholder @model {
   id: ID!
   name: String
   firstSurname: String
+  secondSurname: String
   company: Company! @connection(name: "CompanyShareholders")
   user: User @connection(name: "UserShareholders")
   shareIntervals: [ShareholderShareInterval] @connection(name: "ShareholderShareIntervals")

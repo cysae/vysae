@@ -55,7 +55,7 @@ class EditableCell extends React.Component {
                     {getFieldDecorator(dataIndex, {
                        rules: [{
                          required: true,
-                         message: `Please Input ${title}!`,
+                         message: `¡Por favor, introduzca ${title}!`,
                        }],
                        initialValue: record[dataIndex],
                     })(this.getInput())}
@@ -75,19 +75,19 @@ class ShareIntervalTable extends React.Component {
     this.state = { editingId: '' };
     this.columns = [
       {
-        title: 'start',
+        title: 'Comienzo',
         dataIndex: 'start',
         width: '30%',
         editable: true,
       },
       {
-        title: 'end',
+        title: 'Fin',
         dataIndex: 'end',
         width: '30%',
         editable: true,
       },
       {
-        title: 'operation',
+        title: 'Operación',
         dataIndex: 'operation',
         render: (text, record) => {
           const editable = this.isEditing(record);
