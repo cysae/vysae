@@ -122,7 +122,7 @@ toggle = () => {
                 </Form.Item>
               </Col>
             </Row>
-            <p style={{ marginTop: 24, marginBottom: 32 }}>Representante de la persona jurídica</p>
+            <h3 style={{ marginTop: 24, marginBottom: 32 }}>Representante de la persona jurídica</h3>
             </Form>
           }
           <Row gutter={16} style={{ marginTop: 24}}>
