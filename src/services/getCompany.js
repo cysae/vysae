@@ -40,45 +40,38 @@ const getCurrentCompany = (WrappedComponent) => {
       createMeeting: this.createMeeting,
     })
 
-    componentDidMount() {
+    componentDidMount = async () => {
       const { match: { params: { companyId }}} = this.props
 
-      API.graphql(graphqlOperation(gqlToString(GetCompany), { id: companyId }))
-        .then(({ data: { getCompany }}) => {
-          this.setState({
-            loading: false,
-            company: getCompany
-          })
+      try {
+        const { data: { getCompany }} = await API.graphql(
+          graphqlOperation(gqlToString(GetCompany), { id: companyId })
+        )
+
+        // query ALL shareIntvls
+        let nextToken = getCompany.shareIntervals.nextToken
+        const shareIntvlItems = getCompany.shareIntervals.items
+        while(nextToken) {
+          const { data: { getCompany: { shareIntervals }}} = await API.graphql(
+            graphqlOperation(gqlToString(GetCompany), {
+              id: companyId,
+              shareIntvlsNextToken: nextToken
+            })
+          )
+          shareIntvlItems.push(...shareIntervals.items)
+          nextToken = shareIntervals.nextToken
+        }
+
+        getCompany.shareIntervals.items = shareIntvlItems
+
+        this.setState({
+          loading: false,
+          company: getCompany
         })
-        .catch(error => { this.setState({ loading: false, error })})
-    }
-
-    fetchMoreShareIntvls = () => {
-      const {
-        company,
-        company: { shareIntervals: { nextToken }}
-      } = this.state
-
-      if(nextToken) {
-        const hideLoadingMsg = message.loading('Cargando participaciones...')
-        API.graphql(graphqlOperation(gqlToString(GetCompany), { id: company.id, shareIntvlsNextToken: nextToken }))
-          .then(({ data: { getCompany: { shareIntervals } }}) => {
-            const newState = {
-              ...this.state,
-              company: {
-                ...this.state.company,
-                shareIntervals: {
-                  ...shareIntervals,
-                  items: [...this.state.company.shareIntervals.items, ...shareIntervals.items ]
-                }
-              }
-            }
-            this.setState(newState)
-          })
-          .catch(error => { this.setState({ error })})
-          .finally(() => hideLoadingMsg())
       }
-
+      catch(error) {
+        this.setState({ loading: false, error })
+      }
     }
 
     createShareholder = (shareholder) => {
@@ -309,7 +302,6 @@ const getCurrentCompany = (WrappedComponent) => {
         <WrappedComponent
           {...this.props}
           {...this.state}
-          fetchMoreShareIntvls={this.fetchMoreShareIntvls}
           getCompany={this.getCompany()}
         />
       )

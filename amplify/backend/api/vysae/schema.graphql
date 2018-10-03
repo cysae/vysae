@@ -94,8 +94,6 @@ type User @model {
 
 type Vote @model {
   id: ID!
-  totalVoteWeight: Float!
-  totalVoteCapital: Float!
   agreement: MeetingAgreement! @connection(name: "AgreementVotes")
   result: Int!
   shareholder: Shareholder! @connection(name: "ShareholderVotes")
