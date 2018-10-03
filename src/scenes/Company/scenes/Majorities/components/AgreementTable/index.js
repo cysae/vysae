@@ -46,7 +46,7 @@ class EditableCell extends React.Component {
                     {getFieldDecorator(dataIndex, {
                        rules: [{
                          required: true,
-                         message: `Please Input ${title}!`,
+                         message: `Por favor, introduzca ${title}!`,
                        }],
                        initialValue: record[dataIndex],
                     })(this.getInput())}
@@ -66,13 +66,13 @@ class AgreementTable extends React.Component {
     this.state = { editingId: '' };
     this.columns = [
       {
-        title: 'name',
+        title: 'Tipo de mayoría',
         dataIndex: 'name',
         width: '50%',
         editable: true,
       },
       {
-        title: 'operation',
+        title: 'Operación',
         dataIndex: 'operation',
         render: (text, record) => {
           const editable = this.isEditing(record);
@@ -92,22 +92,22 @@ class AgreementTable extends React.Component {
                      )}
                    </EditableContext.Consumer>
                    <Popconfirm
-                     title="Sure to delete?"
+                     title="¿Seguro que quiere eliminar?"
                      onConfirm={() => this.delete(record.id)}
                      icon={<Icon type="exclamation-circle-o" style={{ color: 'red' }} />}
                    >
-                     <a style={{ marginRight: 8 }}>Delete</a>
+                     <a style={{ marginRight: 8 }}>Eliminar</a>
                    </Popconfirm>
                    <Popconfirm
-                     title="Sure to cancel?"
+                     title="¿Seguro que quiere cancelar?"
                      onConfirm={() => this.cancel(record.id)}
                      icon={<Icon type="question-circle-o" style={{ color: 'yellow' }} />}
                    >
-                     <a>Cancel</a>
+                     <a>Cancelar</a>
                    </Popconfirm>
                  </span>
               ) : (
-                 <a onClick={() => this.edit(record.id)}>Edit</a>
+                 <a onClick={() => this.edit(record.id)}>Editar</a>
               )}
             </div>
           );
@@ -199,7 +199,7 @@ class AgreementTable extends React.Component {
 
     return (
       <Fragment>
-        <Button type="primary" onClick={this.create}>Añadir Intervalo de Participaciones</Button>
+        <Button type="primary" onClick={this.create}>Añadir intervalo de participaciones</Button>
         <Table
           components={components}
           rowKey="id"

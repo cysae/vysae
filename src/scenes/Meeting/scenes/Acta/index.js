@@ -27,7 +27,7 @@ class Acta extends React.Component {
 
   renderAgreementResult(result) {
     if(result === 1)
-      return (<div>Acceptado</div>)
+      return (<div>Aceptado</div>)
 
     return (<div>Denegado</div>)
   }

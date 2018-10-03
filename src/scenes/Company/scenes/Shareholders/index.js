@@ -27,7 +27,7 @@ class Shareholders extends Component {
       const { match: { params: { companyId}}} = this.props
       const { linkShareholderId } = this.state
 
-      const hideLoadingMsg = message.loading('loading', 0)
+      const hideLoadingMsg = message.loading('cargando', 0)
 
       API.post('linkShareholder', '/linkShareholder', {
         body: { email: values.email, companyId, shareholderId: linkShareholderId }
@@ -69,11 +69,11 @@ class Shareholders extends Component {
 
 
     const columns = [{
-      title: 'Name',
+      title: 'Nombre',
       dataIndex: 'name',
       key: 'name',
     }, {
-      title: 'Action',
+      title: 'Acción',
       key: 'action',
       render: (text, record) => {
         if (!record.user)
@@ -82,12 +82,12 @@ class Shareholders extends Component {
               type="primary"
               onClick={() => this.openModal(record.id)}
             >
-              Enviar Invitacion
+              Enviar invitación
             </button>
           )
 
         return (
-          <span>is linked</span>
+          <span>Está conectado</span>
         )
       }
     }];
@@ -107,13 +107,13 @@ class Shareholders extends Component {
         <Form>
           <Modal
             visible={visible}
-            title="Title"
+            title="Título"
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             footer={[
               <Button key="back" onClick={this.closeModal}>Cancelar</Button>,
               <Button key="submit" type="primary" htmlType="submit" onClick={this.handleSubmit}>
-                Enviar invitacion
+                Enviar invitación
               </Button>
             ]}
           >
@@ -122,9 +122,9 @@ class Shareholders extends Component {
             >
               {getFieldDecorator('email', {
                  rules: [{
-                   type: 'email', message: 'The input is not valid E-mail!',
+                   type: 'email', message: '¡El E-mail introducido no es válido!',
                  }, {
-                   required: true, message: 'Please input your E-mail!',
+                   required: true, message: '¡Por favor, introduzca su E-mail!',
                  }],
               })(
                  <Input />

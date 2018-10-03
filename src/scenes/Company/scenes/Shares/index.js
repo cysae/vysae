@@ -60,7 +60,7 @@ class EditableCell extends React.Component {
                     {getFieldDecorator(dataIndex, {
                        rules: [{
                          required: true,
-                         message: `Debes introducer un valor`,
+                         message: `Debes introducir un valor`,
                        }],
                        initialValue: record[dataIndex],
                     })(this.getInput())}
@@ -90,7 +90,7 @@ class Shares extends React.Component {
         editable: true,
       },
       {
-        title: 'a la:',
+        title: 'A la:',
         dataIndex: 'end',
         width: '20%',
         editable: true,
@@ -107,7 +107,7 @@ class Shares extends React.Component {
         }
       },
       {
-        title: 'Peso del Voto',
+        title: 'Peso del voto',
         dataIndex: 'voteWeight',
         width: '20%',
         editable: true,
@@ -133,18 +133,18 @@ class Shares extends React.Component {
                      )}
                    </EditableContext.Consumer>
                    <Popconfirm
-                     title="Sure to delete?"
+                     title="¿Seguro que quiere eliminar?"
                      onConfirm={() => this.delete(record.id)}
                      icon={<Icon type="exclamation-circle-o" style={{ color: 'red' }} />}
                    >
-                     <a style={{ marginRight: 8 }}>Delete</a>
+                     <a style={{ marginRight: 8 }}>Eliminar</a>
                    </Popconfirm>
                    <Popconfirm
-                     title="Sure to cancel?"
+                     title="¿Seguro que quiere cancelar?"
                      onConfirm={() => this.cancel(record.id)}
                      icon={<Icon type="question-circle-o" style={{ color: 'yellow' }} />}
                    >
-                     <a>Cancel</a>
+                     <a>Cancelar</a>
                    </Popconfirm>
                  </span>
               ) : (
@@ -265,7 +265,7 @@ class Shares extends React.Component {
 
     return (
       <Fragment>
-        <Button type="primary" onClick={this.create}>Añadir Intervalo de Participaciones</Button>
+        <Button type="primary" onClick={this.create}>Añadir intervalo de participaciones</Button>
         <Table
           components={components}
           rowKey="id"

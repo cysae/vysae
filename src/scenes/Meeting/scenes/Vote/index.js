@@ -83,12 +83,12 @@ class App extends Component {
 
     if( shareholderId === null )
       return (
-        <div>No tiene Socio dentro de la empresa</div>
+        <div>No es socio de la empresa</div>
       )
 
 
     const steps = [{
-      title: '1. Seleccionar Socio',
+      title: '1. Seleccionar socio',
       icon: <Icon type="user" />,
       content: (
         <SelectShareholder
@@ -118,13 +118,13 @@ class App extends Component {
         <div className="steps-action">
           {
             current < steps.length - 1
-            && <Button type="primary" onClick={() => this.next()}>Next</Button>
+            && <Button type="primary" onClick={() => this.next()}>Siguiente</Button>
           }
           {
             current === steps.length - 1
             && (
               <Link to={`/${companyId}/meeting/next`}>
-                <Button type="primary" onClick={() => message.success('Has votado!')}>Done</Button>
+                <Button type="primary" onClick={() => message.success('¡Ha votado!')}>Finalizar</Button>
               </Link>
             )
           }
@@ -132,7 +132,7 @@ class App extends Component {
             current > 0
             && (
               <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-                Previous
+                Atrás
               </Button>
             )
           }

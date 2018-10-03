@@ -34,7 +34,7 @@ class Basics extends Component {
 
     validateFields((err, values) => {
       if (!err) {
-        const hideLoadingMsg = message.loading('Updating Company...')
+        const hideLoadingMsg = message.loading('Actualizando socidedad...')
         API.graphql(graphqlOperation(gqlToString(UpdateCompany), { input: { id: companyId, ...values }}))
           .then(() => {
             message.success('Sociedad actualizada', 2.5)
@@ -60,7 +60,7 @@ class Basics extends Component {
           })(<Input />)}
         </FormItem>
         <FormItem
-          label="Domicilio Social"
+          label="Domicilio social"
         >
           {getFieldDecorator('placeOfBusiness', {
              rules: [{ required: true, message: 'Es obligatorio.' }],

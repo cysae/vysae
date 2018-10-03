@@ -27,6 +27,8 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
+let cont = 1 //////////////////////////////////////////////////////
+
 class EditableCell extends React.Component {
   getInput = () => {
     if (this.props.inputType === 'percentage')
@@ -68,7 +70,7 @@ class EditableCell extends React.Component {
                     {getFieldDecorator(dataIndex, {
                        rules: [{
                          required: true,
-                         message: `Please Input ${title}!`,
+                         message: `Por favor, introduzca ${title}!`,
                        }],
                        initialValue: record[dataIndex],
                     })(this.getInput())}
@@ -88,13 +90,13 @@ class Shares extends React.Component {
     this.state = { editingId: '' };
     this.columns = [
       {
-        title: 'name',
+        title: 'Tipo de mayoría',
         dataIndex: 'name',
         width: '20%',
-        editable: true,
+        editable: false,
       },
       {
-        title: 'rel. Threshold',
+        title: '% de votos a favor del total emitidos',
         dataIndex: 'relativeThreshold',
         width: '20%',
         editable: true,
@@ -103,7 +105,7 @@ class Shares extends React.Component {
         )
       },
       {
-        title: 'abs. Threshold',
+        title: 'Capital mínimo que deban representar los votos a favor',
         dataIndex: 'absoluteThreshold',
         width: '20%',
         editable: true,
@@ -112,13 +114,13 @@ class Shares extends React.Component {
         )
       },
       {
-        title: 'min. Votes',
+        title: 'Número mínimo de votos a favor',
         dataIndex: 'minimumVotes',
         width: '20%',
         editable: true,
       },
       {
-        title: 'operation',
+        title: 'Operación',
         dataIndex: 'operation',
         render: (text, record) => {
           const editable = this.isEditing(record);
@@ -138,18 +140,18 @@ class Shares extends React.Component {
                      )}
                    </EditableContext.Consumer>
                    <Popconfirm
-                     title="Sure to delete?"
+                     title="¿Seguro que quiere eliminar?"
                      onConfirm={() => this.delete(record.id)}
                      icon={<Icon type="exclamation-circle-o" style={{ color: 'red' }} />}
                    >
-                     <a style={{ marginRight: 8 }}>Delete</a>
+                     <a style={{ marginRight: 8 }}>Eliminar</a>
                    </Popconfirm>
                    <Popconfirm
-                     title="Sure to cancel?"
+                     title="¿Seguro que quiere cancelar?"
                      onConfirm={() => this.cancel(record.id)}
                      icon={<Icon type="question-circle-o" style={{ color: 'yellow' }} />}
                    >
-                     <a>Cancel</a>
+                     <a>Cancelar</a>
                    </Popconfirm>
                  </span>
               ) : (
@@ -164,15 +166,27 @@ class Shares extends React.Component {
 
   create = () => {
     const {
-      getCompany: { createMajority }
+      getCompany: { createMajority },
+      company: { majorities },
     } = this.props
 
+
+
     const majority = {
-      name: 'Majority',
+      name: 'Ordinaria',
       relativeThreshold: 50,
       absoluteThreshold: 0,
       minimumVotes: 0,
     }
+
+
+    if (majorities.items.length !== 0) {
+      if (cont <= majorities.items.length) cont = majorities.items.length
+      majority.name = 'Reforzada ' + cont  //majorities.items.length
+      cont++
+    }
+    console.log(majority)
+
 
     createMajority(majority)
       .then(( id ) => {
@@ -255,17 +269,25 @@ class Shares extends React.Component {
     });
 
     return (
+
       <Fragment>
-        <Button type="primary" onClick={this.create}>Añadir Majoria</Button>
-        <Table
-          components={components}
-          rowKey="id"
-          bordered
-          dataSource={majorities.items}
-          columns={columns}
-          rowClassName="editable-row"
-          expandedRowRender={(record) => <AgreementTable majority={record} />}
-        />
+        <h2>Sistema de adopción de acuerdos</h2>
+        { majorities.items.length === 0 ?
+          <Button type="primary" onClick={this.create}>Comenzar</Button>
+          :
+          <Fragment>
+            <Table
+              components={components}
+              rowKey="id"
+              bordered
+              dataSource={majorities.items}
+              columns={columns}
+              rowClassName="editable-row"
+              expandedRowRender={(record) => <AgreementTable majority={record} />}
+            />
+            <Button type="primary" onClick={this.create}>Añadir mayoría</Button>
+          </Fragment>
+        }
       </Fragment>
     );
   }

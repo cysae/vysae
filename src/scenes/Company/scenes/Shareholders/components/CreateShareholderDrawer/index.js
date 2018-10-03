@@ -1,13 +1,14 @@
 import React from 'react'
 // antd
 import {
-  Drawer, Form, Button, Col, Row, Input, message
+  Drawer, Form, Button, Col, Row, Input, message, Radio
 } from 'antd';
 // services
 import { compose } from 'recompose'
+const RadioGroup = Radio.Group
 
 class CreateShareholderDrawer extends React.Component {
-  state = { visible: false };
+  state = { visible: false, expand: false };  //////////////
 
   showDrawer = () => {
     this.setState({
@@ -49,16 +50,23 @@ class CreateShareholderDrawer extends React.Component {
     })
   }
 
+/////////////
+toggle = () => {
+  const { expand } = this.state;
+  this.setState({ expand: !expand });
+}
+////////////
+
   render() {
-    const { form: { getFieldDecorator } } = this.props;
+    const { form: { getFieldDecorator, getFieldValue } } = this.props;
 
     return (
       <div>
         <Button type="primary" onClick={this.showDrawer}>
-          Añadir Socio
+          Añadir socio
         </Button>
         <Drawer
-          title="Create"
+          title="Añadir socio"
           width={720}
           placement="right"
           onClose={this.onClose}
@@ -71,49 +79,155 @@ class CreateShareholderDrawer extends React.Component {
           }}
         >
           <Form layout="vertical" hideRequiredMark onSubmit={this.handleSubmit} >
-            <Row gutter={16}>
+          <Row gutter={16} style={{ marginTop: 12 }}>
+            <Col span={12}>
+              <Form.Item label="Clase de persona">
+                {getFieldDecorator('radio', {
+                  rules: [{ required: true, message: 'Por favor, indique la clase de persona' }]
+                })(
+                  <RadioGroup>
+                    <Radio value={1}>Persona física</Radio>
+                    <Radio value={2}>Persona jurídica</Radio>
+                  </RadioGroup>
+                )}
+              </Form.Item>
+            </Col>
+          </Row>
+          { getFieldValue('radio') === 2 &&
+          <Form>
+            <Row gutter={16} style={{ marginTop: 24 }}>
               <Col span={12}>
-                <Form.Item label="Name">
-                  {getFieldDecorator('name', {
-                     rules: [{ required: true, message: 'please enter user name' }],
-                  })(<Input placeholder="please enter user name" />)}
+                <Form.Item label="Denominación social">
+                  {getFieldDecorator('socialName', {
+                     rules: [{ required: true, message: 'Por favor, escriba una denominación social' }],
+                  })(<Input placeholder="Introduzca una denominación social" />)}
                 </Form.Item>
               </Col>
-              {/* <Col span={12}>
-                  <Form.Item label="DNI">
-                  {getFieldDecorator('dni', {
-                  rules: [{ required: true, message: 'please enter user DNI' }],
-                  })(<Input placeholder="please enter user name" />)}
-                  </Form.Item>
-                  </Col> */}
             </Row>
-            {/* <Row gutter={16}>
-                <Col span={12}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="NIF">
+                  {getFieldDecorator('NIF', {
+                     rules: [{ required: true, message: 'Por favor, escriba un NIF' }],
+                  })(<Input placeholder="Introduzca el NIF" />)}
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Domicilio social">
+                  {getFieldDecorator('socialAdress', {
+                     rules: [{ required: true, message: 'Por favor, escriba un domicilio social' }],
+                  })(<Input placeholder="Introduzca un domicilio social" />)}
+                </Form.Item>
+              </Col>
+            </Row>
+            <h3 style={{ marginTop: 24, marginBottom: 32 }}>Representante de la persona jurídica</h3>
+            </Form>
+          }
+          <Row gutter={16} style={{ marginTop: 24}}>
+            <Col span={12}>
+              <Form.Item label="Nombre">
+                {getFieldDecorator('name', {
+                   rules: [{ required: true, message: 'Por favor, escriba un nombre' }],
+                })(<Input placeholder="Introduzca un nombre" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Primer apellido">
+                  {getFieldDecorator('firstSurname', {
+                     rules: [{ required: true, message: 'Por favor, escriba el primer apellido' }],
+                  })(<Input placeholder="Introduzca el primer apellido" />)}
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="Segundo apellido">
+                  {getFieldDecorator('secondSurname', {
+                     rules: [{ required: true, message: 'Por favor, escriba el segundo apellido' }],
+                  })(<Input placeholder="Introduzca el segundo apellido" />)}
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16} style={{ marginTop: 32 }}>
+              <Col span={12}>
+                <Form.Item label="Dirección">
+                  {getFieldDecorator('address', {
+                     rules: [{ required: true, message: 'Por favor, escriba su dirección' }],
+                  })(<Input placeholder="Introduzca la dirección" />)}
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="Código postal">
+                  {getFieldDecorator('zipCode', {
+                     rules: [{ required: true, message: 'Por favor, escriba el código postal' }],
+                  })(<Input placeholder="Introduzca el código postal" />)}
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Provincia">
+                  {getFieldDecorator('province', {
+                     rules: [{ required: true, message: 'Por favor, escriba la provincia' }],
+                  })(<Input placeholder="Introduzca la provincia" />)}
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="País">
+                  {getFieldDecorator('country', {
+                     rules: [{ required: true, message: 'Por favor, escriba el país' }],
+                  })(<Input placeholder="Introduzca el país" />)}
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16} style={{ marginTop: 32 }}>
+              <Col span={12}>
+                <Form.Item label="Número de teléfono">
+                  {getFieldDecorator('phone', {
+                    rules: [{ required: true, message: 'Por favor, escriba su teléfono' }],
+                  })(
+                    <Input
+                      style={{ width: '100%' }}
+                      addonBefore="+34"
+                      placeholder="Introduzca su teléfono"
+                    />
+                  )}
+                </Form.Item>
+              </Col>
+            </Row>
+
+{/*            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Número de teléfono móvil">
+                  {getFieldDecorator('phone', {
+                    rules: [{ required: false, message: 'Por favor, escriba su teléfono' }],
+                  })(
+                    <Input
+                      style={{ width: '100%' }}
+                      addonBefore="+34"
+                      placeholder="Introduzca su teléfono móvil"
+                    />
+                  )}
+                </Form.Item>
+              </Col>
+            </Row>
+*/}
+            <Row gutter={16}>
+              <Col span={12}>
                 <Form.Item label="Email">
-                {getFieldDecorator('email', {
-                rules: [{ required: true, message: 'please enter email' }],
-                })(
-                <Input
-                style={{ width: '100%' }}
-                placeholder="please enter email"
-                />
-                )}
+                  {getFieldDecorator('email', {
+                    rules: [{ required: true, message: 'Por favor, escriba su email' }],
+                  })(
+                  <Input
+                    style={{ width: '100%' }}
+                    placeholder="Introduzca su email"
+                  />
+                  )}
                 </Form.Item>
-                </Col>
-                <Col span={12}>
-                <Form.Item label="Número de Teléfono">
-                {getFieldDecorator('phone', {
-                rules: [{ required: true, message: 'please enter phone' }],
-                })(
-                <Input
-                style={{ width: '100%' }}
-                addonBefore="+34"
-                placeholder="please enter phone"
-                />
-                )}
-                </Form.Item>
-                </Col>
-                </Row> */}
+              </Col>
+            </Row>
             {/* <Row gutter={16}>
                 <Col span={24}>
                 <Form.Item label="Description">
@@ -149,7 +263,7 @@ class CreateShareholderDrawer extends React.Component {
               >
                 Cancelar
               </Button>
-              <Button htmlType="submit" type="primary">Submit</Button>
+              <Button htmlType="submit" type="primary">Guardar</Button>
             </div>
           </Form>
         </Drawer>
