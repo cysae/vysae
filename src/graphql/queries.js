@@ -21,6 +21,9 @@ export const GetCompany = gql`
               name
               majority {
                 id
+                relativeThreshold
+                absoluteThreshold
+                minimumVotes
               }
             }
           }
