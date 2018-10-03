@@ -391,7 +391,9 @@ input DeleteMeetingInput {
 type MeetingAgreement {
   id: ID!
   name: String!
-  majority: Majority!
+  relativeThreshold: Float!
+  absoluteThreshold: Float!
+  minimumVotes: Int!
   meeting: Meeting!
   votes(filter: ModelVoteFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelVoteConnection
 }
@@ -404,6 +406,9 @@ type ModelMeetingAgreementConnection {
 input ModelMeetingAgreementFilterInput {
   id: ModelIDFilterInput
   name: ModelStringFilterInput
+  relativeThreshold: ModelFloatFilterInput
+  absoluteThreshold: ModelFloatFilterInput
+  minimumVotes: ModelIntFilterInput
   and: [ModelMeetingAgreementFilterInput]
   or: [ModelMeetingAgreementFilterInput]
   not: ModelMeetingAgreementFilterInput
@@ -411,14 +416,18 @@ input ModelMeetingAgreementFilterInput {
 
 input CreateMeetingAgreementInput {
   name: String!
-  meetingAgreementMajorityId: ID
+  relativeThreshold: Float!
+  absoluteThreshold: Float!
+  minimumVotes: Int!
   meetingAgreementMeetingId: ID
 }
 
 input UpdateMeetingAgreementInput {
   id: ID!
   name: String
-  meetingAgreementMajorityId: ID
+  relativeThreshold: Float
+  absoluteThreshold: Float
+  minimumVotes: Int
   meetingAgreementMeetingId: ID
 }
 
@@ -430,6 +439,13 @@ type Shareholder {
   id: ID!
   name: String
   firstSurname: String
+  secondSurname: String
+  address: String
+  zipCode: String
+  province: String
+  country: String
+  phone: String
+  email: String
   company: Company!
   user: User
   shareIntervals(filter: ModelShareholderShareIntervalFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelShareholderShareIntervalConnection
@@ -445,6 +461,13 @@ input ModelShareholderFilterInput {
   id: ModelIDFilterInput
   name: ModelStringFilterInput
   firstSurname: ModelStringFilterInput
+  secondSurname: ModelStringFilterInput
+  address: ModelStringFilterInput
+  zipCode: ModelStringFilterInput
+  province: ModelStringFilterInput
+  country: ModelStringFilterInput
+  phone: ModelStringFilterInput
+  email: ModelStringFilterInput
   and: [ModelShareholderFilterInput]
   or: [ModelShareholderFilterInput]
   not: ModelShareholderFilterInput
@@ -453,6 +476,13 @@ input ModelShareholderFilterInput {
 input CreateShareholderInput {
   name: String
   firstSurname: String
+  secondSurname: String
+  address: String
+  zipCode: String
+  province: String
+  country: String
+  phone: String
+  email: String
   shareholderCompanyId: ID
   shareholderUserId: ID
 }
@@ -461,6 +491,13 @@ input UpdateShareholderInput {
   id: ID!
   name: String
   firstSurname: String
+  secondSurname: String
+  address: String
+  zipCode: String
+  province: String
+  country: String
+  phone: String
+  email: String
   shareholderCompanyId: ID
   shareholderUserId: ID
 }

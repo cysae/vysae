@@ -19,7 +19,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/auth/vysaeCognito-cloudformation-template.yml",
 				"logicalId": "authvysaeCognito"
 			},
-			"lastPushTimeStamp": "2018-10-02T07:50:59.365Z",
+			"lastPushTimeStamp": "2018-10-03T14:32:45.812Z",
 			"output": {
 				"AppClientSecret": "g4u1vjav40mn02mdmutau6bg06v8h57tfami0eg7t5lum528iuf",
 				"UserPoolId": "eu-west-1_d9W2WnqzS",
@@ -40,7 +40,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/hosting/template.json",
 				"logicalId": "hostingS3AndCloudFront"
 			},
-			"lastPushTimeStamp": "2018-10-02T07:50:59.366Z",
+			"lastPushTimeStamp": "2018-10-03T14:32:45.812Z",
 			"output": {
 				"S3BucketSecureURL": "https://vysae-hosting-dev.s3.amazonaws.com",
 				"WebsiteURL": "http://vysae-hosting-dev.s3-website-eu-west-1.amazonaws.com",
@@ -67,13 +67,8 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/cloudformation-template.json",
 				"logicalId": "apivysae"
 			},
-<<<<<<< HEAD
-			"lastPushTimeStamp": "2018-10-02T18:50:03.265Z",
-			"lastPushDirHash": "YIrjtCI/fq2+xPAtiG2omZRHafI="
-=======
-			"lastPushTimeStamp": "2018-10-02T07:50:59.369Z",
-			"lastPushDirHash": "FAcfE81tBfodP1N1fq7rmS8glvg="
->>>>>>> bf625999953ff5216dba24960a622cd9ffdaa0ee
+			"lastPushTimeStamp": "2018-10-03T14:32:45.814Z",
+			"lastPushDirHash": "KDxVXW2noki3BzbbyYLug739CJE="
 		},
 		"linkShareholder": {
 			"service": "API Gateway",
@@ -92,7 +87,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/linkShareholder-cloudformation-template.json",
 				"logicalId": "apilinkShareholder"
 			},
-			"lastPushTimeStamp": "2018-10-02T07:50:59.367Z",
+			"lastPushTimeStamp": "2018-10-03T14:32:45.813Z",
 			"output": {
 				"ApiName": "linkShareholder",
 				"RootUrl": "https://5w3lx38chj.execute-api.eu-west-1.amazonaws.com/Prod"
@@ -106,20 +101,20 @@
 			"providerPlugin": "awscloudformation",
 			"build": true,
 			"dependsOn": [],
-			"lastBuildTimeStamp": "2018-10-02T18:33:51.241Z",
-			"lastPackageTimeStamp": "2018-10-02T18:48:57.580Z",
-			"distZipFilename": "linkShareholder-1538506134-latest-build.zip",
+			"lastBuildTimeStamp": "2018-10-03T14:30:38.588Z",
+			"lastPackageTimeStamp": "2018-10-03T14:30:39.584Z",
+			"distZipFilename": "linkShareholder-1538577038-latest-build.zip",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/function/linkShareholder-cloudformation-template.json",
 				"logicalId": "functionlinkShareholder"
 			},
-			"lastPushTimeStamp": "2018-10-02T07:50:59.368Z",
+			"lastPushTimeStamp": "2018-10-03T14:32:45.814Z",
 			"output": {
 				"Region": "eu-west-1",
 				"Arn": "arn:aws:lambda:eu-west-1:037641059503:function:linkShareholder",
 				"Name": "linkShareholder"
 			},
-			"lastPushDirHash": "//keBVZFprn/GmHdkI9VvW+Yuv0="
+			"lastPushDirHash": "a9kMVENbomsHjV/+MVLpjIerpVs="
 		}
 	}
 }

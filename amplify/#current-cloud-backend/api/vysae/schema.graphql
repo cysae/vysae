@@ -53,7 +53,9 @@ type Meeting @model {
 type MeetingAgreement @model {
   id: ID!
   name: String!
-  majority: Majority! @connection
+  relativeThreshold: Float!
+  absoluteThreshold: Float!
+  minimumVotes: Int!
   meeting: Meeting! @connection(name: "MeetingAgreements")
   votes: [Vote] @connection(name: "AgreementVotes")
 }
@@ -62,6 +64,13 @@ type Shareholder @model {
   id: ID!
   name: String
   firstSurname: String
+  secondSurname: String
+  address: String
+  zipCode: String
+  province: String
+  country: String
+  phone: String
+  email: String
   company: Company! @connection(name: "CompanyShareholders")
   user: User @connection(name: "UserShareholders")
   shareIntervals: [ShareholderShareInterval] @connection(name: "ShareholderShareIntervals")

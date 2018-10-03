@@ -17,7 +17,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "vysae-20180923175301-deployment",
-					"S3Key": "amplify-builds/linkShareholder-1538506134-latest-build.zip"
+					"S3Key": "amplify-builds/linkShareholder-1538577038-latest-build.zip"
 				}
 			}
 		},
