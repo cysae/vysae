@@ -27,6 +27,8 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
+let cont = 1 //////////////////////////////////////////////////////
+
 class EditableCell extends React.Component {
   getInput = () => {
     if (this.props.inputType === 'percentage')
@@ -88,13 +90,13 @@ class Shares extends React.Component {
     this.state = { editingId: '' };
     this.columns = [
       {
-        title: 'Nombre',
+        title: 'Tipo de mayoría',
         dataIndex: 'name',
         width: '20%',
-        editable: true,
+        editable: false,
       },
       {
-        title: 'Límite relativo',
+        title: '% de votos a favor del total emitidos',
         dataIndex: 'relativeThreshold',
         width: '20%',
         editable: true,
@@ -103,7 +105,7 @@ class Shares extends React.Component {
         )
       },
       {
-        title: 'Límite absoluto',
+        title: 'Capital mínimo que deban representar los votos a favor',
         dataIndex: 'absoluteThreshold',
         width: '20%',
         editable: true,
@@ -112,7 +114,7 @@ class Shares extends React.Component {
         )
       },
       {
-        title: 'Votos mínimos',
+        title: 'Número mínimo de votos a favor',
         dataIndex: 'minimumVotes',
         width: '20%',
         editable: true,
@@ -164,15 +166,27 @@ class Shares extends React.Component {
 
   create = () => {
     const {
-      getCompany: { createMajority }
+      getCompany: { createMajority },
+      company: { majorities },
     } = this.props
 
+
+
     const majority = {
-      name: 'Majority',
+      name: 'Ordinaria',
       relativeThreshold: 50,
       absoluteThreshold: 0,
       minimumVotes: 0,
     }
+
+
+    if (majorities.items.length !== 0) {
+      if (cont <= majorities.items.length) cont = majorities.items.length
+      majority.name = 'Reforzada ' + cont  //majorities.items.length
+      cont++
+    }
+    console.log(majority)
+
 
     createMajority(majority)
       .then(( id ) => {
@@ -255,17 +269,25 @@ class Shares extends React.Component {
     });
 
     return (
+
       <Fragment>
-        <Button type="primary" onClick={this.create}>Añadir mayoría</Button>
-        <Table
-          components={components}
-          rowKey="id"
-          bordered
-          dataSource={majorities.items}
-          columns={columns}
-          rowClassName="editable-row"
-          expandedRowRender={(record) => <AgreementTable majority={record} />}
-        />
+        <h2>Sistema de adopción de acuerdos</h2>
+        { majorities.items.length === 0 ?
+          <Button type="primary" onClick={this.create}>Comenzar</Button>
+          :
+          <Fragment>
+            <Table
+              components={components}
+              rowKey="id"
+              bordered
+              dataSource={majorities.items}
+              columns={columns}
+              rowClassName="editable-row"
+              expandedRowRender={(record) => <AgreementTable majority={record} />}
+            />
+            <Button type="primary" onClick={this.create}>Añadir mayoría</Button>
+          </Fragment>
+        }
       </Fragment>
     );
   }

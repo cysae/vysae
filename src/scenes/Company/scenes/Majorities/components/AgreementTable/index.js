@@ -66,7 +66,7 @@ class AgreementTable extends React.Component {
     this.state = { editingId: '' };
     this.columns = [
       {
-        title: 'Nombre',
+        title: 'Tipo de mayoría',
         dataIndex: 'name',
         width: '50%',
         editable: true,
