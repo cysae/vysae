@@ -2,7 +2,7 @@
 import gql from "graphql-tag";
 
 export const GetCompany = gql`
-  query GetCompany($id: ID!) {
+  query GetCompany($id: ID!, $shareIntvlsNextToken: String, $shareIntvlLimit: Int = 11) {
     getCompany(id: $id) {
       id
       name
@@ -51,7 +51,10 @@ export const GetCompany = gql`
         }
         nextToken
       }
-      shareIntervals {
+      shareIntervals(
+        nextToken: $shareIntvlsNextToken
+        limit: $shareIntvlLimit
+      ) {
         items {
           id
           start

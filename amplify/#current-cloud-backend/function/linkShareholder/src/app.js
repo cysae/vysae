@@ -10,6 +10,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 const sendMail = require('./sendMail.js');
+const htmlToPdf = requier('./htmlToPdf.js')
 
 // declare a new express app
 var app = express()
@@ -51,8 +52,8 @@ app.post('/linkShareholder', async function(req, res) {
   res.json({success: 'posti call succeed!', url: req.url, body: req.body})
 });
 
-app.post('/items/*', function(req, res) {
-  // Add your code here
+app.post('/acta', function(req, res) {
+
   res.json({success: 'post call succeed!', url: req.url, body: req.body})
 });
 

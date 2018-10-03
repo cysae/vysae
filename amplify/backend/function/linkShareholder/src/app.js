@@ -10,6 +10,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 const sendMail = require('./sendMail.js');
+const htmlToPdf = require('./htmlToPdf.js')
 
 // declare a new express app
 var app = express()
@@ -34,11 +35,6 @@ app.get('/linkShareholder', function(req, res) {
   res.json({success: 'get call succeed!', url: req.url});
 });
 
-app.get('/items/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
 /****************************
 * Example post method *
 ****************************/
@@ -51,9 +47,14 @@ app.post('/linkShareholder', async function(req, res) {
   res.json({success: 'posti call succeed!', url: req.url, body: req.body})
 });
 
-app.post('/items/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
+app.post('/acta', function(req, res) {
+  htmlToPdf('<body>Hello World</body>', (pdf) => {
+    const filename = 'acta.pdf'
+    res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
+    res.setHeader('Content-type', 'application/pdf');
+    res.setHeader('isBase64Encoded', true);//isBase64Encoded: true
+    res.status(200).send(pdf)
+  })
 });
 
 /****************************

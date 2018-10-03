@@ -77,7 +77,11 @@ class EditableCell extends React.Component {
 class Shares extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editingId: '' };
+    this.state = {
+      editingId: '',
+      pagination: 1
+    }
+
     this.columns = [
       {
         title: 'De la:',
@@ -151,6 +155,13 @@ class Shares extends React.Component {
         },
       },
     ];
+  }
+
+  handleTableChange = (pagination) => {
+    if(pagination && pagination.current > this.state.pagination) {
+      this.props.fetchMoreShareIntvls()
+      this.setState({ pagination: pagination.current })
+    }
   }
 
   create = () => {
@@ -262,6 +273,7 @@ class Shares extends React.Component {
           dataSource={shareIntervals.items}
           columns={columns}
           rowClassName="editable-row"
+          onChange={this.handleTableChange}
         />
         <div>
           <h3>Peso del Voto:</h3>

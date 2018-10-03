@@ -53,7 +53,33 @@ const getCurrentCompany = (WrappedComponent) => {
         .catch(error => { this.setState({ loading: false, error })})
     }
 
-    fetchMore = () => {}
+    fetchMoreShareIntvls = () => {
+      const {
+        company,
+        company: { shareIntervals: { nextToken }}
+      } = this.state
+
+      if(nextToken) {
+        const hideLoadingMsg = message.loading('Cargando participaciones...')
+        API.graphql(graphqlOperation(gqlToString(GetCompany), { id: company.id, shareIntvlsNextToken: nextToken }))
+          .then(({ data: { getCompany: { shareIntervals } }}) => {
+            const newState = {
+              ...this.state,
+              company: {
+                ...this.state.company,
+                shareIntervals: {
+                  ...shareIntervals,
+                  items: [...this.state.company.shareIntervals.items, ...shareIntervals.items ]
+                }
+              }
+            }
+            this.setState(newState)
+          })
+          .catch(error => { this.setState({ error })})
+          .finally(() => hideLoadingMsg())
+      }
+
+    }
 
     createShareholder = (shareholder) => {
       const { match: { params: { companyId }}} = this.props
@@ -280,7 +306,7 @@ const getCurrentCompany = (WrappedComponent) => {
         <WrappedComponent
           {...this.props}
           {...this.state}
-          fetchMore={this.fetchMore}
+          fetchMoreShareIntvls={this.fetchMoreShareIntvls}
           getCompany={this.getCompany()}
         />
       )
