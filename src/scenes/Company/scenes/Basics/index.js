@@ -34,13 +34,17 @@ class Basics extends Component {
 
     validateFields((err, values) => {
       if (!err) {
-        const hideLoadingMsg = message.loading('Actualizando socidedad...')
+        const hideLoadingMsg = message.loading('Actualizando socidedad...', 0)
         API.graphql(graphqlOperation(gqlToString(UpdateCompany), { input: { id: companyId, ...values }}))
           .then(() => {
             message.success('Sociedad actualizada', 2.5)
+            hideLoadingMsg()
           })
-          .catch(err => console.error(err))
-          .finally(() => hideLoadingMsg())
+          .catch(err => {
+            console.error(err)
+            hideLoadingMsg()
+            message.error('error')
+          })
       }
     })
   }

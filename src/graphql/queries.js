@@ -212,9 +212,6 @@ export const GetMeeting = gql`
       agreements {
         items {
           id
-          majority {
-            id
-          }
           name
         }
         nextToken
@@ -286,7 +283,7 @@ export const ListMeetingAgreements = gql`
   }
 `;
 export const GetShareholder = gql`
-  query GetShareholder($id: ID!) {
+  query GetShareholder($id: ID! $shareIntvlsNextToken: String $shareIntvlsLimit: Int = 11) {
     getShareholder(id: $id) {
       id
       name
@@ -296,7 +293,10 @@ export const GetShareholder = gql`
         nif
         placeOfBusiness
       }
-      shareIntervals {
+      shareIntervals(
+        limit: $shareIntvlsLimit
+        nextToken: $shareIntvlsNextToken
+      ) {
         items {
           id
           start
