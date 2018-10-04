@@ -74,10 +74,10 @@ class CreateMeetingDrawer extends React.Component {
     return (
       <div>
         <Button type="primary" onClick={this.showDrawer}>
-          Convocar Junta
+          Convocar junta
         </Button>
         <Drawer
-          title="Create"
+          title="Convocar junta"
           width={720}
           placement="right"
           onClose={this.onClose}
@@ -92,7 +92,7 @@ class CreateMeetingDrawer extends React.Component {
           <Form layout="vertical" hideRequiredMark onSubmit={this.handleSubmit}>
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item label="Nombre">
+                <Form.Item label="Convocante">
                   {getFieldDecorator('name', {
                      rules: [{ required: true, message: 'please enter company name' }],
                   })(
@@ -103,7 +103,7 @@ class CreateMeetingDrawer extends React.Component {
             </Row>
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item label="Duracion">
+                <Form.Item label="Duración">
                   {getFieldDecorator('votingPeriod', {
                      rules: [{ required: true, message: 'please enter company name' }],
                   })(
@@ -118,7 +118,7 @@ class CreateMeetingDrawer extends React.Component {
             </Row>
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item label="Duracion">
+                <Form.Item label="Acuerdos">
                   {getFieldDecorator('agreementIds', {
                      rules: [{ required: true, message: 'please enter company name' }],
                   })(
@@ -155,7 +155,7 @@ class CreateMeetingDrawer extends React.Component {
               >
                 Cancelar
               </Button>
-              <Button type="primary" htmlType="submit">Submit</Button>
+              <Button type="primary" htmlType="submit">Guardar</Button>
             </div>
           </Form>
         </Drawer>
