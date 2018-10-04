@@ -8,7 +8,10 @@ import { compose } from 'recompose'
 const RadioGroup = Radio.Group
 
 class CreateShareholderDrawer extends React.Component {
-  state = { visible: false, expand: false };
+  state = {
+    visible: false,
+    isCreatingShareholder: false,
+  };
 
   componentDidMount() {
     this.props.form.setFieldsValue({personType: 'natural'})
@@ -21,9 +24,13 @@ class CreateShareholderDrawer extends React.Component {
   };
 
   onClose = () => {
+    const { form: { resetFields, setFieldsValue }} = this.props
     this.setState({
       visible: false,
+      isCreatingShareholder: false
     });
+    resetFields()
+    setFieldsValue({personType: 'natural'})
   };
 
   handleSubmit = (e) => {
@@ -32,32 +39,28 @@ class CreateShareholderDrawer extends React.Component {
     const {
       form: {
         validateFields,
-        resetFields
-      }
+      },
+      createShareholder
     } = this.props
 
     validateFields((err, values) => {
       if (err) return
 
       const shareholder = {
-        ...values
+        name: values.name
       }
 
-      const { createShareholder } = this.props
-      createShareholder(shareholder).then(() => {
-        resetFields()
-        this.onClose()
-      }).catch(err => {
-        message.error('error', 2.5)
-        console.error(err)
-      })
+      this.setState({ isCreatingShareholder: true })
+
+      createShareholder(shareholder)
+        .then(() => {
+          this.onClose()
+        }).catch(err => {
+          message.error('error', 2.5)
+          console.error(err)
+        })
     })
   }
-
-toggle = () => {
-  const { expand } = this.state;
-  this.setState({ expand: !expand });
-}
 
   render() {
     const { form: { getFieldDecorator, getFieldValue } } = this.props;
@@ -96,36 +99,36 @@ toggle = () => {
             </Col>
           </Row>
           { getFieldValue('personType') === 'juridic' &&
-          <div>
-            <Row gutter={16} style={{ marginTop: 24 }}>
-              <Col span={12}>
-                <Form.Item label="Denominación social">
-                  {getFieldDecorator('socialName', {
-                     rules: [{ required: true, message: 'Por favor, escriba una denominación social' }],
-                  })(<Input placeholder="Introduzca una denominación social" />)}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item label="NIF">
-                  {getFieldDecorator('NIF', {
-                     rules: [{ required: false, message: 'Por favor, escriba un NIF' }],
-                  })(<Input placeholder="Introduzca el NIF" />)}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item label="Domicilio social">
-                  {getFieldDecorator('socialAdress', {
-                     rules: [{ required: false, message: 'Por favor, escriba un domicilio social' }],
-                  })(<Input placeholder="Introduzca un domicilio social" />)}
-                </Form.Item>
-              </Col>
-            </Row>
-            <h3 style={{ marginTop: 24, marginBottom: 32 }}>Representante de la persona jurídica</h3>
-          </div>
+            <div>
+              <Row gutter={16} style={{ marginTop: 24 }}>
+                <Col span={12}>
+                  <Form.Item label="Denominación social">
+                    {getFieldDecorator('socialName', {
+                       rules: [{ required: true, message: 'Por favor, escriba una denominación social' }],
+                    })(<Input placeholder="Introduzca una denominación social" />)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item label="NIF">
+                    {getFieldDecorator('NIF', {
+                       rules: [{ required: false, message: 'Por favor, escriba un NIF' }],
+                    })(<Input placeholder="Introduzca el NIF" />)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item label="Domicilio social">
+                    {getFieldDecorator('socialAdress', {
+                       rules: [{ required: false, message: 'Por favor, escriba un domicilio social' }],
+                    })(<Input placeholder="Introduzca un domicilio social" />)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <h3 style={{ marginTop: 24, marginBottom: 32 }}>Representante de la persona jurídica</h3>
+            </div>
           }
           <Row gutter={16} style={{ marginTop: 24}}>
             <Col span={12}>
@@ -136,137 +139,137 @@ toggle = () => {
               </Form.Item>
             </Col>
           </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item label="Primer apellido">
-                  {getFieldDecorator('firstSurname', {
-                     rules: [{ required: false, message: 'Por favor, escriba el primer apellido' }],
-                  })(<Input placeholder="Introduzca el primer apellido" />)}
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="Segundo apellido">
-                  {getFieldDecorator('secondSurname', {
-                     rules: [{ required: false, message: 'Por favor, escriba el segundo apellido' }],
-                  })(<Input placeholder="Introduzca el segundo apellido" />)}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16} style={{ marginTop: 32 }}>
-              <Col span={12}>
-                <Form.Item label="Dirección">
-                  {getFieldDecorator('address', {
-                     rules: [{ required: false, message: 'Por favor, escriba su dirección' }],
-                  })(<Input placeholder="Introduzca la dirección" />)}
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="Código postal">
-                  {getFieldDecorator('zipCode', {
-                     rules: [{ required: false, message: 'Por favor, escriba el código postal' }],
-                  })(<Input placeholder="Introduzca el código postal" />)}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item label="Provincia">
-                  {getFieldDecorator('province', {
-                     rules: [{ required: false, message: 'Por favor, escriba la provincia' }],
-                  })(<Input placeholder="Introduzca la provincia" />)}
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="País">
-                  {getFieldDecorator('country', {
-                     rules: [{ required: false, message: 'Por favor, escriba el país' }],
-                  })(<Input placeholder="Introduzca el país" />)}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16} style={{ marginTop: 32 }}>
-              <Col span={12}>
-                <Form.Item label="Número de teléfono">
-                  {getFieldDecorator('phone', {
-                    rules: [{ required: false, message: 'Por favor, escriba su teléfono' }],
-                  })(
-                    <Input
-                      style={{ width: '100%' }}
-                      addonBefore="+34"
-                      placeholder="Introduzca su teléfono"
-                    />
-                  )}
-                </Form.Item>
-              </Col>
-            </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="Primer apellido">
+                {getFieldDecorator('firstSurname', {
+                   rules: [{ required: false, message: 'Por favor, escriba el primer apellido' }],
+                })(<Input placeholder="Introduzca el primer apellido" />)}
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="Segundo apellido">
+                {getFieldDecorator('secondSurname', {
+                   rules: [{ required: false, message: 'Por favor, escriba el segundo apellido' }],
+                })(<Input placeholder="Introduzca el segundo apellido" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16} style={{ marginTop: 32 }}>
+            <Col span={12}>
+              <Form.Item label="Dirección">
+                {getFieldDecorator('address', {
+                   rules: [{ required: false, message: 'Por favor, escriba su dirección' }],
+                })(<Input placeholder="Introduzca la dirección" />)}
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="Código postal">
+                {getFieldDecorator('zipCode', {
+                   rules: [{ required: false, message: 'Por favor, escriba el código postal' }],
+                })(<Input placeholder="Introduzca el código postal" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="Provincia">
+                {getFieldDecorator('province', {
+                   rules: [{ required: false, message: 'Por favor, escriba la provincia' }],
+                })(<Input placeholder="Introduzca la provincia" />)}
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="País">
+                {getFieldDecorator('country', {
+                   rules: [{ required: false, message: 'Por favor, escriba el país' }],
+                })(<Input placeholder="Introduzca el país" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16} style={{ marginTop: 32 }}>
+            <Col span={12}>
+              <Form.Item label="Número de teléfono">
+                {getFieldDecorator('phone', {
+                   rules: [{ required: false, message: 'Por favor, escriba su teléfono' }],
+                })(
+                   <Input
+                     style={{ width: '100%' }}
+                     addonBefore="+34"
+                     placeholder="Introduzca su teléfono"
+                   />
+                 )}
+              </Form.Item>
+            </Col>
+          </Row>
 
-{/*            <Row gutter={16}>
+          {/*            <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Número de teléfono móvil">
-                  {getFieldDecorator('phone', {
-                    rules: [{ required: false, message: 'Por favor, escriba su teléfono' }],
-                  })(
-                    <Input
-                      style={{ width: '100%' }}
-                      addonBefore="+34"
-                      placeholder="Introduzca su teléfono móvil"
-                    />
-                  )}
-                </Form.Item>
+              <Form.Item label="Número de teléfono móvil">
+              {getFieldDecorator('phone', {
+              rules: [{ required: false, message: 'Por favor, escriba su teléfono' }],
+              })(
+              <Input
+              style={{ width: '100%' }}
+              addonBefore="+34"
+              placeholder="Introduzca su teléfono móvil"
+              />
+              )}
+              </Form.Item>
               </Col>
-            </Row>
-*/}
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item label="Email">
-                  {getFieldDecorator('email', {
-                    rules: [{ required: false, message: 'Por favor, escriba su email' }],
-                  })(
-                  <Input
-                    style={{ width: '100%' }}
-                    placeholder="Introduzca su email"
-                  />
-                  )}
-                </Form.Item>
+              </Row>
+            */}
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="Email">
+                {getFieldDecorator('email', {
+                   rules: [{ required: false, message: 'Por favor, escriba su email' }],
+                })(
+                   <Input
+                     style={{ width: '100%' }}
+                     placeholder="Introduzca su email"
+                   />
+                 )}
+              </Form.Item>
+            </Col>
+          </Row>
+          {/* <Row gutter={16}>
+              <Col span={24}>
+              <Form.Item label="Description">
+              {getFieldDecorator('description', {
+              rules: [
+              {
+              required: true,
+              message: 'please enter url description',
+              },
+              ],
+              })(<Input.TextArea rows={4} placeholder="please enter url description" />)}
+              </Form.Item>
               </Col>
-            </Row>
-            {/* <Row gutter={16}>
-                <Col span={24}>
-                <Form.Item label="Description">
-                {getFieldDecorator('description', {
-                rules: [
-                {
-                required: true,
-                message: 'please enter url description',
-                },
-                ],
-                })(<Input.TextArea rows={4} placeholder="please enter url description" />)}
-                </Form.Item>
-                </Col>
-                </Row> */}
-            <div
+              </Row> */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              width: '100%',
+              borderTop: '1px solid #e8e8e8',
+              padding: '10px 16px',
+              textAlign: 'right',
+              left: 0,
+              background: '#fff',
+              borderRadius: '0 0 4px 4px',
+            }}
+          >
+            <Button
               style={{
-                position: 'absolute',
-                bottom: 0,
-                width: '100%',
-                borderTop: '1px solid #e8e8e8',
-                padding: '10px 16px',
-                textAlign: 'right',
-                left: 0,
-                background: '#fff',
-                borderRadius: '0 0 4px 4px',
+                marginRight: 8,
               }}
+              onClick={this.onClose}
             >
-              <Button
-                style={{
-                  marginRight: 8,
-                }}
-                onClick={this.onClose}
-              >
-                Cancelar
-              </Button>
-              <Button htmlType="submit" type="primary">Guardar</Button>
-            </div>
+              Cancelar
+            </Button>
+            <Button htmlType="submit" type="primary">Guardar</Button>
+          </div>
           </Form>
         </Drawer>
       </div>

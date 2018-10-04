@@ -76,7 +76,6 @@ const getCurrentCompany = (WrappedComponent) => {
 
     createShareholder = (shareholder) => {
       const { match: { params: { companyId }}} = this.props
-      const hideLoadingMsg = message.loading('Creando socio...')
 
       return API.graphql(graphqlOperation(gqlToString(CreateShareholder), {
         input: {
@@ -96,7 +95,7 @@ const getCurrentCompany = (WrappedComponent) => {
             }
           }
           this.setState(newState)
-        }).finally(() => hideLoadingMsg())
+        })
     }
 
     createShareIntvl = (shareIntvl) => {

@@ -23,7 +23,6 @@ class Shareholders extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) return
 
-      console.log(this.props)
       const { match: { params: { companyId}}} = this.props
       const { linkShareholderId } = this.state
 
