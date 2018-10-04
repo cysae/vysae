@@ -48,7 +48,7 @@ function Next(props) {
         <Divider type="vertical"/>
         <Link to={`/${companyId}/meeting/${record.id}/vote`}>Votar</Link>
         <Divider type="vertical"/>
-        <Link to={`/${companyId}/meeting/${record.id}/`}>Acta</Link>
+        <Link to={`/${companyId}/meeting/${record.id}/agreement`}>Acta</Link>
       </Fragment>
     )
   }]

@@ -9,15 +9,13 @@ import 'moment/locale/es'
 import moment from 'moment'
 moment.locale('es')
 
-class OrderDay extends React.Component {
+class Agenda extends React.Component {
   render() {
     const {
       meeting: { start, end },
       meeting: { agreements }
     } = this.props
 
-    console.log(this.props.meeting)
-    var organiser = "Yolo McYolald"
     return(
       <div>
         <Card
@@ -92,4 +90,4 @@ class OrderDay extends React.Component {
 }
 
 
-export default getMeeting(OrderDay)
+export default getMeeting(Agenda)
