@@ -33,7 +33,7 @@ class EditableCell extends React.Component {
     }
     if (this.props.inputType === 'euro') {
       return (
-        <span><InputNumber /> euros (€)</span>
+        <InputNumber />
       )
     }
     return <Input />;
@@ -57,13 +57,16 @@ class EditableCell extends React.Component {
              <td {...restProps}>
                {editing ? (
                   <FormItem style={{ margin: 0 }}>
-                    {getFieldDecorator(dataIndex, {
-                       rules: [{
-                         required: true,
-                         message: `Debes introducir un valor`,
-                       }],
-                       initialValue: record[dataIndex],
-                    })(this.getInput())}
+                    <span>
+                      {getFieldDecorator(dataIndex, {
+                         rules: [{
+                           required: true,
+                           message: `Debes introducir un valor`,
+                         }],
+                         initialValue: record[dataIndex],
+                      })(this.getInput())}
+                      euros (€)
+                    </span>
                   </FormItem>
                ) : restProps.children}
              </td>

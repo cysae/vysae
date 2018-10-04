@@ -19,10 +19,6 @@ class Administration extends Component {
       company: { president, vicePresident, secretary }
     } = this.props
 
-    console.log(president)
-    console.log(vicePresident)
-    console.log(secretary)
-
     setFieldsValue({
       president: president.id,
       vicePresident: vicePresident.id,
@@ -98,26 +94,26 @@ class Administration extends Component {
           </Col>
 
 
-          <Col span={12}>
-            <h3>Órgano de Administración</h3>
-            <Col span={4}>
+          {/* <Col span={12}>
+              <h3>Órgano de Administración</h3>
+              <Col span={4}>
               <div>Elegir:</div>
-            </Col>
-            <Col span={10}>
+              </Col>
+              <Col span={10}>
               <FormItem>
-                <Button block>Consejo de Administración</Button>
+              <Button block>Consejo de Administración</Button>
               </FormItem>
               <FormItem>
-                <Button block>Administrador único</Button>
+              <Button block>Administrador único</Button>
               </FormItem>
               <FormItem>
-                <Button block>Administradores mancomunados</Button>
+              <Button block>Administradores mancomunados</Button>
               </FormItem>
               <FormItem>
-                <Button block>Administradores solidarios</Button>
+              <Button block>Administradores solidarios</Button>
               </FormItem>
-            </Col>
-          </Col>
+              </Col>
+              </Col> */}
         </Row>
         <Row type="flex" justify="space-around">
           <FormItem>

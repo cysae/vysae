@@ -1,6 +1,12 @@
 {
-    "schemaGraphql": "s3://vysae-20180923175301-deployment/amplify-appsync-files/schema.graphql.1538675975282",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authvysaeCognito",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "schemaGraphql": "s3://vysae-20180923175301-deployment/amplify-appsync-files/schema.graphql.1538677930080",
     "ResolverBucket": "vysae-20180923175301-deployment",
     "ResolverRootKey": "amplify-appsync-files",
-    "DeploymentTimestamp": "1538675975282"
+    "DeploymentTimestamp": "1538677930080"
 }
