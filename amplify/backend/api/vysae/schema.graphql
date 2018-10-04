@@ -8,6 +8,9 @@ type Company @model {
   shareholders: [Shareholder] @connection(name: "CompanyShareholders")
   shareIntervals: [CompanyShareInterval] @connection(name: "CompanyShareIntervals")
   users: [CompanyUser] @connection(name: "CompanyUsers")
+  president: User @connection
+  vicePresident: User @connection
+  secretary: User @connection
 }
 
 type CompanyUser @model(queries: null) {
@@ -30,6 +33,7 @@ type Majority @model {
   id: ID!
   company: Company! @connection(name: "CompanyMajorities")
   name: String!
+  closed: Boolean
   relativeThreshold: Float!
   absoluteThreshold: Float!
   minimumVotes: Int!
@@ -93,6 +97,8 @@ type User @model {
 
 type Vote @model {
   id: ID!
+  totalWeight: Float
+  totalCapital: Float
   agreement: MeetingAgreement! @connection(name: "AgreementVotes")
   result: Int!
   shareholder: Shareholder! @connection(name: "ShareholderVotes")

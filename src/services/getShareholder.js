@@ -15,6 +15,8 @@ import { compose } from 'recompose'
 // services
 import handleLoadingAndErrors from './handleLoadingAndErrors'
 
+
+
 const getCurrentShareholder = (WrappedComponent) => {
   return class extends Component {
     state = {
@@ -22,17 +24,38 @@ const getCurrentShareholder = (WrappedComponent) => {
       error: null,
     }
 
-    componentDidMount() {
+    componentDidMount = async() => {
       const { shareholder } = this.props
 
-      API.graphql(graphqlOperation(gqlToString(GetShareholder), { id: shareholder.id }))
-        .then(({ data: { getShareholder }}) => {
-          this.setState({
-            loading: false,
-            shareholder: getShareholder
-          })
+      try {
+        const { data: { getShareholder }} = await API.graphql(
+          graphqlOperation(gqlToString(GetShareholder), { id: shareholder.id })
+        )
+
+        // query ALL shareIntvls of the Shareholder
+        let nextToken = getShareholder.shareIntervals.nextToken
+        const shareIntvlItems = getShareholder.shareIntervals.items
+        while(nextToken) {
+          const { data: { getShareholder: { shareIntervals }}} = await API.graphql(
+            graphqlOperation(gqlToString(GetShareholder), {
+              id: shareholder.id,
+              shareIntvlsNextToken: nextToken
+            })
+          )
+          shareIntvlItems.push(...shareIntervals.items)
+          nextToken = shareIntervals.nextToken
+        }
+
+        getShareholder.shareIntervals.items = shareIntvlItems
+
+        this.setState({
+          loading: false,
+          shareholder: getShareholder
         })
-        .catch(error => { this.setState({ loading: false, error })})
+      }
+      catch(error) {
+        this.setState({ loading: false, error })
+      }
     }
 
     fetchMore = () => {}
