@@ -4,7 +4,7 @@ import { List, Card, Spin } from 'antd'
 // services
 import getCompany from '../../../../services/getCompany'
 import getMeeting from '../../../../services/getMeeting'
-import getAgreementWithResult from './services/getAgreementResult'
+import getAgreementResult from './services/getAgreementResult'
 import getCompanyShareholders from './services/getCompanyShareholders.js'
 import Promise from 'bluebird'
 import { compose } from 'recompose'
@@ -19,21 +19,18 @@ class Acta extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     const {
       company: { shareIntervals },
       match: { params: { companyId }}
     } = this.props
 
-    getCompanyShareholders(companyId)
+    const shareholders = await getCompanyShareholders(companyId)
+    console.log('shareholders', shareholders)
 
-    console.log('mount')
-    /* const promises = this.state.agreements.map(agreement => {
-     *   return getAgreementWithResult(agreement, shareIntervals.items)
-     * })
-     * Promise.all(promises)
-     *   .then((agreements) => this.setState({ loading: false, agreements }))
-     *   .catch(err => console.error(err)) */
+    console.log(this.state.agreements)
+    const test = await getAgreementResult(this.state.agreements[0], shareIntervals.items, shareholders)
+    console.log(test)
   }
 
   renderAgreementResult(result) {
