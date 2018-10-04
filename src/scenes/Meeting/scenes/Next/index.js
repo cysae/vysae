@@ -19,7 +19,7 @@ function Next(props) {
   } = props
 
   const columns = [{
-    title: 'Nombre',
+    title: 'Convocante',
     dataIndex: 'name',
   }, {
     title: 'Comienza',
@@ -31,7 +31,7 @@ function Next(props) {
       )
     }
   }, {
-    title: 'Termina',
+    title: 'Finaliza',
     key: 'end',
     render: (text, record) => {
       const {end } = record
@@ -44,6 +44,8 @@ function Next(props) {
     key: 'action',
     render: (text, record) => (
       <Fragment>
+        <Link to={`/${companyId}/meeting/${record.id}/orderDay`}>Orden del día</Link>
+        <Divider type="vertical"/>
         <Link to={`/${companyId}/meeting/${record.id}/vote`}>Votar</Link>
         <Divider type="vertical"/>
         <Link to={`/${companyId}/meeting/${record.id}/acta`}>Acta</Link>

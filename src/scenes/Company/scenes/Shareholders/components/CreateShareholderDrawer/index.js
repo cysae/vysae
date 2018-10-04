@@ -8,7 +8,11 @@ import { compose } from 'recompose'
 const RadioGroup = Radio.Group
 
 class CreateShareholderDrawer extends React.Component {
-  state = { visible: false, expand: false };  //////////////
+  state = { visible: false, expand: false };
+
+  componentDidMount() {
+    this.props.form.setFieldsValue({personType: 'natural'})
+  }
 
   showDrawer = () => {
     this.setState({
@@ -80,18 +84,18 @@ toggle = () => {
           <Row gutter={16} style={{ marginTop: 12 }}>
             <Col span={12}>
               <Form.Item label="Clase de persona">
-                {getFieldDecorator('radio', {
+                {getFieldDecorator('personType', {
                   rules: [{ required: true, message: 'Por favor, indique la clase de persona' }]
                 })(
                   <RadioGroup>
-                    <Radio value={1}>Persona física</Radio>
-                    <Radio value={2}>Persona jurídica</Radio>
+                    <Radio value='natural'>Persona física</Radio>
+                    <Radio value='juridic'>Persona jurídica</Radio>
                   </RadioGroup>
                 )}
               </Form.Item>
             </Col>
           </Row>
-          { getFieldValue('radio') === 2 &&
+          { getFieldValue('personType') === 'juridic' &&
           <div>
             <Row gutter={16} style={{ marginTop: 24 }}>
               <Col span={12}>
@@ -106,7 +110,7 @@ toggle = () => {
               <Col span={12}>
                 <Form.Item label="NIF">
                   {getFieldDecorator('NIF', {
-                     rules: [{ required: true, message: 'Por favor, escriba un NIF' }],
+                     rules: [{ required: false, message: 'Por favor, escriba un NIF' }],
                   })(<Input placeholder="Introduzca el NIF" />)}
                 </Form.Item>
               </Col>
@@ -115,7 +119,7 @@ toggle = () => {
               <Col span={12}>
                 <Form.Item label="Domicilio social">
                   {getFieldDecorator('socialAdress', {
-                     rules: [{ required: true, message: 'Por favor, escriba un domicilio social' }],
+                     rules: [{ required: false, message: 'Por favor, escriba un domicilio social' }],
                   })(<Input placeholder="Introduzca un domicilio social" />)}
                 </Form.Item>
               </Col>
@@ -136,14 +140,14 @@ toggle = () => {
               <Col span={12}>
                 <Form.Item label="Primer apellido">
                   {getFieldDecorator('firstSurname', {
-                     rules: [{ required: true, message: 'Por favor, escriba el primer apellido' }],
+                     rules: [{ required: false, message: 'Por favor, escriba el primer apellido' }],
                   })(<Input placeholder="Introduzca el primer apellido" />)}
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item label="Segundo apellido">
                   {getFieldDecorator('secondSurname', {
-                     rules: [{ required: true, message: 'Por favor, escriba el segundo apellido' }],
+                     rules: [{ required: false, message: 'Por favor, escriba el segundo apellido' }],
                   })(<Input placeholder="Introduzca el segundo apellido" />)}
                 </Form.Item>
               </Col>
@@ -152,14 +156,14 @@ toggle = () => {
               <Col span={12}>
                 <Form.Item label="Dirección">
                   {getFieldDecorator('address', {
-                     rules: [{ required: true, message: 'Por favor, escriba su dirección' }],
+                     rules: [{ required: false, message: 'Por favor, escriba su dirección' }],
                   })(<Input placeholder="Introduzca la dirección" />)}
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item label="Código postal">
                   {getFieldDecorator('zipCode', {
-                     rules: [{ required: true, message: 'Por favor, escriba el código postal' }],
+                     rules: [{ required: false, message: 'Por favor, escriba el código postal' }],
                   })(<Input placeholder="Introduzca el código postal" />)}
                 </Form.Item>
               </Col>
@@ -168,14 +172,14 @@ toggle = () => {
               <Col span={12}>
                 <Form.Item label="Provincia">
                   {getFieldDecorator('province', {
-                     rules: [{ required: true, message: 'Por favor, escriba la provincia' }],
+                     rules: [{ required: false, message: 'Por favor, escriba la provincia' }],
                   })(<Input placeholder="Introduzca la provincia" />)}
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item label="País">
                   {getFieldDecorator('country', {
-                     rules: [{ required: true, message: 'Por favor, escriba el país' }],
+                     rules: [{ required: false, message: 'Por favor, escriba el país' }],
                   })(<Input placeholder="Introduzca el país" />)}
                 </Form.Item>
               </Col>
@@ -184,7 +188,7 @@ toggle = () => {
               <Col span={12}>
                 <Form.Item label="Número de teléfono">
                   {getFieldDecorator('phone', {
-                    rules: [{ required: true, message: 'Por favor, escriba su teléfono' }],
+                    rules: [{ required: false, message: 'Por favor, escriba su teléfono' }],
                   })(
                     <Input
                       style={{ width: '100%' }}
@@ -216,7 +220,7 @@ toggle = () => {
               <Col span={12}>
                 <Form.Item label="Email">
                   {getFieldDecorator('email', {
-                    rules: [{ required: true, message: 'Por favor, escriba su email' }],
+                    rules: [{ required: false, message: 'Por favor, escriba su email' }],
                   })(
                   <Input
                     style={{ width: '100%' }}
