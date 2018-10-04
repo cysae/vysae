@@ -2,9 +2,12 @@ import React from 'react'
 // antd
 import { List, Card, Spin } from 'antd'
 // services
+import getCompany from '../../../../services/getCompany'
 import getMeeting from '../../../../services/getMeeting'
 import getAgreementWithResult from './services/getAgreementResult'
+import getCompanyShareholders from './services/getCompanyShareholders.js'
 import Promise from 'bluebird'
+import { compose } from 'recompose'
 
 class Acta extends React.Component {
   constructor(props) {
@@ -17,12 +20,20 @@ class Acta extends React.Component {
   }
 
   componentDidMount() {
-    const promises = this.state.agreements.map(agreement => {
-      return getAgreementWithResult(agreement.id)
-    })
-    Promise.all(promises)
-      .then((agreements) => this.setState({ loading: false, agreements }))
-      .catch(err => console.error(err))
+    const {
+      company: { shareIntervals },
+      match: { params: { companyId }}
+    } = this.props
+
+    getCompanyShareholders(companyId)
+
+    console.log('mount')
+    /* const promises = this.state.agreements.map(agreement => {
+     *   return getAgreementWithResult(agreement, shareIntervals.items)
+     * })
+     * Promise.all(promises)
+     *   .then((agreements) => this.setState({ loading: false, agreements }))
+     *   .catch(err => console.error(err)) */
   }
 
   renderAgreementResult(result) {
@@ -52,4 +63,7 @@ class Acta extends React.Component {
   }
 }
 
-export default getMeeting(Acta)
+export default compose(
+  getMeeting,
+  getCompany,
+)(Acta)

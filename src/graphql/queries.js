@@ -2,7 +2,13 @@
 import gql from "graphql-tag";
 
 export const GetCompany = gql`
-  query GetCompany($id: ID!, $shareIntvlsNextToken: String, $shareIntvlLimit: Int = 11) {
+  query GetCompany(
+    $id: ID!
+    $shareIntvlsNextToken: String
+    $shareIntvlLimit: Int = 11
+    $shareholdersNextToken: String
+    $shareholdersLimit: Int = 11
+  ) {
     getCompany(id: $id) {
       id
       name
@@ -39,7 +45,10 @@ export const GetCompany = gql`
         }
         nextToken
       }
-      shareholders {
+      shareholders(
+        limit: $shareholdersLimit
+        nextToken: $shareholdersNextToken
+      ) {
         items {
           id
           name
@@ -213,6 +222,9 @@ export const GetMeeting = gql`
         items {
           id
           name
+          relativeThreshold
+          absoluteThreshold
+          minimumVotes
         }
         nextToken
       }
@@ -244,7 +256,7 @@ export const ListMeetings = gql`
   }
 `;
 export const GetMeetingAgreement = gql`
-  query GetMeetingAgreement($id: ID!) {
+  query GetMeetingAgreement($id: ID! $votesNextToken: String $votesLimit: Int = 11) {
     getMeetingAgreement(id: $id) {
       id
       name
@@ -253,7 +265,10 @@ export const GetMeetingAgreement = gql`
         start
         end
       }
-      votes {
+      votes(
+        limit: $votesLimit
+        nextToken: $votesNextToken
+      ) {
         items {
           id
           result
@@ -283,7 +298,11 @@ export const ListMeetingAgreements = gql`
   }
 `;
 export const GetShareholder = gql`
-  query GetShareholder($id: ID! $shareIntvlsNextToken: String $shareIntvlsLimit: Int = 11) {
+  query GetShareholder(
+    $id: ID!
+    $shareIntervalsNextToken: String
+    $shareIntervalsLimit: Int = 11
+  ) {
     getShareholder(id: $id) {
       id
       name
@@ -294,8 +313,8 @@ export const GetShareholder = gql`
         placeOfBusiness
       }
       shareIntervals(
-        limit: $shareIntvlsLimit
-        nextToken: $shareIntvlsNextToken
+        limit: $shareIntervalsLimit
+        nextToken: $shareIntervalsNextToken
       ) {
         items {
           id
