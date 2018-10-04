@@ -9,6 +9,7 @@ import Next from './scenes/Next'
 import Vote from './scenes/Vote'
 import Result from './scenes/Result'
 import Acta from './scenes/Acta'
+import OrderDay from './scenes/OrderDay'
 
 class RawMeetingMenu extends Component {
   getSelectedKey() {
@@ -44,6 +45,7 @@ export default () => (
       <Route path="/:companyId/meeting/:meetingId/vote" component={Vote} />
       <Route path="/:companyId/meeting/:meetingId/result" component={Result} />
       <Route path="/:companyId/meeting/:meetingId/acta" component={Acta} />
+      <Route path="/:companyId/meeting/:meetingId/orderDay" component={OrderDay} />
     </Col>
   </Row>
 )
