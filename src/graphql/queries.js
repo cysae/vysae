@@ -272,6 +272,9 @@ export const GetMeetingAgreement = gql`
         items {
           id
           result
+          shareholder {
+            id
+          }
         }
         nextToken
       }

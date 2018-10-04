@@ -3,23 +3,17 @@ import { print as gqlToString } from 'graphql/language'
 import { GetMeetingAgreement, GetCompany } from '../../../../../graphql/queries'
 import queryAllFieldItems from '../../../../../services/queryAllFieldItems'
 
-const getAgreementResult = async (agreement, companyShareIntvls, shareholders) => {
+const getAgreementResult = async (agreementId, companyShareIntvls, shareholders) => {
   return new Promise((resolve, reject) => {
-    API.graphql(
-      graphqlOperation(gqlToString(GetMeetingAgreement), { id: agreement.id })
-    ).then(({ data: { getMeetingagreement }}) => {
-      const voteItems = queryAllFieldItems(agreement.id, 'votes', GetMeetingAgreement)
-      console.log('result')
-      console.log(voteItems)
+    queryAllFieldItems(agreementId, 'votes', GetMeetingAgreement)
+      .then(voteItems => {
+        console.log(voteItems)
+        const voteResultSum = voteItems.reduce(
+          (acc, vote) => acc + vote.result, 0
+        )
+        resolve( (voteResultSum > 0) ? 1 : -1 )
 
-      resolve(voteItems)
-
-
-      // const voteResultSum = getMeetingAgreement.votes.items.reduce(
-      //   (acc, vote) => acc + vote.result, 0
-      // )
-      // getMeetingAgreement.result = (voteResultSum > 0) ? 1 : -1
-      // ret
+        resolve(voteItems)
     }).catch((err) => reject(err))
   })
 }

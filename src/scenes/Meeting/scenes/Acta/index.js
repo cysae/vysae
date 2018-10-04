@@ -26,11 +26,17 @@ class Acta extends React.Component {
     } = this.props
 
     const shareholders = await getCompanyShareholders(companyId)
-    console.log('shareholders', shareholders)
 
-    console.log(this.state.agreements)
-    const test = await getAgreementResult(this.state.agreements[0], shareIntervals.items, shareholders)
-    console.log(test)
+    const promises = this.state.agreements.map(agreement =>
+      getAgreementResult(agreement.id, shareIntervals.items, shareholders)
+    )
+    Promise.all(promises)
+      .then(results => this.setState({
+        loading: false,
+        agreements: this.state.agreements.map(
+          (agreement, i) => ({ ...agreement, agreement: { result: results[i] }})
+        )
+      })).catch(err => console.error(err))
   }
 
   renderAgreementResult(result) {
