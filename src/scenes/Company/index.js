@@ -9,6 +9,7 @@ import Shareholders from './scenes/Shareholders'
 import Basics from './scenes/Basics'
 import Shares from './scenes/Shares'
 import Majorities from './scenes/Majorities'
+import Administration from './scenes/Administration'
 
 class CompanyMenu extends Component {
   getSelectedKey() {
@@ -20,6 +21,7 @@ class CompanyMenu extends Component {
       case '/company/shares': return ['shares']
       case '/company/shareholders': return ['shareholders']
       case '/company/majorities': return ['majorities']
+      case '/company/administration': return ['administration']
       default: return ['basics']
     }
   }
@@ -43,6 +45,9 @@ class CompanyMenu extends Component {
         <Menu.Item key="majorities">
           <Link to={`/${companyId}/company/majorities`}>Mayorías</Link>
         </Menu.Item>
+        <Menu.Item key="administration">
+          <Link to={`/${companyId}/company/administration`}>Administración</Link>
+        </Menu.Item>
       </Menu>
     )
   }
@@ -64,6 +69,7 @@ export default (props) => {
         <Route path="/:companyId/company/shares" component={Shares} />
         <Route path="/:companyId/company/shareholders" component={Shareholders} />
         <Route path="/:companyId/company/majorities" component={Majorities} />
+        <Route path="/:companyId/company/administration" component={Administration} />
       </Col>
     </Row>
   )
