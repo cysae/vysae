@@ -8,6 +8,15 @@ export const GetCompany = gql`
       name
       nif
       placeOfBusiness
+      president {
+        id
+      }
+      vicePresident {
+        id
+      }
+      secretary {
+        id
+      }
       majorities {
         items {
           id
@@ -65,6 +74,12 @@ export const GetCompany = gql`
         nextToken
       }
       users {
+        items {
+          user {
+            name
+            id
+          }
+        }
         nextToken
       }
     }

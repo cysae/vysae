@@ -50,12 +50,10 @@ class CreateShareholderDrawer extends React.Component {
     })
   }
 
-/////////////
 toggle = () => {
   const { expand } = this.state;
   this.setState({ expand: !expand });
 }
-////////////
 
   render() {
     const { form: { getFieldDecorator, getFieldValue } } = this.props;
@@ -94,7 +92,7 @@ toggle = () => {
             </Col>
           </Row>
           { getFieldValue('radio') === 2 &&
-          <Form>
+          <div>
             <Row gutter={16} style={{ marginTop: 24 }}>
               <Col span={12}>
                 <Form.Item label="Denominación social">
@@ -123,7 +121,7 @@ toggle = () => {
               </Col>
             </Row>
             <h3 style={{ marginTop: 24, marginBottom: 32 }}>Representante de la persona jurídica</h3>
-            </Form>
+          </div>
           }
           <Row gutter={16} style={{ marginTop: 24}}>
             <Col span={12}>
