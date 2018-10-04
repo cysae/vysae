@@ -17,19 +17,38 @@ const getCurrentMeeting = (WrappedComponent) => {
 
     getMeeting = () => ({})
 
-    componentDidMount() {
+    componentDidMount = async () => {
       const { match: { params: { meetingId }}} = this.props
-      API.graphql(graphqlOperation(gqlToString(GetMeeting), { id: meetingId }))
-        .then(({ data: { getMeeting }}) => {
-          this.setState({
-            loading: false,
-            meeting: getMeeting
-          })
-        })
-        .catch(error => { this.setState({ loading: false, error })})
-    }
+      try {
+        const { data: { getMeeting }} = await API.graphql(
+          graphqlOperation(gqlToString(GetMeeting), { id: meetingId })
+        )
 
-    fetchMore = () => {}
+        // query ALL agreements
+        let nextToken = getMeeting.agreements.nextToken
+        const agreementItems = getMeeting.agreements.items
+        while(nextToken) {
+          const { data: { getMeeting: { agreements }}} = await API.graphql(
+            graphqlOperation(gqlToString(GetMeeting), {
+              id: meetingId,
+              agreementNextToken: nextToken
+            })
+          )
+          agreementItems.push(...agreements.items)
+          nextToken = agreements.nextToken
+        }
+
+        getMeeting.agreements.items = agreementItems
+
+        this.setState({
+          loading: false,
+          meeting: getMeeting
+        })
+      }
+      catch(error) {
+        this.setState({ loading: false, error })
+      }
+    }
 
     render() {
       return (

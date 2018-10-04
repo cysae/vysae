@@ -33,6 +33,7 @@ type Majority @model {
   id: ID!
   company: Company! @connection(name: "CompanyMajorities")
   name: String!
+  closed: Boolean
   relativeThreshold: Float!
   absoluteThreshold: Float!
   minimumVotes: Int!
@@ -96,6 +97,8 @@ type User @model {
 
 type Vote @model {
   id: ID!
+  totalWeight: Float
+  totalCapital: Float
   agreement: MeetingAgreement! @connection(name: "AgreementVotes")
   result: Int!
   shareholder: Shareholder! @connection(name: "ShareholderVotes")

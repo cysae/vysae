@@ -104,6 +104,8 @@ type Company {
   shareIntervals(filter: ModelCompanyShareIntervalFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyShareIntervalConnection
   users(filter: ModelCompanyUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyUserConnection
   president: User
+  vicePresident: User
+  secretary: User
 }
 
 enum ModelSortDirection {
@@ -186,6 +188,8 @@ input CreateCompanyInput {
   nif: String
   placeOfBusiness: String
   companyPresidentId: ID
+  companyVicePresidentId: ID
+  companySecretaryId: ID
 }
 
 input UpdateCompanyInput {
@@ -194,6 +198,8 @@ input UpdateCompanyInput {
   nif: String
   placeOfBusiness: String
   companyPresidentId: ID
+  companyVicePresidentId: ID
+  companySecretaryId: ID
 }
 
 input DeleteCompanyInput {
@@ -272,6 +278,7 @@ type Majority {
   id: ID!
   company: Company!
   name: String!
+  closed: Boolean
   relativeThreshold: Float!
   absoluteThreshold: Float!
   minimumVotes: Int!
@@ -285,6 +292,7 @@ type ModelMajorityConnection {
 input ModelMajorityFilterInput {
   id: ModelIDFilterInput
   name: ModelStringFilterInput
+  closed: ModelBooleanFilterInput
   relativeThreshold: ModelFloatFilterInput
   absoluteThreshold: ModelFloatFilterInput
   minimumVotes: ModelIntFilterInput
@@ -295,6 +303,7 @@ input ModelMajorityFilterInput {
 
 input CreateMajorityInput {
   name: String!
+  closed: Boolean
   relativeThreshold: Float!
   absoluteThreshold: Float!
   minimumVotes: Int!
@@ -304,6 +313,7 @@ input CreateMajorityInput {
 input UpdateMajorityInput {
   id: ID!
   name: String
+  closed: Boolean
   relativeThreshold: Float
   absoluteThreshold: Float
   minimumVotes: Int
@@ -582,6 +592,8 @@ input DeleteUserInput {
 
 type Vote {
   id: ID!
+  totalWeight: Float
+  totalCapital: Float
   agreement: MeetingAgreement!
   result: Int!
   shareholder: Shareholder!
@@ -594,6 +606,8 @@ type ModelVoteConnection {
 
 input ModelVoteFilterInput {
   id: ModelIDFilterInput
+  totalWeight: ModelFloatFilterInput
+  totalCapital: ModelFloatFilterInput
   result: ModelIntFilterInput
   and: [ModelVoteFilterInput]
   or: [ModelVoteFilterInput]
@@ -601,6 +615,8 @@ input ModelVoteFilterInput {
 }
 
 input CreateVoteInput {
+  totalWeight: Float
+  totalCapital: Float
   result: Int!
   voteAgreementId: ID
   voteShareholderId: ID
@@ -608,6 +624,8 @@ input CreateVoteInput {
 
 input UpdateVoteInput {
   id: ID!
+  totalWeight: Float
+  totalCapital: Float
   result: Int
   voteAgreementId: ID
   voteShareholderId: ID

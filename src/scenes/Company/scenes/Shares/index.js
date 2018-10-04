@@ -157,13 +157,6 @@ class Shares extends React.Component {
     ];
   }
 
-  handleTableChange = (pagination) => {
-    if(pagination && pagination.current > this.state.pagination) {
-      this.props.fetchMoreShareIntvls()
-      this.setState({ pagination: pagination.current })
-    }
-  }
-
   create = () => {
     const {
       company: { shareIntervals },
@@ -273,7 +266,6 @@ class Shares extends React.Component {
           dataSource={shareIntervals.items}
           columns={columns}
           rowClassName="editable-row"
-          onChange={this.handleTableChange}
         />
         <div>
           <h3>Peso del Voto:</h3>

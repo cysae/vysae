@@ -19,7 +19,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/auth/vysaeCognito-cloudformation-template.yml",
 				"logicalId": "authvysaeCognito"
 			},
-			"lastPushTimeStamp": "2018-10-03T14:32:45.812Z",
+			"lastPushTimeStamp": "2018-10-04T18:02:09.598Z",
 			"output": {
 				"AppClientSecret": "g4u1vjav40mn02mdmutau6bg06v8h57tfami0eg7t5lum528iuf",
 				"UserPoolId": "eu-west-1_d9W2WnqzS",
@@ -40,7 +40,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/hosting/template.json",
 				"logicalId": "hostingS3AndCloudFront"
 			},
-			"lastPushTimeStamp": "2018-10-03T14:32:45.812Z",
+			"lastPushTimeStamp": "2018-10-04T18:02:09.599Z",
 			"output": {
 				"S3BucketSecureURL": "https://vysae-hosting-dev.s3.amazonaws.com",
 				"WebsiteURL": "http://vysae-hosting-dev.s3-website-eu-west-1.amazonaws.com",
@@ -67,8 +67,8 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/cloudformation-template.json",
 				"logicalId": "apivysae"
 			},
-			"lastPushTimeStamp": "2018-10-03T14:32:45.814Z",
-			"lastPushDirHash": "KDxVXW2noki3BzbbyYLug739CJE="
+			"lastPushTimeStamp": "2018-10-04T18:02:09.601Z",
+			"lastPushDirHash": "PplN8XKbzCID4Ip19BPmXNRT78c="
 		},
 		"linkShareholder": {
 			"service": "API Gateway",
@@ -87,7 +87,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/api/linkShareholder-cloudformation-template.json",
 				"logicalId": "apilinkShareholder"
 			},
-			"lastPushTimeStamp": "2018-10-03T14:32:45.813Z",
+			"lastPushTimeStamp": "2018-10-04T18:02:09.600Z",
 			"output": {
 				"ApiName": "linkShareholder",
 				"RootUrl": "https://5w3lx38chj.execute-api.eu-west-1.amazonaws.com/Prod"
@@ -108,7 +108,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/vysae-20180923175301-deployment/amplify-cfn-templates/function/linkShareholder-cloudformation-template.json",
 				"logicalId": "functionlinkShareholder"
 			},
-			"lastPushTimeStamp": "2018-10-03T14:32:45.814Z",
+			"lastPushTimeStamp": "2018-10-04T18:02:09.600Z",
 			"output": {
 				"Region": "eu-west-1",
 				"Arn": "arn:aws:lambda:eu-west-1:037641059503:function:linkShareholder",

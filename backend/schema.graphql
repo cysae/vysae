@@ -65,6 +65,7 @@ type Meeting {
   start: String!
   end: String!
   agreements: [Agreement]
+  closed: Bool
 }
 
 input MeetingInput {
@@ -185,6 +186,8 @@ type UserShareholderConnection {
 type Vote {
   agreementId: String!
   shareholderId: String!
+  totalWeight: Float
+  totalCapital: Float
   result: Int!
 }
 input VoteInput {
