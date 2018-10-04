@@ -1,10 +1,8 @@
 import React from 'react'
 // antd
-import { List, Card, Spin } from 'antd'
+import { List, Card } from 'antd'
 // services
 import getMeeting from '../../../../services/getMeeting'
-import getAgreementWithResult from './services/getAgreementResult'
-import Promise from 'bluebird'
 import 'moment/locale/es'
 import moment from 'moment'
 moment.locale('es')
@@ -12,7 +10,7 @@ moment.locale('es')
 class Agenda extends React.Component {
   render() {
     const {
-      meeting: { start, end },
+      meeting: { start },
       meeting: { agreements }
     } = this.props
 

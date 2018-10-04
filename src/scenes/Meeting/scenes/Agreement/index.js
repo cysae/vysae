@@ -35,7 +35,6 @@ class Acta extends React.Component {
     )
     Promise.all(promises)
       .then(results => {
-        console.log(results)
         this.setState({
           loading: false,
           agreements: this.state.agreements.map(
@@ -47,7 +46,6 @@ class Acta extends React.Component {
   }
 
   renderAgreementResult(result) {
-    console.log('resutl', result)
     if(result === 1)
       return (<div>Aprobado</div>)
 
@@ -60,7 +58,6 @@ class Acta extends React.Component {
       meeting: { end },
     } = this.props
     const { loading, agreements } = this.state
-    console.log(agreements)
 
     return (
       <Fragment>

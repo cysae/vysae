@@ -1,9 +1,6 @@
-import { API, graphqlOperation } from 'aws-amplify'
-import { print as gqlToString } from 'graphql/language'
 import { GetCompany, GetShareholder } from '../../../../../graphql/queries'
 import Promise from 'bluebird'
 import queryAllFieldItems from '../../../../../services/queryAllFieldItems'
-
 
 const getCompanyShareholders = async (companyId) => {
   try {
