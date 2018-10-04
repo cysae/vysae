@@ -19,11 +19,13 @@ class Administration extends Component {
       company: { president, vicePresident, secretary }
     } = this.props
 
-    setFieldsValue({
-      president: president.id,
-      vicePresident: vicePresident.id,
-      secretary: secretary.id
-    })
+
+    if(president)
+      setFieldsValue({ president: president.id })
+    if(vicePresident)
+      setFieldsValue({ vicePresident: vicePresident.id })
+    if(secretary)
+      setFieldsValue({ secretary: secretary.id })
   }
 
   handleSubmit = (e) => {
