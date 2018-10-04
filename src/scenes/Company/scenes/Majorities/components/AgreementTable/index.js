@@ -199,7 +199,7 @@ class AgreementTable extends React.Component {
 
     return (
       <Fragment>
-        <Button type="primary" onClick={this.create}>Añadir intervalo de participaciones</Button>
+        <Button type="primary" onClick={this.create}>Añadir acuerdo</Button>
         <Table
           components={components}
           rowKey="id"

@@ -5,37 +5,51 @@ import { List, Card, Spin } from 'antd'
 import getMeeting from '../../../../services/getMeeting'
 import getAgreementWithResult from './services/getAgreementResult'
 import Promise from 'bluebird'
+import 'moment/locale/es'
+import moment from 'moment'
+moment.locale('es')
 
 class OrderDay extends React.Component {
   render() {
-    console.log(this.props)
+    const {
+      meeting: { start, end },
+      meeting: { agreements }
+    } = this.props
+
+    console.log(this.props.meeting)
     var organiser = "Yolo McYolald"
     return(
       <div>
         <Card
-          title="CONVOCATORIA A LA JUNTA GENERAL  'juntaType'  DE SOCIOS"
-          style={{ width: 1000, textAlign: 'center' }}
+          title="CONVOCATORIA A LA JUNTA GENERAL DE SOCIOS"
+          style={{ textAlign: 'center' }}
         >
           <p style={{textAlign: 'justify'}}>
-            { organiser } 'persona_que_convoca', de conformidad con lo dispuesto en los artículos 166 y 167 de la Ley de Sociedades de Capital,
-            por la presente convoca a sus socios a la Junta General Ordinaria que tendrá lugar el próximo día 'fecha_inicio' a
-            las 'hora_inicio' horas en 'lugar_junta', pudiendo asistir y/o votar por medios telemáticos, para tratar los asuntos
+            <b>Javier Pascual</b>, de conformidad con lo dispuesto en los artículos 166 y 167 de la Ley de Sociedades de Capital,
+      por la presente convoca a sus socios a la Junta General Ordinaria que tendrá lugar el próximo día <b>{moment(start).format('LL')}</b> a
+      las <b>{moment(start).format('hh:mm')}</b> horas en <b>Calle Sant Pacia 12, Barcelona</b>, pudiendo asistir y/o votar por medios telemáticos, para tratar los asuntos
             contenidos en el siguiente
           </p>
         </Card>
 
         <Card
           title="ORDEN DEL DÍA"
-          style={{ width: 1000, textAlign: 'center' }}
+          style={{ textAlign: 'center' }}
         >
-          <List>
-
-          </List>
+          <List
+            grid={{ gutter: 16, column: 4 }}
+            dataSource={agreements.items}
+            renderItem={item => (
+              <List.Item>
+                <Card title={item.name}>A votar</Card>
+              </List.Item>
+            )}
+          />,
         </Card>
 
         <Card
           title="Derecho de información"
-          style={{ width: 1000, textAlign: 'center' }}
+          style={{ textAlign: 'center' }}
         >
           <p style={{textAlign: 'justify'}}>
               Se pone en conocimiento de los socios, conforme a lo dispuesto en el artículo 272 de la Ley de Sociedades de Capital, que
@@ -53,7 +67,7 @@ class OrderDay extends React.Component {
 
         <Card
           title="Voto anticipado y delegación de voto"
-          style={{ width: 1000, textAlign: 'center' }}
+          style={{ textAlign: 'center' }}
         >
           <p style={{textAlign: 'justify'}}>
             Asimismo, se informa a los socios que podrán emitir su voto sobre las propuestas contenidas en el presente Orden del Día
