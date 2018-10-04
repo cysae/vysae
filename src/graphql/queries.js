@@ -224,9 +224,6 @@ export const GetMeeting = gql`
       agreements {
         items {
           id
-          majority {
-            id
-          }
           name
         }
         nextToken
