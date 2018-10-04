@@ -103,6 +103,7 @@ type Company {
   shareholders(filter: ModelShareholderFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelShareholderConnection
   shareIntervals(filter: ModelCompanyShareIntervalFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyShareIntervalConnection
   users(filter: ModelCompanyUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyUserConnection
+  president: User
 }
 
 enum ModelSortDirection {
@@ -184,6 +185,7 @@ input CreateCompanyInput {
   name: String!
   nif: String
   placeOfBusiness: String
+  companyPresidentId: ID
 }
 
 input UpdateCompanyInput {
@@ -191,6 +193,7 @@ input UpdateCompanyInput {
   name: String
   nif: String
   placeOfBusiness: String
+  companyPresidentId: ID
 }
 
 input DeleteCompanyInput {

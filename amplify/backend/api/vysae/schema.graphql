@@ -8,6 +8,9 @@ type Company @model {
   shareholders: [Shareholder] @connection(name: "CompanyShareholders")
   shareIntervals: [CompanyShareInterval] @connection(name: "CompanyShareIntervals")
   users: [CompanyUser] @connection(name: "CompanyUsers")
+  president: User @connection
+  vicePresident: User @connection
+  secretary: User @connection
 }
 
 type CompanyUser @model(queries: null) {
