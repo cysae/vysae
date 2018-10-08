@@ -1,11 +1,12 @@
 import React from 'react'
 // antd
-import { Steps } from 'antd';
+import { Layout, Steps, Breadcrumb, Divider } from 'antd';
 // components
 import Register from './components/Register'
 import Confirm from './components/Confirm'
 
 const Step = Steps.Step;
+const { Header, Footer, Content } = Layout
 
 
 export default class App extends React.Component {
@@ -35,7 +36,6 @@ export default class App extends React.Component {
   render() {
     const { current, user } = this.state;
     const { match: { params: { companyId, shareholderId }}} = this.props
-    console.log(this.props)
 
     const steps = [{
       title: 'Registracion',
@@ -53,12 +53,29 @@ export default class App extends React.Component {
     }];
 
     return (
-      <div>
-        <Steps current={current}>
-          {steps.map(item => <Step key={item.title} title={item.title} />)}
-        </Steps>
-        <div className="steps-content">{steps[current].content}</div>
-      </div>
+      <Layout>
+        <Header>
+          <h2 style={{color: '#fff'}}>Bienvenido a CYSAE</h2>
+        </Header>
+        <Content style={{ padding: '0 50px'}}>
+          <Breadcrumb style={{ margin: '16px 0' }}>
+            <Breadcrumb.Item>Incio</Breadcrumb.Item>
+            <Breadcrumb.Item>Connectar</Breadcrumb.Item>
+          </Breadcrumb>
+          <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+            <Steps current={current}>
+              {steps.map(item => <Step key={item.title} title={item.title} />)}
+            </Steps>
+            <Divider orientation="left">Registración</Divider>
+            <div className="steps-content" style={{width: '60vw', margin: 'auto'}}>
+              {steps[current].content}
+            </div>
+          </div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>
+          CYSAE ©2018
+        </Footer>
+      </Layout>
     );
   }
 }
