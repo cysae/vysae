@@ -40,9 +40,13 @@ app.get('/linkShareholder', function(req, res) {
 ****************************/
 
 app.post('/linkShareholder', async function(req, res) {
-  // Add your code here
+  let host = 'http://vysae-hosting-dev.s3-website-eu-west-1.amazonaws.com'
+  if(req.headers === 'localhost')
+    host = 'http://localhost:3000'
+
+
   const { email, companyId, shareholderId } = req.body
-  const msg = `<a href="http://localhost:3000/linkShareholder/${companyId}/${shareholderId}">Invitation Link</a>`
+  const msg = `<a href="${host}/linkShareholder/${companyId}/${shareholderId}">Invitation Link</a>`
   await sendMail(req.body.email, 'Invitacion', msg)
   res.json({success: 'posti call succeed!', url: req.url, body: req.body})
 });
