@@ -1,6 +1,6 @@
 import React from 'react'
 // antd
-import { Layout, Steps, Breadcrumb, Divider } from 'antd';
+import { Row, Col, Layout, Steps, Breadcrumb, Divider } from 'antd';
 // components
 import Register from './components/Register'
 import Confirm from './components/Confirm'
@@ -55,7 +55,14 @@ export default class App extends React.Component {
     return (
       <Layout>
         <Header>
-          <h2 style={{color: '#fff'}}>Bienvenido a CYSAE</h2>
+          <Row type="flex" justify="space-between">
+            <Col>
+              <h2 style={{color: '#fff'}}>Bienvenido a CYSAE</h2>
+            </Col>
+            <Col>
+              <a href="https://cysae.com">Cysae</a>
+            </Col>
+          </Row>
         </Header>
         <Content style={{ padding: '0 50px'}}>
           <Breadcrumb style={{ margin: '16px 0' }}>
