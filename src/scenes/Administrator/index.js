@@ -64,7 +64,7 @@ class Administrator extends React.Component {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Vysae ©2018
+          Vysae © 2018
         </Footer>
       </Layout>
     )

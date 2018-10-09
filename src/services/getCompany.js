@@ -181,7 +181,7 @@ const getCurrentCompany = (WrappedComponent) => {
 
     createMajority = (majority) => {
       const { match: { params: { companyId }}} = this.props
-      const hideLoadingMsg = message.loading('Creando majoria...')
+      const hideLoadingMsg = message.loading('Creando mayoria...')
 
       return API.graphql(
         graphqlOperation(gqlToString(CreateMajority), {
@@ -208,7 +208,7 @@ const getCurrentCompany = (WrappedComponent) => {
 
     updateMajority = (majority) => {
       const { match: { params: { companyId }}} = this.props
-      const hideLoadingMsg = message.loading('Actualizando majoria...')
+      const hideLoadingMsg = message.loading('Actualizando mayoria...')
 
       return API.graphql(
         graphqlOperation(gqlToString(UpdateMajority), {
@@ -237,7 +237,7 @@ const getCurrentCompany = (WrappedComponent) => {
     }
 
     deleteMajority = (id) => {
-      const hideLoadingMsg = message.loading('Borrando majoria...')
+      const hideLoadingMsg = message.loading('Borrando mayoria...')
 
       return API.graphql(
         graphqlOperation(gqlToString(DeleteMajority), {

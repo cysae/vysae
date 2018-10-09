@@ -16,12 +16,15 @@ export const GetCompany = gql`
       placeOfBusiness
       president {
         id
+        name
       }
       vicePresident {
         id
+        name
       }
       secretary {
         id
+        name
       }
       majorities {
         items {

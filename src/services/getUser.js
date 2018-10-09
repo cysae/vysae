@@ -18,6 +18,7 @@ const getCurrentUser = (WrappedComponent) => {
     state = {
       loading: true,
       error: null,
+      user: null
     }
 
     companiesSubscription = null
@@ -88,6 +89,8 @@ const getCurrentUser = (WrappedComponent) => {
     }
 
     render() {
+      console.log(this.props)
+
       return <WrappedComponent {...this.props} {...this.state} fetchMoreCompanies={this.fetchMoreCompanies} />
     }
   }
